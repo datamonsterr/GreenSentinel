@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>GreenSM Driver - GSupport AI</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container": "#eaedff",
+            "primary": "#006948",
+            "on-secondary-fixed-variant": "#0b513d",
+            "inverse-on-surface": "#eef0ff",
+            "secondary-container": "#adedd3",
+            "error-container": "#ffdad6",
+            "surface-container-highest": "#dae2fd",
+            "background": "#faf8ff",
+            "primary-container": "#00855d",
+            "surface": "#faf8ff",
+            "tertiary-fixed-dim": "#4edea3",
+            "on-tertiary-fixed-variant": "#005236",
+            "surface-container-high": "#e2e7ff",
+            "inverse-primary": "#68dba9",
+            "secondary-fixed-dim": "#95d3ba",
+            "tertiary": "#006947",
+            "on-tertiary-container": "#f5fff6",
+            "secondary-fixed": "#b0f0d6",
+            "on-surface": "#131b2e",
+            "surface-bright": "#faf8ff",
+            "surface-dim": "#d2d9f4",
+            "on-secondary": "#ffffff",
+            "surface-tint": "#006c4a",
+            "outline-variant": "#bccac0",
+            "on-secondary-container": "#306d58",
+            "on-tertiary": "#ffffff",
+            "on-primary-fixed-variant": "#005137",
+            "on-primary": "#ffffff",
+            "inverse-surface": "#283044",
+            "on-surface-variant": "#3d4a42",
+            "on-primary-container": "#f5fff7",
+            "tertiary-container": "#00855b",
+            "error": "#ba1a1a",
+            "outline": "#6d7a72",
+            "surface-container-lowest": "#ffffff",
+            "on-tertiary-fixed": "#002113",
+            "surface-container-low": "#f2f3ff",
+            "on-error": "#ffffff",
+            "primary-fixed": "#85f8c4",
+            "on-error-container": "#93000a",
+            "on-primary-fixed": "#002114",
+            "surface-variant": "#dae2fd",
+            "secondary": "#2b6954",
+            "primary-fixed-dim": "#68dba9",
+            "on-secondary-fixed": "#002117",
+            "tertiary-fixed": "#6ffbbe",
+            "on-background": "#131b2e"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "space-sm": "0.5rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "gutter": "1rem",
+            "margin": "1rem"
+          },
+          fontFamily: {
+            "label-lg": ["Inter"],
+            "display-lg-mobile": ["Inter"],
+            "body-lg": ["Inter"],
+            "body-sm": ["Inter"],
+            "headline-md": ["Inter"],
+            "headline-sm": ["Inter"],
+            "headline-sm-mobile": ["Inter"],
+            "body-md": ["Inter"],
+            "numeric-huge": ["Inter"],
+            "label-md": ["Inter"],
+            "label-sm": ["Inter"],
+            "display-lg": ["Inter"],
+            "headline-lg": ["Inter"]
+          },
+          fontSize: {
+            "label-lg": ["16px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "600" }],
+            "display-lg-mobile": ["30px", { lineHeight: "38px", letterSpacing: "-0.02em", fontWeight: "700" }],
+            "body-lg": ["16px", { lineHeight: "24px", fontWeight: "500" }],
+            "body-sm": ["12px", { lineHeight: "16px", fontWeight: "400" }],
+            "headline-md": ["20px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "600" }],
+            "headline-sm": ["18px", { lineHeight: "24px", fontWeight: "600" }],
+            "headline-sm-mobile": ["18px", { lineHeight: "24px", fontWeight: "600" }],
+            "body-md": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+            "numeric-huge": ["40px", { lineHeight: "48px", letterSpacing: "-0.03em", fontWeight: "800" }],
+            "label-md": ["14px", { lineHeight: "18px", letterSpacing: "0.01em", fontWeight: "600" }],
+            "label-sm": ["11px", { lineHeight: "14px", letterSpacing: "0.04em", fontWeight: "700" }],
+            "display-lg": ["36px", { lineHeight: "44px", letterSpacing: "-0.02em", fontWeight: "700" }],
+            "headline-lg": ["24px", { lineHeight: "32px", letterSpacing: "-0.01em", fontWeight: "700" }]
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 24px;
+      line-height: 1;
+      letter-spacing: normal;
+      text-transform: none;
+      display: inline-block;
+      white-space: nowrap;
+      word-wrap: normal;
+      direction: ltr;
+      -webkit-font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
+    }
+    @keyframes pulseGlow {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 0.45;
+      }
+      50% {
+        transform: scale(1.15);
+        opacity: 0.85;
+      }
+    }
+    .animate-pulse-glow {
+      animation: pulseGlow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    /* Safe-area padding for mobile browsers */
+    .safe-bottom {
+      padding-bottom: env(safe-area-inset-bottom, 16px);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body-md antialiased min-h-screen flex flex-col justify-between selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TOP APP BAR -->
+<header class="sticky top-0 z-40 bg-surface-container-lowest shadow-sm">
+<div class="flex justify-between items-center w-full px-4 py-3">
+<!-- Leading: Driver Profile Details -->
+<div class="flex items-center gap-3">
+<div class="relative">
+<img class="w-11 h-11 rounded-full object-cover shadow-sm ring-2 ring-primary/20" data-alt="Close-up portrait of a cheerful, professional Vietnamese male driver in his thirties wearing a clean emerald green uniform shirt, photographed in high-key daylight with soft illumination against a pristine modern electric taxi interior." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuyXvsao7KpO2FeIP78GWnixUwxIuSbbJsU1uIH9IwuqhY12cc6z1Sz0rWZNeakmGTVq4EoDj7xyfBZ8jEPJVWsrwAGf-ZUY0ki47Few7UWwKrWlrQjXTCBa93pktQy6X3Cib7L_ttbs5zmTcDsO4xxCDwM5Y5ghRCOQdvzaTdoweHzJVHVaAgTWwDfQkdVBLz5AN31sNOMLPDMnWp0hhV7HVVeL4AuIJwDWHkKeGsQRex880NyXUEcq_nJ4s1qMFDhSLEg6Et7nU"/>
+<span class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full bg-primary-container ring-2 ring-surface-container-lowest flex items-center justify-center">
+<span class="w-1.5 h-1.5 rounded-full bg-surface-container-lowest animate-ping"></span>
+</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm-mobile text-headline-sm-mobile text-on-surface">Nguyễn Văn An</span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container/50 text-on-secondary-container font-label-sm text-label-sm">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+              Trực tuyến
+            </span>
+</div>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="font-body-sm text-body-sm text-on-surface-variant font-medium">VinFast VF 8 • 29A-889.36</span>
+</div>
+</div>
+</div>
+<!-- Trailing: Telemetry & Actions -->
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1 px-2.5 py-1 rounded-full bg-surface-container-low text-primary font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">battery_charging_full</span>
+<span>84%</span>
+</div>
+<button aria-label="Gọi tổng đài hỗ trợ" class="w-10 h-10 rounded-full flex items-center justify-center bg-surface-container-low hover:bg-surface-container text-on-surface active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[20px]">headset_mic</span>
+</button>
+</div>
+</div>
+<!-- Secondary HUD Pill Bar: Assistant Indicator -->
+<div class="flex items-center justify-between px-4 pb-2.5 pt-0.5">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm font-headline-sm text-primary flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[20px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+          GSupport AI
+        </span>
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed-variant font-label-sm text-label-sm font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+          Sẵn sàng hỗ trợ 24/7
+        </span>
+</div>
+<button class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1 font-label-sm text-label-sm">
+<span class="material-symbols-outlined text-[16px]">help_outline</span>
+<span>Hướng dẫn</span>
+</button>
+</div>
+</header>
+<!-- MAIN BODY CANVAS (GSupport Welcome & Quick Suggestions) -->
+<main class="flex-1 w-full max-w-md mx-auto px-4 pt-4 pb-48 flex flex-col justify-start">
+<!-- Hero / Welcome Sparkle Centerpiece -->
+<section class="flex flex-col items-center text-center mt-2 mb-6">
+<!-- Glow Animated Sparkle Avatar -->
+<div class="relative w-20 h-20 mb-4 flex items-center justify-center">
+<!-- Ambient pulsating aura rings -->
+<div class="absolute inset-0 rounded-3xl bg-primary/20 blur-xl animate-pulse-glow"></div>
+<div class="absolute -inset-1 rounded-3xl bg-gradient-to-tr from-primary via-tertiary-fixed-dim to-secondary-fixed opacity-40 blur-sm"></div>
+<!-- Center Gradient Orb -->
+<div class="relative w-20 h-20 rounded-3xl bg-gradient-to-br from-primary via-primary-container to-secondary flex items-center justify-center shadow-lg shadow-primary/25 border border-primary-fixed/30 active:scale-95 transition-transform cursor-pointer">
+<span class="material-symbols-outlined text-on-primary text-[38px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+<span class="absolute top-2 right-2.5 w-2 h-2 rounded-full bg-tertiary-fixed animate-ping"></span>
+</div>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mb-2">
+        Xin chào anh An 👋
+      </h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xs leading-relaxed">
+        Tôi là GSupport, trợ lý thông minh hỗ trợ tài xế Xanh SM. Hãy hỏi tôi về khiếu nại, chế độ thưởng, lộ trình hay các quy định xử lý sự cố.
+      </p>
+</section>
+<!-- Suggestion Grid Section -->
+<section class="w-full mb-4">
+<div class="flex items-center justify-between mb-3 px-1">
+<div class="flex items-center gap-1.5 text-on-surface font-headline-sm text-headline-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">lightbulb</span>
+<span>Gợi ý câu hỏi nhanh</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Chạm để hỏi ngay</span>
+</div>
+<!-- 2x2 Bento Suggestion Cards -->
+<div class="grid grid-cols-2 gap-3">
+<!-- Chip 1: Vụ việc cần xử lý -->
+<button class="group p-3.5 rounded-xl bg-surface-container-lowest border border-outline-variant/60 shadow-sm hover:border-primary hover:bg-surface-container-low transition-all text-left flex flex-col justify-between h-32 active:scale-95 duration-150">
+<div class="w-9 h-9 rounded-lg bg-secondary-container/40 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">shield</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface leading-snug group-hover:text-primary transition-colors line-clamp-2">
+              Tôi có vụ việc nào cần xử lý?
+            </p>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-[11px] mt-0.5 block">0 khiếu nại mở</span>
+</div>
+</button>
+<!-- Chip 2: Điểm uy tín -->
+<button class="group p-3.5 rounded-xl bg-surface-container-lowest border border-outline-variant/60 shadow-sm hover:border-primary hover:bg-surface-container-low transition-all text-left flex flex-col justify-between h-32 active:scale-95 duration-150">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">stars</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface leading-snug group-hover:text-primary transition-colors line-clamp-2">
+              Kiểm tra điểm uy tín của tôi
+            </p>
+<span class="font-body-sm text-body-sm text-primary font-semibold text-[11px] mt-0.5 block">Sao 4.98 ⭐ Hạng 1</span>
+</div>
+</button>
+<!-- Chip 3: Miễn trừ khi kẹt xe -->
+<button class="group p-3.5 rounded-xl bg-surface-container-lowest border border-outline-variant/60 shadow-sm hover:border-primary hover:bg-surface-container-low transition-all text-left flex flex-col justify-between h-32 active:scale-95 duration-150">
+<div class="w-9 h-9 rounded-lg bg-surface-container-high text-secondary flex items-center justify-center group-hover:bg-secondary group-hover:text-on-secondary transition-colors">
+<span class="material-symbols-outlined text-[20px]">traffic</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface leading-snug group-hover:text-primary transition-colors line-clamp-2">
+              Quy định miễn trừ khi kẹt xe
+            </p>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-[11px] mt-0.5 block">Chính sách 2025</span>
+</div>
+</button>
+<!-- Chip 4: Chuyến đi gần nhất -->
+<button class="group p-3.5 rounded-xl bg-surface-container-lowest border border-outline-variant/60 shadow-sm hover:border-primary hover:bg-surface-container-low transition-all text-left flex flex-col justify-between h-32 active:scale-95 duration-150">
+<div class="w-9 h-9 rounded-lg bg-secondary-container/40 text-primary flex items-center justify-center group-hover:bg-primary group-hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">receipt_long</span>
+</div>
+<div>
+<p class="font-label-md text-label-md text-on-surface leading-snug group-hover:text-primary transition-colors line-clamp-2">
+              Chuyến đi gần nhất của tôi
+            </p>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-[11px] mt-0.5 block">14:20 • +115.000 ₫</span>
+</div>
+</button>
+</div>
+<!-- Real-time Synchronization Status Pill -->
+<div class="mt-4 p-2.5 rounded-xl bg-surface-container-low border border-outline-variant/40 flex items-center justify-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-primary text-[18px]">sync</span>
+<span class="font-body-sm text-body-sm font-medium">Mọi thông tin khiếu nại & điểm thưởng được đồng bộ thời gian thực</span>
+</div>
+</section>
+</main>
+<!-- FIXED FLOATING ACTIONS & PERSISTENT BOTTOM NAVIGATION WRAPPER -->
+<div class="fixed bottom-0 left-0 w-full z-50 pointer-events-none">
+<div class="max-w-md mx-auto pointer-events-auto">
+<!-- CHAT INPUT SECTION (Docked floating above bottom bar) -->
+<div class="px-4 pb-2">
+<div class="bg-surface-container-lowest rounded-xl shadow-lg border border-outline-variant/60 p-2 flex items-center gap-2 backdrop-blur-sm">
+<!-- Attach File / Evidence Button -->
+<button class="w-10 h-10 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors active:scale-95" title="Đính kèm hình ảnh/biên bản">
+<span class="material-symbols-outlined text-[22px]">attach_file</span>
+</button>
+<!-- Voice Mic Dictation Button for on-road safety -->
+<button class="w-10 h-10 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors active:scale-95" title="Nói câu hỏi (giọng nói)">
+<span class="material-symbols-outlined text-[22px]">mic</span>
+</button>
+<!-- Query Input Field -->
+<input class="bg-transparent font-body-md text-body-md text-on-surface placeholder:text-outline outline-none flex-1 py-1.5 border-none focus:ring-0" placeholder="Nhập câu hỏi hoặc yêu cầu hỗ trợ..." type="text"/>
+<!-- Operational Submit Button -->
+<button aria-label="Gửi câu hỏi" class="w-10 h-10 rounded-xl bg-primary hover:bg-primary-container text-on-primary flex items-center justify-center shadow-md shadow-primary/30 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+</div>
+<!-- PERSISTENT BOTTOM NAVIGATION BAR (Shared Component Exact Implementation) -->
+<nav class="bg-surface-container-lowest shadow-lg flex justify-around items-center px-2 py-2 pb-6 safe-bottom relative">
+<!-- Tab 1: Vụ việc -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-95 transition-transform duration-150 py-1 px-3">
+<span class="material-symbols-outlined text-[24px]">shield</span>
+<span class="font-label-sm text-label-sm mt-0.5">Vụ việc</span>
+</button>
+<!-- Tab 2: Hồ sơ -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-95 transition-transform duration-150 py-1 px-3">
+<span class="material-symbols-outlined text-[24px]">person</span>
+<span class="font-label-sm text-label-sm mt-0.5">Hồ sơ</span>
+</button>
+<!-- Tab 3: GSupport (Active Destination with Center Extruded Highlight) -->
+<button aria-current="page" class="relative -top-4 flex flex-col items-center justify-center text-primary font-bold active:scale-95 transition-transform duration-150 px-2">
+<div class="w-14 h-14 rounded-full bg-gradient-to-tr from-primary via-primary-container to-secondary flex items-center justify-center text-on-primary shadow-xl shadow-primary/40 ring-4 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary mt-1">GSupport</span>
+</button>
+<!-- Tab 4: Lịch sử -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-95 transition-transform duration-150 py-1 px-3">
+<span class="material-symbols-outlined text-[24px]">schedule</span>
+<span class="font-label-sm text-label-sm mt-0.5">Lịch sử</span>
+</button>
+<!-- Tab 5: Cài đặt -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-95 transition-transform duration-150 py-1 px-3">
+<span class="material-symbols-outlined text-[24px]">settings</span>
+<span class="font-label-sm text-label-sm mt-0.5">Cài đặt</span>
+</button>
+</nav>
+</div>
+</div>
+</body></html>

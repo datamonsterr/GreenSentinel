@@ -1,0 +1,212 @@
+[
+  {
+    "id": "mock-001-stall",
+    "source_case_id": "mock-001-stall",
+    "input": {
+      "case_id": "mock-001-stall",
+      "telemetry_points": 25,
+      "stationary_duration_s": 240,
+      "lifecycle_state": "cancelled",
+      "cancellation_actor": "passenger",
+      "mock_location_reported": false,
+      "platform_outage": false,
+      "gps_degraded": false,
+      "policy_version_id": "PRD-v1.1"
+    },
+    "expected": "ERR-02",
+    "provenance": {
+      "source": "eval/golden_set/forensic_mock_cases.json",
+      "synthetic": true,
+      "independent_heldout": false
+    }
+  },
+  {
+    "id": "mock-002-gps",
+    "source_case_id": "mock-002-gps",
+    "input": {
+      "case_id": "mock-002-gps",
+      "telemetry_points": 25,
+      "stationary_duration_s": 0,
+      "lifecycle_state": "completed",
+      "cancellation_actor": "none",
+      "mock_location_reported": true,
+      "platform_outage": false,
+      "gps_degraded": false,
+      "policy_version_id": "PRD-v1.1"
+    },
+    "expected": "ERR-05",
+    "provenance": {
+      "source": "eval/golden_set/forensic_mock_cases.json",
+      "synthetic": true,
+      "independent_heldout": false
+    }
+  },
+  {
+    "id": "mock-003-normal",
+    "source_case_id": "mock-003-normal",
+    "input": {
+      "case_id": "mock-003-normal",
+      "telemetry_points": 25,
+      "stationary_duration_s": 0,
+      "lifecycle_state": "completed",
+      "cancellation_actor": "none",
+      "mock_location_reported": false,
+      "platform_outage": false,
+      "gps_degraded": false,
+      "policy_version_id": "PRD-v1.1"
+    },
+    "expected": "no_violation",
+    "provenance": {
+      "source": "eval/golden_set/forensic_mock_cases.json",
+      "synthetic": true,
+      "independent_heldout": false
+    }
+  },
+  {
+    "id": "mock-004-outage",
+    "source_case_id": "mock-004-outage",
+    "input": {
+      "case_id": "mock-004-outage",
+      "telemetry_points": 25,
+      "stationary_duration_s": 0,
+      "lifecycle_state": "completed",
+      "cancellation_actor": "none",
+      "mock_location_reported": true,
+      "platform_outage": true,
+      "gps_degraded": false,
+      "policy_version_id": "PRD-v1.1"
+    },
+    "expected": "insufficient_evidence",
+    "provenance": {
+      "source": "eval/golden_set/forensic_mock_cases.json",
+      "synthetic": true,
+      "independent_heldout": false
+    }
+  },
+  {
+    "id": "mock-005-missing",
+    "source_case_id": "mock-005-missing",
+    "input": {
+      "case_id": "mock-005-missing",
+      "telemetry_points": 0,
+      "stationary_duration_s": 0,
+      "lifecycle_state": "completed",
+      "cancellation_actor": "none",
+      "mock_location_reported": false,
+      "platform_outage": false,
+      "gps_degraded": false,
+      "policy_version_id": "PRD-v1.1"
+    },
+    "expected": "insufficient_evidence",
+    "provenance": {
+      "source": "eval/golden_set/forensic_mock_cases.json",
+      "synthetic": true,
+      "independent_heldout": false
+    }
+  },
+  {
+    "id": "mock-006-boundary",
+    "source_case_id": "mock-006-boundary",
+    "input": {
+      "case_id": "mock-006-boundary",
+      "telemetry_points": 25,
+      "stationary_duration_s": 180,
+      "lifecycle_state": "cancelled",
+      "cancellation_actor": "passenger",
+      "mock_location_reported": false,
+      "platform_outage": false,
+      "gps_degraded": false,
+      "policy_version_id": "PRD-v1.1"
+    },
+    "expected": "ERR-02",
+    "provenance": {
+      "source": "eval/golden_set/forensic_mock_cases.json",
+      "synthetic": true,
+      "independent_heldout": false
+    }
+  },
+  {
+    "id": "mock-007-below-boundary",
+    "source_case_id": "mock-007-below-boundary",
+    "input": {
+      "case_id": "mock-007-below-boundary",
+      "telemetry_points": 25,
+      "stationary_duration_s": 179,
+      "lifecycle_state": "cancelled",
+      "cancellation_actor": "passenger",
+      "mock_location_reported": false,
+      "platform_outage": false,
+      "gps_degraded": false,
+      "policy_version_id": "PRD-v1.1"
+    },
+    "expected": "insufficient_evidence",
+    "provenance": {
+      "source": "eval/golden_set/forensic_mock_cases.json",
+      "synthetic": true,
+      "independent_heldout": false
+    }
+  },
+  {
+    "id": "mock-008-degraded",
+    "source_case_id": "mock-008-degraded",
+    "input": {
+      "case_id": "mock-008-degraded",
+      "telemetry_points": 25,
+      "stationary_duration_s": 0,
+      "lifecycle_state": "completed",
+      "cancellation_actor": "none",
+      "mock_location_reported": true,
+      "platform_outage": false,
+      "gps_degraded": true,
+      "policy_version_id": "PRD-v1.1"
+    },
+    "expected": "insufficient_evidence",
+    "provenance": {
+      "source": "eval/golden_set/forensic_mock_cases.json",
+      "synthetic": true,
+      "independent_heldout": false
+    }
+  },
+  {
+    "id": "mock-009-driver-cancel",
+    "source_case_id": "mock-009-driver-cancel",
+    "input": {
+      "case_id": "mock-009-driver-cancel",
+      "telemetry_points": 25,
+      "stationary_duration_s": 240,
+      "lifecycle_state": "cancelled",
+      "cancellation_actor": "driver",
+      "mock_location_reported": false,
+      "platform_outage": false,
+      "gps_degraded": false,
+      "policy_version_id": "PRD-v1.1"
+    },
+    "expected": "insufficient_evidence",
+    "provenance": {
+      "source": "eval/golden_set/forensic_mock_cases.json",
+      "synthetic": true,
+      "independent_heldout": false
+    }
+  },
+  {
+    "id": "mock-010-long-completed",
+    "source_case_id": "mock-010-long-completed",
+    "input": {
+      "case_id": "mock-010-long-completed",
+      "telemetry_points": 25,
+      "stationary_duration_s": 240,
+      "lifecycle_state": "completed",
+      "cancellation_actor": "none",
+      "mock_location_reported": false,
+      "platform_outage": false,
+      "gps_degraded": false,
+      "policy_version_id": "PRD-v1.1"
+    },
+    "expected": "no_violation",
+    "provenance": {
+      "source": "eval/golden_set/forensic_mock_cases.json",
+      "synthetic": true,
+      "independent_heldout": false
+    }
+  }
+]

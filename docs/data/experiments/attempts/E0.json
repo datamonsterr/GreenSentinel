@@ -1,0 +1,25 @@
+{
+  "attempt": 0,
+  "exp_id": "E0",
+  "variant": "baseline",
+  "issue": "#494",
+  "pr": "",
+  "primary": 0.4737,
+  "ci": [
+    0.4378,
+    0.5082
+  ],
+  "guards": {
+    "fpr_ok": true,
+    "recall_at_budget_ok": true,
+    "pr_auc_ok": true,
+    "ece_ok": true,
+    "all_passed": true
+  },
+  "decision": "keep",
+  "best_so_far": 0.4737,
+  "date": "2026-10-17",
+  "corpus_trips_sha256": "9986acd1b3cefd118f2696bd4ae3c3b3dd67e0ae210808792eae5e8fd8441d5d",
+  "enum_blind": true,
+  "git_sha": "fcaa4fbaa79f89164e7328688699d678e70cfd99"
+}

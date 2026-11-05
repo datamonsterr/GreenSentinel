@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GreenSM - Hồ sơ tài xế</title>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Theme Configuration Verbatim -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-low": "#f2f3ff",
+            "on-background": "#131b2e",
+            "on-primary": "#ffffff",
+            "on-secondary-container": "#00714e",
+            "outline-variant": "#bbcabf",
+            "inverse-surface": "#283044",
+            "secondary-fixed": "#85f8c4",
+            "error-container": "#ffdad6",
+            "surface-tint": "#006c49",
+            "on-secondary-fixed-variant": "#005137",
+            "secondary-container": "#82f5c1",
+            "background": "#faf8ff",
+            "inverse-on-surface": "#eef0ff",
+            "inverse-primary": "#4edea3",
+            "on-tertiary": "#ffffff",
+            "primary": "#006c49",
+            "tertiary": "#52625c",
+            "secondary-fixed-dim": "#68dba9",
+            "primary-fixed-dim": "#4edea3",
+            "surface-dim": "#d2d9f4",
+            "on-tertiary-container": "#2d3c37",
+            "on-error": "#ffffff",
+            "surface-container-highest": "#dae2fd",
+            "tertiary-container": "#96a69f",
+            "secondary": "#006c4a",
+            "on-tertiary-fixed": "#101e1a",
+            "surface": "#faf8ff",
+            "primary-container": "#10b981",
+            "on-primary-container": "#00422b",
+            "surface-variant": "#dae2fd",
+            "surface-container": "#eaedff",
+            "on-primary-fixed": "#002113",
+            "on-primary-fixed-variant": "#005236",
+            "surface-bright": "#faf8ff",
+            "on-error-container": "#93000a",
+            "on-tertiary-fixed-variant": "#3b4a44",
+            "tertiary-fixed-dim": "#bacac3",
+            "on-surface": "#131b2e",
+            "primary-fixed": "#6ffbbe",
+            "on-surface-variant": "#3c4a42",
+            "on-secondary-fixed": "#002114",
+            "surface-container-lowest": "#ffffff",
+            "on-secondary": "#ffffff",
+            "error": "#ba1a1a",
+            "outline": "#6c7a71",
+            "surface-container-high": "#e2e7ff",
+            "tertiary-fixed": "#d5e6df"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "gutter": "1rem",
+            "space-xs": "0.25rem",
+            "space-xl": "1.5rem",
+            "margin-lg": "1.25rem",
+            "space-md": "0.75rem",
+            "space-sm": "0.5rem",
+            "margin": "1rem",
+            "space-2xl": "2rem",
+            "space-lg": "1rem",
+            "gutter-sm": "0.75rem"
+          },
+          "fontFamily": {
+            "display-lg": ["Inter"],
+            "headline-sm": ["Inter"],
+            "headline-md": ["Inter"],
+            "body-sm": ["Inter"],
+            "label-lg": ["Inter"],
+            "headline-lg": ["Inter"],
+            "body-lg": ["Inter"],
+            "display-lg-mobile": ["Inter"],
+            "label-sm": ["Inter"],
+            "metric-xl": ["Inter"],
+            "label-md": ["Inter"],
+            "body-md": ["Inter"],
+            "metric-md": ["Inter"]
+          },
+          "fontSize": {
+            "display-lg": ["36px", { "lineHeight": "44px", "fontWeight": "700" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "body-sm": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "600" }],
+            "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "700" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "500" }],
+            "display-lg-mobile": ["30px", { "lineHeight": "38px", "fontWeight": "700" }],
+            "label-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.03em", "fontWeight": "500" }],
+            "metric-xl": ["32px", { "lineHeight": "36px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "metric-md": ["22px", { "lineHeight": "26px", "letterSpacing": "-0.01em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex justify-center selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- Mobile Container Shell -->
+<div class="w-full max-w-md min-h-screen bg-background relative flex flex-col pb-28">
+<!-- Top App Bar (Shared Component Anchor) -->
+<header class="bg-surface-container-lowest dark:bg-surface sticky top-0 z-40 w-full px-4 h-14 max-w-md mx-auto flex justify-between items-center shadow-sm">
+<button aria-label="Quay lại" class="p-2 -ml-2 rounded-full text-primary hover:bg-surface-container active:scale-95 transition-all duration-200 flex items-center justify-center" type="button">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</button>
+<h1 class="text-headline-sm font-headline-sm font-bold text-primary dark:text-inverse-primary tracking-tight">Hồ sơ tài xế</h1>
+<button aria-label="Thông báo" class="p-2 -mr-2 rounded-full text-on-surface-variant hover:bg-surface-container active:scale-95 transition-all duration-200 flex items-center justify-center relative" type="button">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full ring-2 ring-surface-container-lowest"></span>
+</button>
+</header>
+<!-- Main Scrollable Content Canvas -->
+<main class="px-margin space-y-space-lg pt-space-md">
+<!-- Driver Quick Identity Card -->
+<section class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm border border-outline-variant/30 flex flex-col gap-space-md relative overflow-hidden">
+<div class="absolute -right-12 -top-12 w-32 h-32 bg-secondary-container/30 rounded-full blur-2xl pointer-events-none"></div>
+<div class="flex items-center gap-space-md">
+<!-- Avatar with 5-star verified badge -->
+<div class="relative shrink-0">
+<img class="w-16 h-16 rounded-full object-cover ring-2 ring-primary-container/40 p-0.5 bg-surface-container-lowest" data-alt="Chân dung tài xế công nghệ xe điện Việt Nam chuyên nghiệp trong trang phục áo polo đồng phục màu xanh ngọc tươi sáng, ánh mắt thân thiện, phong thái lịch thiệp đáng tin cậy. Bối cảnh studio hiện đại ánh sáng tự nhiên trắng dịu, làm nổi bật phong cách dịch vụ cao cấp và năng lượng xanh sạch." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAneAXrQhvXw-BiPo7MI4HnYnKBM6pFWgYoNYGrh0BdrwYjtXABUuKFlcsnAUrL3wlD2e9Y6TTD1m3X6xy41EwR3eGfaK71lehv-cX1CCAk-R2QvSR9yB6LDTLyR1ccwJulXvEXdg1QhtgzOnoDeeKHF3lVZx4xu3rmkPjMJTxZExQpV8tjeU-qPjVLgQwdFXTjjlqZQBoTSMhhbbjn56Tvuz9O9HtJu0tZYqn9siYuklezg05updjn1lhYt-mueSZ-FBt-rC2Vdxw"/>
+<span class="absolute -bottom-1 -right-1 bg-primary text-on-primary rounded-full p-0.5 ring-2 ring-surface-container-lowest flex items-center justify-center shadow-sm" title="Tài xế 5 sao">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</span>
+</div>
+<!-- Driver Meta -->
+<div class="flex-1 min-w-0">
+<div class="flex items-center gap-1.5 flex-wrap">
+<h2 class="text-headline-sm font-headline-sm font-bold text-on-surface truncate">Nguyễn Văn An</h2>
+<!-- Status Pill (Sẵn sàng) -->
+<span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-label-sm font-label-sm bg-secondary-container/40 text-on-secondary-container">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container animate-pulse"></span>
+                Đang hoạt động tốt
+              </span>
+</div>
+<!-- Vehicle & License Info -->
+<div class="flex items-center gap-1.5 mt-1 text-on-surface-variant text-body-sm font-body-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">electric_car</span>
+<span class="font-semibold text-on-surface">VinFast VF e34</span>
+<span class="text-outline-variant">•</span>
+<span class="bg-surface-container px-1.5 py-0.5 rounded text-label-sm font-label-sm font-bold tracking-wider text-on-surface border border-outline-variant/30">30A-123.45</span>
+</div>
+<p class="text-label-sm font-label-sm text-tertiary mt-1">
+              Thành viên từ: 15/04/2023 <span class="text-outline-variant font-normal">(Hơn 1 năm gắn bó)</span>
+</p>
+</div>
+</div>
+<!-- Tier Badge Banner -->
+<div class="bg-gradient-to-r from-surface-container-low via-surface to-surface-container p-space-sm rounded-lg flex items-center justify-between border border-outline-variant/20">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">diamond</span>
+</div>
+<div>
+<p class="text-label-md font-label-md font-bold text-on-surface">Tài xế Tiêu Biểu GreenSM</p>
+<p class="text-label-sm font-label-sm text-on-secondary-container">Hạng Kim Cương · Chuẩn sao xuất sắc</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant text-[20px]">chevron_right</span>
+</div>
+</section>
+<!-- Rating Summary & Distribution Section -->
+<section class="bg-surface-container-lowest rounded-xl p-space-lg shadow-sm border border-outline-variant/30 space-y-space-md">
+<div class="flex items-center justify-between">
+<div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Đánh giá chung</h3>
+<p class="text-label-sm font-label-sm text-tertiary">Tổng hợp từ tất cả các chuyến xe</p>
+</div>
+<div class="inline-flex items-center gap-1 text-label-sm font-label-sm font-semibold bg-secondary-container/30 text-on-secondary-container px-2.5 py-1 rounded-full">
+<span class="material-symbols-outlined text-[16px] text-primary">trending_up</span>
+<span>Tuần này: 4.92 (+0.05)</span>
+</div>
+</div>
+<!-- Rating Grid: Left Big Metric, Right Breakdown -->
+<div class="grid grid-cols-12 gap-space-md items-center pt-space-xs">
+<!-- Big Metric (Left) -->
+<div class="col-span-5 flex flex-col items-center justify-center p-space-md bg-surface-container-low/60 rounded-xl border border-outline-variant/20">
+<div class="flex items-baseline gap-1">
+<span class="text-metric-xl font-metric-xl font-extrabold text-on-surface tracking-tight">4.8</span>
+<span class="text-label-md font-label-md text-tertiary">/5</span>
+</div>
+<div class="flex items-center gap-0.5 my-1 text-amber-500">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">star_half</span>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant font-medium text-center">1.204 lượt đánh giá</span>
+</div>
+<!-- Star Distribution Bars (Right) -->
+<div class="col-span-7 space-y-1.5">
+<!-- 5 Star -->
+<div class="flex items-center gap-2 text-label-sm font-label-sm">
+<span class="w-3 text-right font-medium text-on-surface">5</span>
+<span class="material-symbols-outlined text-[12px] text-amber-500" style="font-variation-settings: 'FILL' 1;">star</span>
+<div class="flex-1 h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 88%;"></div>
+</div>
+<span class="w-12 text-right text-tertiary font-mono text-[10px]">88% <span class="text-[9px]">(1.060)</span></span>
+</div>
+<!-- 4 Star -->
+<div class="flex items-center gap-2 text-label-sm font-label-sm">
+<span class="w-3 text-right font-medium text-on-surface">4</span>
+<span class="material-symbols-outlined text-[12px] text-amber-500" style="font-variation-settings: 'FILL' 1;">star</span>
+<div class="flex-1 h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container/80 rounded-full" style="width: 8%;"></div>
+</div>
+<span class="w-12 text-right text-tertiary font-mono text-[10px]">8% <span class="text-[9px]">(96)</span></span>
+</div>
+<!-- 3 Star -->
+<div class="flex items-center gap-2 text-label-sm font-label-sm">
+<span class="w-3 text-right font-medium text-on-surface">3</span>
+<span class="material-symbols-outlined text-[12px] text-amber-500" style="font-variation-settings: 'FILL' 1;">star</span>
+<div class="flex-1 h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container/50 rounded-full" style="width: 2%;"></div>
+</div>
+<span class="w-12 text-right text-tertiary font-mono text-[10px]">2% <span class="text-[9px]">(24)</span></span>
+</div>
+<!-- 2 Star -->
+<div class="flex items-center gap-2 text-label-sm font-label-sm">
+<span class="w-3 text-right font-medium text-on-surface">2</span>
+<span class="material-symbols-outlined text-[12px] text-amber-500" style="font-variation-settings: 'FILL' 1;">star</span>
+<div class="flex-1 h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-outline-variant/60 rounded-full" style="width: 1%;"></div>
+</div>
+<span class="w-12 text-right text-tertiary font-mono text-[10px]">1% <span class="text-[9px]">(12)</span></span>
+</div>
+<!-- 1 Star -->
+<div class="flex items-center gap-2 text-label-sm font-label-sm">
+<span class="w-3 text-right font-medium text-on-surface">1</span>
+<span class="material-symbols-outlined text-[12px] text-amber-500" style="font-variation-settings: 'FILL' 1;">star</span>
+<div class="flex-1 h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-outline-variant/40 rounded-full" style="width: 1%;"></div>
+</div>
+<span class="w-12 text-right text-tertiary font-mono text-[10px]">1% <span class="text-[9px]">(12)</span></span>
+</div>
+</div>
+</div>
+<!-- Weekly Sparkline Trend Card -->
+<div class="p-space-sm bg-surface-container-low/40 rounded-lg flex items-center justify-between border border-outline-variant/15">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">show_chart</span>
+<span class="text-label-sm font-label-sm text-on-surface font-medium">Xu hướng 4 tuần gần đây</span>
+</div>
+<!-- Sparkline representation -->
+<div class="flex items-end gap-1.5 h-6">
+<span class="w-2 h-3.5 bg-secondary-container rounded-sm" title="Tuần 1: 4.75"></span>
+<span class="w-2 h-4 bg-secondary-container rounded-sm" title="Tuần 2: 4.80"></span>
+<span class="w-2 h-4.5 bg-secondary-container rounded-sm" title="Tuần 3: 4.87"></span>
+<span class="w-2 h-6 bg-primary-container rounded-sm" title="Tuần này: 4.92"></span>
+</div>
+</div>
+</section>
+<!-- KPI Grid 90 Days (Bento Style) -->
+<section class="space-y-space-sm">
+<div class="flex items-center justify-between px-1">
+<div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Hiệu suất vận hành 90 ngày</h3>
+<p class="text-label-sm font-label-sm text-tertiary">Chỉ số tính năng suất &amp; an toàn giao thông</p>
+</div>
+<span class="text-label-sm font-label-sm text-primary font-bold bg-secondary-container/20 px-2 py-0.5 rounded">Tối ưu</span>
+</div>
+<div class="grid grid-cols-2 gap-space-sm">
+<!-- Card 1: Tổng chuyến (Span 2) -->
+<div class="col-span-2 bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/30 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-3">
+<div class="w-11 h-11 rounded-xl bg-secondary-container/40 text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[24px]">route</span>
+</div>
+<div>
+<p class="text-label-sm font-label-sm text-tertiary">Tổng số chuyến hoàn tất</p>
+<p class="text-metric-md font-metric-md font-bold text-on-surface">1.482 <span class="text-body-sm font-body-sm font-normal text-tertiary">chuyến</span></p>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-on-secondary-container font-semibold bg-secondary-container/30 px-2.5 py-1 rounded-full">
+              Đạt chuẩn KPI
+            </span>
+</div>
+<!-- Card 2: Tỷ lệ hoàn thành -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/30 shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-sm font-label-sm text-tertiary">Tỷ lệ hoàn thành</span>
+<span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+</div>
+<div>
+<p class="text-headline-lg font-headline-lg font-bold text-on-surface">98.6%</p>
+<p class="text-label-sm font-label-sm text-primary font-semibold mt-0.5">Trạng thái: Rất tốt</p>
+</div>
+</div>
+<!-- Card 3: Tỷ lệ huỷ -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/30 shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-sm font-label-sm text-tertiary">Tỷ lệ huỷ chuyến</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[20px]">cancel</span>
+</div>
+<div>
+<p class="text-headline-lg font-headline-lg font-bold text-on-surface">1.2%</p>
+<p class="text-label-sm font-label-sm text-on-secondary-container font-semibold mt-0.5">Tối ưu (Chuẩn &lt; 3%)</p>
+</div>
+</div>
+<!-- Card 4: Vụ việc vi phạm -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/30 shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-sm font-label-sm text-tertiary">Vụ việc vi phạm</span>
+<span class="material-symbols-outlined text-primary text-[20px]">verified_user</span>
+</div>
+<div>
+<p class="text-headline-lg font-headline-lg font-bold text-on-surface">0 <span class="text-body-sm font-body-sm font-normal text-tertiary">vụ</span></p>
+<p class="text-label-sm font-label-sm text-primary font-semibold mt-0.5">An toàn tuyệt đối</p>
+</div>
+</div>
+<!-- Card 5: Điểm uy tín -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/30 shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between mb-2">
+<span class="text-label-sm font-label-sm text-tertiary">Điểm uy tín</span>
+<span class="material-symbols-outlined text-amber-500 text-[20px]">award_star</span>
+</div>
+<div>
+<p class="text-headline-lg font-headline-lg font-bold text-on-surface">99<span class="text-body-sm font-body-sm text-tertiary">/100</span></p>
+<p class="text-label-sm font-label-sm text-on-secondary-container font-semibold mt-0.5">Hạng Xuất sắc</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Section: Phản hồi từ khách hàng -->
+<section class="space-y-space-sm pt-space-xs">
+<div class="flex items-center justify-between px-1">
+<div>
+<h3 class="text-headline-sm font-headline-sm text-on-surface">Phản hồi từ khách hàng</h3>
+<p class="text-label-sm font-label-sm text-tertiary">Nhận xét từ các chuyến đi gần nhất</p>
+</div>
+<button class="text-label-md font-label-md text-primary font-bold hover:underline flex items-center" type="button">
+            Tất cả <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+<!-- Feedback Cards List -->
+<div class="space-y-space-sm">
+<!-- Thẻ 1: Khách hàng Hoàng T. -->
+<article class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/30 shadow-sm space-y-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center font-bold text-label-md text-primary">
+                  HT
+                </div>
+<div>
+<h4 class="text-label-lg font-label-lg font-bold text-on-surface leading-tight">Hoàng T.</h4>
+<div class="flex items-center text-amber-500 mt-0.5">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+</div>
+<time class="text-label-sm font-label-sm text-tertiary">Hôm nay, 14:20</time>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant bg-surface-container-low/50 p-2.5 rounded-lg border border-outline-variant/15">
+              "Tài xế lái xe êm ái, xe VinFast điện mát mẻ không mùi say xe, phục vụ rất chu đáo lịch thiệp!"
+            </p>
+<div class="flex items-center gap-2 text-label-sm font-label-sm text-tertiary">
+<span class="inline-flex items-center gap-1 text-primary">
+<span class="material-symbols-outlined text-[14px]">eco</span>
+                Chuyến xe Xanh
+              </span>
+<span>•</span>
+<span>Lộ trình: Hoàn Kiếm → Cầu Giấy</span>
+</div>
+</article>
+<!-- Thẻ 2: Khách hàng Minh Khuê -->
+<article class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/30 shadow-sm space-y-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-secondary-container/40 flex items-center justify-center font-bold text-label-md text-on-secondary-container">
+                  MK
+                </div>
+<div>
+<h4 class="text-label-lg font-label-lg font-bold text-on-surface leading-tight">Minh Khuê</h4>
+<div class="flex items-center text-amber-500 mt-0.5">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+</div>
+<time class="text-label-sm font-label-sm text-tertiary">Hôm qua, 09:15</time>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant bg-surface-container-low/50 p-2.5 rounded-lg border border-outline-variant/15">
+              "Bác tài nhiệt tình hỗ trợ mang vali lên cốp, đến đón rất nhanh và đúng giờ."
+            </p>
+</article>
+<!-- Thẻ 3: Khách hàng giấu tên -->
+<article class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/30 shadow-sm space-y-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-container-high flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[18px]">person</span>
+</div>
+<div>
+<h4 class="text-label-lg font-label-lg font-bold text-on-surface leading-tight">Khách hàng giấu tên</h4>
+<div class="flex items-center text-amber-500 mt-0.5">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+</div>
+<time class="text-label-sm font-label-sm text-tertiary">2 ngày trước</time>
+</div>
+<p class="text-body-md font-body-md text-tertiary italic bg-surface-container-low/30 p-2.5 rounded-lg border border-outline-variant/10">
+              Khách không để lại nhận xét
+            </p>
+</article>
+<!-- Thẻ 4: Khách hàng Lê Tuấn -->
+<article class="bg-surface-container-lowest rounded-xl p-space-md border border-outline-variant/30 shadow-sm space-y-2">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-surface-container flex items-center justify-center font-bold text-label-md text-primary">
+                  LT
+                </div>
+<div>
+<h4 class="text-label-lg font-label-lg font-bold text-on-surface leading-tight">Lê Tuấn</h4>
+<div class="flex items-center text-amber-500 mt-0.5">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[14px] text-outline-variant">star</span>
+</div>
+</div>
+</div>
+<time class="text-label-sm font-label-sm text-tertiary">4 ngày trước</time>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant bg-surface-container-low/50 p-2.5 rounded-lg border border-outline-variant/15">
+              "Xe sạch sẽ, điều hòa mát. Đi lối tắt hơi xóc một chút nhưng vẫn rất ưng ý."
+            </p>
+</article>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar (Shared Component Anchor) -->
+<!-- Label texts: ["Vụ việc", "Hồ sơ", "GSupport", "Lịch sử", "Cài đặt"] -->
+<!-- Active Tab: "Hồ sơ" (index 1) with style_active_navigation rules applied -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 bg-surface-container-lowest dark:bg-surface shadow-md">
+<div class="flex justify-around items-center px-2 py-2 max-w-md mx-auto w-full">
+<!-- 1. Vụ việc -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-3 py-1 hover:bg-surface-container dark:hover:bg-surface-container-high hover:text-on-surface active:scale-95 transition-all duration-200" href="#cases">
+<span class="material-symbols-outlined text-[24px]">shield</span>
+<span class="text-label-sm font-label-sm mt-0.5">Vụ việc</span>
+</a>
+<!-- 2. Hồ sơ (ACTIVE DESTINATION) -->
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-xl px-3 py-1 font-semibold active:scale-95 transition-all duration-200 shadow-sm" href="#profile">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="text-label-sm font-label-sm mt-0.5">Hồ sơ</span>
+</a>
+<!-- 3. GSupport (Smart Toy Center Bot) -->
+<a class="flex flex-col items-center justify-center -mt-4 group active:scale-95 transition-all duration-200" href="#gsupport">
+<div class="w-12 h-12 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-lg group-hover:bg-primary-container group-hover:text-on-primary-container transition-colors ring-4 ring-surface-container-lowest">
+<span class="material-symbols-outlined text-[26px]">smart_toy</span>
+</div>
+<span class="text-label-sm font-label-sm text-primary font-bold mt-1">GSupport</span>
+</a>
+<!-- 4. Lịch sử -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-3 py-1 hover:bg-surface-container dark:hover:bg-surface-container-high hover:text-on-surface active:scale-95 transition-all duration-200" href="#history">
+<span class="material-symbols-outlined text-[24px]">history</span>
+<span class="text-label-sm font-label-sm mt-0.5">Lịch sử</span>
+</a>
+<!-- 5. Cài đặt -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-3 py-1 hover:bg-surface-container dark:hover:bg-surface-container-high hover:text-on-surface active:scale-95 transition-all duration-200" href="#settings">
+<span class="material-symbols-outlined text-[24px]">settings</span>
+<span class="text-label-sm font-label-sm mt-0.5">Cài đặt</span>
+</a>
+</div>
+</nav>
+</div>
+</body></html>

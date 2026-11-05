@@ -1,0 +1,11 @@
+target-version = "py311"
+line-length = 120
+exclude = [".agents", ".venv", "presentation"]
+
+[lint]
+select = ["E", "F", "I", "N", "W", "UP"]
+ignore = ["E501", "N999"]
+
+[format]
+quote-style = "double"
+indent-style = "space"

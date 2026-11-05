@@ -1,0 +1,24 @@
+{
+  "scenario": "waiting_for_user",
+  "raw_answer": "Vui lòng xem nội dung và gửi câu trả lời hoặc xác nhận trong ứng dụng.",
+  "citations": [],
+  "entities": {
+    "case_ids": [],
+    "driver_ids": [],
+    "trip_ids": [],
+    "citation_ids": []
+  },
+  "mock_formatted_output": {
+    "markdown": "**Chờ xác nhận quyết định từ thẩm định viên.**\n\nVui lòng xem nội dung câu hỏi hoặc dự thảo biên bản hiển thị trên màn hình và gửi phản hồi xác nhận qua ứng dụng.",
+    "suggestions": [
+      {
+        "label": "Xem dự thảo biên bản",
+        "prompt": "Xem trước nội dung dự thảo biên bản giải quyết"
+      },
+      {
+        "label": "Bổ sung câu hỏi",
+        "prompt": "Yêu cầu tài xế cung cấp thêm bằng chứng"
+      }
+    ]
+  }
+}

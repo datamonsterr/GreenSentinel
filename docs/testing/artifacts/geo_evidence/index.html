@@ -1,0 +1,3028 @@
+<!doctype html><html><head><meta charset="utf-8"><title>Geoapify case-scoped tool evidence (#229/#230)</title></head>
+<body style="font-family:system-ui;max-width:1100px;margin:0 auto;padding:20px">
+<h1>Case-scoped Geoapify tool evidence — issues #229 &amp; #230</h1>
+<p>Provider: <b>Geoapify</b> (live) · Data: local PostGIS seed <code>018f2f4e</code> organization · Ran <em>at render time</em>. Map snapshots are the actual Static Maps images bound to each frozen <code>evidence_snapshots</code> revision; deterministic_key and cost_credits are embedded below.</p>
+<section style='border:2px solid #222;padding:14px;margin:18px 0'><h3>Case 001 — 018f2f4e-a000-7000-8000-000000000001</h3><div style='border:1px solid #999;padding:10px;margin:8px 0;background:#fafafa'><h4 style='margin:0 0 6px'>Role: senior_analyst</h4><img src="snapshot_001_senior_analyst.jpg" style="width:90%;max-width:640px;border:1px solid #ccc;margin:8px 0"/><details style='margin:6px 0'><summary><b>get_case_map_snapshot</b> — succeeded</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "succeeded",
+ "data": {
+  "case_id": "018f2f4e-a000-7000-8000-000000000001",
+  "evidence_snapshot_id": "018f2f4e-0300-7000-8000-000000000001",
+  "snapshot_version": 1,
+  "snapshot_hash": "415698a4091dfee0846096d5ad6b89318dcdcf2b6f38a5a1fcf7c6114e599fcb",
+  "route_refs": [
+   {
+    "leg": "pickup_route",
+    "geometry_type": "LineString",
+    "vertex_count": 386
+   },
+   {
+    "leg": "destination_route",
+    "geometry_type": "LineString",
+    "vertex_count": 397
+   }
+  ],
+  "checkpoint_times": [
+   {
+    "id": "ms-start",
+    "type": "start_match",
+    "occurred_at": "2026-09-22T06:00:00+00:00",
+    "lat": 21.028501,
+    "lon": 105.853875,
+    "sequence": 0
+   },
+   {
+    "id": "ms-stall",
+    "type": "stall_anomaly",
+    "occurred_at": "2026-09-22T06:00:10+00:00",
+    "lat": 21.028501,
+    "lon": 105.853875,
+    "sequence": 1
+   }
+  ],
+  "gap_windows": [
+   {
+    "start_at": "2026-09-22T06:01:50+00:00",
+    "end_at": "2026-09-22T06:14:13.375000+00:00",
+    "gap_seconds": 743.4,
+    "start_lon": 105.853875,
+    "start_lat": 21.028501
+   }
+  ],
+  "traveled_path": [
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T06:00:00+00:00",
+    "event_id": "9cb82f8c-01de-53c9-8c4b-16af9dc752eb",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T06:00:10+00:00",
+    "event_id": "a42fc5f4-928b-59c9-8564-f2a5ec019a33",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T06:00:20+00:00",
+    "event_id": "bf1ae02b-afa6-51d5-9073-a2465163c67b",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T06:00:30+00:00",
+    "event_id": "e4c186b7-96c0-558b-b8df-9264c8a81fce",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T06:00:40+00:00",
+    "event_id": "e4dc8ecc-990a-5a71-a690-8603ba24f2f8",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T06:00:50+00:00",
+    "event_id": "363b487c-0be0-597b-8a5f-b4b9785260d0",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T06:01:00+00:00",
+    "event_id": "ab799a7f-9cc3-5952-80b0-8a60aed5bd2c",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T06:01:10+00:00",
+    "event_id": "54f84c8e-0d0f-543e-8eb3-dcc1aa2a8f1f",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T06:01:20+00:00",
+    "event_id": "eebfa908-18c4-559c-9a65-2a77847e28f3",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T06:01:30+00:00",
+    "event_id": "33131c69-0ee6-58c0-8148-d0293d96cfd2",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T06:01:40+00:00",
+    "event_id": "61d5d759-b8d0-5c84-ae1e-ebc052aac64c",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T06:01:50+00:00",
+    "event_id": "f2cf1f20-4df0-587c-aca8-53af513d3be4",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.7930825,
+    "lat": 21.0192929,
+    "occurred_at": "2026-09-22T06:14:13.375000+00:00",
+    "event_id": "47ae2514-e19d-5003-9f15-3cdb337a0a6c",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.7920774,
+    "lat": 21.018874,
+    "occurred_at": "2026-09-22T06:14:23.085000+00:00",
+    "event_id": "c505c310-9b8a-512a-9fdf-f4bb7ffe2802",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.791059,
+    "lat": 21.0182758,
+    "occurred_at": "2026-09-22T06:14:33.271000+00:00",
+    "event_id": "dd61b340-dab9-5288-bdb3-eef8be402735",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.790075,
+    "lat": 21.0176945,
+    "occurred_at": "2026-09-22T06:14:43.128000+00:00",
+ </pre></details><details style='margin:6px 0'><summary><b>compare_trip_routes</b> — succeeded</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "succeeded",
+ "data": {
+  "case_id": "018f2f4e-a000-7000-8000-000000000001",
+  "route_geometry": {
+   "destination_route": {
+    "id": "b792bbff-596c-5f02-98ca-4377247848ed",
+    "provider": "osrm",
+    "route": {
+     "type": "LineString",
+     "coordinates": [
+      [
+       105.783595,
+       21.016748
+      ],
+      [
+       105.783595,
+       21.016748
+      ],
+      [
+       105.783583,
+       21.016703
+      ],
+      [
+       105.78355,
+       21.01665
+      ],
+      [
+       105.783532,
+       21.016622
+      ],
+      [
+       105.78347,
+       21.01652
+      ],
+      [
+       105.783448,
+       21.016496
+      ],
+      [
+       105.783401,
+       21.016435
+      ],
+      [
+       105.783355,
+       21.016493
+      ],
+      [
+       105.783267,
+       21.016605
+      ],
+      [
+       105.783243,
+       21.016634
+      ],
+      [
+       105.783218,
+       21.016665
+      ],
+      [
+       105.783024,
+       21.016895
+      ],
+      [
+       105.78298,
+       21.016947
+      ],
+      [
+       105.782952,
+       21.016984
+      ],
+      [
+       105.782763,
+       21.017225
+      ],
+      [
+       105.782523,
+       21.017538
+      ],
+      [
+       105.782488,
+       21.017583
+      ],
+      [
+       105.782422,
+       21.017672
+      ],
+      [
+       105.782311,
+       21.017816
+      ],
+      [
+       105.782205,
+       21.017947
+      ],
+      [
+       105.781991,
+       21.018198
+      ],
+      [
+       105.781883,
+       21.018322
+      ],
+      [
+       105.781839,
+       21.018374
+      ],
+      [
+       105.781396,
+       21.018927
+      ],
+      [
+       105.781368,
+       21.018962
+      ],
+      [
+       105.781344,
+       21.01899
+      ],
+      [
+       105.781298,
+       21.019046
+      ],
+      [
+       105.781254,
+       21.0191
+      ],
+      [
+       105.78111,
+       21.019271
+      ],
+      [
+       105.78107,
+       21.019323
+      ],
+      [
+       105.780878,
+       21.019557
+      ],
+      [
+       105.780573,
+       21.019941
+      ],
+      [
+       105.780276,
+       21.020306
+      ],
+      [
+       105.780174,
+       21.020435
+      ],
+      [
+       105.779987,
+       21.020701
+      ],
+      [
+       105.779811,
+       21.020972
+      ],
+      [
+       105.779744,
+       21.021087
+      ],
+      [
+       105.779567,
+       21.021404
+      ],
+      [
+       105.779349,
+       21.02185
+      ],
+      [
+       105.779254,
+       21.022091
+      ],
+      [
+       105.779159,
+       21.022332
+      ],
+      [
+       105.778993,
+       21.022949
+      ],
+      [
+       105.778913,
+       21.023368
+      ],
+      [
+       105.778867,
+       21.023695
+      ],
+      [
+       105.778821,
+       21.02423
+      ],
+      [
+       105.778812,
+       21.024699
+      ],
+      [
+       105.778838,
+       21.025066
+      ],
+      [
+       105.778841,
+       21.025103
+      ],
+      [
+       105.778845,
+       21.02513
+      ],
+      [
+       105.778891,
+       21.025479
+      ],
+      [
+       105.779044,
+       21.026411
+      ],
+      [
+       105.779081,
+       21.026613
+      ],
+      [
+       105.7791,
+       21.026717
+      ],
+      [
+       105.779107,
+       21.026754
+      ],
+      [
+       105.77911,
+       21.026767
+      ],
+      [
+       105.779124,
+       21.02684
+      ],
+      [
+       105.779171,
+       21.027134
+      ],
+      [
+       105.779271,
+       21.027737
+      ],
+      [
+       105.779358,
+       21.028258
+      ],
+      [
+       105.779397,
+       21.028516
+      ],
+      [
+       105.779401,
+       21.028539
+      ],
+      [
+       105.77943,
+       21.02868
+      ],
+      [
+       105.779454,
+       21.028835
+      ],
+      [
+       105.77947,
+       21.028925
+      ],
+      [
+       105.779508,
+       21.029138
+      ],
+      [
+       105.779571,
+       21.029489
+      ],
+      [
+       105.779581,
+       21.029544
+      ],
+      [
+       105.779706,
+       21.030236
+      ],
+      [
+       105.779725,
+       21.030354
+      ],
+      [
+       105.779805,
+       </pre></details><details style='margin:6px 0'><summary><b>match_trip_telemetry</b> — succeeded</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "succeeded",
+ "data": {
+  "case_id": "018f2f4e-a000-7000-8000-000000000001",
+  "point_count": 30,
+  "matched_count": 11,
+  "unmatched_count": 0,
+  "interpolated_count": 19,
+  "match_distance_m_by_index": {
+   "0": 4.385018,
+   "1": 4.385018,
+   "2": 4.385018,
+   "3": 4.385018,
+   "4": 4.385018,
+   "5": 4.385018,
+   "6": 4.385018,
+   "7": 4.385018,
+   "8": 4.385018,
+   "9": 4.385018,
+   "10": 4.385018,
+   "11": 4.385018,
+   "12": 4.385018,
+   "13": 4.385018,
+   "14": 4.385018,
+   "15": 4.385018,
+   "16": 4.385018,
+   "17": 4.385018,
+   "18": 4.385018,
+   "19": 4.385018,
+   "20": 0.603429,
+   "21": 0.645345,
+   "22": 4.198929,
+   "23": 0.001925,
+   "24": 0.123358,
+   "25": 0.062884,
+   "26": 0.01954,
+   "27": 0.012428,
+   "28": 0.052304,
+   "29": 0.004185
+  },
+  "originals_never_overwritten": true
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>geocode_address</b> — succeeded</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "succeeded",
+ "data": {
+  "case_id": "018f2f4e-a000-7000-8000-000000000001",
+  "query": "Hoan Kiem Lake, Hanoi, Vietnam",
+  "results": [
+   {
+    "formatted": "Hoàn Kiếm Lake, Hoan Kiem Ward, Hà Nội, 11024, Vietnam",
+    "lon": 105.8525357,
+    "lat": 21.0288313,
+    "result_type": "amenity",
+    "country_code": "vn",
+    "distance_m": null,
+    "confidence": 1.0,
+    "match_type": "inner_part",
+    "attribution": "© OpenStreetMap contributors"
+   }
+  ],
+  "count": 1,
+  "lookup_is_not_location_proof": true
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>reverse_geocode_coordinates</b> — succeeded</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "succeeded",
+ "data": {
+  "case_id": "018f2f4e-a000-7000-8000-000000000001",
+  "query": "105.8342,21.0278",
+  "results": [
+   {
+    "formatted": "72, Ton Duc Thang Street, O Cho Dua Ward, Hà Nội, HI 11511, Vietnam",
+    "lon": 105.8339602,
+    "lat": 21.0276463,
+    "result_type": "building",
+    "country_code": "vn",
+    "distance_m": 30.191869736884588,
+    "confidence": null,
+    "match_type": null,
+    "attribution": "© OpenStreetMap contributors"
+   },
+   {
+    "formatted": "First Eden Hotel, Hanoi, Hoan Kiem, Vietnam",
+    "lon": 105.834,
+    "lat": 21.028,
+    "result_type": "amenity",
+    "country_code": "vn",
+    "distance_m": 30.421530376751036,
+    "confidence": null,
+    "match_type": null,
+    "attribution": "GeoNames"
+   },
+   {
+    "formatted": "ola's steak, Cat Linh Street, O Cho Dua Ward, Hà Nội, HI 11511, Vietnam",
+    "lon": 105.8337937,
+    "lat": 21.0279055,
+    "result_type": "amenity",
+    "country_code": "vn",
+    "distance_m": 43.771252010242186,
+    "confidence": null,
+    "match_type": null,
+    "attribution": "© OpenStreetMap contributors"
+   },
+   {
+    "formatted": "92-94 Tôn Đức Thắng, Ton Duc Thang Street, O Cho Dua Ward, Hà Nội, HI 11511, Vietnam",
+    "lon": 105.8338641,
+    "lat": 21.0273433,
+    "result_type": "amenity",
+    "country_code": "vn",
+    "distance_m": 61.59816225280218,
+    "confidence": null,
+    "match_type": null,
+    "attribution": "© OpenStreetMap contributors"
+   },
+   {
+    "formatted": "Cat Linh Street, Van Mieu - Quoc Tu Giam Ward, Hà Nội, 11508, Vietnam",
+    "lon": 105.8342007,
+    "lat": 21.0277915,
+    "result_type": "street",
+    "country_code": "vn",
+    "distance_m": 0.45871335615944414,
+    "confidence": null,
+    "match_type": null,
+    "attribution": "© OpenStreetMap contributors"
+   }
+  ],
+  "count": 5,
+  "lookup_is_not_location_proof": true
+ }
+}</pre></details></div><div style='border:1px solid #999;padding:10px;margin:8px 0;background:#fafafa'><h4 style='margin:0 0 6px'>Role: analyst</h4><img src="snapshot_001_analyst.jpg" style="width:90%;max-width:640px;border:1px solid #ccc;margin:8px 0"/><details style='margin:6px 0'><summary><b>get_case_map_snapshot</b> — succeeded</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "succeeded",
+ "data": {
+  "case_id": "018f2f4e-a000-7000-8000-000000000001",
+  "evidence_snapshot_id": "018f2f4e-0300-7000-8000-000000000001",
+  "snapshot_version": 1,
+  "snapshot_hash": "415698a4091dfee0846096d5ad6b89318dcdcf2b6f38a5a1fcf7c6114e599fcb",
+  "route_refs": [
+   {
+    "leg": "pickup_route",
+    "geometry_type": "LineString",
+    "vertex_count": 386
+   },
+   {
+    "leg": "destination_route",
+    "geometry_type": "LineString",
+    "vertex_count": 397
+   }
+  ],
+  "checkpoint_times": [
+   {
+    "id": "ms-start",
+    "type": "start_match",
+    "occurred_at": "2026-09-22T06:00:00+00:00",
+    "lat": 21.028501,
+    "lon": 105.853875,
+    "sequence": 0
+   },
+   {
+    "id": "ms-stall",
+    "type": "stall_anomaly",
+    "occurred_at": "2026-09-22T06:00:10+00:00",
+    "lat": 21.028501,
+    "lon": 105.853875,
+    "sequence": 1
+   }
+  ],
+  "gap_windows": [
+   {
+    "start_at": "2026-09-22T06:01:50+00:00",
+    "end_at": "2026-09-22T06:14:13.375000+00:00",
+    "gap_seconds": 743.4,
+    "start_lon": 105.853875,
+    "start_lat": 21.028501
+   }
+  ],
+  "traveled_path": [
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T06:00:00+00:00",
+    "event_id": "9cb82f8c-01de-53c9-8c4b-16af9dc752eb",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T06:00:10+00:00",
+    "event_id": "a42fc5f4-928b-59c9-8564-f2a5ec019a33",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T06:00:20+00:00",
+    "event_id": "bf1ae02b-afa6-51d5-9073-a2465163c67b",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T06:00:30+00:00",
+    "event_id": "e4c186b7-96c0-558b-b8df-9264c8a81fce",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T06:00:40+00:00",
+    "event_id": "e4dc8ecc-990a-5a71-a690-8603ba24f2f8",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T06:00:50+00:00",
+    "event_id": "363b487c-0be0-597b-8a5f-b4b9785260d0",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T06:01:00+00:00",
+    "event_id": "ab799a7f-9cc3-5952-80b0-8a60aed5bd2c",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T06:01:10+00:00",
+    "event_id": "54f84c8e-0d0f-543e-8eb3-dcc1aa2a8f1f",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T06:01:20+00:00",
+    "event_id": "eebfa908-18c4-559c-9a65-2a77847e28f3",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T06:01:30+00:00",
+    "event_id": "33131c69-0ee6-58c0-8148-d0293d96cfd2",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T06:01:40+00:00",
+    "event_id": "61d5d759-b8d0-5c84-ae1e-ebc052aac64c",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T06:01:50+00:00",
+    "event_id": "f2cf1f20-4df0-587c-aca8-53af513d3be4",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.7930825,
+    "lat": 21.0192929,
+    "occurred_at": "2026-09-22T06:14:13.375000+00:00",
+    "event_id": "47ae2514-e19d-5003-9f15-3cdb337a0a6c",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.7920774,
+    "lat": 21.018874,
+    "occurred_at": "2026-09-22T06:14:23.085000+00:00",
+    "event_id": "c505c310-9b8a-512a-9fdf-f4bb7ffe2802",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.791059,
+    "lat": 21.0182758,
+    "occurred_at": "2026-09-22T06:14:33.271000+00:00",
+    "event_id": "dd61b340-dab9-5288-bdb3-eef8be402735",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.790075,
+    "lat": 21.0176945,
+    "occurred_at": "2026-09-22T06:14:43.128000+00:00",
+ </pre></details><details style='margin:6px 0'><summary><b>compare_trip_routes</b> — succeeded</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "succeeded",
+ "data": {
+  "case_id": "018f2f4e-a000-7000-8000-000000000001",
+  "route_geometry": {
+   "destination_route": {
+    "id": "b792bbff-596c-5f02-98ca-4377247848ed",
+    "provider": "osrm",
+    "route": {
+     "type": "LineString",
+     "coordinates": [
+      [
+       105.783595,
+       21.016748
+      ],
+      [
+       105.783595,
+       21.016748
+      ],
+      [
+       105.783583,
+       21.016703
+      ],
+      [
+       105.78355,
+       21.01665
+      ],
+      [
+       105.783532,
+       21.016622
+      ],
+      [
+       105.78347,
+       21.01652
+      ],
+      [
+       105.783448,
+       21.016496
+      ],
+      [
+       105.783401,
+       21.016435
+      ],
+      [
+       105.783355,
+       21.016493
+      ],
+      [
+       105.783267,
+       21.016605
+      ],
+      [
+       105.783243,
+       21.016634
+      ],
+      [
+       105.783218,
+       21.016665
+      ],
+      [
+       105.783024,
+       21.016895
+      ],
+      [
+       105.78298,
+       21.016947
+      ],
+      [
+       105.782952,
+       21.016984
+      ],
+      [
+       105.782763,
+       21.017225
+      ],
+      [
+       105.782523,
+       21.017538
+      ],
+      [
+       105.782488,
+       21.017583
+      ],
+      [
+       105.782422,
+       21.017672
+      ],
+      [
+       105.782311,
+       21.017816
+      ],
+      [
+       105.782205,
+       21.017947
+      ],
+      [
+       105.781991,
+       21.018198
+      ],
+      [
+       105.781883,
+       21.018322
+      ],
+      [
+       105.781839,
+       21.018374
+      ],
+      [
+       105.781396,
+       21.018927
+      ],
+      [
+       105.781368,
+       21.018962
+      ],
+      [
+       105.781344,
+       21.01899
+      ],
+      [
+       105.781298,
+       21.019046
+      ],
+      [
+       105.781254,
+       21.0191
+      ],
+      [
+       105.78111,
+       21.019271
+      ],
+      [
+       105.78107,
+       21.019323
+      ],
+      [
+       105.780878,
+       21.019557
+      ],
+      [
+       105.780573,
+       21.019941
+      ],
+      [
+       105.780276,
+       21.020306
+      ],
+      [
+       105.780174,
+       21.020435
+      ],
+      [
+       105.779987,
+       21.020701
+      ],
+      [
+       105.779811,
+       21.020972
+      ],
+      [
+       105.779744,
+       21.021087
+      ],
+      [
+       105.779567,
+       21.021404
+      ],
+      [
+       105.779349,
+       21.02185
+      ],
+      [
+       105.779254,
+       21.022091
+      ],
+      [
+       105.779159,
+       21.022332
+      ],
+      [
+       105.778993,
+       21.022949
+      ],
+      [
+       105.778913,
+       21.023368
+      ],
+      [
+       105.778867,
+       21.023695
+      ],
+      [
+       105.778821,
+       21.02423
+      ],
+      [
+       105.778812,
+       21.024699
+      ],
+      [
+       105.778838,
+       21.025066
+      ],
+      [
+       105.778841,
+       21.025103
+      ],
+      [
+       105.778845,
+       21.02513
+      ],
+      [
+       105.778891,
+       21.025479
+      ],
+      [
+       105.779044,
+       21.026411
+      ],
+      [
+       105.779081,
+       21.026613
+      ],
+      [
+       105.7791,
+       21.026717
+      ],
+      [
+       105.779107,
+       21.026754
+      ],
+      [
+       105.77911,
+       21.026767
+      ],
+      [
+       105.779124,
+       21.02684
+      ],
+      [
+       105.779171,
+       21.027134
+      ],
+      [
+       105.779271,
+       21.027737
+      ],
+      [
+       105.779358,
+       21.028258
+      ],
+      [
+       105.779397,
+       21.028516
+      ],
+      [
+       105.779401,
+       21.028539
+      ],
+      [
+       105.77943,
+       21.02868
+      ],
+      [
+       105.779454,
+       21.028835
+      ],
+      [
+       105.77947,
+       21.028925
+      ],
+      [
+       105.779508,
+       21.029138
+      ],
+      [
+       105.779571,
+       21.029489
+      ],
+      [
+       105.779581,
+       21.029544
+      ],
+      [
+       105.779706,
+       21.030236
+      ],
+      [
+       105.779725,
+       21.030354
+      ],
+      [
+       105.779805,
+       </pre></details><details style='margin:6px 0'><summary><b>match_trip_telemetry</b> — succeeded</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "succeeded",
+ "data": {
+  "case_id": "018f2f4e-a000-7000-8000-000000000001",
+  "point_count": 30,
+  "matched_count": 11,
+  "unmatched_count": 0,
+  "interpolated_count": 19,
+  "match_distance_m_by_index": {
+   "0": 4.385018,
+   "1": 4.385018,
+   "2": 4.385018,
+   "3": 4.385018,
+   "4": 4.385018,
+   "5": 4.385018,
+   "6": 4.385018,
+   "7": 4.385018,
+   "8": 4.385018,
+   "9": 4.385018,
+   "10": 4.385018,
+   "11": 4.385018,
+   "12": 4.385018,
+   "13": 4.385018,
+   "14": 4.385018,
+   "15": 4.385018,
+   "16": 4.385018,
+   "17": 4.385018,
+   "18": 4.385018,
+   "19": 4.385018,
+   "20": 0.603429,
+   "21": 0.645345,
+   "22": 4.198929,
+   "23": 0.001925,
+   "24": 0.123358,
+   "25": 0.062884,
+   "26": 0.01954,
+   "27": 0.012428,
+   "28": 0.052304,
+   "29": 0.004185
+  },
+  "originals_never_overwritten": true
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>geocode_address</b> — succeeded</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "succeeded",
+ "data": {
+  "case_id": "018f2f4e-a000-7000-8000-000000000001",
+  "query": "Hoan Kiem Lake, Hanoi, Vietnam",
+  "results": [
+   {
+    "formatted": "Hoàn Kiếm Lake, Hoan Kiem Ward, Hà Nội, 11024, Vietnam",
+    "lon": 105.8525357,
+    "lat": 21.0288313,
+    "result_type": "amenity",
+    "country_code": "vn",
+    "distance_m": null,
+    "confidence": 1.0,
+    "match_type": "inner_part",
+    "attribution": "© OpenStreetMap contributors"
+   }
+  ],
+  "count": 1,
+  "lookup_is_not_location_proof": true
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>reverse_geocode_coordinates</b> — succeeded</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "succeeded",
+ "data": {
+  "case_id": "018f2f4e-a000-7000-8000-000000000001",
+  "query": "105.8342,21.0278",
+  "results": [
+   {
+    "formatted": "72, Ton Duc Thang Street, O Cho Dua Ward, Hà Nội, HI 11511, Vietnam",
+    "lon": 105.8339602,
+    "lat": 21.0276463,
+    "result_type": "building",
+    "country_code": "vn",
+    "distance_m": 30.191869736884588,
+    "confidence": null,
+    "match_type": null,
+    "attribution": "© OpenStreetMap contributors"
+   },
+   {
+    "formatted": "First Eden Hotel, Hanoi, Hoan Kiem, Vietnam",
+    "lon": 105.834,
+    "lat": 21.028,
+    "result_type": "amenity",
+    "country_code": "vn",
+    "distance_m": 30.421530376751036,
+    "confidence": null,
+    "match_type": null,
+    "attribution": "GeoNames"
+   },
+   {
+    "formatted": "ola's steak, Cat Linh Street, O Cho Dua Ward, Hà Nội, HI 11511, Vietnam",
+    "lon": 105.8337937,
+    "lat": 21.0279055,
+    "result_type": "amenity",
+    "country_code": "vn",
+    "distance_m": 43.771252010242186,
+    "confidence": null,
+    "match_type": null,
+    "attribution": "© OpenStreetMap contributors"
+   },
+   {
+    "formatted": "92-94 Tôn Đức Thắng, Ton Duc Thang Street, O Cho Dua Ward, Hà Nội, HI 11511, Vietnam",
+    "lon": 105.8338641,
+    "lat": 21.0273433,
+    "result_type": "amenity",
+    "country_code": "vn",
+    "distance_m": 61.59816225280218,
+    "confidence": null,
+    "match_type": null,
+    "attribution": "© OpenStreetMap contributors"
+   },
+   {
+    "formatted": "Cat Linh Street, Van Mieu - Quoc Tu Giam Ward, Hà Nội, 11508, Vietnam",
+    "lon": 105.8342007,
+    "lat": 21.0277915,
+    "result_type": "street",
+    "country_code": "vn",
+    "distance_m": 0.45871335615944414,
+    "confidence": null,
+    "match_type": null,
+    "attribution": "© OpenStreetMap contributors"
+   }
+  ],
+  "count": 5,
+  "lookup_is_not_location_proof": true
+ }
+}</pre></details></div><div style='border:1px solid #999;padding:10px;margin:8px 0;background:#fafafa'><h4 style='margin:0 0 6px'>Role: driver</h4><p>no image (unavailable path exercised)</p><details style='margin:6px 0'><summary><b>get_case_map_snapshot</b> — failed</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "failed",
+ "error": {
+  "code": "FORBIDDEN",
+  "message": "Driver does not own case",
+  "retryable": false
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>compare_trip_routes</b> — failed</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "failed",
+ "error": {
+  "code": "FORBIDDEN",
+  "message": "Driver does not own case",
+  "retryable": false
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>match_trip_telemetry</b> — failed</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "failed",
+ "error": {
+  "code": "FORBIDDEN",
+  "message": "Driver does not own case",
+  "retryable": false
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>geocode_address</b> — failed</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "failed",
+ "error": {
+  "code": "FORBIDDEN",
+  "message": "Driver does not own case",
+  "retryable": false
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>reverse_geocode_coordinates</b> — failed</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "failed",
+ "error": {
+  "code": "FORBIDDEN",
+  "message": "Driver does not own case",
+  "retryable": false
+ }
+}</pre></details></div></section><section style='border:2px solid #222;padding:14px;margin:18px 0'><h3>Case 011 — 018f2f4e-a000-7000-8000-000000000011</h3><div style='border:1px solid #999;padding:10px;margin:8px 0;background:#fafafa'><h4 style='margin:0 0 6px'>Role: senior_analyst</h4><img src="snapshot_011_senior_analyst.jpg" style="width:90%;max-width:640px;border:1px solid #ccc;margin:8px 0"/><details style='margin:6px 0'><summary><b>get_case_map_snapshot</b> — succeeded</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "succeeded",
+ "data": {
+  "case_id": "018f2f4e-a000-7000-8000-000000000011",
+  "evidence_snapshot_id": "018f2f4e-0300-7000-8000-000000000011",
+  "snapshot_version": 1,
+  "snapshot_hash": "407054d777031953ab4ca04239ae1661d7cac9f7a45ace220c5e98514c7791d6",
+  "route_refs": [
+   {
+    "leg": "pickup_route",
+    "geometry_type": "LineString",
+    "vertex_count": 386
+   },
+   {
+    "leg": "destination_route",
+    "geometry_type": "LineString",
+    "vertex_count": 397
+   }
+  ],
+  "checkpoint_times": [
+   {
+    "id": "ms-start",
+    "type": "start_match",
+    "occurred_at": "2026-09-22T07:10:00+00:00",
+    "lat": 21.028501,
+    "lon": 105.853875,
+    "sequence": 0
+   },
+   {
+    "id": "ms-stall",
+    "type": "stall_anomaly",
+    "occurred_at": "2026-09-22T07:10:10+00:00",
+    "lat": 21.028501,
+    "lon": 105.853875,
+    "sequence": 1
+   }
+  ],
+  "gap_windows": [
+   {
+    "start_at": "2026-09-22T07:11:50+00:00",
+    "end_at": "2026-09-22T07:24:13.894000+00:00",
+    "gap_seconds": 743.9,
+    "start_lon": 105.853875,
+    "start_lat": 21.028501
+   }
+  ],
+  "traveled_path": [
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T07:10:00+00:00",
+    "event_id": "fa599cf2-24ff-5dab-ad8c-777ab0ef3562",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T07:10:10+00:00",
+    "event_id": "b28f5ac7-1591-5ee3-8f3c-a034efe2a138",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T07:10:20+00:00",
+    "event_id": "a4493035-238f-5ffa-bbd3-7e3f1172fac4",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T07:10:30+00:00",
+    "event_id": "d656beee-c956-5f5d-8c85-9f3f8602df0d",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T07:10:40+00:00",
+    "event_id": "f14bda8b-c382-5f83-97fc-67c90afecaeb",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T07:10:50+00:00",
+    "event_id": "acef31d2-591c-58f2-bc6d-e21f0dae18d3",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T07:11:00+00:00",
+    "event_id": "661a862c-5613-5154-89a7-efd359fd1cf3",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T07:11:10+00:00",
+    "event_id": "2203e373-fc03-5d8b-ae08-048b93d63f4c",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T07:11:20+00:00",
+    "event_id": "a6bd0e55-feea-594f-ad40-277b6055ed8d",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T07:11:30+00:00",
+    "event_id": "8d75baaa-d35f-56a6-a96c-398bef2e2faf",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T07:11:40+00:00",
+    "event_id": "7e96a111-e7dc-536c-8a76-39efc6bc6521",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T07:11:50+00:00",
+    "event_id": "f21297fa-482c-5591-b8ea-814f79f3fedc",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.7930303,
+    "lat": 21.0192629,
+    "occurred_at": "2026-09-22T07:24:13.894000+00:00",
+    "event_id": "f4df0a09-e95a-5884-87e6-edb0d8a41357",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.7919915,
+    "lat": 21.0188236,
+    "occurred_at": "2026-09-22T07:24:23.944000+00:00",
+    "event_id": "b4f20eec-ca8b-5205-b2c3-8d6572e1db78",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.7910378,
+    "lat": 21.0182634,
+    "occurred_at": "2026-09-22T07:24:33.482000+00:00",
+    "event_id": "7014d8d5-db4d-57dc-bf81-7eea3b11e981",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.7900351,
+    "lat": 21.0176711,
+    "occurred_at": "2026-09-22T07:24:43.528000+00:00"</pre></details><details style='margin:6px 0'><summary><b>compare_trip_routes</b> — succeeded</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "succeeded",
+ "data": {
+  "case_id": "018f2f4e-a000-7000-8000-000000000011",
+  "route_geometry": {
+   "destination_route": {
+    "id": "406bdda7-26c5-5d92-8ed2-150fe4501101",
+    "provider": "osrm",
+    "route": {
+     "type": "LineString",
+     "coordinates": [
+      [
+       105.783595,
+       21.016748
+      ],
+      [
+       105.783595,
+       21.016748
+      ],
+      [
+       105.783583,
+       21.016703
+      ],
+      [
+       105.78355,
+       21.01665
+      ],
+      [
+       105.783532,
+       21.016622
+      ],
+      [
+       105.78347,
+       21.01652
+      ],
+      [
+       105.783448,
+       21.016496
+      ],
+      [
+       105.783401,
+       21.016435
+      ],
+      [
+       105.783355,
+       21.016493
+      ],
+      [
+       105.783267,
+       21.016605
+      ],
+      [
+       105.783243,
+       21.016634
+      ],
+      [
+       105.783218,
+       21.016665
+      ],
+      [
+       105.783024,
+       21.016895
+      ],
+      [
+       105.78298,
+       21.016947
+      ],
+      [
+       105.782952,
+       21.016984
+      ],
+      [
+       105.782763,
+       21.017225
+      ],
+      [
+       105.782523,
+       21.017538
+      ],
+      [
+       105.782488,
+       21.017583
+      ],
+      [
+       105.782422,
+       21.017672
+      ],
+      [
+       105.782311,
+       21.017816
+      ],
+      [
+       105.782205,
+       21.017947
+      ],
+      [
+       105.781991,
+       21.018198
+      ],
+      [
+       105.781883,
+       21.018322
+      ],
+      [
+       105.781839,
+       21.018374
+      ],
+      [
+       105.781396,
+       21.018927
+      ],
+      [
+       105.781368,
+       21.018962
+      ],
+      [
+       105.781344,
+       21.01899
+      ],
+      [
+       105.781298,
+       21.019046
+      ],
+      [
+       105.781254,
+       21.0191
+      ],
+      [
+       105.78111,
+       21.019271
+      ],
+      [
+       105.78107,
+       21.019323
+      ],
+      [
+       105.780878,
+       21.019557
+      ],
+      [
+       105.780573,
+       21.019941
+      ],
+      [
+       105.780276,
+       21.020306
+      ],
+      [
+       105.780174,
+       21.020435
+      ],
+      [
+       105.779987,
+       21.020701
+      ],
+      [
+       105.779811,
+       21.020972
+      ],
+      [
+       105.779744,
+       21.021087
+      ],
+      [
+       105.779567,
+       21.021404
+      ],
+      [
+       105.779349,
+       21.02185
+      ],
+      [
+       105.779254,
+       21.022091
+      ],
+      [
+       105.779159,
+       21.022332
+      ],
+      [
+       105.778993,
+       21.022949
+      ],
+      [
+       105.778913,
+       21.023368
+      ],
+      [
+       105.778867,
+       21.023695
+      ],
+      [
+       105.778821,
+       21.02423
+      ],
+      [
+       105.778812,
+       21.024699
+      ],
+      [
+       105.778838,
+       21.025066
+      ],
+      [
+       105.778841,
+       21.025103
+      ],
+      [
+       105.778845,
+       21.02513
+      ],
+      [
+       105.778891,
+       21.025479
+      ],
+      [
+       105.779044,
+       21.026411
+      ],
+      [
+       105.779081,
+       21.026613
+      ],
+      [
+       105.7791,
+       21.026717
+      ],
+      [
+       105.779107,
+       21.026754
+      ],
+      [
+       105.77911,
+       21.026767
+      ],
+      [
+       105.779124,
+       21.02684
+      ],
+      [
+       105.779171,
+       21.027134
+      ],
+      [
+       105.779271,
+       21.027737
+      ],
+      [
+       105.779358,
+       21.028258
+      ],
+      [
+       105.779397,
+       21.028516
+      ],
+      [
+       105.779401,
+       21.028539
+      ],
+      [
+       105.77943,
+       21.02868
+      ],
+      [
+       105.779454,
+       21.028835
+      ],
+      [
+       105.77947,
+       21.028925
+      ],
+      [
+       105.779508,
+       21.029138
+      ],
+      [
+       105.779571,
+       21.029489
+      ],
+      [
+       105.779581,
+       21.029544
+      ],
+      [
+       105.779706,
+       21.030236
+      ],
+      [
+       105.779725,
+       21.030354
+      ],
+      [
+       105.779805,
+       </pre></details><details style='margin:6px 0'><summary><b>match_trip_telemetry</b> — succeeded</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "succeeded",
+ "data": {
+  "case_id": "018f2f4e-a000-7000-8000-000000000011",
+  "point_count": 30,
+  "matched_count": 11,
+  "unmatched_count": 0,
+  "interpolated_count": 19,
+  "match_distance_m_by_index": {
+   "0": 4.385018,
+   "1": 4.385018,
+   "2": 4.385018,
+   "3": 4.385018,
+   "4": 4.385018,
+   "5": 4.385018,
+   "6": 4.385018,
+   "7": 4.385018,
+   "8": 4.385018,
+   "9": 4.385018,
+   "10": 4.385018,
+   "11": 4.385018,
+   "12": 4.385018,
+   "13": 4.385018,
+   "14": 4.385018,
+   "15": 4.385018,
+   "16": 4.385018,
+   "17": 4.385018,
+   "18": 4.385018,
+   "19": 4.385018,
+   "20": 0.586465,
+   "21": 0.664605,
+   "22": 4.198004,
+   "23": 0.005385,
+   "24": 0.050756,
+   "25": 0.06293,
+   "26": 0.017635,
+   "27": 0.0115,
+   "28": 0.044756,
+   "29": 0.002316
+  },
+  "originals_never_overwritten": true
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>geocode_address</b> — succeeded</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "succeeded",
+ "data": {
+  "case_id": "018f2f4e-a000-7000-8000-000000000011",
+  "query": "Hoan Kiem Lake, Hanoi, Vietnam",
+  "results": [
+   {
+    "formatted": "Hoàn Kiếm Lake, Hoan Kiem Ward, Hà Nội, 11024, Vietnam",
+    "lon": 105.8525357,
+    "lat": 21.0288313,
+    "result_type": "amenity",
+    "country_code": "vn",
+    "distance_m": null,
+    "confidence": 1.0,
+    "match_type": "inner_part",
+    "attribution": "© OpenStreetMap contributors"
+   }
+  ],
+  "count": 1,
+  "lookup_is_not_location_proof": true
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>reverse_geocode_coordinates</b> — succeeded</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "succeeded",
+ "data": {
+  "case_id": "018f2f4e-a000-7000-8000-000000000011",
+  "query": "105.8342,21.0278",
+  "results": [
+   {
+    "formatted": "72, Ton Duc Thang Street, O Cho Dua Ward, Hà Nội, HI 11511, Vietnam",
+    "lon": 105.8339602,
+    "lat": 21.0276463,
+    "result_type": "building",
+    "country_code": "vn",
+    "distance_m": 30.191869736884588,
+    "confidence": null,
+    "match_type": null,
+    "attribution": "© OpenStreetMap contributors"
+   },
+   {
+    "formatted": "First Eden Hotel, Hanoi, Hoan Kiem, Vietnam",
+    "lon": 105.834,
+    "lat": 21.028,
+    "result_type": "amenity",
+    "country_code": "vn",
+    "distance_m": 30.421530376751036,
+    "confidence": null,
+    "match_type": null,
+    "attribution": "GeoNames"
+   },
+   {
+    "formatted": "ola's steak, Cat Linh Street, O Cho Dua Ward, Hà Nội, HI 11511, Vietnam",
+    "lon": 105.8337937,
+    "lat": 21.0279055,
+    "result_type": "amenity",
+    "country_code": "vn",
+    "distance_m": 43.771252010242186,
+    "confidence": null,
+    "match_type": null,
+    "attribution": "© OpenStreetMap contributors"
+   },
+   {
+    "formatted": "92-94 Tôn Đức Thắng, Ton Duc Thang Street, O Cho Dua Ward, Hà Nội, HI 11511, Vietnam",
+    "lon": 105.8338641,
+    "lat": 21.0273433,
+    "result_type": "amenity",
+    "country_code": "vn",
+    "distance_m": 61.59816225280218,
+    "confidence": null,
+    "match_type": null,
+    "attribution": "© OpenStreetMap contributors"
+   },
+   {
+    "formatted": "Cat Linh Street, Van Mieu - Quoc Tu Giam Ward, Hà Nội, 11508, Vietnam",
+    "lon": 105.8342007,
+    "lat": 21.0277915,
+    "result_type": "street",
+    "country_code": "vn",
+    "distance_m": 0.45871335615944414,
+    "confidence": null,
+    "match_type": null,
+    "attribution": "© OpenStreetMap contributors"
+   }
+  ],
+  "count": 5,
+  "lookup_is_not_location_proof": true
+ }
+}</pre></details></div><div style='border:1px solid #999;padding:10px;margin:8px 0;background:#fafafa'><h4 style='margin:0 0 6px'>Role: analyst</h4><img src="snapshot_011_analyst.jpg" style="width:90%;max-width:640px;border:1px solid #ccc;margin:8px 0"/><details style='margin:6px 0'><summary><b>get_case_map_snapshot</b> — succeeded</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "succeeded",
+ "data": {
+  "case_id": "018f2f4e-a000-7000-8000-000000000011",
+  "evidence_snapshot_id": "018f2f4e-0300-7000-8000-000000000011",
+  "snapshot_version": 1,
+  "snapshot_hash": "407054d777031953ab4ca04239ae1661d7cac9f7a45ace220c5e98514c7791d6",
+  "route_refs": [
+   {
+    "leg": "pickup_route",
+    "geometry_type": "LineString",
+    "vertex_count": 386
+   },
+   {
+    "leg": "destination_route",
+    "geometry_type": "LineString",
+    "vertex_count": 397
+   }
+  ],
+  "checkpoint_times": [
+   {
+    "id": "ms-start",
+    "type": "start_match",
+    "occurred_at": "2026-09-22T07:10:00+00:00",
+    "lat": 21.028501,
+    "lon": 105.853875,
+    "sequence": 0
+   },
+   {
+    "id": "ms-stall",
+    "type": "stall_anomaly",
+    "occurred_at": "2026-09-22T07:10:10+00:00",
+    "lat": 21.028501,
+    "lon": 105.853875,
+    "sequence": 1
+   }
+  ],
+  "gap_windows": [
+   {
+    "start_at": "2026-09-22T07:11:50+00:00",
+    "end_at": "2026-09-22T07:24:13.894000+00:00",
+    "gap_seconds": 743.9,
+    "start_lon": 105.853875,
+    "start_lat": 21.028501
+   }
+  ],
+  "traveled_path": [
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T07:10:00+00:00",
+    "event_id": "fa599cf2-24ff-5dab-ad8c-777ab0ef3562",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T07:10:10+00:00",
+    "event_id": "b28f5ac7-1591-5ee3-8f3c-a034efe2a138",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T07:10:20+00:00",
+    "event_id": "a4493035-238f-5ffa-bbd3-7e3f1172fac4",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T07:10:30+00:00",
+    "event_id": "d656beee-c956-5f5d-8c85-9f3f8602df0d",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T07:10:40+00:00",
+    "event_id": "f14bda8b-c382-5f83-97fc-67c90afecaeb",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T07:10:50+00:00",
+    "event_id": "acef31d2-591c-58f2-bc6d-e21f0dae18d3",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T07:11:00+00:00",
+    "event_id": "661a862c-5613-5154-89a7-efd359fd1cf3",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T07:11:10+00:00",
+    "event_id": "2203e373-fc03-5d8b-ae08-048b93d63f4c",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T07:11:20+00:00",
+    "event_id": "a6bd0e55-feea-594f-ad40-277b6055ed8d",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T07:11:30+00:00",
+    "event_id": "8d75baaa-d35f-56a6-a96c-398bef2e2faf",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T07:11:40+00:00",
+    "event_id": "7e96a111-e7dc-536c-8a76-39efc6bc6521",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T07:11:50+00:00",
+    "event_id": "f21297fa-482c-5591-b8ea-814f79f3fedc",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.7930303,
+    "lat": 21.0192629,
+    "occurred_at": "2026-09-22T07:24:13.894000+00:00",
+    "event_id": "f4df0a09-e95a-5884-87e6-edb0d8a41357",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.7919915,
+    "lat": 21.0188236,
+    "occurred_at": "2026-09-22T07:24:23.944000+00:00",
+    "event_id": "b4f20eec-ca8b-5205-b2c3-8d6572e1db78",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.7910378,
+    "lat": 21.0182634,
+    "occurred_at": "2026-09-22T07:24:33.482000+00:00",
+    "event_id": "7014d8d5-db4d-57dc-bf81-7eea3b11e981",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.7900351,
+    "lat": 21.0176711,
+    "occurred_at": "2026-09-22T07:24:43.528000+00:00"</pre></details><details style='margin:6px 0'><summary><b>compare_trip_routes</b> — succeeded</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "succeeded",
+ "data": {
+  "case_id": "018f2f4e-a000-7000-8000-000000000011",
+  "route_geometry": {
+   "destination_route": {
+    "id": "406bdda7-26c5-5d92-8ed2-150fe4501101",
+    "provider": "osrm",
+    "route": {
+     "type": "LineString",
+     "coordinates": [
+      [
+       105.783595,
+       21.016748
+      ],
+      [
+       105.783595,
+       21.016748
+      ],
+      [
+       105.783583,
+       21.016703
+      ],
+      [
+       105.78355,
+       21.01665
+      ],
+      [
+       105.783532,
+       21.016622
+      ],
+      [
+       105.78347,
+       21.01652
+      ],
+      [
+       105.783448,
+       21.016496
+      ],
+      [
+       105.783401,
+       21.016435
+      ],
+      [
+       105.783355,
+       21.016493
+      ],
+      [
+       105.783267,
+       21.016605
+      ],
+      [
+       105.783243,
+       21.016634
+      ],
+      [
+       105.783218,
+       21.016665
+      ],
+      [
+       105.783024,
+       21.016895
+      ],
+      [
+       105.78298,
+       21.016947
+      ],
+      [
+       105.782952,
+       21.016984
+      ],
+      [
+       105.782763,
+       21.017225
+      ],
+      [
+       105.782523,
+       21.017538
+      ],
+      [
+       105.782488,
+       21.017583
+      ],
+      [
+       105.782422,
+       21.017672
+      ],
+      [
+       105.782311,
+       21.017816
+      ],
+      [
+       105.782205,
+       21.017947
+      ],
+      [
+       105.781991,
+       21.018198
+      ],
+      [
+       105.781883,
+       21.018322
+      ],
+      [
+       105.781839,
+       21.018374
+      ],
+      [
+       105.781396,
+       21.018927
+      ],
+      [
+       105.781368,
+       21.018962
+      ],
+      [
+       105.781344,
+       21.01899
+      ],
+      [
+       105.781298,
+       21.019046
+      ],
+      [
+       105.781254,
+       21.0191
+      ],
+      [
+       105.78111,
+       21.019271
+      ],
+      [
+       105.78107,
+       21.019323
+      ],
+      [
+       105.780878,
+       21.019557
+      ],
+      [
+       105.780573,
+       21.019941
+      ],
+      [
+       105.780276,
+       21.020306
+      ],
+      [
+       105.780174,
+       21.020435
+      ],
+      [
+       105.779987,
+       21.020701
+      ],
+      [
+       105.779811,
+       21.020972
+      ],
+      [
+       105.779744,
+       21.021087
+      ],
+      [
+       105.779567,
+       21.021404
+      ],
+      [
+       105.779349,
+       21.02185
+      ],
+      [
+       105.779254,
+       21.022091
+      ],
+      [
+       105.779159,
+       21.022332
+      ],
+      [
+       105.778993,
+       21.022949
+      ],
+      [
+       105.778913,
+       21.023368
+      ],
+      [
+       105.778867,
+       21.023695
+      ],
+      [
+       105.778821,
+       21.02423
+      ],
+      [
+       105.778812,
+       21.024699
+      ],
+      [
+       105.778838,
+       21.025066
+      ],
+      [
+       105.778841,
+       21.025103
+      ],
+      [
+       105.778845,
+       21.02513
+      ],
+      [
+       105.778891,
+       21.025479
+      ],
+      [
+       105.779044,
+       21.026411
+      ],
+      [
+       105.779081,
+       21.026613
+      ],
+      [
+       105.7791,
+       21.026717
+      ],
+      [
+       105.779107,
+       21.026754
+      ],
+      [
+       105.77911,
+       21.026767
+      ],
+      [
+       105.779124,
+       21.02684
+      ],
+      [
+       105.779171,
+       21.027134
+      ],
+      [
+       105.779271,
+       21.027737
+      ],
+      [
+       105.779358,
+       21.028258
+      ],
+      [
+       105.779397,
+       21.028516
+      ],
+      [
+       105.779401,
+       21.028539
+      ],
+      [
+       105.77943,
+       21.02868
+      ],
+      [
+       105.779454,
+       21.028835
+      ],
+      [
+       105.77947,
+       21.028925
+      ],
+      [
+       105.779508,
+       21.029138
+      ],
+      [
+       105.779571,
+       21.029489
+      ],
+      [
+       105.779581,
+       21.029544
+      ],
+      [
+       105.779706,
+       21.030236
+      ],
+      [
+       105.779725,
+       21.030354
+      ],
+      [
+       105.779805,
+       </pre></details><details style='margin:6px 0'><summary><b>match_trip_telemetry</b> — succeeded</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "succeeded",
+ "data": {
+  "case_id": "018f2f4e-a000-7000-8000-000000000011",
+  "point_count": 30,
+  "matched_count": 11,
+  "unmatched_count": 0,
+  "interpolated_count": 19,
+  "match_distance_m_by_index": {
+   "0": 4.385018,
+   "1": 4.385018,
+   "2": 4.385018,
+   "3": 4.385018,
+   "4": 4.385018,
+   "5": 4.385018,
+   "6": 4.385018,
+   "7": 4.385018,
+   "8": 4.385018,
+   "9": 4.385018,
+   "10": 4.385018,
+   "11": 4.385018,
+   "12": 4.385018,
+   "13": 4.385018,
+   "14": 4.385018,
+   "15": 4.385018,
+   "16": 4.385018,
+   "17": 4.385018,
+   "18": 4.385018,
+   "19": 4.385018,
+   "20": 0.586465,
+   "21": 0.664605,
+   "22": 4.198004,
+   "23": 0.005385,
+   "24": 0.050756,
+   "25": 0.06293,
+   "26": 0.017635,
+   "27": 0.0115,
+   "28": 0.044756,
+   "29": 0.002316
+  },
+  "originals_never_overwritten": true
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>geocode_address</b> — succeeded</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "succeeded",
+ "data": {
+  "case_id": "018f2f4e-a000-7000-8000-000000000011",
+  "query": "Hoan Kiem Lake, Hanoi, Vietnam",
+  "results": [
+   {
+    "formatted": "Hoàn Kiếm Lake, Hoan Kiem Ward, Hà Nội, 11024, Vietnam",
+    "lon": 105.8525357,
+    "lat": 21.0288313,
+    "result_type": "amenity",
+    "country_code": "vn",
+    "distance_m": null,
+    "confidence": 1.0,
+    "match_type": "inner_part",
+    "attribution": "© OpenStreetMap contributors"
+   }
+  ],
+  "count": 1,
+  "lookup_is_not_location_proof": true
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>reverse_geocode_coordinates</b> — succeeded</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "succeeded",
+ "data": {
+  "case_id": "018f2f4e-a000-7000-8000-000000000011",
+  "query": "105.8342,21.0278",
+  "results": [
+   {
+    "formatted": "72, Ton Duc Thang Street, O Cho Dua Ward, Hà Nội, HI 11511, Vietnam",
+    "lon": 105.8339602,
+    "lat": 21.0276463,
+    "result_type": "building",
+    "country_code": "vn",
+    "distance_m": 30.191869736884588,
+    "confidence": null,
+    "match_type": null,
+    "attribution": "© OpenStreetMap contributors"
+   },
+   {
+    "formatted": "First Eden Hotel, Hanoi, Hoan Kiem, Vietnam",
+    "lon": 105.834,
+    "lat": 21.028,
+    "result_type": "amenity",
+    "country_code": "vn",
+    "distance_m": 30.421530376751036,
+    "confidence": null,
+    "match_type": null,
+    "attribution": "GeoNames"
+   },
+   {
+    "formatted": "ola's steak, Cat Linh Street, O Cho Dua Ward, Hà Nội, HI 11511, Vietnam",
+    "lon": 105.8337937,
+    "lat": 21.0279055,
+    "result_type": "amenity",
+    "country_code": "vn",
+    "distance_m": 43.771252010242186,
+    "confidence": null,
+    "match_type": null,
+    "attribution": "© OpenStreetMap contributors"
+   },
+   {
+    "formatted": "92-94 Tôn Đức Thắng, Ton Duc Thang Street, O Cho Dua Ward, Hà Nội, HI 11511, Vietnam",
+    "lon": 105.8338641,
+    "lat": 21.0273433,
+    "result_type": "amenity",
+    "country_code": "vn",
+    "distance_m": 61.59816225280218,
+    "confidence": null,
+    "match_type": null,
+    "attribution": "© OpenStreetMap contributors"
+   },
+   {
+    "formatted": "Cat Linh Street, Van Mieu - Quoc Tu Giam Ward, Hà Nội, 11508, Vietnam",
+    "lon": 105.8342007,
+    "lat": 21.0277915,
+    "result_type": "street",
+    "country_code": "vn",
+    "distance_m": 0.45871335615944414,
+    "confidence": null,
+    "match_type": null,
+    "attribution": "© OpenStreetMap contributors"
+   }
+  ],
+  "count": 5,
+  "lookup_is_not_location_proof": true
+ }
+}</pre></details></div><div style='border:1px solid #999;padding:10px;margin:8px 0;background:#fafafa'><h4 style='margin:0 0 6px'>Role: driver</h4><p>no image (unavailable path exercised)</p><details style='margin:6px 0'><summary><b>get_case_map_snapshot</b> — failed</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "failed",
+ "error": {
+  "code": "FORBIDDEN",
+  "message": "Driver does not own case",
+  "retryable": false
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>compare_trip_routes</b> — failed</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "failed",
+ "error": {
+  "code": "FORBIDDEN",
+  "message": "Driver does not own case",
+  "retryable": false
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>match_trip_telemetry</b> — failed</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "failed",
+ "error": {
+  "code": "FORBIDDEN",
+  "message": "Driver does not own case",
+  "retryable": false
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>geocode_address</b> — failed</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "failed",
+ "error": {
+  "code": "FORBIDDEN",
+  "message": "Driver does not own case",
+  "retryable": false
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>reverse_geocode_coordinates</b> — failed</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "failed",
+ "error": {
+  "code": "FORBIDDEN",
+  "message": "Driver does not own case",
+  "retryable": false
+ }
+}</pre></details></div></section><section style='border:2px solid #222;padding:14px;margin:18px 0'><h3>Case 038 — 018f2f4e-a000-7000-8000-000000000038</h3><div style='border:1px solid #999;padding:10px;margin:8px 0;background:#fafafa'><h4 style='margin:0 0 6px'>Role: senior_analyst</h4><img src="snapshot_038_senior_analyst.jpg" style="width:90%;max-width:640px;border:1px solid #ccc;margin:8px 0"/><details style='margin:6px 0'><summary><b>get_case_map_snapshot</b> — succeeded</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "succeeded",
+ "data": {
+  "case_id": "018f2f4e-a000-7000-8000-000000000038",
+  "evidence_snapshot_id": "018f2f4e-0300-7000-8000-000000000038",
+  "snapshot_version": 1,
+  "snapshot_hash": "2a7833937f9f7cec3575dcdf9cd2199e4dc8aecd1d6e3a224c83f9d5c7ea1a22",
+  "route_refs": [
+   {
+    "leg": "pickup_route",
+    "geometry_type": "LineString",
+    "vertex_count": 386
+   },
+   {
+    "leg": "destination_route",
+    "geometry_type": "LineString",
+    "vertex_count": 397
+   }
+  ],
+  "checkpoint_times": [
+   {
+    "id": "ms-start",
+    "type": "start_match",
+    "occurred_at": "2026-09-22T10:19:00+00:00",
+    "lat": 21.028501,
+    "lon": 105.853875,
+    "sequence": 0
+   },
+   {
+    "id": "ms-stall",
+    "type": "stall_anomaly",
+    "occurred_at": "2026-09-22T10:19:17.195000+00:00",
+    "lat": 21.0294705,
+    "lon": 105.8538487,
+    "sequence": 1
+   },
+   {
+    "id": "ms-pickup",
+    "type": "pickup",
+    "occurred_at": "2026-09-22T10:42:10.680000+00:00",
+    "lat": 21.016748,
+    "lon": 105.783595,
+    "sequence": null
+   },
+   {
+    "id": "ms-destination",
+    "type": "dropoff_destination",
+    "occurred_at": "2026-09-22T11:31:24.120000+00:00",
+    "lat": 21.224355,
+    "lon": 105.808248,
+    "sequence": null
+   }
+  ],
+  "gap_windows": [
+   {
+    "start_at": "2026-09-22T10:22:15.780000+00:00",
+    "end_at": "2026-09-22T11:28:07.675000+00:00",
+    "gap_seconds": 3951.9,
+    "start_lon": 105.8454093,
+    "start_lat": 21.0293645
+   }
+  ],
+  "traveled_path": [
+   {
+    "lon": 105.853875,
+    "lat": 21.028501,
+    "occurred_at": "2026-09-22T10:19:00+00:00",
+    "event_id": "fac2c95f-be7d-5193-b1bb-c94e69b1e565",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.8538487,
+    "lat": 21.0294705,
+    "occurred_at": "2026-09-22T10:19:17.195000+00:00",
+    "event_id": "cb98ebe4-a134-58a8-92a2-57219f19b739",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.8537856,
+    "lat": 21.0305594,
+    "occurred_at": "2026-09-22T10:19:35.389000+00:00",
+    "event_id": "4c0dd091-fb89-535c-b730-122ac1b77657",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.8532314,
+    "lat": 21.0314934,
+    "occurred_at": "2026-09-22T10:19:52.885000+00:00",
+    "event_id": "9ce77039-64bf-5b11-87e0-e482a8b80737",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.8521871,
+    "lat": 21.0318515,
+    "occurred_at": "2026-09-22T10:20:10.862000+00:00",
+    "event_id": "16cd8151-cae7-5f21-ac16-38f533c8dcaf",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.8513356,
+    "lat": 21.0321446,
+    "occurred_at": "2026-09-22T10:20:29.488000+00:00",
+    "event_id": "28692583-9a28-5dab-be47-ae6d0f9e835e",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.8504434,
+    "lat": 21.0321693,
+    "occurred_at": "2026-09-22T10:20:46.360000+00:00",
+    "event_id": "8b78d017-3a81-53e2-b907-e3878e998fc9",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.8494694,
+    "lat": 21.031526,
+    "occurred_at": "2026-09-22T10:21:04.538000+00:00",
+    "event_id": "3e540f57-8f9a-5342-9053-0c15ec883057",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.8484813,
+    "lat": 21.0309742,
+    "occurred_at": "2026-09-22T10:21:22.099000+00:00",
+    "event_id": "57194eb9-b9bf-5fa6-9e0e-663d65ff53bb",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.8473786,
+    "lat": 21.0304038,
+    "occurred_at": "2026-09-22T10:21:41.308000+00:00",
+    "event_id": "c97acadb-9070-5db2-a148-a94b58ba1634",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.8464171,
+    "lat": 21.0298795,
+    "occurred_at": "2026-09-22T10:21:58.275000+00:00",
+    "event_id": "3e8a2b3c-67a4-585e-83c2-3cc243c62b78",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.8454093,
+    "lat": 21.0293645,
+    "occurred_at": "2026-09-22T10:22:15.780000+00:00",
+    "event_id": "67451735-f87e-505b-857d-218d391ee5d9",
+    "anomaly_type": null
+   },
+   {
+    "lon": 105.791419,
+    "lat": 21.2292183,
+    "occurred_at": "2026-09-22T11:28:07.675000+00:00",
+    "event_id": "4ec062c5-0cc9-58f6-bd12-816d029c3616",
+    "anomaly_type": null
+   },
+   {
+</pre></details><details style='margin:6px 0'><summary><b>compare_trip_routes</b> — succeeded</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "succeeded",
+ "data": {
+  "case_id": "018f2f4e-a000-7000-8000-000000000038",
+  "route_geometry": {
+   "destination_route": {
+    "id": "7a113f8f-da2e-56d9-b0b0-4d9fa50a7efa",
+    "provider": "osrm",
+    "route": {
+     "type": "LineString",
+     "coordinates": [
+      [
+       105.783595,
+       21.016748
+      ],
+      [
+       105.783595,
+       21.016748
+      ],
+      [
+       105.783583,
+       21.016703
+      ],
+      [
+       105.78355,
+       21.01665
+      ],
+      [
+       105.783532,
+       21.016622
+      ],
+      [
+       105.78347,
+       21.01652
+      ],
+      [
+       105.783448,
+       21.016496
+      ],
+      [
+       105.783401,
+       21.016435
+      ],
+      [
+       105.783355,
+       21.016493
+      ],
+      [
+       105.783267,
+       21.016605
+      ],
+      [
+       105.783243,
+       21.016634
+      ],
+      [
+       105.783218,
+       21.016665
+      ],
+      [
+       105.783024,
+       21.016895
+      ],
+      [
+       105.78298,
+       21.016947
+      ],
+      [
+       105.782952,
+       21.016984
+      ],
+      [
+       105.782763,
+       21.017225
+      ],
+      [
+       105.782523,
+       21.017538
+      ],
+      [
+       105.782488,
+       21.017583
+      ],
+      [
+       105.782422,
+       21.017672
+      ],
+      [
+       105.782311,
+       21.017816
+      ],
+      [
+       105.782205,
+       21.017947
+      ],
+      [
+       105.781991,
+       21.018198
+      ],
+      [
+       105.781883,
+       21.018322
+      ],
+      [
+       105.781839,
+       21.018374
+      ],
+      [
+       105.781396,
+       21.018927
+      ],
+      [
+       105.781368,
+       21.018962
+      ],
+      [
+       105.781344,
+       21.01899
+      ],
+      [
+       105.781298,
+       21.019046
+      ],
+      [
+       105.781254,
+       21.0191
+      ],
+      [
+       105.78111,
+       21.019271
+      ],
+      [
+       105.78107,
+       21.019323
+      ],
+      [
+       105.780878,
+       21.019557
+      ],
+      [
+       105.780573,
+       21.019941
+      ],
+      [
+       105.780276,
+       21.020306
+      ],
+      [
+       105.780174,
+       21.020435
+      ],
+      [
+       105.779987,
+       21.020701
+      ],
+      [
+       105.779811,
+       21.020972
+      ],
+      [
+       105.779744,
+       21.021087
+      ],
+      [
+       105.779567,
+       21.021404
+      ],
+      [
+       105.779349,
+       21.02185
+      ],
+      [
+       105.779254,
+       21.022091
+      ],
+      [
+       105.779159,
+       21.022332
+      ],
+      [
+       105.778993,
+       21.022949
+      ],
+      [
+       105.778913,
+       21.023368
+      ],
+      [
+       105.778867,
+       21.023695
+      ],
+      [
+       105.778821,
+       21.02423
+      ],
+      [
+       105.778812,
+       21.024699
+      ],
+      [
+       105.778838,
+       21.025066
+      ],
+      [
+       105.778841,
+       21.025103
+      ],
+      [
+       105.778845,
+       21.02513
+      ],
+      [
+       105.778891,
+       21.025479
+      ],
+      [
+       105.779044,
+       21.026411
+      ],
+      [
+       105.779081,
+       21.026613
+      ],
+      [
+       105.7791,
+       21.026717
+      ],
+      [
+       105.779107,
+       21.026754
+      ],
+      [
+       105.77911,
+       21.026767
+      ],
+      [
+       105.779124,
+       21.02684
+      ],
+      [
+       105.779171,
+       21.027134
+      ],
+      [
+       105.779271,
+       21.027737
+      ],
+      [
+       105.779358,
+       21.028258
+      ],
+      [
+       105.779397,
+       21.028516
+      ],
+      [
+       105.779401,
+       21.028539
+      ],
+      [
+       105.77943,
+       21.02868
+      ],
+      [
+       105.779454,
+       21.028835
+      ],
+      [
+       105.77947,
+       21.028925
+      ],
+      [
+       105.779508,
+       21.029138
+      ],
+      [
+       105.779571,
+       21.029489
+      ],
+      [
+       105.779581,
+       21.029544
+      ],
+      [
+       105.779706,
+       21.030236
+      ],
+      [
+       105.779725,
+       21.030354
+      ],
+      [
+       105.779805,
+       </pre></details><details style='margin:6px 0'><summary><b>match_trip_telemetry</b> — succeeded</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "succeeded",
+ "data": {
+  "case_id": "018f2f4e-a000-7000-8000-000000000038",
+  "point_count": 30,
+  "matched_count": 30,
+  "unmatched_count": 0,
+  "interpolated_count": 0,
+  "match_distance_m_by_index": {
+   "0": 4.385018,
+   "1": 0.546406,
+   "2": 0.907741,
+   "3": 4.210048,
+   "4": 0.002956,
+   "5": 0.142601,
+   "6": 0.030183,
+   "7": 0.015396,
+   "8": 0.008883,
+   "9": 0.048556,
+   "10": 0.006077,
+   "11": 0.000784,
+   "12": 0.000396,
+   "13": 0.111718,
+   "14": 0.166372,
+   "15": 0.000278,
+   "16": 0.000852,
+   "17": 0.00407,
+   "18": 0.004418,
+   "19": 0.001546,
+   "20": 0.002162,
+   "21": 1.958426,
+   "22": 0.189674,
+   "23": 0.004176,
+   "24": 0.003946,
+   "25": 0.003371,
+   "26": 1.012753,
+   "27": 0.000156,
+   "28": 0.00489,
+   "29": 0.001539
+  },
+  "originals_never_overwritten": true
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>geocode_address</b> — succeeded</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "succeeded",
+ "data": {
+  "case_id": "018f2f4e-a000-7000-8000-000000000038",
+  "query": "Hoan Kiem Lake, Hanoi, Vietnam",
+  "results": [
+   {
+    "formatted": "Hoàn Kiếm Lake, Hoan Kiem Ward, Hà Nội, 11024, Vietnam",
+    "lon": 105.8525357,
+    "lat": 21.0288313,
+    "result_type": "amenity",
+    "country_code": "vn",
+    "distance_m": null,
+    "confidence": 1.0,
+    "match_type": "inner_part",
+    "attribution": "© OpenStreetMap contributors"
+   }
+  ],
+  "count": 1,
+  "lookup_is_not_location_proof": true
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>reverse_geocode_coordinates</b> — succeeded</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "succeeded",
+ "data": {
+  "case_id": "018f2f4e-a000-7000-8000-000000000038",
+  "query": "105.8342,21.0278",
+  "results": [
+   {
+    "formatted": "72, Ton Duc Thang Street, O Cho Dua Ward, Hà Nội, HI 11511, Vietnam",
+    "lon": 105.8339602,
+    "lat": 21.0276463,
+    "result_type": "building",
+    "country_code": "vn",
+    "distance_m": 30.191869736884588,
+    "confidence": null,
+    "match_type": null,
+    "attribution": "© OpenStreetMap contributors"
+   },
+   {
+    "formatted": "First Eden Hotel, Hanoi, Hoan Kiem, Vietnam",
+    "lon": 105.834,
+    "lat": 21.028,
+    "result_type": "amenity",
+    "country_code": "vn",
+    "distance_m": 30.421530376751036,
+    "confidence": null,
+    "match_type": null,
+    "attribution": "GeoNames"
+   },
+   {
+    "formatted": "ola's steak, Cat Linh Street, O Cho Dua Ward, Hà Nội, HI 11511, Vietnam",
+    "lon": 105.8337937,
+    "lat": 21.0279055,
+    "result_type": "amenity",
+    "country_code": "vn",
+    "distance_m": 43.771252010242186,
+    "confidence": null,
+    "match_type": null,
+    "attribution": "© OpenStreetMap contributors"
+   },
+   {
+    "formatted": "92-94 Tôn Đức Thắng, Ton Duc Thang Street, O Cho Dua Ward, Hà Nội, HI 11511, Vietnam",
+    "lon": 105.8338641,
+    "lat": 21.0273433,
+    "result_type": "amenity",
+    "country_code": "vn",
+    "distance_m": 61.59816225280218,
+    "confidence": null,
+    "match_type": null,
+    "attribution": "© OpenStreetMap contributors"
+   },
+   {
+    "formatted": "Cat Linh Street, Van Mieu - Quoc Tu Giam Ward, Hà Nội, 11508, Vietnam",
+    "lon": 105.8342007,
+    "lat": 21.0277915,
+    "result_type": "street",
+    "country_code": "vn",
+    "distance_m": 0.45871335615944414,
+    "confidence": null,
+    "match_type": null,
+    "attribution": "© OpenStreetMap contributors"
+   }
+  ],
+  "count": 5,
+  "lookup_is_not_location_proof": true
+ }
+}</pre></details></div><div style='border:1px solid #999;padding:10px;margin:8px 0;background:#fafafa'><h4 style='margin:0 0 6px'>Role: analyst</h4><p>no image (unavailable path exercised)</p><details style='margin:6px 0'><summary><b>get_case_map_snapshot</b> — failed</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "failed",
+ "error": {
+  "code": "FORBIDDEN",
+  "message": "Case assigned to another analyst",
+  "retryable": false
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>compare_trip_routes</b> — failed</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "failed",
+ "error": {
+  "code": "FORBIDDEN",
+  "message": "Case assigned to another analyst",
+  "retryable": false
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>match_trip_telemetry</b> — failed</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "failed",
+ "error": {
+  "code": "FORBIDDEN",
+  "message": "Case assigned to another analyst",
+  "retryable": false
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>geocode_address</b> — failed</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "failed",
+ "error": {
+  "code": "FORBIDDEN",
+  "message": "Case assigned to another analyst",
+  "retryable": false
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>reverse_geocode_coordinates</b> — failed</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "failed",
+ "error": {
+  "code": "FORBIDDEN",
+  "message": "Case assigned to another analyst",
+  "retryable": false
+ }
+}</pre></details></div><div style='border:1px solid #999;padding:10px;margin:8px 0;background:#fafafa'><h4 style='margin:0 0 6px'>Role: driver</h4><p>no image (unavailable path exercised)</p><details style='margin:6px 0'><summary><b>get_case_map_snapshot</b> — failed</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "failed",
+ "error": {
+  "code": "FORBIDDEN",
+  "message": "Driver does not own case",
+  "retryable": false
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>compare_trip_routes</b> — failed</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "failed",
+ "error": {
+  "code": "FORBIDDEN",
+  "message": "Driver does not own case",
+  "retryable": false
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>match_trip_telemetry</b> — failed</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "failed",
+ "error": {
+  "code": "FORBIDDEN",
+  "message": "Driver does not own case",
+  "retryable": false
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>geocode_address</b> — failed</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "failed",
+ "error": {
+  "code": "FORBIDDEN",
+  "message": "Driver does not own case",
+  "retryable": false
+ }
+}</pre></details><details style='margin:6px 0'><summary><b>reverse_geocode_coordinates</b> — failed</summary><pre style='white-space:pre-wrap;font-size:11px;max-height:260px;overflow:auto'>{
+ "status": "failed",
+ "error": {
+  "code": "FORBIDDEN",
+  "message": "Driver does not own case",
+  "retryable": false
+ }
+}</pre></details></div></section>
+</body></html>

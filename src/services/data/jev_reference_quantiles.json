@@ -1,0 +1,331 @@
+{
+  "corpus_trips_sha256": "d52e52ff7dd2cc7b6d23631191d1cdbf32d9f1b636f43117ad496809ac0d3fdf",
+  "split": "train",
+  "n": 19637,
+  "total_train_trips": 28000,
+  "fitted_at": "2026-10-18T06:31:49.425476+00:00",
+  "quantiles": {
+    "actual_path_length": {
+      "p01": 1172.736,
+      "p05": 1423.1,
+      "p10": 1678.28,
+      "p25": 2398.0,
+      "p50": 3956.2,
+      "p75": 6659.9,
+      "p90": 10828.28,
+      "p95": 13836.26,
+      "p99": 23821.288
+    },
+    "approach_duration": {
+      "p01": 0.0,
+      "p05": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p50": 0.0,
+      "p75": 0.0,
+      "p90": 0.0,
+      "p95": 0.0,
+      "p99": 690.512
+    },
+    "approach_stationary_duration": {
+      "p01": 0.0,
+      "p05": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p50": 0.0,
+      "p75": 0.0,
+      "p90": 0.0,
+      "p95": 0.0,
+      "p99": 0.0
+    },
+    "directional_approach_vector_index": {
+      "p01": -0.7302,
+      "p05": 1.0,
+      "p10": 1.0,
+      "p25": 1.0,
+      "p50": 1.0,
+      "p75": 1.0,
+      "p90": 1.0,
+      "p95": 1.0,
+      "p99": 1.0
+    },
+    "dropoff_progress_ratio": {
+      "p01": 0.201,
+      "p05": 0.262,
+      "p10": 0.304,
+      "p25": 0.543,
+      "p50": 0.731,
+      "p75": 0.833,
+      "p90": 0.917,
+      "p95": 0.96,
+      "p99": 0.99
+    },
+    "max_implied_speed": {
+      "p01": 0.0,
+      "p05": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p50": 0.0,
+      "p75": 0.0,
+      "p90": 850.786,
+      "p95": 994.174,
+      "p99": 1304.6312
+    },
+    "min_distance_to_pickup": {
+      "p01": 0.2,
+      "p05": 0.4,
+      "p10": 0.6,
+      "p25": 1.1,
+      "p50": 1.8,
+      "p75": 2.6,
+      "p90": 3.4,
+      "p95": 4.3,
+      "p99": 167.904
+    },
+    "pickup_progress_ratio": {
+      "p01": -0.759,
+      "p05": 1.0,
+      "p10": 1.0,
+      "p25": 1.0,
+      "p50": 1.0,
+      "p75": 1.0,
+      "p90": 1.0,
+      "p95": 1.0,
+      "p99": 1.0
+    },
+    "planned_route_length": {
+      "p01": 1118.36,
+      "p05": 1314.0,
+      "p10": 1493.0,
+      "p25": 2035.0,
+      "p50": 3074.0,
+      "p75": 5011.0,
+      "p90": 7355.4,
+      "p95": 9088.4,
+      "p99": 12953.12
+    },
+    "route_detour_ratio": {
+      "p01": 0.948,
+      "p05": 0.968,
+      "p10": 0.98,
+      "p25": 0.999,
+      "p50": 1.054,
+      "p75": 1.31,
+      "p90": 2.6204,
+      "p95": 2.9392,
+      "p99": 3.5616
+    },
+    "speed_p50": {
+      "p01": 1.23,
+      "p05": 20.34,
+      "p10": 21.38,
+      "p25": 23.66,
+      "p50": 27.28,
+      "p75": 31.47,
+      "p90": 45.32,
+      "p95": 47.58,
+      "p99": 57.02
+    },
+    "speed_p95": {
+      "p01": 11.3936,
+      "p05": 25.138,
+      "p10": 26.76,
+      "p25": 30.6,
+      "p50": 37.69,
+      "p75": 61.3,
+      "p90": 160.628,
+      "p95": 190.906,
+      "p99": 288.8124
+    },
+    "telemetry_coverage": {
+      "p01": 0.6284,
+      "p05": 0.755,
+      "p10": 0.814,
+      "p25": 0.906,
+      "p50": 1.0,
+      "p75": 1.0,
+      "p90": 1.0,
+      "p95": 1.0,
+      "p99": 1.0
+    },
+    "telemetry_data_gap_max": {
+      "p01": 4.0,
+      "p05": 5.3,
+      "p10": 6.2,
+      "p25": 14.9,
+      "p50": 24.9,
+      "p75": 44.9,
+      "p90": 60.6,
+      "p95": 89.8,
+      "p99": 120.0
+    },
+    "teleport_jump_count": {
+      "p01": 0.0,
+      "p05": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p50": 0.0,
+      "p75": 0.0,
+      "p90": 18.0,
+      "p95": 28.2,
+      "p99": 53.0
+    },
+    "total_stationary_duration": {
+      "p01": 0.0,
+      "p05": 0.0,
+      "p10": 0.0,
+      "p25": 0.0,
+      "p50": 1.0,
+      "p75": 60.0,
+      "p90": 85.0,
+      "p95": 180.0,
+      "p99": 3333.348
+    }
+  },
+  "class_medians": {
+    "actual_path_length": {
+      "ERR-01": 359.0,
+      "ERR-02": 519.7,
+      "ERR-03": 4004.1,
+      "ERR-04": 4065.9,
+      "ERR-05": 6634.5,
+      "insufficient_evidence": 3850.6,
+      "no_violation": 3956.2
+    },
+    "approach_duration": {
+      "ERR-01": 88.9,
+      "ERR-02": 291.1,
+      "ERR-03": 0.0,
+      "ERR-04": 0.0,
+      "ERR-05": 0.0,
+      "insufficient_evidence": 0.0,
+      "no_violation": 0.0
+    },
+    "approach_stationary_duration": {
+      "ERR-01": 39.9,
+      "ERR-02": 123.9,
+      "ERR-03": 0.0,
+      "ERR-04": 0.0,
+      "ERR-05": 0.0,
+      "insufficient_evidence": 0.0,
+      "no_violation": 0.0
+    },
+    "directional_approach_vector_index": {
+      "ERR-01": 0.7443,
+      "ERR-02": 0.5593,
+      "ERR-03": 1.0,
+      "ERR-04": 1.0,
+      "ERR-05": 1.0,
+      "insufficient_evidence": 1.0,
+      "no_violation": 1.0
+    },
+    "dropoff_progress_ratio": {
+      "ERR-01": 0.905,
+      "ERR-02": 0.638,
+      "ERR-03": 0.4515,
+      "ERR-04": 0.735,
+      "ERR-05": 0.309,
+      "insufficient_evidence": 0.742,
+      "no_violation": 0.731
+    },
+    "max_implied_speed": {
+      "ERR-01": 0.0,
+      "ERR-02": 0.0,
+      "ERR-03": 0.0,
+      "ERR-04": 0.0,
+      "ERR-05": 456.87,
+      "insufficient_evidence": 0.0,
+      "no_violation": 0.0
+    },
+    "min_distance_to_pickup": {
+      "ERR-01": 65.7,
+      "ERR-02": 223.4,
+      "ERR-03": 13.8,
+      "ERR-04": 1.7,
+      "ERR-05": 1.8,
+      "insufficient_evidence": 1.8,
+      "no_violation": 1.8
+    },
+    "pickup_progress_ratio": {
+      "ERR-01": 0.707,
+      "ERR-02": 0.532,
+      "ERR-03": 1.0,
+      "ERR-04": 1.0,
+      "ERR-05": 1.0,
+      "insufficient_evidence": 1.0,
+      "no_violation": 1.0
+    },
+    "planned_route_length": {
+      "ERR-01": 472.0,
+      "ERR-02": 648.6,
+      "ERR-03": 19.9,
+      "ERR-04": 10.0,
+      "ERR-05": 3133.0,
+      "insufficient_evidence": 10.0,
+      "no_violation": 3074.0
+    },
+    "route_detour_ratio": {
+      "ERR-01": 0.789,
+      "ERR-02": 0.853,
+      "ERR-03": 163.316,
+      "ERR-04": 406.5925,
+      "ERR-05": 2.207,
+      "insufficient_evidence": 385.062,
+      "no_violation": 1.054
+    },
+    "speed_p50": {
+      "ERR-01": 9.07,
+      "ERR-02": 1.6,
+      "ERR-03": 27.74,
+      "ERR-04": 27.22,
+      "ERR-05": 27.82,
+      "insufficient_evidence": 27.31,
+      "no_violation": 27.28
+    },
+    "speed_p95": {
+      "ERR-01": 29.55,
+      "ERR-02": 23.06,
+      "ERR-03": 39.96,
+      "ERR-04": 38.72,
+      "ERR-05": 140.94,
+      "insufficient_evidence": 37.37,
+      "no_violation": 37.69
+    },
+    "telemetry_coverage": {
+      "ERR-01": 1.0,
+      "ERR-02": 1.0,
+      "ERR-03": 1.0,
+      "ERR-04": 1.0,
+      "ERR-05": 1.0,
+      "insufficient_evidence": 0.754,
+      "no_violation": 1.0
+    },
+    "telemetry_data_gap_max": {
+      "ERR-01": 15.1,
+      "ERR-02": 5.7,
+      "ERR-03": 24.9,
+      "ERR-04": 25.1,
+      "ERR-05": 20.2,
+      "insufficient_evidence": 120.8,
+      "no_violation": 24.9
+    },
+    "teleport_jump_count": {
+      "ERR-01": 0.0,
+      "ERR-02": 0.0,
+      "ERR-03": 0.0,
+      "ERR-04": 0.0,
+      "ERR-05": 2.0,
+      "insufficient_evidence": 0.0,
+      "no_violation": 0.0
+    },
+    "total_stationary_duration": {
+      "ERR-01": 49.5,
+      "ERR-02": 209.4,
+      "ERR-03": 0.0,
+      "ERR-04": 0.0,
+      "ERR-05": 0.0,
+      "insufficient_evidence": 120.0,
+      "no_violation": 1.0
+    }
+  }
+}

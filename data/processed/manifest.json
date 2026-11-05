@@ -1,0 +1,122 @@
+[
+  {
+    "id": "greensm-policy-terms-of-use",
+    "tab": "general-terms",
+    "index": 0,
+    "title": "TERMS OF USE",
+    "slug": "terms-of-use",
+    "category": "general",
+    "source_url": "https://www.greensm.com/vn-en/terms-policies/general",
+    "char_length": 54152
+  },
+  {
+    "id": "greensm-policy-procedures-for-users",
+    "tab": "general-terms",
+    "index": 1,
+    "title": "PROCEDURES FOR USERS",
+    "slug": "procedures-for-users",
+    "category": "general",
+    "source_url": "https://www.greensm.com/vn-en/terms-policies/general",
+    "char_length": 4258
+  },
+  {
+    "id": "greensm-policy-regulations-on-the-use-of-green-sm-car",
+    "tab": "general-terms",
+    "index": 2,
+    "title": "REGULATIONS ON THE USE OF GREEN SM CAR",
+    "slug": "regulations-on-the-use-of-green-sm-car",
+    "category": "car",
+    "source_url": "https://www.greensm.com/vn-en/terms-policies/general",
+    "char_length": 2623
+  },
+  {
+    "id": "greensm-policy-regulations-on-the-use-of-green-sm-bike",
+    "tab": "general-terms",
+    "index": 3,
+    "title": "REGULATIONS ON THE USE OF GREEN SM BIKE",
+    "slug": "regulations-on-the-use-of-green-sm-bike",
+    "category": "bike",
+    "source_url": "https://www.greensm.com/vn-en/terms-policies/general",
+    "char_length": 2833
+  },
+  {
+    "id": "greensm-policy-regulations-on-the-use-of-green-sm-express",
+    "tab": "general-terms",
+    "index": 4,
+    "title": "REGULATIONS ON THE USE OF GREEN SM EXPRESS",
+    "slug": "regulations-on-the-use-of-green-sm-express",
+    "category": "delivery",
+    "source_url": "https://www.greensm.com/vn-en/terms-policies/general",
+    "char_length": 12182
+  },
+  {
+    "id": "greensm-policy-regulations-on-the-use-of-green-sm-food",
+    "tab": "general-terms",
+    "index": 5,
+    "title": "REGULATIONS ON THE USE OF GREEN SM FOOD",
+    "slug": "regulations-on-the-use-of-green-sm-food",
+    "category": "food",
+    "source_url": "https://www.greensm.com/vn-en/terms-policies/general",
+    "char_length": 8034
+  },
+  {
+    "id": "greensm-policy-terms-and-conditions-of-online-promotional-services",
+    "tab": "general-terms",
+    "index": 6,
+    "title": "TERMS AND CONDITIONS OF ONLINE PROMOTIONAL SERVICES",
+    "slug": "terms-and-conditions-of-online-promotional-services",
+    "category": "promotion",
+    "source_url": "https://www.greensm.com/vn-en/terms-policies/general",
+    "char_length": 7632
+  },
+  {
+    "id": "greensm-policy-general-terms-applicable-to-vehicle-rental-services",
+    "tab": "general-terms",
+    "index": 7,
+    "title": "GENERAL TERMS \r\n(Applicable to Vehicle Rental Services)",
+    "slug": "general-terms-applicable-to-vehicle-rental-services",
+    "category": "rental",
+    "source_url": "https://www.greensm.com/vn-en/terms-policies/general",
+    "char_length": 14998
+  },
+  {
+    "id": "greensm-policy-general-terms-applicable-to-postpaid-transportation-services",
+    "tab": "general-terms",
+    "index": 8,
+    "title": "GENERAL TERMS \r\n(Applicable to postpaid transportation services)",
+    "slug": "general-terms-applicable-to-postpaid-transportation-services",
+    "category": "billing",
+    "source_url": "https://www.greensm.com/vn-en/terms-policies/general",
+    "char_length": 18008
+  },
+  {
+    "id": "greensm-policy-general-terms-applied-to-prepaid-transportation-services",
+    "tab": "general-terms",
+    "index": 9,
+    "title": "GENERAL TERMS \r\n(Applied to Prepaid Transportation Services)",
+    "slug": "general-terms-applied-to-prepaid-transportation-services",
+    "category": "billing",
+    "source_url": "https://www.greensm.com/vn-en/terms-policies/general",
+    "char_length": 16864
+  },
+  {
+    "id": "greensm-policy-regulations-on-the-use-of-green-sm-delivery",
+    "tab": "general-terms",
+    "index": 10,
+    "title": "REGULATIONS ON THE USE OF GREEN SM DELIVERY",
+    "slug": "regulations-on-the-use-of-green-sm-delivery",
+    "category": "delivery",
+    "source_url": "https://www.greensm.com/vn-en/terms-policies/general",
+    "char_length": 13028
+  },
+  {
+    "id": "greensm-policy-privacy-notice",
+    "tab": "privacy-policy",
+    "index": 11,
+    "title": "GREEN SM PERSONAL DATA PROTECTION & PRIVACY POLICY",
+    "slug": "privacy-policy",
+    "category": "privacy",
+    "source_url": "https://www.greensm.com/vn-en/terms-policies/privacy-notice",
+    "char_length": 47118
+  }
+]

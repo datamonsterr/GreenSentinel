@@ -1,0 +1,253 @@
+# Benchmark distribution parameters for the 10k fraud-benchmark dataset (Issue #254).
+# Version 0.3.0-benchmark. Extends config/telemetry_distribution.yaml v0.2.0 structure
+# (telemetry_generation.py compatible) with EDA-measured priors replacing assumptions.
+# DO NOT edit telemetry_distribution.yaml v0.2.0; this file is the benchmark overlay.
+#
+# Provenance tags used in comments:
+#   measured-porto     docs/data/eda/porto_taxi.md (UCI Porto, n=50k sample, seed 63)
+#   measured-nyc       docs/data/eda/nyc_tlc.md (Yellow 2024-01, 2,867,608 valid trips)
+#   measured-mipo      notebooks/mipo/profile.json (MiPo AiSq10D slice) + docs/data/eda/mipo_variants.md
+#   measured-multiwoz  docs/data/eda/dialogues_multiwoz_sgd.md (1,872 taxi dialogues)
+#   measured-nayfeh    docs/data/eda/gps_spoofing_features.md (EDA-ONLY, 6,983 rows)
+#   measured-paysim    docs/data/eda/paysim_prevalence.md (fraud 0.1320%, enrichment caveat)
+#   assumption         demo choice; replace when Vietnam calibration data is available
+#
+# Prevalence caveat (measured-paysim): the benchmark class mix is ENRICHMENT for
+# detection benchmarking, not natural prevalence (PaySim fraud 0.13%). Do not present
+# enriched-mix precision as production precision; recalibrate thresholds to the
+# deployment base rate before operational use.
+
+version: "0.4.0-benchmark"
+feature_params_version: "v1.0.0"
+seed: 20261011  # assumption: benchmark default seed (CLI --seed overrides)
+
+sampling:
+  default_profile: porto_15s  # assumption: 15 s cadence keeps 10k-trip volume small
+  profiles:
+    porto_15s:
+      cadence_s: 15  # measured-porto nominal 15 s (docs: porto-doc); NYC has no GPS cadence
+    posisi_1s:
+      cadence_s: 1  # posisi: 1 s sampling (kept for compatibility, unused by benchmark)
+  missed_ping_probability: 0.05  # assumption, chosen so >= 90% of intervals equal the cadence (posisi)
+  outage:
+    trip_probability: 0.02  # assumption; posisi reports breaks (tunnels) but no rate
+    duration_s: {dist: uniform, low: 30, high: 90}  # assumption
+
+position:
+  noise_sd_fraction_of_accuracy: 0.5  # assumption; accuracy is a 68% radius (posisi)
+  unknown_accuracy_noise_m: 14.3  # assumption: lognormal median below, used when accuracy_m is null
+  accuracy_m:
+    dist: lognormal
+    mu: 2.66     # assumption fitted to posisi mode ~10 m: mode = exp(mu - sigma^2) = 10.0
+    sigma: 0.6   # derived: median 14.3 m, p95 ~38 m
+    clip_max: 127  # posisi: Android maximum accuracy 127 m
+    null_rate: 0.03  # assumption (Android 0.0 = unavailable, mapped to null)
+    heavy_tail: {rate: 0.005, dist: uniform, low: 130, high: 1000}  # assumption; posisi iOS tail reaches 149 km
+
+speed:
+  # measured-porto: trip-mean 7.55 m/s (Porto path/time); measured-nyc: 5.4 m/s mean
+  # (Manhattan taxi, dense urban). Benchmark uses Porto (GPS trajectories, not zones).
+  mean_trip_speed_mps: 7.55  # measured-porto (was 9.26 derived-posisi)
+  moving_speed_mps:
+    # measured-porto: pooled segment p50 5.84, p95 23.99 m/s; gamma mean ~7.0 (was 9.3).
+    car: {dist: gamma, shape: 2.0, mean: 7.0}        # measured-porto mean, shape assumption
+    motorbike: {dist: gamma, shape: 2.0, mean: 7.0}  # measured-porto mean, shape assumption
+  moving_speed_clip_mps: [3.0, 20.0]  # assumption: keeps sampled leg speeds plausible for city traffic
+  reported_speed_null_rate: 0.05  # assumption (Android 0.0 = invalid)
+
+bearing:
+  moving_noise_deg: {dist: normal, sd: 5.0}  # assumption
+  null_when_stationary: true  # posisi: Android 0.0 invalid, iOS reports 180 when not moving
+
+mock_location_reported_null_rate: 0.02  # assumption; unknown is not false
+latency_ms: {dist: lognormal, median: 250, sigma: 0.8}  # assumption, needs verification; payload only
+producer_declared_fields_emit_null: [distance_to_pickup_m, davi_score, data_gap_s]  # computed server-side
+
+route:
+  start_distance_to_pickup_m: {dist: uniform, low: 500, high: 2000}  # assumption
+  tortuosity_quantiles:
+    # measured-porto (WGS84 haversine): normal 1.12-1.45. Quantile shape filled
+    # assumption within the measured range (MiPo normal p50 1.2769 sits inside it).
+    normal: {p05: 1.12, p25: 1.21, p50: 1.30, p75: 1.37, p95: 1.45}  # measured-porto
+    # measured-mipo: AiSq detour p05 1.3584 / p50 1.5622 / p95 1.7888 confirmed on
+    # AiSq5D (matches within 0.015). StSt10M diverges (inverted) — NOT used.
+    detour: {p05: 1.3584, p25: 1.4664, p50: 1.5622, p75: 1.6553, p95: 1.7888}  # measured-mipo
+    # G2 loop-tail (Issue #276): assumption, no public loop-fraud GPS prior.
+    # Geometric justification: one circular loop of radius r adds ~2πr extra
+    # path over a chord of a few hundred metres, pushing tortuosity past 2.
+    # ERR-03 loop subset only; never used for normals.
+    loop: {p05: 2.0, p25: 2.4, p50: 2.8, p75: 3.3, p95: 3.9}  # assumption loop-tail
+  zero_step_share_normal: {mean: 0.0040, p95: 0.0220}  # measured-mipo, sanity check only
+
+# Point rates are shares of points in the trip. Scenario thresholds are assumptions
+# gate-tuned to FEATURE_PARAMS v1.0.0 (see benchmark.gates below).
+scenarios:
+  normal_trip:
+    health: {crash: 0.0, offline: 0.005, degraded: 0.02, jitter: 0.03, mock: 0.0}
+    arrival_distance_m: {dist: uniform, low: 0, high: 20}  # < arrival_radius_m 30
+    wait_at_pickup_s: {dist: uniform, low: 30, high: 120}  # counted in total SSD, not approach SSD
+    on_trip_s: {dist: uniform, low: 120, high: 300}  # assumption: observed part of the ride after pickup
+    expect: {davi_min: 0.5, approach_ssd_max_s: 60, guardrail_blocked: false}
+
+  driver_stall_cancel:  # seed name: intentional_dic; used for ERR-02 (long stall) and ERR-01 (short stall override)
+    health: {crash: 0.0, offline: 0.0, degraded: 0.02, jitter: 0.03, mock: 0.0}
+    approach_s: {dist: uniform, low: 60, high: 240}
+    min_start_distance_m: 50  # assumption: start outside arrival 30 m so the approach window is non-empty
+    move_away_first: {probability: 0.5, distance_m: {dist: uniform, low: 100, high: 300}}
+    stall_duration_s: {dist: uniform, low: 230, high: 420}  # assumption gate-tuned: 185 + 2 x 15 cadence + margin
+    # ERR-01 variant override (benchmark.err01_short_stall_s): stall < 120 s + driver cancel.
+    stall_distance_to_pickup_m: {dist: uniform, low: 80, high: 400}  # > arrival 30 m and > DAVI min 20 m
+    stall_noise_sd_m: 2.0  # derived: P(offset > 15 m anchor radius) ~ 8e-7 per point; applied via noise_modes.happy.stop_noise_sd_m
+    stall_accuracy_max_m: 15  # keeps anchor radius R = 15
+    arrives: false
+    expect: {approach_ssd_min_s: 185, arrived_at_pickup: false, guardrail_blocked: false}
+
+  traffic_gridlock:
+    health: {crash: 0.0, offline: 0.0, degraded: 0.02, jitter: 0.03, mock: 0.0}
+    traffic_congestion: heavy
+    duration_s: {dist: uniform, low: 300, high: 600}  # assumption: observed gridlock before the passenger cancels
+    stop_duration_s: {dist: uniform, low: 20, high: 90}  # < 180, stops never reach ERR-02
+    crawl_leg_m: {dist: uniform, low: 20, high: 60}  # >= crawl_leg_min_m
+    crawl_speed_mps: {dist: uniform, low: 0.5, high: 2.0}
+    crawl_leg_min_m: 20  # > anchor radius 15 m so stops do not merge
+    direction: toward_pickup
+    expect: {davi_min: 0.5, traffic_congestion: heavy, guardrail_blocked: false}
+
+  route_deviation:
+    health: {crash: 0.0, offline: 0.0, degraded: 0.02, jitter: 0.03, mock: 0.0}
+    toward_first_m: {dist: uniform, low: 50, high: 200}  # assumption; < detour so the away leg dominates
+    detour_away_m: {dist: uniform, low: 300, high: 800}
+    away_angle_spread_rad: 0.5  # assumption: away leg within +-29 deg of straight away from pickup
+    expect: {davi_max: 0.0, guardrail_blocked: false}
+
+  # G1 slow-crawl fraud (Issue #275): deliberate crawl under CLEAR traffic,
+  # ERR-02 subset. Micro-stops (10-40 s) never merge into a 180 s SSD anchor,
+  # so SSD-based detection misses by construction — the hard case is the point.
+  slow_crawl_fraud:
+    health: {crash: 0.0, offline: 0.0, degraded: 0.02, jitter: 0.03, mock: 0.0}
+    start_distance_m: {dist: uniform, low: 800, high: 1500}  # assumption: far enough for a 360-600 s crawl
+    end_gap_m: {dist: uniform, low: 80, high: 400}  # > arrival 30 m: never arrives
+    duration_s: {dist: uniform, low: 360, high: 600}  # assumption: stall-scale duration while moving
+    crawl_leg_m: {dist: uniform, low: 30, high: 70}  # > anchor radius 15 m so micro-stops do not merge
+    crawl_speed_mps: {dist: uniform, low: 0.8, high: 2.0}  # assumption: walking-pace crawl, traffic clear
+    crawl_leg_min_m: 30  # > anchor radius 15 m so micro-stops do not merge
+    stop_duration_s: {dist: uniform, low: 10, high: 30}  # < 180, micro-stops never reach ERR-02 SSD
+    traffic_congestion: clear
+    direction: toward_pickup
+    expect: {davi_min: 0.3, approach_ssd_max_s: 60, guardrail_blocked: false}
+
+  # G2 loop fraud (Issue #276): 1-2 circular loops + away leg, ERR-03 subset.
+  loop_deviation:
+    health: {crash: 0.0, offline: 0.0, degraded: 0.02, jitter: 0.03, mock: 0.0}
+    toward_first_m: {dist: uniform, low: 50, high: 200}  # assumption; < away so the fraud legs dominate
+    loop_count: {dist: uniform_int, low: 1, high: 2}  # assumption
+    loop_radius_m: {dist: uniform, low: 80, high: 200}  # assumption: city-block scale circles
+    loop_segments: 8  # assumption: octagon waypoints per loop
+    detour_away_m: {dist: uniform, low: 300, high: 800}
+    away_angle_spread_rad: 0.5  # assumption: away leg within +-29 deg of straight away from pickup
+    expect: {davi_max: 0.0, guardrail_blocked: false}
+
+  gps_spoofing:  # seed name: fake_gps
+    health: {crash: 0.0, offline: 0.0, degraded: 0.0, jitter: 0.0, mock: 1.0}
+    mixed_variant_mock_share: {dist: uniform, low: 0.8, high: 1.0}
+    # measured-nayfeh context: attack rows show near-zero honest velocity with position
+    # jumps; generator teleports keep every jump > 50 m/s across one 15 s ping.
+    # Honest >50 m/s segments are 0.151% (measured-porto per-trip speed_max p95 51.6):
+    # ERR-05 gate threshold 50 m/s stays (FEATURE_PARAMS implausible_speed_mps).
+    teleport_jumps: {count: {dist: uniform_int, low: 1, high: 3}, speed_mps: {dist: uniform, low: 60, high: 200}}  # > 50 implausible
+    teleport_jump_m: {dist: uniform, low: 1500, high: 4000}  # assumption: > 50 m/s even across one 15 s ping
+    expect: {mock_ratio_min: 0.8, guardrail_short_circuit: false}
+
+  technical_dropout:
+    health: {crash: 0.0, offline: 0.0, degraded: 0.02, jitter: 0.03, mock: 0.0}
+    dropout_kind: {app_crash: 0.5, network_loss: 0.5}  # last ping before the gap carries crashed / offline
+    gap_s: {dist: uniform, low: 60, high: 300}  # > max_sample_gap_s 30; no pings during the gap
+    resume_after_gap_probability: 0.5  # otherwise one reconnect ping at gap end, no further movement
+    dropout_at_fraction_of_approach: [0.3, 0.7]  # assumption: where in the approach the dropout starts
+    after_gap_s: {dist: uniform, low: 30, high: 120}  # assumption: observed time after a resumed gap
+    platform_incident: true  # app.platform_incidents row at gap start
+    expect: {max_gap_s_min: 31, coverage_max: 0.99, guardrail_blocked: true}
+
+  gps_jitter:
+    health: {crash: 0.0, offline: 0.0, degraded: 0.02, jitter: {dist: uniform, low: 0.3, high: 0.6}, mock: 0.0}
+    jitter_accuracy_m: {dist: uniform, low: 20, high: 50}
+    expect: {davi_min: 0.0, approach_ssd_max_s: 60, guardrail_blocked: false}
+
+noise_modes:
+  happy:
+    clock_jitter_s: 0.0
+    ar1_rho: 0.0  # independent per-ping noise while moving
+    stop_noise_sd_m: 2.0  # every stop leg (stall, gridlock stop, wait at pickup)
+    slow_move_threshold_mps: 1.0  # assumption: legs slower than this (gridlock crawl) also use stop_noise_sd_m
+    clip_stall_accuracy: true  # stall accuracy <= stall_accuracy_max_m
+  stress:
+    clock_jitter_s: {dist: normal, mean: 0.0, sd: 0.3, clip: 1.0}  # assumption
+    ar1_rho: 0.9  # assumption: correlation between consecutive pings (multipath drifts slowly)
+    stop_noise_sd_m: null  # long-run sd = accuracy / 2 while stopped and moving
+    clip_stall_accuracy: false  # accuracy from the shared lognormal, not forced <= 15 m
+
+benchmark:
+  # Exact 10k class mix (ENRICHMENT for detection benchmarking, not natural prevalence).
+  class_mix:
+    no_violation: 7000
+    ERR-02: 800
+    insufficient_evidence: 600
+    ERR-01: 500
+    ERR-03: 500
+    ERR-04: 300
+    ERR-05: 300
+  # ERR-01 short-stall variant override for driver_stall_cancel.stall_duration_s.
+  err01_short_stall_s: {dist: uniform, low: 60, high: 119}  # assumption gate-tuned: < 120 s, below ERR-02
+  # Honest gridlock subset inside no_violation: normal_trip geometry + heavy traffic.
+  gridlock_subset_share: 0.10  # assumption: ~10% of normals carry traffic_congestion heavy
+  # Fraud-variant subsets inside their labels (Issues #275/#276, assumption
+  # shares for hard-case coverage; class mix unchanged).
+  slowcrawl_subset_share: 0.30  # assumption: ~30% of ERR-02 is slow-crawl (traffic clear)
+  loop_subset_share: 0.30  # assumption: ~30% of ERR-03 is loop geometry (tort >= 2)
+  # Trip scheduler (measured-nyc anchors; shape fill assumption; normalized at runtime).
+  # Hour anchors measured-nyc: trough h04 0.0053, h05 0.0061, h17 0.0698, peak h18 0.0719,
+  # plateau h10-h22 0.047-0.072. Weekday vector fully measured-nyc (Mon-Sun).
+  # Weekend share 0.2557 measured-nyc; night share 0.244 measured-porto (informational).
+  scheduler:
+    hour_weights: [0.018, 0.012, 0.008, 0.006, 0.0053, 0.0061, 0.014, 0.028, 0.040, 0.046,
+      0.050, 0.053, 0.055, 0.052, 0.050, 0.053, 0.060, 0.0698, 0.0719, 0.062,
+      0.052, 0.047, 0.035, 0.025]
+    hour_weights_provenance: "measured-nyc anchors h04/h05/h17/h18; other hours assumption fill"
+    weekday_weights: [0.1370, 0.1565, 0.1676, 0.1451, 0.1381, 0.1419, 0.1138]  # measured-nyc Mon-Sun
+    weekend_share: 0.256  # measured-nyc (0.2557)
+    night_share: 0.244  # measured-porto informational (24.4%)
+  geography:
+    # assumption: Hanoi intra-city landmarks; pickup/dropoff sampled from pairs 1-8 km apart.
+    # measured-porto context: normal path p50 3964 m; measured-nyc: trip p50 2736 m.
+    landmark_pair_km: [1.0, 8.0]
+    trip_distance_context_m: {p50_porto_path: 3964, p50_nyc: 2736}
+    normal_duration_s: [300, 900]  # measured-nyc med 703 s; Porto mean 733 s
+  dialogue:
+    turns_min: 4  # measured-multiwoz context: taxi dialogues p05 6 / p50 16 total turns;
+    turns_max: 12  # benchmark caps at 12 (ours shorter: ~8 user turns at p50 in source)
+    passenger_utter_words_p50: 11  # measured-multiwoz
+  # Dialogue sparsity modes (Issue #270, additive): per-label P(empty) / P(customer_only),
+  # remainder is full dialogue. Rates are assumptions for robustness coverage.
+  dialogue_modes:
+    no_violation: {empty: 0.15, customer_only: 0.05}
+    ERR-02: {customer_only: 0.25, empty: 0.05}
+    ERR-01: {customer_only: 0.10}
+    default: {empty: 0.03}
+  # FeatureWindow acceptance gates (builder FAILS the build, exit 1, if any gate misses).
+  gates:
+    err02_ssd_min_s: 185  # measured at >=95% of non-slowcrawl ERR-02 (threshold 180, margin 5)
+    err02_ssd_cover: 0.95
+    slowcrawl_davi_min: 0.3  # G1: slow-crawl moves toward pickup despite fraud
+    slowcrawl_davi_cover: 0.90
+    slowcrawl_ssd_max_s: 180  # G1: below the ERR-02 >=180 stall threshold (heuristic misses by design)
+    slowcrawl_ssd_cover: 0.95
+    loop_tort_min: 2.0  # G2: loop geometry reads tort >= 2.0
+    loop_tort_cover: 0.95
+    loop_davi_max: 0.0  # G2: fraud legs dominate, DAVI stays negative
+    loop_davi_cover: 0.90
+    gridlock_davi_min: 0.5  # measured at >=90% of gridlock subset
+    gridlock_davi_cover: 0.90
+    dropout_gap_min_s: 30  # measured at 100% of insufficient_evidence
+    spoof_mock_min: 0.8  # measured at 100% of ERR-05
+    normal_ssd_max_s: 60  # measured at >=95% of normals
+    normal_ssd_cover: 0.95

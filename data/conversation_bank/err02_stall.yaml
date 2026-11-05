@@ -1,0 +1,43 @@
+context: err02_stall
+driver:
+  - {text: "Em hủy đi rồi anh chạy, đứng đây tốn xăng", lang: vi}
+  - {text: "Anh đậu đây đợi, bao giờ em hủy thì thôi", lang: vi}
+  - {text: "Còn {dist_km}km nữa mà đường đông lắm, em hủy đi", lang: vi}
+  - {text: "Anh nghỉ xíu, em cứ đợi hoặc hủy tùy em", lang: vi}
+  - {text: "Xe anh hết xăng, em hủy giùm anh đi", lang: vi}
+  - {text: "Anh ăn cơm đã, xong mới qua được", lang: vi}
+  - {text: "Em không hủy thì anh cứ đậu đây thôi", lang: vi}
+  - {text: "Anh ở quán cà phê gần đó, đợi anh xíu", lang: vi}
+  - {text: "Qua giờ cao điểm anh mới chạy, em đợi nhé", lang: vi}
+  - {text: "Anh đậu ở lề đường {pickup} rồi, không đi đâu", lang: vi}
+  - {text: "Muốn đi thì hủy cuốc này book lại giá khác", lang: vi}
+  - {text: "Anh chờ giá surge lên mới chạy nha em", lang: vi}
+  - {text: "Xe anh nóng máy, để nguội đã rồi tính", lang: vi}
+  - {text: "Anh đang bận việc riêng, em đợi {wait_min} phút nữa", lang: vi}
+  - {text: "I'm parked here, cancel if you're in a hurry", lang: en}
+  - {text: "Not moving until surge price goes up", lang: en}
+  - {text: "I'm taking a break, wait or cancel", lang: en}
+  - {text: "Too much traffic, I'm staying put", lang: en}
+  - {text: "Cancel the trip and I'll start driving", lang: en}
+  - {text: "I'm resting now, come back in {wait_min} minutes", lang: en}
+customer:
+  - {text: "Anh ơi sao xe đứng yên {wait_min} phút rồi", lang: vi}
+  - {text: "Anh có di chuyển không vậy, map không thấy nhúc nhích", lang: vi}
+  - {text: "Em đợi {wait_min} phút mà xe vẫn ở nguyên chỗ cũ", lang: vi}
+  - {text: "Anh đậu một chỗ là sao, em đang vội", lang: vi}
+  - {text: "Tài xế cố tình câu giờ, không chịu qua đón", lang: vi}
+  - {text: "Ảnh kêu em tự hủy thì mới chạy tiếp", lang: vi}
+  - {text: "Xe đứng im ở {pickup} cả buổi rồi", lang: vi}
+  - {text: "Em gọi thì ảnh nói đang nghỉ, đợi tiếp đi", lang: vi}
+  - {text: "Đường thì thoáng mà xe ảnh không di chuyển", lang: vi}
+  - {text: "Ảnh ép em hủy để khỏi bị phạt tỉ lệ", lang: vi}
+  - {text: "Em trễ giờ làm rồi, anh chạy giúp em với", lang: vi}
+  - {text: "Sao anh cứ đậu đó, em hủy thì ai chịu phí", lang: vi}
+  - {text: "Ảnh nói đợi giá lên mới chạy, vô lý quá", lang: vi}
+  - {text: "Em thấy xe đậu ở quán nước, không phải kẹt xe", lang: vi}
+  - {text: "The car hasn't moved for {wait_min} minutes", lang: en}
+  - {text: "Driver is stalling, please do something", lang: en}
+  - {text: "He refuses to move unless I cancel", lang: en}
+  - {text: "Still parked at the same spot near {pickup}", lang: en}
+  - {text: "He is forcing me to cancel the trip", lang: en}
+  - {text: "No traffic at all but he won't drive over", lang: en}

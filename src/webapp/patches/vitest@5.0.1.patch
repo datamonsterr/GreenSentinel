@@ -1,0 +1,24 @@
+diff --git a/dist/chunks/index.DzobfTyw.js b/dist/chunks/index.DzobfTyw.js
+index 08c3c116fbf8fe4685b45dee57f0f645b1270d81..16c9d5d3ecba05e91807d02854f079d6cfc88c10 100644
+--- a/dist/chunks/index.DzobfTyw.js
++++ b/dist/chunks/index.DzobfTyw.js
+@@ -10687,7 +10687,8 @@ var RunnerState = /* @__PURE__ */ function(RunnerState) {
+ 	RunnerState["STOPPED"] = "stopped";
+ 	return RunnerState;
+ }(RunnerState || {});
+-const START_TIMEOUT = 6e4;
++// P-063 patch (#613): raised for starved self-hosted CI runners; upstream value 6e4.
++const START_TIMEOUT = 3e5;
+ const STOP_TIMEOUT = 6e4;
+ /** @experimental */
+ class PoolRunner {
+@@ -11391,7 +11392,8 @@ class VmThreadsPoolWorker extends ThreadsPoolWorker {
+ 	}
+ }
+ 
+-const WORKER_START_TIMEOUT = 9e4;
++// P-063 patch (#613): raised for starved self-hosted CI runners; upstream value 9e4.
++const WORKER_START_TIMEOUT = 33e4;
+ class Pool {
+ 	options;
+ 	logger;

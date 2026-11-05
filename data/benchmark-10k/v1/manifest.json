@@ -1,0 +1,70 @@
+{
+  "builder": "build_10k v1",
+  "class_counts": {
+    "ERR-01": 500,
+    "ERR-02": 800,
+    "ERR-03": 500,
+    "ERR-04": 300,
+    "ERR-05": 300,
+    "insufficient_evidence": 600,
+    "no_violation": 7000
+  },
+  "config_version": "0.3.0-benchmark",
+  "gates": [
+    {
+      "gate": "ERR-02 SSD>=180",
+      "measured": 0.9762,
+      "n": 800,
+      "pass": true,
+      "required": 0.95
+    },
+    {
+      "gate": "gridlock DAVI>0.5",
+      "measured": 0.9929,
+      "n": 704,
+      "pass": true,
+      "required": 0.9
+    },
+    {
+      "gate": "dropout max_gap>30",
+      "measured": 1.0,
+      "n": 600,
+      "pass": true,
+      "required": 1.0
+    },
+    {
+      "gate": "spoof mock>=0.8",
+      "measured": 1.0,
+      "n": 300,
+      "pass": true,
+      "required": 1.0
+    },
+    {
+      "gate": "normal SSD<60",
+      "measured": 1.0,
+      "n": 7000,
+      "pass": true,
+      "required": 0.95
+    }
+  ],
+  "generator_git_sha": "7852c04b9d7497d7a0c950add6568100584e9aa2",
+  "noise": "happy",
+  "prevalence_note": "Class mix is ENRICHMENT for detection benchmarking, not natural prevalence (PaySim fraud 0.13% reference).",
+  "priors": {
+    "dialogue": "measured-multiwoz 4-12 turns cap, passenger p50 11 words",
+    "duration_distance": "measured-nyc med 703 s / p50 2736 m; Porto path p50 3964 m; normal 300-900 s, 1.5-8 km",
+    "geography": "assumption Hanoi landmarks, pairs 1-8 km",
+    "honest_implausible_jump": "measured-porto 0.151% segments >50 m/s; threshold 50 kept",
+    "population": "assumption (no public honest-vs-fraud driver distributions)",
+    "prevalence": "measured-paysim 0.13% reference; mix is ENRICHMENT, not natural prevalence",
+    "scheduler": "measured-nyc hour anchors h04/h05/h17/h18 + full weekday vector; shape fill assumption",
+    "speed_mean_trip": "measured-porto 7.55 m/s (Porto path/time); NYC 5.4 reference",
+    "speed_moving_gamma": "measured-porto mean 7.0, shape assumption; segment p50 5.84 / p95 23.99",
+    "tortuosity_detour": "measured-mipo AiSq p50 1.5622 (StSt10M diverged, excluded)",
+    "tortuosity_normal": "measured-porto 1.12-1.45 (WGS84); quantile shape assumption"
+  },
+  "seed": 20261011,
+  "trip_count": 10000,
+  "trips_sha256": "b6aed4a2a6058c9bd6c4a002493f27254e70fcaba2f3df154b7931ed12a88154",
+  "version": "v1"
+}

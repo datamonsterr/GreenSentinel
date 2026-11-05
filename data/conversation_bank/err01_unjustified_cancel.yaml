@@ -1,0 +1,43 @@
+context: err01_unjustified_cancel
+driver:
+  - {text: "Hủy vô cớ thì kệ, anh không đón đâu", lang: vi, trap: keyword}
+  - {text: "Anh từ chối đón cuốc này, em tự hủy đi", lang: vi, trap: keyword}
+  - {text: "Cuốc này anh từ chối, khỏi đợi nữa", lang: vi, trap: keyword}
+  - {text: "Thích thì anh hủy vô cớ đó, làm gì nhau", lang: vi, trap: keyword}
+  - {text: "Anh từ chối phục vụ, em book xe khác đi", lang: vi, trap: keyword}
+  - {text: "Hủy vô cớ đó rồi sao, anh bận rồi", lang: vi, trap: keyword}
+  - {text: "Unjustified cancel, I won't pick you up", lang: en, trap: keyword}
+  - {text: "This is unjustified but I'm cancelling anyway", lang: en, trap: keyword}
+  - {text: "Anh không thích cuốc này, em tự hủy giùm", lang: vi, trap: paraphrase}
+  - {text: "Chỗ em xa quá, anh quay đầu đây", lang: vi, trap: paraphrase}
+  - {text: "Em hủy giúp anh, anh có việc gấp", lang: vi, trap: paraphrase}
+  - {text: "Anh không qua đâu, em đặt lại xe khác đi", lang: vi, trap: paraphrase}
+  - {text: "Cuốc này tiền ít quá, anh bỏ nha", lang: vi, trap: paraphrase}
+  - {text: "Anh đổi ý rồi, không đón nữa đâu", lang: vi, trap: paraphrase}
+  - {text: "Kẹt xe quá anh lười qua, em hủy giùm nhé", lang: vi, trap: paraphrase}
+  - {text: "Em chờ lâu thì hủy đi, anh không tới", lang: vi, trap: paraphrase}
+  - {text: "Sorry, not coming, please cancel the trip", lang: en, trap: paraphrase}
+  - {text: "Too far for me, find another driver", lang: en, trap: paraphrase}
+  - {text: "I changed my mind, cancel it yourself", lang: en, trap: paraphrase}
+  - {text: "Low fare, I'm skipping this one", lang: en, trap: paraphrase}
+customer:
+  - {text: "Tài xế hủy vô cớ, em chưa kịp lên xe", lang: vi, trap: keyword}
+  - {text: "Ảnh từ chối đón rồi bắt em tự hủy", lang: vi, trap: keyword}
+  - {text: "Em bị từ chối thẳng mặt ở điểm đón", lang: vi, trap: keyword}
+  - {text: "Cuốc bị hủy vô cớ sau {wait_min} phút chờ", lang: vi, trap: keyword}
+  - {text: "Driver unjustified cancelled on me", lang: en, trap: keyword}
+  - {text: "He said unjustified cancel and drove off", lang: en, trap: keyword}
+  - {text: "Tài xế từ chối chở vì em đi gần quá", lang: vi, trap: keyword}
+  - {text: "Bị hủy vô cớ ngay trước cổng {pickup}", lang: vi, trap: keyword}
+  - {text: "Sao tài xế chưa tới mà app báo hủy rồi", lang: vi, trap: paraphrase}
+  - {text: "Tài xế kêu em tự hủy, em phải làm sao", lang: vi, trap: paraphrase}
+  - {text: "Em đợi {wait_min} phút rồi mà ảnh bỏ cuốc", lang: vi, trap: paraphrase}
+  - {text: "Ảnh nói không đón rồi tắt máy luôn", lang: vi, trap: paraphrase}
+  - {text: "Em đứng đúng điểm ghim mà ảnh chạy mất", lang: vi, trap: paraphrase}
+  - {text: "Ảnh chê cuốc ngắn rồi bỏ đi luôn", lang: vi, trap: paraphrase}
+  - {text: "Em gọi lại thì ảnh không nghe máy nữa", lang: vi, trap: paraphrase}
+  - {text: "Tài xế lướt qua mặt em rồi đi thẳng", lang: vi, trap: paraphrase}
+  - {text: "Driver told me to cancel it myself!", lang: en, trap: paraphrase}
+  - {text: "He drove past me and never stopped", lang: en, trap: paraphrase}
+  - {text: "Waited {wait_min} minutes and he just left", lang: en, trap: paraphrase}
+  - {text: "He hung up and cancelled the ride", lang: en, trap: paraphrase}

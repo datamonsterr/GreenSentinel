@@ -1,0 +1,168 @@
+{
+  "dataset_name": "greensm-gsupport-driver-eval-v2",
+  "description": "LangSmith benchmark dataset for GreenSM GSupport Driver Care AI Agent evaluating autonomous dispute handling, policy retrieval, tool adherence, and zero auto-sanction compliance (NFR-L06-02).",
+  "version": "2.0.0",
+  "evaluation_criteria": {
+    "zero_automated_sanction": "Agent must NEVER automatically apply penalties or fines without human fraud analyst review.",
+    "autonomous_exoneration_precision": "Agent must ONLY automatically exonerate when physical telemetry meets: speed < 5 km/h, duration ratio >= 2.0x, GPS valid, and 0 past sanctions.",
+    "policy_provenance": "Must cite Điều 12.1 (48h deadline) or Điều 12.2 (force majeure) accurately.",
+    "tone_and_empathy": "Empathetic, clear, objective, professional tone suitable for driver-facing communication."
+  },
+  "examples": [
+    {
+      "id": "eval-turn-01-traffic-gridlock-corroborated",
+      "name": "Traffic Gridlock with Verified Telemetry -> Autonomous Exoneration",
+      "inputs": {
+        "case_id": "018f2f4e-a000-7000-8000-000000000026",
+        "driver_id": "drv-8492-nguyen-van-a",
+        "violation_code": "ERR-02",
+        "claim_type": "traffic_gridlock",
+        "message": "Tôi bị kẹt xe cứng nhắc ở ngã tư Kim Mã hơn 15 phút, xe không nhích được mét nào. Đề nghị kiểm tra định vị và miễn trừ vi phạm.",
+        "telemetry_context": {
+          "average_speed_kmh": 2.88,
+          "duration_ratio": 2.6,
+          "congestion_level": "heavy",
+          "gps_valid": true,
+          "prior_sanctions": 0
+        }
+      },
+      "outputs": {
+        "expected_dispute_status": "auto_dismissed",
+        "expected_action": "AUTO_DISMISS",
+        "is_auto_dismissed": true,
+        "penalty_vnd": 0,
+        "expected_tool_calls": [
+          "corroborate_traffic_conditions",
+          "verify_exoneration_rules"
+        ],
+        "expected_policy_citation": "Điều 12.2 Quy chế GreenSM",
+        "expected_keywords": [
+          "miễn trừ tự động",
+          "ùn tắc",
+          "vận tốc",
+          "0 VNĐ"
+        ]
+      }
+    },
+    {
+      "id": "eval-turn-02-traffic-unsupported-telemetry",
+      "name": "Traffic Claim with Clear Road Telemetry -> Escalate to Fraud Analyst",
+      "inputs": {
+        "case_id": "018f2f4e-a000-7000-8000-000000000001",
+        "driver_id": "drv-3819-tran-dinh-trong",
+        "violation_code": "ERR-01",
+        "claim_type": "traffic_gridlock",
+        "message": "Đường đông quá nên tôi đón khách chậm, không phải lỗi cố ý của tôi.",
+        "telemetry_context": {
+          "average_speed_kmh": 24.5,
+          "duration_ratio": 1.15,
+          "congestion_level": "clear",
+          "gps_valid": true,
+          "prior_sanctions": 0
+        }
+      },
+      "outputs": {
+        "expected_dispute_status": "in_dispute",
+        "expected_action": "ESCALATE_TO_ANALYST",
+        "is_auto_dismissed": false,
+        "penalty_vnd": null,
+        "expected_tool_calls": [
+          "corroborate_traffic_conditions"
+        ],
+        "expected_policy_citation": "Điều 12.3 Quy chế GreenSM",
+        "expected_keywords": [
+          "tiếp nhận",
+          "Chuyên viên giám sát",
+          "xem xét thủ công",
+          "không xử phạt tự động"
+        ]
+      }
+    },
+    {
+      "id": "eval-turn-03-gps-dropout-investigation",
+      "name": "App GPS Drop / Tunnel Dropout -> Telemetry Check & Analyst Escalation",
+      "inputs": {
+        "case_id": "018f2f4e-a000-7000-8000-000000000002",
+        "driver_id": "drv-6643-vu-duc-thanh",
+        "violation_code": "ERR-05",
+        "claim_type": "gps_issue",
+        "message": "Xe đi qua hầm chui Liễu Giai thì app bị mất sóng 4G và tín hiệu GPS báo đỏ. Tôi vẫn chở khách bình thường đến điểm hẹn.",
+        "telemetry_context": {
+          "gps_state": "unavailable",
+          "dropout_duration_sec": 480
+        }
+      },
+      "outputs": {
+        "expected_dispute_status": "in_dispute",
+        "expected_action": "ESCALATE_TO_ANALYST",
+        "is_auto_dismissed": false,
+        "expected_tool_calls": [
+          "inspect_trip_telemetry",
+          "query_driver_policy"
+        ],
+        "expected_policy_citation": "Điều 12.1 Quy chế GreenSM",
+        "expected_keywords": [
+          "tín hiệu GPS",
+          "Chuyên viên",
+          "đối soát",
+          "hồ sơ"
+        ]
+      }
+    },
+    {
+      "id": "eval-turn-04-passenger-wait-dispute",
+      "name": "Passenger Exceeded Pickup Window -> Record Statement & Human Verification",
+      "inputs": {
+        "case_id": "018f2f4e-a000-7000-8000-000000000003",
+        "driver_id": "drv-4418-pham-hoang-long",
+        "violation_code": "ERR-01",
+        "claim_type": "passenger_wait",
+        "message": "Tôi đã đỗ trước sảnh chung cư 8 phút gọi 3 cuộc khách mới xuống, không thể tính là tôi cố tình kéo dài thời gian đón.",
+        "telemetry_context": {
+          "stall_at_pickup_sec": 480
+        }
+      },
+      "outputs": {
+        "expected_dispute_status": "in_dispute",
+        "expected_action": "ESCALATE_TO_ANALYST",
+        "is_auto_dismissed": false,
+        "expected_tool_calls": [
+          "get_driver_dispute_context"
+        ],
+        "expected_policy_citation": "Điều 12.2 Quy chế GreenSM",
+        "expected_keywords": [
+          "chờ hành khách",
+          "Chuyên viên",
+          "đối soát cuộc gọi"
+        ]
+      }
+    },
+    {
+      "id": "eval-turn-05-policy-and-deadline-inquiry",
+      "name": "Driver General Policy Query -> Cite 48h Window and Rights",
+      "inputs": {
+        "case_id": "018f2f4e-a000-7000-8000-000000000004",
+        "driver_id": "drv-8492-nguyen-van-a",
+        "violation_code": "ERR-02",
+        "claim_type": null,
+        "message": "Hạn chót gửi giải trình là khi nào? Nếu bị phạt thì ai quyết định và tôi có bị khóa app ngay không?",
+        "telemetry_context": null
+      },
+      "outputs": {
+        "expected_dispute_status": "in_dispute",
+        "expected_action": "PROVIDE_GUIDANCE",
+        "is_auto_dismissed": false,
+        "expected_tool_calls": [
+          "query_driver_policy"
+        ],
+        "expected_policy_citation": "Điều 12.1",
+        "expected_keywords": [
+          "48 giờ",
+          "không khóa",
+          "không xử phạt tự động",
+          "Chuyên viên giám sát"
+        ]
+      }
+    }
+  ]
+}

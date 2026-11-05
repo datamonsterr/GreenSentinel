@@ -1,0 +1,17 @@
+{
+  "case_id": "018f2f4e-a000-7000-8000-000000000048",
+  "cursor": 69.247,
+  "gap_seconds": 59.966,
+  "icon": "car",
+  "last_observation": [
+    105.8521993,
+    21.03185
+  ],
+  "mode": "gap",
+  "observed_fix_count": 5,
+  "position": [
+    105.8521993,
+    21.03185
+  ],
+  "speed": "⚡— km/h"
+}

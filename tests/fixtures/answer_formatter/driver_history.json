@@ -1,0 +1,24 @@
+{
+  "scenario": "driver_history",
+  "raw_answer": "Lịch sử vận hành của tài xế 018f2f4e-b300-7000-8000-000000000006 ghi nhận 3 chuyến gần nhất: chuyến trip_hist_001 từ Hoàn Kiếm đến Ba Đình hoàn thành tốt; chuyến trip_hist_002 từ Đống Đa đến Thanh Xuân bị hủy bởi khách sau 200s dừng đỗ; chuyến trip_hist_003 từ Cầu Giấy đến Tây Hồ bị cảnh báo lệch lộ trình 40%.",
+  "citations": [],
+  "entities": {
+    "case_ids": [],
+    "driver_ids": ["018f2f4e-b300-7000-8000-000000000006"],
+    "trip_ids": ["trip_hist_001", "trip_hist_002", "trip_hist_003"],
+    "citation_ids": []
+  },
+  "mock_formatted_output": {
+    "markdown": "**Lịch sử 3 chuyến gần nhất ghi nhận 2 cảnh báo vi phạm.**\n\nTổng hợp dữ liệu vận hành của [Tài xế Đỗ Quốc Cường](driver://018f2f4e-b300-7000-8000-000000000006) trong ca làm việc:\n\n| Chuyến đi | Trạng thái | Ghi chú vi phạm |\n| :--- | :--- | :--- |\n| [Hoàn Kiếm → Ba Đình](trip://trip_hist_001?pickup=Ho%C3%A0n+Ki%E1%BA%BFm&dest=Ba+%C4%90%C3%ACnh) | Hoàn thành | Bình thường |\n| [Đống Đa → Thanh Xuân](trip://trip_hist_002?pickup=%C4%90%E1%BB%91ng+%C4%90a&dest=Thanh+Xu%C3%A2n) | Hủy cuốc | Dừng đỗ kéo dài 200s |\n| [Cầu Giấy → Tây Hồ](trip://trip_hist_003?pickup=C%E1%BA%A7u+Gi%E1%BA%A5y&dest=T%C3%A2y+H%E1%BB%93) | Cảnh báo | Lệch lộ trình 40% |\n\nTài xế có xu hướng lặp lại hành vi vi phạm dừng đỗ và lệch tuyến.",
+    "suggestions": [
+      {
+        "label": "Xem báo cáo tổng hợp",
+        "prompt": "Xem tỷ lệ hủy chuyến và đánh giá sao của tài xế"
+      },
+      {
+        "label": "Kiểm tra xe",
+        "prompt": "Xem danh sách phương tiện tài xế đã sử dụng"
+      }
+    ]
+  }
+}

@@ -1,0 +1,62 @@
+# OpenAI Codex Project-Level Configuration
+[agents]
+enabled = true
+default_subagent_model = "gpt-5.6-luna"
+default_subagent_reasoning_effort = "low"
+
+[agents.pr-manager]
+description = "PR lifecycle manager. Creates PR with correct template (.github/PULL_REQUEST_TEMPLATE/), monitors CI workflow and review comments, then runs pr-fix."
+config_file = "agents/pr-manager.toml"
+
+[agents.implementer]
+description = "Feature implementation specialist with DoD clarification and ADR logging. Uses grill-with-docs, subagent-driven-development, and TDD."
+config_file = "agents/implementer.toml"
+
+[agents.doc-writer]
+description = "Documentation specialist enforcing subfolder README specifications, templates, and required questions using documentation-writer and write-a-doc."
+config_file = "agents/doc-writer.toml"
+
+[agents.data-analyst]
+description = "Dataset fetch + EDA specialist. Uses hf-cli to pull the frozen 40k corpus, profiles schema, runs data-eda-notebook."
+config_file = "agents/data-analyst.toml"
+
+[agents.ui-designer]
+description = "Frontend UI/UX designer. Generates screens via Stitch CLI, applies ui-ux-pro-max, frontend-design, scrollytelling, gsap, lenis, react-bits skills, and updates Next.js React components and docs."
+config_file = "agents/ui-designer.toml"
+
+[agents.git-rebaser]
+description = "Git operations specialist. Manages branch rebasing, linear history, and conflict resolution using git-rebase-patterns."
+config_file = "agents/git-rebaser.toml"
+
+[agents.researcher]
+description = "Deep technology and tooling researcher. Explores docs via websearch and Context7, teaches new tech with teach skill, and aggregates findings."
+config_file = "agents/researcher.toml"
+
+[agents.planner]
+description = "Strategic planning, task decomposition, and milestone tracking subagent."
+config_file = "agents/planner.toml"
+
+[agents.research]
+description = "Alias for researcher. Read-only exploration and documentation lookups."
+config_file = "agents/research.toml"
+
+[agents.data-scout]
+description = "Corpus fetch subagent. Pulls the frozen 40k trips via hf-cli and stages small slices in isolated Git worktrees."
+config_file = "agents/data-scout.toml"
+
+[agents.data-eda]
+description = "Frozen-corpus EDA and schema profiler against MVP.md and ADR-0002."
+config_file = "agents/data-eda.toml"
+
+[agents.benchmark-worker]
+description = "Candidate method implementation subagent. Implements one paper algorithm on BaseBenchmarkModel and benchmarks it on the frozen 40k corpus."
+config_file = "agents/benchmark-worker.toml"
+
+[agents.test-writer]
+description = "Test authoring specialist for pytest, vitest, and playwright. Writes unit, integration, and E2E regression tests following TDD."
+config_file = "agents/test-writer.toml"
+
+[agents.test-runner]
+description = "Test execution, triage, and regression verification subagent. Runs test suites across pytest, vitest, and playwright, triages failures, and reports exact root causes."
+config_file = "agents/test-runner.toml"
+

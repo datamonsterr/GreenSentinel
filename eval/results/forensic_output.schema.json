@@ -1,0 +1,232 @@
+{
+  "$defs": {
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "source": {
+          "minLength": 1,
+          "title": "Source",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "boolean"
+            },
+            {
+              "type": "integer"
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value"
+        },
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        }
+      },
+      "required": [
+        "source",
+        "value",
+        "description"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "PolicyCitation": {
+      "additionalProperties": false,
+      "description": "Exact retrieved record, including version and provenance.",
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "version": {
+          "minLength": 1,
+          "title": "Version",
+          "type": "string"
+        },
+        "source": {
+          "minLength": 1,
+          "title": "Source",
+          "type": "string"
+        },
+        "section": {
+          "minLength": 1,
+          "title": "Section",
+          "type": "string"
+        },
+        "text": {
+          "minLength": 1,
+          "title": "Text",
+          "type": "string"
+        },
+        "is_demo_policy": {
+          "default": false,
+          "title": "Is Demo Policy",
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "version",
+        "source",
+        "section",
+        "text"
+      ],
+      "title": "PolicyCitation",
+      "type": "object"
+    },
+    "ScoreSemantics": {
+      "additionalProperties": false,
+      "properties": {
+        "scale": {
+          "const": "0.0_to_1.0_ordinal_support",
+          "default": "0.0_to_1.0_ordinal_support",
+          "title": "Scale",
+          "type": "string"
+        },
+        "calibrated": {
+          "const": false,
+          "default": false,
+          "title": "Calibrated",
+          "type": "boolean"
+        },
+        "is_violation_probability": {
+          "const": false,
+          "default": false,
+          "title": "Is Violation Probability",
+          "type": "boolean"
+        },
+        "description": {
+          "default": "Advisory rule/model support score only. Not a calibrated violation probability, vector similarity score, or punitive sanction basis.",
+          "title": "Description",
+          "type": "string"
+        }
+      },
+      "title": "ScoreSemantics",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "case_id": {
+      "minLength": 1,
+      "title": "Case Id",
+      "type": "string"
+    },
+    "category": {
+      "enum": [
+        "ERR-02",
+        "ERR-05",
+        "no_violation",
+        "insufficient_evidence"
+      ],
+      "title": "Category",
+      "type": "string"
+    },
+    "confidence": {
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Confidence",
+      "type": "number"
+    },
+    "score_semantics": {
+      "$ref": "#/$defs/ScoreSemantics"
+    },
+    "evidence": {
+      "items": {
+        "$ref": "#/$defs/Evidence"
+      },
+      "minItems": 1,
+      "title": "Evidence",
+      "type": "array"
+    },
+    "summary": {
+      "minLength": 1,
+      "title": "Summary",
+      "type": "string"
+    },
+    "policy_version": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Policy Version"
+    },
+    "retrieved_policy_clauses": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Retrieved Policy Clauses",
+      "type": "array"
+    },
+    "policy_citations": {
+      "items": {
+        "$ref": "#/$defs/PolicyCitation"
+      },
+      "title": "Policy Citations",
+      "type": "array"
+    },
+    "uncertainty_score": {
+      "default": 0.0,
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Uncertainty Score",
+      "type": "number"
+    },
+    "abstention": {
+      "default": false,
+      "title": "Abstention",
+      "type": "boolean"
+    },
+    "abstention_rationale": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Abstention Rationale"
+    },
+    "human_confirmation_required": {
+      "const": true,
+      "default": true,
+      "title": "Human Confirmation Required",
+      "type": "boolean"
+    },
+    "sanctions_prohibited": {
+      "const": true,
+      "default": true,
+      "title": "Sanctions Prohibited",
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "case_id",
+    "category",
+    "confidence",
+    "evidence",
+    "summary"
+  ],
+  "title": "ForensicOutput",
+  "type": "object"
+}

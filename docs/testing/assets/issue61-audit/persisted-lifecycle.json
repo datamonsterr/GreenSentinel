@@ -1,0 +1,26 @@
+[
+  {
+    "case_id": "018f2f4e-a000-7000-8000-000000000001",
+    "trip_status": "cancelled",
+    "recorded_arrived_at": null,
+    "recorded_ended_at": null,
+    "milestone_types": [
+      "start_match",
+      "stall_anomaly"
+    ],
+    "checks": "source lifecycle values matched, no inferred completion"
+  },
+  {
+    "case_id": "018f2f4e-a000-7000-8000-000000000026",
+    "trip_status": "completed",
+    "recorded_arrived_at": "2026-09-22T09:18:10.680000+00:00",
+    "recorded_ended_at": "2026-09-22T10:07:24.120000+00:00",
+    "milestone_types": [
+      "start_match",
+      "stall_anomaly",
+      "pickup",
+      "dropoff_destination"
+    ],
+    "checks": "source lifecycle values matched, no inferred completion"
+  }
+]

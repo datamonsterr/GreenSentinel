@@ -1,0 +1,68 @@
+{
+  "provenance": {
+    "source": "data/raw/paysim/paysim.csv (HF mirror, MIT card; payments domain, EDA-ONLY)",
+    "method": "streaming chunksize=200000, systematic stride=12 (offset rotates per chunk)",
+    "rows_scanned": 6362620,
+    "rows_sampled": 530221
+  },
+  "sampled_fraud": {
+    "n_fraud": 700,
+    "n_legit": 529521,
+    "sampled_isFraud_rate": 0.00132,
+    "flagged_rate_overall": 2e-06
+  },
+  "amount_fraud_vs_legit": {
+    "fraud": {
+      "count": 700,
+      "min": 0.0,
+      "p05": 19429.751,
+      "p25": 128645.5875,
+      "p50": 469722.955,
+      "p75": 1455961.68,
+      "p95": 6662603.6895,
+      "max": 10000000.0,
+      "mean": 1398244.6153,
+      "std": 2228003.2975
+    },
+    "legit": {
+      "count": 529521,
+      "min": 0.1,
+      "p05": 2232.0,
+      "p25": 13405.49,
+      "p50": 74773.38,
+      "p75": 208634.69,
+      "p95": 517277.81,
+      "max": 51141938.17,
+      "mean": 178531.9237,
+      "std": 589689.2866
+    }
+  },
+  "by_type": {
+    "CASH_IN": {
+      "n": 116834,
+      "n_fraud": 0,
+      "fraud_rate": 0.0
+    },
+    "CASH_OUT": {
+      "n": 186428,
+      "n_fraud": 375,
+      "fraud_rate": 0.002012
+    },
+    "DEBIT": {
+      "n": 3519,
+      "n_fraud": 0,
+      "fraud_rate": 0.0
+    },
+    "PAYMENT": {
+      "n": 178900,
+      "n_fraud": 0,
+      "fraud_rate": 0.0
+    },
+    "TRANSFER": {
+      "n": 44540,
+      "n_fraud": 325,
+      "fraud_rate": 0.007297
+    }
+  },
+  "benchmark_mix_note": "Our benchmark class mix is deliberate enrichment for detection evaluation, not natural prevalence: PaySim-scale natural fraud prevalence is ~0.1% (8,213/6,362,620 = 0.129% per manifest), at which a detector's alert burden and precision cannot be meaningfully benchmarked on a 10k-case set. Enriched mixes (e.g. ~10% like the MiPo slice) measure ranking quality (AUROC/AP) under controlled conditions; they must not be presented as production precision, and thresholds set on enriched data must be recalibrated to the deployment base rate before any operational use."
+}

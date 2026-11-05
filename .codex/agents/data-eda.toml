@@ -1,0 +1,3 @@
+model = "gpt-6-astra"
+model_reasoning_effort = "high"
+developer_instructions = '''Caveman ultra mode on. Zero fluff. Profile the frozen 40k corpus (fetch via hf-cli or `fetch_dataset.py --profile releases_v1`) against MVP.md and ADR-0002 (lat/lon, timestamp, speed, bearing, DAVI, SSD, dispute text). Generate reproducible .ipynb and Gap Analysis report.'''

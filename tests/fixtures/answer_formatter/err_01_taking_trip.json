@@ -1,0 +1,32 @@
+{
+  "scenario": "err_01_taking_trip",
+  "raw_answer": "Kết luận ban đầu: Hồ sơ vụ việc 018f2f4e-b000-7000-8000-000000000001 ghi nhận tài xế 018f2f4e-b300-7000-8000-000000000001 đã tự ý bắt khách ngoài chuyến trip_err01_001. Chuyến đi từ Bến xe Mỹ Đình đến Cầu Giấy có dấu hiệu hủy chuyến không hợp lệ. Căn cứ Điều 14.1 Quy chế 2026, hành vi chiếm đoạt cuốc vi phạm quy định vận hành.",
+  "citations": [
+    {
+      "id": "c1",
+      "source": "Quy chế xử lý vi phạm 2026",
+      "section": "Điều 14.1",
+      "content": "Tự ý hủy cuốc không có lý do chính đáng hoặc bắt khách ngoài ứng dụng bị coi là chiếm đoạt chuyến.",
+      "score": 0.92
+    }
+  ],
+  "entities": {
+    "case_ids": ["018f2f4e-b000-7000-8000-000000000001"],
+    "driver_ids": ["018f2f4e-b300-7000-8000-000000000001"],
+    "trip_ids": ["trip_err01_001"],
+    "citation_ids": ["c1"]
+  },
+  "mock_formatted_output": {
+    "markdown": "**Phát hiện dấu hiệu chiếm đoạt chuyến đi ngoài hệ thống.**\n\nQua thẩm tra hồ sơ [Vụ việc](case://018f2f4e-b000-7000-8000-000000000001), phát hiện [Tài xế Nguyễn Văn Bình](driver://018f2f4e-b300-7000-8000-000000000001) có hành vi tự ý hủy cuốc để đón khách trực tiếp.\n\nChi tiết chuyến đi được phân tích:\n- Chuyến đi: [Bến xe Mỹ Đình → Cầu Giấy](trip://trip_err01_001?pickup=B%E1%BA%BFn+xe+M%E1%BB%B9+%C4%90%C3%ACnh&dest=C%E1%BA%A7u+Gi%E1%BA%A5y)\n- Trạng thái: Hủy chuyến bất thường\n\nHành vi này vi phạm quy định tại [1](policy://c1) của hệ thống.",
+    "suggestions": [
+      {
+        "label": "Xem lịch sử tài xế",
+        "prompt": "Kiểm tra lịch sử vi phạm của tài xế"
+      },
+      {
+        "label": "Đối chiếu GPS",
+        "prompt": "Đối chiếu lộ trình GPS thực tế của chuyến đi"
+      }
+    ]
+  }
+}

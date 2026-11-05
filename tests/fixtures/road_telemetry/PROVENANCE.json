@@ -1,0 +1,44 @@
+{
+  "_comment": "Captured OSRM route responses for road-constrained trip fixture. DO NOT fabricate or interpolate.",
+  "captured_at_utc": "2026-09-30T16:30:00Z",
+  "provider": "osrm",
+  "base_url": "https://router.project-osrm.org",
+  "api_version": "v1",
+  "profile": "driving",
+  "geometry_format": "geojson",
+  "overview": "full",
+  "map_version": "unknown (public demo server)",
+  "landmarks": {
+    "ho_guom": {"name": "Ho Guom (Hoan Kiem Lake)", "lat": 21.0285, "lon": 105.8542, "district": "Hoan Kiem"},
+    "keangnam": {"name": "Keangnam Hanoi Landmark Tower", "lat": 21.0167, "lon": 105.7839, "district": "Cau Giay"},
+    "noi_bai": {"name": "Noi Bai International Airport", "lat": 21.2212, "lon": 105.8072, "district": "Soc Son"}
+  },
+  "trip_role": {
+    "origin": "ho_guom",
+    "pickup": "keangnam",
+    "destination": "noi_bai"
+  },
+  "legs": {
+    "pickup": {
+      "file": "osrm_leg_pickup.json",
+      "from": "ho_guom",
+      "to": "keangnam",
+      "osrm_query": "/route/v1/driving/105.8542,21.0285;105.7839,21.0167?overview=full&geometries=geojson&steps=false",
+      "distance_m": 9471.5,
+      "duration_s": 772.6,
+      "coords_count": 386,
+      "checksum_note": "verify via json.load + routes[0].geometry.coordinates length"
+    },
+    "destination": {
+      "file": "osrm_leg_destination.json",
+      "from": "keangnam",
+      "to": "noi_bai",
+      "osrm_query": "/route/v1/driving/105.7839,21.0167;105.8072,21.2212?overview=full&geometries=geojson&steps=false",
+      "distance_m": 27438.8,
+      "duration_s": 1640.8,
+      "coords_count": 397,
+      "checksum_note": "verify via json.load + routes[0].geometry.coordinates length"
+    }
+  },
+  "fallback_policy": "NEVER fall back to interpolation - if fixture missing, raise FileNotFoundError"
+}

@@ -1,0 +1,19 @@
+{
+  "extends": "../../../src/webapp/tsconfig.json",
+  "include": [
+    "./**/*.ts"
+  ],
+  "compilerOptions": {
+    "incremental": false,
+    "typeRoots": [
+      "../../../src/webapp/node_modules/@types"
+    ],
+    "baseUrl": "../../../src/webapp",
+    "paths": {
+      "@playwright/test": ["node_modules/@playwright/test"]
+    },
+    "types": [
+      "node"
+    ]
+  }
+}

@@ -1,0 +1,422 @@
+[
+  {
+    "id": "tc-001",
+    "type": "tra_so_lieu",
+    "category": "delivery",
+    "question": "What is the maximum compensation amount for completely lost or damaged goods with a VAT invoice in Green SM Delivery?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "maximum compensation VAT invoice lost damaged goods",
+      "category": "delivery"
+    },
+    "expected_chunk_doc_id": "greensm-policy-regulations-on-the-use-of-green-sm-delivery",
+    "key_phrase": "VND 2,000,000",
+    "gold_answer": "The maximum compensation amount shall not exceed VND 2,000,000 (Two million dong) for goods with a VAT invoice."
+  },
+  {
+    "id": "tc-002",
+    "type": "hoi_dieu_kien",
+    "category": "general",
+    "question": "What is the minimum age required for an individual user to enter into and accept Green SM Terms of Use?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "minimum age individual legal capacity",
+      "category": "general"
+    },
+    "expected_chunk_doc_id": "greensm-policy-terms-of-use",
+    "key_phrase": "18 years of age",
+    "gold_answer": "An individual user must represent and warrant that they are at least 18 years of age and have full legal capacity."
+  },
+  {
+    "id": "tc-003",
+    "type": "hoi_quy_trinh",
+    "category": "general",
+    "question": "How many seconds does a user have after a partner confirms an order to cancel before the contract is concluded?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "seconds partner confirms order cancel contract concluded",
+      "category": "general"
+    },
+    "expected_chunk_doc_id": "greensm-policy-procedures-for-users",
+    "key_phrase": "thirty (30) seconds",
+    "gold_answer": "Within thirty (30) seconds after the Partner confirms the order and neither party cancels, the legal electronic agreement is concluded."
+  },
+  {
+    "id": "tc-004",
+    "type": "tra_so_lieu",
+    "category": "rental",
+    "question": "What is the daily late payment interest rate applied if a customer delays payment under the Vehicle Rental Services GT?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "late payment interest rate vehicle rental",
+      "category": "rental"
+    },
+    "expected_chunk_doc_id": "greensm-policy-general-terms-applicable-to-vehicle-rental-services",
+    "key_phrase": "0.05% per day",
+    "gold_answer": "A late payment interest rate of 0.05% per day is applied to the overdue amount."
+  },
+  {
+    "id": "tc-005",
+    "type": "hoi_dieu_khoan_cam",
+    "category": "delivery",
+    "question": "Are live animals or narcotic substances permitted to be shipped via Green SM Delivery?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "prohibited live animals narcotic substances delivery",
+      "category": "delivery"
+    },
+    "expected_chunk_doc_id": "greensm-policy-regulations-on-the-use-of-green-sm-delivery",
+    "key_phrase": "Live animals",
+    "gold_answer": "No, live animals and narcotic substances are strictly prohibited from parcel delivery under Section 3.1.3."
+  },
+  {
+    "id": "tc-006",
+    "type": "tra_so_lieu",
+    "category": "general",
+    "question": "What is the enterprise registration certificate number of GSM Green and Smart Mobility Joint Stock Company?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "enterprise registration certificate number GSM",
+      "category": "general"
+    },
+    "expected_chunk_doc_id": "greensm-policy-terms-of-use",
+    "key_phrase": "0110269067",
+    "gold_answer": "GSM operates under Enterprise Registration Certificate No. 0110269067, first issued on March 1st, 2023."
+  },
+  {
+    "id": "tc-007",
+    "type": "tra_so_lieu",
+    "category": "general",
+    "question": "What is the official customer support hotline number for Green SM?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "customer support hotline telephone number",
+      "category": "general"
+    },
+    "expected_chunk_doc_id": "greensm-policy-terms-of-use",
+    "key_phrase": "1555 or 19002088",
+    "gold_answer": "The official telephone hotlines are 1555 or 19002088."
+  },
+  {
+    "id": "tc-008",
+    "type": "hoi_quyen_nghia_vu",
+    "category": "bike",
+    "question": "Does a Green SM Bike partner have the right to refuse service if a passenger carries oversized items?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "bike partner refuse oversized items passenger",
+      "category": "bike"
+    },
+    "expected_chunk_doc_id": "greensm-policy-regulations-on-the-use-of-green-sm-bike",
+    "key_phrase": "right to refuse",
+    "gold_answer": "Yes, the Partner reserves the right to refuse to provide the Product if the User carries oversized items likely to violate traffic laws or compromise safety."
+  },
+  {
+    "id": "tc-009",
+    "type": "hoi_quyen_nghia_vu",
+    "category": "car",
+    "question": "Who is legally responsible for ensuring the safety of the vehicle in Green SM Car operations?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "legally responsible vehicle safety driver partner car",
+      "category": "car"
+    },
+    "expected_chunk_doc_id": "greensm-policy-regulations-on-the-use-of-green-sm-car",
+    "key_phrase": "The Partner, as the driver",
+    "gold_answer": "The Partner, as the driver of the vehicle, is legally responsible for ensuring the safety of the vehicle."
+  },
+  {
+    "id": "tc-010",
+    "type": "hoi_quy_dinh",
+    "category": "food",
+    "question": "What happens if a user repeatedly cancels Green SM Food orders using Cash on Delivery without valid reasons?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "cancel orders Cash on Delivery suspended food",
+      "category": "food"
+    },
+    "expected_chunk_doc_id": "greensm-policy-regulations-on-the-use-of-green-sm-food",
+    "key_phrase": "suspended",
+    "gold_answer": "The user account may be suspended and have the Cash on Delivery payment method disabled for a certain period."
+  },
+  {
+    "id": "tc-011",
+    "type": "hoi_quy_dinh",
+    "category": "food",
+    "question": "Are customers allowed to test or consume food goods during receipt inspection under Green SM Food?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "inspection of goods test consume food receipt",
+      "category": "food"
+    },
+    "expected_chunk_doc_id": "greensm-policy-regulations-on-the-use-of-green-sm-food",
+    "key_phrase": "not permitted to test or consume",
+    "gold_answer": "Users/Customers may check the external condition but are not permitted to test or consume the Goods during inspection."
+  },
+  {
+    "id": "tc-012",
+    "type": "tra_so_lieu",
+    "category": "rental",
+    "question": "How many days notice must be provided if either party wishes to terminate the Vehicle Rental Contract?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "notice days terminate vehicle rental contract",
+      "category": "rental"
+    },
+    "expected_chunk_doc_id": "greensm-policy-general-terms-applicable-to-vehicle-rental-services",
+    "key_phrase": "thirty (30) days",
+    "gold_answer": "Either party may terminate the contract by sending written or email notice at least thirty (30) days in advance."
+  },
+  {
+    "id": "tc-013",
+    "type": "hoi_quy_dinh",
+    "category": "rental",
+    "question": "Can a rental customer sublease the rented GSM vehicle to another individual?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "sublease vehicle rental customer other individual",
+      "category": "rental"
+    },
+    "expected_chunk_doc_id": "greensm-policy-general-terms-applicable-to-vehicle-rental-services",
+    "key_phrase": "not sublease the vehicle",
+    "gold_answer": "No, the Customer shall not sublease the vehicle or allow any other individual to operate the rented vehicle under the Contract."
+  },
+  {
+    "id": "tc-014",
+    "type": "tra_so_lieu",
+    "category": "promotion",
+    "question": "How many days notice is required for termination of convenience under Online Promotional Services?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "termination convenience days notice online promotional services",
+      "category": "promotion"
+    },
+    "expected_chunk_doc_id": "greensm-policy-terms-and-conditions-of-online-promotional-services",
+    "key_phrase": "seven (07) days",
+    "gold_answer": "Either party may terminate the agreement for convenience by providing at least seven (07) days' prior written notice."
+  },
+  {
+    "id": "tc-015",
+    "type": "hoi_quy_dinh",
+    "category": "promotion",
+    "question": "May a merchant partner charge additional surcharges to users using promotional vouchers?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "discriminate promotional orders additional fees surcharges partner",
+      "category": "promotion"
+    },
+    "expected_chunk_doc_id": "greensm-policy-terms-and-conditions-of-online-promotional-services",
+    "key_phrase": "Under no circumstances",
+    "gold_answer": "Under no circumstances shall the Partner request or require Users to pay any additional fees or surcharges in connection with the use of promotions."
+  },
+  {
+    "id": "tc-016",
+    "type": "hoi_dieu_khoan_cam",
+    "category": "express",
+    "question": "Is foreign currency or precious metals allowed to be transported via Green SM Express?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "foreign currency precious metals prohibited items express",
+      "category": "delivery"
+    },
+    "expected_chunk_doc_id": "greensm-policy-regulations-on-the-use-of-green-sm-express",
+    "key_phrase": "prohibited",
+    "gold_answer": "No, foreign currency, monetary instruments, and precious metals are strictly prohibited from shipment."
+  },
+  {
+    "id": "tc-017",
+    "type": "hoi_quy_trinh",
+    "category": "general",
+    "question": "What information must a user provide when creating an account on the Green SM application?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "create account information required application",
+      "category": "general"
+    },
+    "expected_chunk_doc_id": "greensm-policy-procedures-for-users",
+    "key_phrase": "full name and phone number",
+    "gold_answer": "Users must provide their full name and phone number, then enter the activation code sent to the registered phone number."
+  },
+  {
+    "id": "tc-018",
+    "type": "tra_so_lieu",
+    "category": "rental",
+    "question": "What is the bank account number for GSM payments at Techcombank for vehicle rental services?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "bank account number Techcombank payment vehicle rental",
+      "category": "rental"
+    },
+    "expected_chunk_doc_id": "greensm-policy-general-terms-applicable-to-vehicle-rental-services",
+    "key_phrase": "19139854386866",
+    "gold_answer": "The bank account number is 19139854386866 at Techcombank Head Office."
+  },
+  {
+    "id": "tc-019",
+    "type": "tra_so_lieu",
+    "category": "general",
+    "question": "What is the settlement period defined in the general Terms of Use?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "settlement period definition terms of use",
+      "category": "general"
+    },
+    "expected_chunk_doc_id": "greensm-policy-terms-of-use",
+    "key_phrase": "23rd day of the preceding month and ending at 23:59 hours on the 22nd day",
+    "gold_answer": "The Settlement Period commences at 00:00 hours on the 23rd day of the preceding month and ends at 23:59 hours on the 22nd day of the settlement month."
+  },
+  {
+    "id": "tc-020",
+    "type": "hoi_quy_dinh",
+    "category": "car",
+    "question": "Does Green SM have the right to inspect passenger luggage if there is suspicion of prohibited goods?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "inspect passenger luggage suspicion prohibited goods car",
+      "category": "car"
+    },
+    "expected_chunk_doc_id": "greensm-policy-regulations-on-the-use-of-green-sm-car",
+    "key_phrase": "reserve the right to inspect",
+    "gold_answer": "Yes, Green SM and/or the Partner reserve the right to inspect the User's luggage if there is reasonable suspicion of non-compliance."
+  },
+  {
+    "id": "tc-021",
+    "type": "tra_so_lieu",
+    "category": "general",
+    "question": "How many days advance notice must Green SM provide before an amendment to the Terms takes effect?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "amendment effective notice days terms of use",
+      "category": "general"
+    },
+    "expected_chunk_doc_id": "greensm-policy-terms-of-use",
+    "key_phrase": "seven (07) days",
+    "gold_answer": "Any amendment shall become effective no earlier than seven (07) days after the date on which notice is given."
+  },
+  {
+    "id": "tc-022",
+    "type": "hoi_quy_dinh",
+    "category": "rental",
+    "question": "What action should a rental driver take if the vehicle exhibits sudden overheating or brake failure?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "sudden overheating brake failure abnormal condition vehicle rental",
+      "category": "rental"
+    },
+    "expected_chunk_doc_id": "greensm-policy-general-terms-applicable-to-vehicle-rental-services",
+    "key_phrase": "immediately implement safety measures and notify GSM",
+    "gold_answer": "The customer shall not attempt to handle the issue themselves or continue using the vehicle; they must immediately implement safety measures and notify GSM for guidance."
+  },
+  {
+    "id": "tc-023",
+    "type": "hoi_quy_dinh",
+    "category": "delivery",
+    "question": "Under what condition is an order accepted for Green SM Delivery?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "order accepted conditions delivery partner",
+      "category": "delivery"
+    },
+    "expected_chunk_doc_id": "greensm-policy-regulations-on-the-use-of-green-sm-delivery",
+    "key_phrase": "Does not contain prohibited goods",
+    "gold_answer": "An order is accepted only when it contains no prohibited/dangerous goods, includes complete sender/recipient details, has been accepted by the Partner, and is properly packaged."
+  },
+  {
+    "id": "tc-024",
+    "type": "hoi_quyen_nghia_vu",
+    "category": "food",
+    "question": "Who bears the risk regarding quantity and quality of goods during delivery in Green SM Food?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "risk quantity quality condition goods food delivery provider",
+      "category": "food"
+    },
+    "expected_chunk_doc_id": "greensm-policy-regulations-on-the-use-of-green-sm-food",
+    "key_phrase": "Delivery Provider, Delivery Partner, and/or Merchant Partner",
+    "gold_answer": "All risks relating to quantity, quality, or condition of Goods shall be borne by the Delivery Provider, Delivery Partner, and/or Merchant Partner, as applicable."
+  },
+  {
+    "id": "tc-025",
+    "type": "hoi_quy_dinh",
+    "category": "rental",
+    "question": "Is the rental deposit refundable, and does it accrue interest?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "deposit refund accrue interest vehicle rental",
+      "category": "rental"
+    },
+    "expected_chunk_doc_id": "greensm-policy-general-terms-applicable-to-vehicle-rental-services",
+    "key_phrase": "shall not accrue interest",
+    "gold_answer": "The Deposit shall not accrue interest and shall be refunded upon termination after offsetting any outstanding financial obligations."
+  },
+  {
+    "id": "tc-026",
+    "type": "tra_so_lieu",
+    "category": "promotion",
+    "question": "How many days cure period is allowed if a promotional partner breaches an obligation after written notice?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "cure period days remedy breach written notice promotion",
+      "category": "promotion"
+    },
+    "expected_chunk_doc_id": "greensm-policy-terms-and-conditions-of-online-promotional-services",
+    "key_phrase": "ten (10) days",
+    "gold_answer": "The Partner must remedy such breach within ten (10) days from the date of receiving written notice from Green SM."
+  },
+  {
+    "id": "tc-027",
+    "type": "hoi_quy_dinh",
+    "category": "rental",
+    "question": "Who is responsible for purchasing compulsory civil liability insurance for rented vehicles?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "compulsory civil liability insurance motor vehicle owner rental",
+      "category": "rental"
+    },
+    "expected_chunk_doc_id": "greensm-policy-general-terms-applicable-to-vehicle-rental-services",
+    "key_phrase": "GSM",
+    "gold_answer": "GSM is responsible for purchasing compulsory civil liability insurance for motor vehicle owners."
+  },
+  {
+    "id": "tc-028",
+    "type": "hoi_quy_dinh",
+    "category": "general",
+    "question": "Are transportation partners considered employees or representatives of Green SM?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "partners independent entities employees representatives Green SM",
+      "category": "general"
+    },
+    "expected_chunk_doc_id": "greensm-policy-terms-of-use",
+    "key_phrase": "independent entities and are not agents, employees, or representatives",
+    "gold_answer": "Partners are independent entities and are not agents, employees, or representatives of Green SM."
+  },
+  {
+    "id": "tc-029",
+    "type": "hoi_quy_dinh",
+    "category": "general",
+    "question": "Is consent to personal data collection for marketing purposes a mandatory condition for using the Green SM service?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "consent personal data marketing voluntary condition",
+      "category": "general"
+    },
+    "expected_chunk_doc_id": "greensm-policy-terms-of-use",
+    "key_phrase": "voluntary and shall not constitute a condition",
+    "gold_answer": "Consent for marketing or market research purposes is voluntary and shall not constitute a condition for the execution or performance of the Agreement."
+  },
+  {
+    "id": "tc-030",
+    "type": "hoi_quy_dinh",
+    "category": "rental",
+    "question": "Can a customer start and drive a rented electric vehicle if it is submerged in water?",
+    "expected_tool": "search_policy_documents",
+    "expected_tool_args": {
+      "query": "submerged water electric vehicle rental storm flood",
+      "category": "rental"
+    },
+    "expected_chunk_doc_id": "greensm-policy-general-terms-applicable-to-vehicle-rental-services",
+    "key_phrase": "Do not start the vehicle if it is submerged",
+    "gold_answer": "No, customers are instructed: 'Do not start the vehicle if it is submerged in water and call for a rescue vehicle to remove it from flooded areas.'"
+  }
+]

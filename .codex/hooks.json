@@ -1,0 +1,35 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "name": "log-prompt",
+            "type": "command",
+            "command": "root=\"$(git rev-parse --show-toplevel)\" && cd \"$root\" && bash \"$root/scripts/_pyrun.sh\" \"$root/scripts/log_codex.py\" 1>&2",
+            "timeout": 10
+          },
+          {
+            "name": "jev-skill-selector",
+            "type": "command",
+            "command": "root=\"$(git rev-parse --show-toplevel)\" && cd \"$root\" && SKILLS_BANK_PATH=\"$root/.agents/jev_skills\" bun run \"$root/scripts/jev_codex_selector.ts\"",
+            "timeout": 30,
+            "additionalContextLimit": 50000
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "name": "log-stop",
+            "type": "command",
+            "command": "root=\"$(git rev-parse --show-toplevel)\" && cd \"$root\" && bash \"$root/scripts/_pyrun.sh\" \"$root/scripts/log_codex.py\" 1>&2",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

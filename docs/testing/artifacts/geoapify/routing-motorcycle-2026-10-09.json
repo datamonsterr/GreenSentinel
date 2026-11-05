@@ -1,0 +1,48 @@
+{
+  "evidence_class": "bounded_live_runtime_adapter_probe",
+  "source_revision": "2d5d50eacf49703cbf1702dbc27395b2ef5d3708",
+  "checked_at": "2026-10-09T08:29:39.931797+00:00",
+  "environment": "Public Hoan Kiem, Hanoi locations; two sequential calls; no retries",
+  "results": [
+    {
+      "status": "ok",
+      "mode": "motorcycle",
+      "provider": "geoapify",
+      "traffic_model": "free_flow",
+      "geometry_type": "MultiLineString",
+      "segment_count": 1,
+      "distance_m": 1317,
+      "duration_s": 87.581,
+      "provenance": {
+        "source": "geoapify",
+        "status": "ok",
+        "mode": "motorcycle",
+        "route_type": "balanced",
+        "traffic_observation": "free_flow_estimate",
+        "advisory": true
+      }
+    },
+    {
+      "status": "ok",
+      "mode": "motorcycle",
+      "provider": "geoapify",
+      "traffic_model": "approximated",
+      "geometry_type": "MultiLineString",
+      "segment_count": 1,
+      "distance_m": 1317,
+      "duration_s": 324.051,
+      "provenance": {
+        "source": "geoapify",
+        "status": "ok",
+        "mode": "motorcycle",
+        "route_type": "balanced",
+        "traffic_observation": "modeled",
+        "advisory": true
+      }
+    }
+  ],
+  "limitations": [
+    "Estimated ETAs only; no live or historical traffic proof.",
+    "No database, browser, account-plan entitlement or production-rollout acceptance."
+  ]
+}

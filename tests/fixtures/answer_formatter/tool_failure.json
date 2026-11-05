@@ -1,0 +1,20 @@
+{
+  "scenario": "tool_failure",
+  "raw_answer": "Hệ thống không thể tra cứu dữ liệu viễn thám mở rộng do dịch vụ nhà cung cấp gặp sự cố tạm thời (SOURCE_UNAVAILABLE). Vụ việc 018f2f4e-b000-7000-8000-000000000008 hiện giữ nguyên trạng thái chờ xem xét. Không tự suy diễn vi phạm khi dữ liệu kỹ thuật chưa hoàn tất.",
+  "citations": [],
+  "entities": {
+    "case_ids": ["018f2f4e-b000-7000-8000-000000000008"],
+    "driver_ids": [],
+    "trip_ids": [],
+    "citation_ids": []
+  },
+  "mock_formatted_output": {
+    "markdown": "**Dịch vụ đối chiếu dữ liệu tạm thời không khả dụng.**\n\nQuá trình tra cứu dữ liệu viễn thám cho [Vụ việc](case://018f2f4e-b000-7000-8000-000000000008) không thể hoàn tất do lỗi kết nối nguồn dữ liệu ngoài.\n\nLưu ý nghiệp vụ:\n- Trạng thái vụ việc được bảo lưu\n- Không tự ý kết luận gian lận khi thiếu dữ liệu đối soát",
+    "suggestions": [
+      {
+        "label": "Thử lại sau 5 phút",
+        "prompt": "Thực hiện tra cứu lại nguồn dữ liệu viễn thám"
+      }
+    ]
+  }
+}

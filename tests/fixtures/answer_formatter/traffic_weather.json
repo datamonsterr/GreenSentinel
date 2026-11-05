@@ -1,0 +1,28 @@
+{
+  "scenario": "traffic_weather",
+  "raw_answer": "Kết quả đối chiếu giao thông và thời tiết cho vụ việc 018f2f4e-b000-7000-8000-000000000007 trong chuyến trip_tw_001 từ Hai Bà Trưng đến Long Biên: Vận tốc di chuyển trung bình ghi nhận 3.2 km/h do mưa lớn 45mm và ngập úng tại cầu Vĩnh Tuy. Tình trạng ùn tắc giao thông lịch sử ở mức nghiêm trọng. Căn cứ Điều 12.2, trường hợp này đủ điều kiện xem xét miễn trừ xử phạt.",
+  "citations": [
+    {
+      "id": "c1",
+      "source": "Quy chế xử lý vi phạm 2026",
+      "section": "Điều 12.2",
+      "content": "Sự cố thiên tai, mưa ngập cục bộ và kẹt xe nghiêm trọng được xem xét miễn trừ xử lý vi phạm.",
+      "score": 0.93
+    }
+  ],
+  "entities": {
+    "case_ids": ["018f2f4e-b000-7000-8000-000000000007"],
+    "driver_ids": [],
+    "trip_ids": ["trip_tw_001"],
+    "citation_ids": ["c1"]
+  },
+  "mock_formatted_output": {
+    "markdown": "**Mưa lớn 45mm và kẹt xe nghiêm trọng cản trở di chuyển.**\n\nDữ liệu quan trắc trong [Vụ việc](case://018f2f4e-b000-7000-8000-000000000007) xác thực điều kiện bất khả kháng:\n\n- Tuyến hành trình: [Hai Bà Trưng → Long Biên](trip://trip_tw_001?pickup=Hai+B%C3%A0+Tr%C6%B0ng&dest=Long+Bi%C3%AAn)\n- Lượng mưa đo được: 45mm gây ngập úng\n- Vận tốc bình quân: 3.2 km/h (ùn tắc kéo dài)\n\nCăn cứ theo [1](policy://c1), vụ việc đủ điều kiện đề xuất miễn trừ xử phạt.",
+    "suggestions": [
+      {
+        "label": "Tạo biên bản miễn trừ",
+        "prompt": "Lập biên bản đề xuất miễn trừ theo Điều 12.2"
+      }
+    ]
+  }
+}

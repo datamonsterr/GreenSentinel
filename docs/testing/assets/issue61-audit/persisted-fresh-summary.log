@@ -1,0 +1,9 @@
+Repeat setup preserved 40 app table fingerprints.
+  ✓  1 [chromium] › e2e/gis-persisted.spec.ts:40:7 › road telemetry fixture in the real browser map › renders both canonical legs and scrubs canonical telemetry from backend (12.3s)
+  ✓  2 [chromium] › e2e/gis-persisted.spec.ts:343:7 › road telemetry fixture in the real browser map › renders persisted GPS gap warnings with an accessible tooltip from real telemetry (5.0s)
+  ✓  3 [chromium] › e2e/gis-persisted.spec.ts:514:7 › road telemetry fixture in the real browser map › shows the explicit unavailable GPS and traffic states for a case with no persisted telemetry (3.5s)
+  ✓  4 [chromium] › e2e/gis-persisted.spec.ts:573:7 › road telemetry fixture in the real browser map › renders the persisted GPS-unavailable gap band seeded through the real ingest API (3.1s)
+  ✓  5 [chromium] › e2e/gis-persisted.spec.ts:618:7 › road telemetry fixture in the real browser map › keeps an unavailable routing leg uninvented and labels the route state (3.4s)
+AC-MVP-02 selection: 775ms; warm application, fresh case selection; click to both routes and observed GPS dot; offline basemap
+  ✓  6 [chromium] › e2e/gis-persisted.spec.ts:670:7 › road telemetry fixture in the real browser map › renders selected persisted routes and observed GPS within the 1.5s budget (3.7s)
+  6 passed (39.5s)

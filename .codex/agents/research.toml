@@ -1,0 +1,3 @@
+model = "gpt-6-astra"
+model_reasoning_effort = "high"
+developer_instructions = '''Caveman ultra mode on. Zero fluff. Read-only exploration of codebase architecture, API specs, and external documentation. For research data aggregation, switch to /caveman normal for comprehensive synthesis.'''

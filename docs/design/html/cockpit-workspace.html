@@ -1,0 +1,621 @@
+<!DOCTYPE html><html class="h-full" lang="vi" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>GreenSentinel - Unified Adjudication Cockpit</title>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-high": "#dce9ff",
+            "primary-container": "#00855d",
+            "on-secondary-fixed": "#131b2e",
+            "secondary-container": "#dae2fd",
+            "error": "#ba1a1a",
+            "inverse-surface": "#213145",
+            "on-secondary-container": "#5c647a",
+            "on-secondary": "#ffffff",
+            "secondary": "#565e74",
+            "on-surface-variant": "#3d4a42",
+            "background": "#f8f9ff",
+            "surface-tint": "#006c4a",
+            "surface-container-low": "#eff4ff",
+            "on-primary": "#ffffff",
+            "on-tertiary-fixed": "#001a42",
+            "inverse-on-surface": "#eaf1ff",
+            "inverse-primary": "#68dba9",
+            "surface-container-highest": "#d3e4fe",
+            "surface-container": "#e5eeff",
+            "on-tertiary-fixed-variant": "#004395",
+            "error-container": "#ffdad6",
+            "surface-dim": "#cbdbf5",
+            "outline": "#6d7a72",
+            "tertiary-container": "#2170e4",
+            "on-tertiary": "#ffffff",
+            "primary-fixed-dim": "#68dba9",
+            "on-primary-fixed-variant": "#005137",
+            "outline-variant": "#bccac0",
+            "primary-fixed": "#85f8c4",
+            "on-error-container": "#93000a",
+            "surface-container-lowest": "#ffffff",
+            "on-background": "#0b1c30",
+            "on-tertiary-container": "#fefcff",
+            "tertiary": "#0058be",
+            "surface": "#f8f9ff",
+            "secondary-fixed-dim": "#bec6e0",
+            "on-primary-container": "#f5fff7",
+            "tertiary-fixed": "#d8e2ff",
+            "on-secondary-fixed-variant": "#3f465c",
+            "surface-variant": "#d3e4fe",
+            "secondary-fixed": "#dae2fd",
+            "on-primary-fixed": "#002114",
+            "primary": "#006948",
+            "tertiary-fixed-dim": "#adc6ff",
+            "on-surface": "#0b1c30",
+            "surface-bright": "#f8f9ff",
+            "on-error": "#ffffff"
+          },
+          borderRadius: {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          spacing: {
+            "space-xs": "0.25rem",
+            "space-xl": "1rem",
+            "gutter": "0.75rem",
+            "space-md": "0.5rem",
+            "space-lg": "0.75rem",
+            "space-sm": "0.375rem",
+            "margin": "1rem"
+          },
+          fontFamily: {
+            "code-sm": ["JetBrains Mono"],
+            "body-lg": ["Inter"],
+            "label-md": ["Inter"],
+            "headline-sm": ["Inter"],
+            "body-sm": ["Inter"],
+            "headline-lg": ["Inter"],
+            "code-md": ["JetBrains Mono"],
+            "headline-md": ["Inter"],
+            "label-lg": ["Inter"],
+            "body-md": ["Inter"],
+            "label-sm": ["Inter"]
+          },
+          fontSize: {
+            "code-sm": ["10px", { lineHeight: "12px", fontWeight: "500" }],
+            "body-lg": ["13px", { lineHeight: "18px", fontWeight: "400" }],
+            "label-md": ["11px", { lineHeight: "14px", letterSpacing: "0.02em", fontWeight: "500" }],
+            "headline-sm": ["14px", { lineHeight: "18px", letterSpacing: "-0.005em", fontWeight: "600" }],
+            "body-sm": ["11px", { lineHeight: "14px", fontWeight: "400" }],
+            "headline-lg": ["20px", { lineHeight: "28px", letterSpacing: "-0.015em", fontWeight: "600" }],
+            "code-md": ["11px", { lineHeight: "14px", fontWeight: "500" }],
+            "headline-md": ["16px", { lineHeight: "22px", letterSpacing: "-0.01em", fontWeight: "600" }],
+            "label-lg": ["12px", { lineHeight: "16px", fontWeight: "600" }],
+            "body-md": ["12px", { lineHeight: "16px", fontWeight: "400" }],
+            "label-sm": ["10px", { lineHeight: "12px", letterSpacing: "0.04em", fontWeight: "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      font-size: 15px;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .material-symbols-outlined.fill-current {
+      font-variation-settings: 'FILL' 1;
+    }
+    /* Custom compact scrollbars */
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 2px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+  </style>
+</head>
+<body class="h-full bg-slate-50 text-slate-900 font-body-md text-body-md select-none overflow-hidden flex flex-col antialiased">
+<!-- TOP GLOBAL HEADER (Shared Anchor & Task Bar) -->
+<header class="h-11 bg-white border-b border-slate-200 px-3 flex items-center justify-between z-30 shrink-0 select-none">
+<!-- Left Identity & Brand -->
+<div class="flex items-center gap-2 relative" id="nav-brand-cluster">
+  <!-- App Launcher Trigger & Dropdown Menu -->
+  <div class="relative">
+    <button id="app-switcher-btn" class="w-7 h-7 rounded bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 flex items-center justify-center text-white shadow-xs transition-colors cursor-pointer focus:outline-none focus:ring-1 focus:ring-emerald-500" title="Mở danh mục ứng dụng GreenSM" onclick="document.getElementById('app-switcher-dropdown').classList.toggle('hidden')" type="button">
+      <span class="material-symbols-outlined text-[16px] text-white">security</span>
+    </button>
+    <!-- App Switcher Popover -->
+    <div id="app-switcher-dropdown" class="hidden absolute left-0 top-9 w-64 bg-white border border-slate-200 rounded shadow-xs z-30 p-2 space-y-1 select-none">
+      <div class="px-2 py-1 text-[10px] font-code-sm uppercase tracking-wider text-slate-400 font-semibold border-b border-slate-100 mb-1">
+        GreenSM Sentinel Apps
+      </div>
+      <a href="#" class="flex items-center gap-2 px-2 py-1.5 rounded bg-emerald-50 text-emerald-800 font-medium text-xs border border-emerald-200">
+        <span class="material-symbols-outlined text-[15px] text-emerald-600">gavel</span>
+        <span class="">Unified Adjudication (Active)</span>
+      </a>
+      <a href="#" class="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-slate-50 text-slate-700 text-xs transition-colors">
+        <span class="material-symbols-outlined text-[15px] text-slate-500">search_insights</span>
+        <span class="">Investigation Queue</span>
+      </a>
+      <a href="#" class="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-slate-50 text-slate-700 text-xs transition-colors">
+        <span class="material-symbols-outlined text-[15px] text-slate-500">monitoring</span>
+        <span class="">Fleet Telemetry &amp; Analytics</span>
+      </a>
+      <a href="#" class="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-slate-50 text-slate-700 text-xs transition-colors">
+        <span class="material-symbols-outlined text-[15px] text-slate-500">rule</span>
+        <span class="">Rule Engine &amp; Guardrails</span>
+      </a>
+      <a href="#" class="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-slate-50 text-slate-700 text-xs transition-colors border-t border-slate-100 mt-1 pt-1.5">
+        <span class="material-symbols-outlined text-[15px] text-slate-400">settings</span>
+        <span class="">Cấu hình hệ thống</span>
+      </a>
+    </div>
+  </div>
+  <!-- User Profile Avatar Circle (Moved directly beside logo) -->
+  <div class="w-6 h-6 rounded-full bg-emerald-700 text-white font-bold flex items-center justify-center text-[10px] cursor-pointer hover:ring-1 hover:ring-emerald-600 transition-all select-none" title="Lê Minh Tuấn (FA-8492 • Lead)">
+    LT
+  </div>
+</div>
+<!-- Center Search & Fast Filter Cluster -->
+<div class="flex items-center gap-2 flex-1 max-w-xl mx-4"><div class="relative w-full flex items-center">
+  <span class="material-symbols-outlined absolute left-2 text-slate-400 pointer-events-none text-[15px]">search</span>
+  <input class="w-full h-7 pl-7 pr-12 bg-slate-50 border border-slate-200 rounded text-body-sm font-body-sm focus:outline-none focus:bg-white focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 transition-all text-slate-800 placeholder-slate-400" placeholder="Tìm case, tài xế, biển số, mã chuyến... (Ctrl+K)" type="text">
+  <kbd class="absolute right-1.5 px-1 py-0.5 text-[9px] font-code-sm bg-white border border-slate-200 rounded text-slate-400 shadow-2xs">Ctrl K</kbd>
+</div></div>
+<!-- Right Live Telemetry & Session Info -->
+<div class="flex items-center gap-3 shrink-0"><div class="relative flex items-center">
+  <!-- Interactive Status Pill Trigger -->
+  <button id="status-telemetry-btn" class="w-auto inline-flex whitespace-nowrap items-center gap-1.5 px-2 py-0.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-label-sm font-label-sm rounded-full border border-emerald-200 cursor-pointer transition-colors focus:outline-none focus:ring-1 focus:ring-emerald-500 select-none" onclick="document.getElementById('telemetry-popover').classList.toggle('hidden')" title="Bấm để xem chi tiết vận hành &amp; phân bổ case" type="button">
+    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+    <span class="font-medium">23 cases active</span>
+    <span class="material-symbols-outlined text-[12px] text-emerald-600">expand_more</span>
+  </button>
+  <!-- Operational Telemetry Popover Modal/Card -->
+  <div id="telemetry-popover" class="hidden absolute right-0 top-9 w-72 bg-white border border-slate-200 rounded shadow-xs z-30 p-3 space-y-2.5 select-none">
+    <div class="flex items-center justify-between border-b border-slate-100 pb-1.5">
+      <span class="font-headline-sm text-xs font-semibold text-slate-800">Trạng thái Hệ thống Tức thời</span>
+      <span class="text-[9px] font-code-sm text-emerald-700 bg-emerald-50 border border-emerald-200 px-1 rounded font-medium">Online</span>
+    </div>
+    <!-- Priority Distribution -->
+    <div class="space-y-1">
+      <span class="text-[10px] font-code-sm text-slate-400 uppercase tracking-wider block">Phân bổ mức độ ưu tiên</span>
+      <div class="grid grid-cols-3 gap-1.5 text-center font-code-sm">
+        <div class="p-1 bg-red-50 border border-red-200 rounded">
+          <div class="text-[9px] text-red-600 font-bold">P0</div>
+          <div class="text-xs font-bold text-red-700">4</div>
+        </div>
+        <div class="p-1 bg-amber-50 border border-amber-200 rounded">
+          <div class="text-[9px] text-amber-700 font-bold">P1</div>
+          <div class="text-xs font-bold text-amber-800">11</div>
+        </div>
+        <div class="p-1 bg-blue-50 border border-blue-200 rounded">
+          <div class="text-[9px] text-blue-700 font-bold">P2</div>
+          <div class="text-xs font-bold text-blue-800">8</div>
+        </div>
+      </div>
+    </div>
+    <!-- Performance Metrics -->
+    <div class="border-t border-slate-100 pt-1.5 space-y-1.5 text-[11px] font-code-sm">
+      <div class="flex items-center justify-between">
+        <span class="text-slate-500">Tốc độ Ingestion:</span>
+        <span class="font-semibold text-slate-800 flex items-center gap-1">
+          <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping"></span>
+          2,048 msg/s
+        </span>
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="text-slate-500">Thời gian xử lý (MTTR):</span>
+        <span class="font-bold text-emerald-700 bg-emerald-50 px-1 rounded border border-emerald-200">32.4s</span>
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="text-slate-500">Guardrail Engine:</span>
+        <span class="text-emerald-700 font-medium flex items-center gap-0.5">
+          <span class="material-symbols-outlined text-[13px] text-emerald-600">verified</span>
+          Hoạt động 100%
+        </span>
+      </div>
+    </div>
+  </div>
+</div></div>
+</header>
+<!-- 3-PANE WORKSPACE WRAPPER -->
+<main class="flex-1 flex overflow-hidden">
+<!-- ========================================================================= -->
+<!-- PANE 1: PRIORITY TRIAGE QUEUE (22%) -->
+<!-- ========================================================================= -->
+<section class="w-[22%] shrink-0 border-r border-slate-200 flex flex-col h-[calc(100vh-2.75rem)] bg-white select-none">
+<!-- Pane Subheader -->
+<div class="h-9 px-3 border-b border-slate-200 flex items-center justify-between bg-slate-50/70">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-xs font-semibold text-slate-800">Triage Queue</span>
+<span class="px-1.5 py-0.2 bg-slate-200 text-slate-700 rounded-full font-code-sm text-[10px] font-medium">23</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="w-auto inline-flex whitespace-nowrap items-center p-1 text-slate-500 hover:text-slate-800 hover:bg-slate-200/60 rounded transition-colors" title="Làm mới hàng đợi" type="button">
+<span class="material-symbols-outlined text-[15px]">sync</span>
+</button>
+<button class="w-auto inline-flex whitespace-nowrap items-center p-1 text-slate-500 hover:text-slate-800 hover:bg-slate-200/60 rounded transition-colors" title="Sắp xếp theo SLA" type="button">
+<span class="material-symbols-outlined text-[15px]">sort</span>
+</button>
+</div>
+</div>
+<!-- Queue Items List -->
+<div class="flex-1 overflow-y-auto divide-y divide-slate-100 p-1.5 space-y-1"><!-- Row 1: Active Selected (P0) -->
+<article class="p-2 rounded bg-red-50/80 border-l-4 border-red-500 ring-1 ring-red-300 cursor-pointer transition-all shadow-xs">
+  <div class="flex items-center justify-between mb-1">
+    <div class="flex items-center gap-1.5 whitespace-nowrap">
+      <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-red-600 text-white tracking-wider">P0</span>
+      <span class="font-code-md text-xs font-bold text-slate-900">#FC-8921</span>
+    </div>
+    <div class="flex items-center gap-1 whitespace-nowrap">
+      <span class="material-symbols-outlined text-[12px] text-amber-600">lock</span>
+      <span class="font-code-sm text-[10px] font-bold text-red-600 bg-red-100 px-1 py-0.5 rounded border border-red-200">03:14</span>
+    </div>
+  </div>
+  <div class="flex items-center justify-between text-body-sm text-xs text-slate-700 whitespace-nowrap">
+    <span class="font-medium text-slate-900 truncate">Nguyễn Văn A</span>
+    <span class="font-code-sm text-[10px] text-slate-500 shrink-0 ml-1">29E-123.45</span>
+  </div>
+  <div class="flex items-center justify-between mt-1 text-[10px] text-slate-500 whitespace-nowrap">
+    <span class="flex items-center gap-0.5 truncate text-slate-600">
+      <span class="material-symbols-outlined text-[11px] text-slate-400">location_on</span>
+      Hoàn Kiếm
+    </span>
+    <span class="text-red-700 font-medium bg-red-100/60 px-1 rounded shrink-0">Stall: 210s</span>
+  </div>
+</article>
+<!-- Row 2: P0 -->
+<article class="p-2 rounded bg-red-50/30 hover:bg-red-50/70 border-l-4 border-red-500 cursor-pointer transition-colors">
+  <div class="flex items-center justify-between mb-1">
+    <div class="flex items-center gap-1.5 whitespace-nowrap">
+      <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-700 border border-red-200">P0</span>
+      <span class="font-code-md text-xs font-semibold text-slate-800">#FC-8920</span>
+    </div>
+    <span class="font-code-sm text-[10px] font-medium text-red-600 bg-red-50 px-1 py-0.5 rounded whitespace-nowrap">04:45</span>
+  </div>
+  <div class="flex items-center justify-between text-body-sm text-xs text-slate-600 whitespace-nowrap">
+    <span class="font-medium text-slate-800 truncate">Trần Đình Trọng</span>
+    <span class="font-code-sm text-[10px] text-slate-500 shrink-0 ml-1">30F-982.11</span>
+  </div>
+  <div class="flex items-center justify-between mt-1 text-[10px] text-slate-400 whitespace-nowrap">
+    <span class="truncate">Thanh Xuân</span>
+    <span class="text-slate-500 font-code-sm shrink-0">Fake GPS</span>
+  </div>
+</article>
+<!-- Row 3: P1 -->
+<article class="p-2 rounded bg-amber-50/40 hover:bg-amber-50/80 border-l-4 border-amber-500 cursor-pointer transition-colors">
+  <div class="flex items-center justify-between mb-1">
+    <div class="flex items-center gap-1.5 whitespace-nowrap">
+      <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">P1</span>
+      <span class="font-code-md text-xs font-semibold text-slate-800">#FC-8919</span>
+    </div>
+    <span class="font-code-sm text-[10px] font-medium text-amber-700 whitespace-nowrap">07:20</span>
+  </div>
+  <div class="flex items-center justify-between text-body-sm text-xs text-slate-600 whitespace-nowrap">
+    <span class="font-medium text-slate-800 truncate">Phạm Hoàng Long</span>
+    <span class="font-code-sm text-[10px] text-slate-500 shrink-0 ml-1">29D-441.82</span>
+  </div>
+  <div class="flex items-center justify-between mt-1 text-[10px] text-slate-400 whitespace-nowrap">
+    <span class="truncate">Cầu Giấy</span>
+    <span class="text-amber-800 font-code-sm shrink-0">Fare Surging</span>
+  </div>
+</article>
+<!-- Row 4: P1 -->
+<article class="p-2 rounded bg-amber-50/40 hover:bg-amber-50/80 border-l-4 border-amber-500 cursor-pointer transition-colors">
+  <div class="flex items-center justify-between mb-1">
+    <div class="flex items-center gap-1.5 whitespace-nowrap">
+      <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">P1</span>
+      <span class="font-code-md text-xs font-semibold text-slate-800">#FC-8918</span>
+    </div>
+    <span class="font-code-sm text-[10px] font-medium text-amber-700 whitespace-nowrap">08:50</span>
+  </div>
+  <div class="flex items-center justify-between text-body-sm text-xs text-slate-600 whitespace-nowrap">
+    <span class="font-medium text-slate-800 truncate">Vũ Quốc Huy</span>
+    <span class="font-code-sm text-[10px] text-slate-500 shrink-0 ml-1">30E-552.19</span>
+  </div>
+  <div class="flex items-center justify-between mt-1 text-[10px] text-slate-400 whitespace-nowrap">
+    <span class="truncate">Ba Đình</span>
+    <span class="text-slate-500 font-code-sm shrink-0">Off-route</span>
+  </div>
+</article>
+<!-- Row 5: P2 -->
+<article class="p-2 rounded bg-blue-50/40 hover:bg-blue-50/80 border-l-4 border-blue-500 cursor-pointer transition-colors">
+  <div class="flex items-center justify-between mb-1">
+    <div class="flex items-center gap-1.5 whitespace-nowrap">
+      <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">P2</span>
+      <span class="font-code-md text-xs font-semibold text-slate-800">#FC-8917</span>
+    </div>
+    <span class="font-code-sm text-[10px] font-medium text-blue-700 whitespace-nowrap">14:10</span>
+  </div>
+  <div class="flex items-center justify-between text-body-sm text-xs text-slate-600 whitespace-nowrap">
+    <span class="font-medium text-slate-800 truncate">Đỗ Minh Đức</span>
+    <span class="font-code-sm text-[10px] text-slate-500 shrink-0 ml-1">29A-671.03</span>
+  </div>
+  <div class="flex items-center justify-between mt-1 text-[10px] text-slate-400 whitespace-nowrap">
+    <span class="truncate">Hoàng Mai</span>
+    <span class="text-slate-500 font-code-sm shrink-0">Jitter spike</span>
+  </div>
+</article>
+<!-- Row 6: P2 -->
+<article class="p-2 rounded bg-blue-50/40 hover:bg-blue-50/80 border-l-4 border-blue-500 cursor-pointer transition-colors">
+  <div class="flex items-center justify-between mb-1">
+    <div class="flex items-center gap-1.5 whitespace-nowrap">
+      <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">P2</span>
+      <span class="font-code-md text-xs font-semibold text-slate-800">#FC-8916</span>
+    </div>
+    <span class="font-code-sm text-[10px] font-medium text-blue-700 whitespace-nowrap">16:40</span>
+  </div>
+  <div class="flex items-center justify-between text-body-sm text-xs text-slate-600 whitespace-nowrap">
+    <span class="font-medium text-slate-800 truncate">Lê Quốc Toàn</span>
+    <span class="font-code-sm text-[10px] text-slate-500 shrink-0 ml-1">29C-881.90</span>
+  </div>
+  <div class="flex items-center justify-between mt-1 text-[10px] text-slate-400 whitespace-nowrap">
+    <span class="truncate">Đống Đa</span>
+    <span class="text-slate-500 font-code-sm shrink-0">Toll bump</span>
+  </div>
+</article></div>
+<!-- Queue Pagination & Hotkey hints -->
+<div class="h-8 px-3 border-t border-slate-200 bg-slate-50 flex items-center justify-between text-[10px] text-slate-500 shrink-0">
+<span class="font-code-sm">1-6 of 23 cases</span>
+<div class="flex items-center gap-1">
+<kbd class="px-1 py-0.2 bg-white border border-slate-200 rounded font-code-sm text-slate-600">J</kbd>
+<kbd class="px-1 py-0.2 bg-white border border-slate-200 rounded font-code-sm text-slate-600">K</kbd>
+<span class="text-slate-400">Nav</span>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- PANE 2: DETAILED CASE ADJUDICATION WORKSPACE (52%) -->
+<!-- ========================================================================= -->
+<section class="w-[52%] shrink-0 border-r border-slate-200 overflow-y-auto h-[calc(100vh-2.75rem)] p-2.5 space-y-2.5 bg-slate-50/70">
+<!-- Case Metadata Strip -->
+<div class="bg-white border border-slate-200 rounded p-2.5 shadow-2xs"><div class="flex items-center justify-between pb-2 border-b border-slate-100">
+  <div class="flex items-center gap-2 flex-wrap">
+    <span class="font-headline-sm text-sm font-bold text-slate-900 whitespace-nowrap">#FC-8921</span>
+    <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-red-600 text-white whitespace-nowrap">P0 CRITICAL</span>
+    <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-50 text-amber-800 border border-amber-200 whitespace-nowrap">
+      <span class="material-symbols-outlined text-[11px] text-amber-600">lock</span>
+      Tuấn LM
+    </span>
+  </div>
+  <div class="flex items-center gap-1.5 whitespace-nowrap shrink-0">
+    <span class="text-[11px] font-code-sm text-slate-500">⏱ SLA:</span>
+    <span class="font-code-sm text-xs font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-200">00:28 / 00:45s</span>
+  </div>
+</div>
+<!-- Driver & Trip Specifics with robust single-line layout -->
+<div class="flex items-center justify-between gap-3 pt-2 text-xs">
+  <!-- Driver Info -->
+  <div class="flex items-center gap-2.5 min-w-0">
+    <div class="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-slate-700 text-xs shrink-0">
+      VA
+    </div>
+    <div class="min-w-0">
+      <div class="flex items-center gap-1.5 font-medium text-slate-900 whitespace-nowrap">
+        <span class="truncate font-semibold">Nguyễn Văn A</span>
+        <span class="text-slate-300">•</span>
+        <span class="font-code-sm text-slate-700">VF 8</span>
+        <span class="font-code-sm text-slate-600 font-bold bg-slate-100 px-1 rounded border border-slate-200">29E-123.45</span>
+      </div>
+      <div class="flex items-center gap-2 text-[11px] text-slate-500 mt-0.5 font-code-sm whitespace-nowrap">
+        <span class="text-amber-600 font-semibold">4.85 ★</span>
+        <span class="">AR: <strong class="text-slate-700">94.2%</strong></span>
+        <span class="">CR: <strong class="text-red-600 font-semibold">12.4%</strong></span>
+        <span class="text-rose-600 bg-rose-50 px-1 rounded border border-rose-200">2 warnings (90d)</span>
+      </div>
+    </div>
+  </div>
+  <!-- Trip & Guardrail -->
+  <div class="flex flex-col items-end border-l border-slate-100 pl-3 shrink-0 whitespace-nowrap">
+    <div class="text-[11px] font-medium text-slate-800 text-right truncate">
+      Hoàn Kiếm → Sân bay Nội Bài
+    </div>
+    <div class="flex items-center gap-2 mt-0.5">
+      <span class="font-code-sm text-[11px] font-bold text-emerald-700">340,000 VND</span>
+      <span class="inline-flex items-center gap-0.5 text-[10px] text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200 font-medium">
+        <span class="material-symbols-outlined text-[12px] text-emerald-600">verified</span>
+        Guardrail Passed
+      </span>
+    </div>
+  </div>
+</div></div>
+<!-- Spatial Telemetry GIS Map Card -->
+<div class="bg-white border border-slate-200 rounded p-2 shadow-2xs relative"><div class="flex items-center justify-end mb-1.5 px-1"><div class="flex items-center gap-1 whitespace-nowrap"><button class="w-auto inline-flex whitespace-nowrap items-center px-1.5 py-0.5 text-[10px] font-medium rounded bg-emerald-50 text-emerald-700 border border-emerald-300 shadow-2xs" type="button">✓ Traffic</button><button class="w-auto inline-flex whitespace-nowrap items-center px-1.5 py-0.5 text-[10px] font-medium rounded bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors border border-slate-200" type="button">Breadcrumbs</button><button class="w-auto inline-flex whitespace-nowrap items-center px-1.5 py-0.5 text-[10px] font-medium rounded bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors border border-slate-200" type="button">OSRM Shortest</button><button class="w-auto inline-flex whitespace-nowrap items-center px-1.5 py-0.5 text-[10px] font-medium rounded bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors border border-slate-200" type="button">Hotspots</button></div></div><div class="w-full h-56 bg-slate-100 rounded relative overflow-hidden border border-slate-200"><svg class="w-full h-full" fill="none" viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg"><rect fill="#f8fafc" height="240" width="700" x="0" y="0"></rect><path d="M0 60 H700" stroke="#e2e8f0" stroke-dasharray="4 4" stroke-width="2"></path><path d="M0 130 H700" stroke="#ffffff" stroke-width="12"></path><path d="M0 130 H700" stroke="#cbd5e1" stroke-width="2"></path><path d="M0 200 H700" stroke="#e2e8f0" stroke-dasharray="4 4" stroke-width="2"></path><path d="M120 0 V240" stroke="#e2e8f0" stroke-width="2"></path><path d="M260 0 V240" stroke="#ffffff" stroke-width="10"></path><path d="M260 0 V240" stroke="#cbd5e1" stroke-width="2"></path><path d="M420 0 V240" stroke="#ffffff" stroke-width="14"></path><path d="M420 0 V240" stroke="#cbd5e1" stroke-width="2.5"></path><path d="M580 0 V240" stroke="#e2e8f0" stroke-width="2"></path><text fill="#475569" font-family="JetBrains Mono" font-size="10" font-weight="600" x="268" y="25">PHỐ TRẦN HƯNG ĐẠO</text><text fill="#1e293b" font-family="JetBrains Mono" font-size="10" font-weight="bold" x="428" y="25">PHỐ BÀ TRIỆU</text><text fill="#1e293b" font-family="JetBrains Mono" font-size="10" font-weight="bold" x="15" y="122">PHỐ LÝ THƯỜNG KIỆT</text><text fill="#475569" font-family="JetBrains Mono" font-size="10" font-weight="600" x="15" y="192">PHỐ HAI BÀ TRƯNG</text><path d="M140 130 H420 V40" stroke="#0284c7" stroke-dasharray="6 4" stroke-linecap="round" stroke-width="3.5"></path><path d="M140 130 H360 C380 130 400 130 410 130 L420 130 L420 148 L415 152 L405 152 L405 130" stroke="#ea580c" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5"></path><circle cx="140" cy="130" fill="#059669" r="5.5" stroke="#ffffff" stroke-width="2"></circle><rect fill="#ecfdf5" height="16" rx="3" stroke="#a7f3d0" stroke-width="1" width="100" x="100" y="102"></rect><text fill="#047857" font-family="Inter" font-size="9" font-weight="600" x="106" y="114">Khách đón (08:12)</text><circle cx="420" cy="40" fill="#0284c7" r="5.5" stroke="#ffffff" stroke-width="2"></circle><rect fill="#f0f9ff" height="16" rx="3" stroke="#bae6fd" stroke-width="1" width="86" x="432" y="32"></rect><text fill="#0369a1" font-family="Inter" font-size="9" font-weight="600" x="438" y="44">Lộ trình chuẩn</text><g transform="translate(420, 130)"><circle cx="0" cy="0" fill="#ef4444" fill-opacity="0.25" r="16"><animate attributeName="r" dur="1.8s" repeatCount="indefinite" values="8;20;8"></animate><animate attributeName="fill-opacity" dur="1.8s" repeatCount="indefinite" values="0.35;0.05;0.35"></animate></circle><circle cx="0" cy="0" fill="#dc2626" r="7" stroke="#ffffff" stroke-width="2"></circle><circle cx="0" cy="0" fill="#ffffff" r="2.5"></circle></g></svg></div><div class="mt-2 p-2 bg-slate-50 border border-slate-200 rounded grid grid-cols-3 gap-2 text-[11px] font-code-sm select-none"><div class="flex items-center gap-1.5 whitespace-nowrap"><span class="w-2 h-2 rounded-full bg-red-500 animate-pulse shrink-0"></span><span class="text-slate-500">Stall Point D:</span><span class="font-bold text-red-600 bg-red-50 px-1 py-0.2 rounded border border-red-200">210s</span></div><div class="flex items-center gap-1.5 whitespace-nowrap"><span class="text-slate-500">DAVI Drift:</span><span class="font-bold text-amber-700 bg-amber-50 px-1 py-0.2 rounded border border-amber-200">-0.84</span></div><div class="flex items-center gap-1.5 justify-end whitespace-nowrap text-emerald-700 font-medium"><span class="material-symbols-outlined text-[13px] text-emerald-600 shrink-0">speed</span><span class="">Ambient: <strong class="text-slate-800">32 km/h</strong></span></div></div></div>
+<!-- Kinematic Velocity Graph & Sensor Telemetry -->
+<div class="bg-white border border-slate-200 rounded p-2.5 space-y-2 shadow-2xs">
+
+<!-- SVG Micro Graph -->
+<div class="w-full h-12 bg-slate-50 rounded border border-slate-200 px-2 py-1 flex items-center">
+<svg class="w-full h-10" fill="none" preserveAspectRatio="none" viewBox="0 0 500 40">
+<!-- Grid Lines -->
+<line stroke="#e2e8f0" stroke-width="1" x1="0" x2="500" y1="35" y2="35"></line>
+<line stroke="#f1f5f9" stroke-width="1" x1="0" x2="500" y1="15" y2="15"></line>
+<!-- Velocity Profile Path -->
+<path d="M0 25 L70 12 L120 16 L180 35 L330 35 L380 20 L500 22" fill="none" stroke="#ef4444" stroke-linejoin="round" stroke-width="2"></path>
+<!-- Shaded Stall Zone -->
+<rect fill="#ef4444" fill-opacity="0.12" height="32" width="150" x="180" y="4"></rect>
+<text fill="#dc2626" font-family="JetBrains Mono" font-size="9" font-weight="bold" x="215" y="22">STALL DETECTED (210s)</text>
+</svg>
+</div>
+<!-- Sensor Diagnostics Matrix -->
+<div class="grid grid-cols-3 gap-2 pt-1 font-code-sm text-[11px]"><div class="bg-slate-50 border border-slate-200 rounded p-1.5 flex items-center justify-between"><span class="text-emerald-700 font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-emerald-600">battery_charging_full</span>84% Battery</span><span class="text-[10px] text-slate-400 font-medium">Optimal</span></div><div class="bg-slate-50 border border-slate-200 rounded p-1.5 flex items-center justify-between"><span class="text-slate-700 font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-[13px] text-slate-400">satellite_alt</span>GPS: &lt; 2.5m</span><span class="text-[10px] text-emerald-600 font-medium">Valid CEP</span></div><div class="bg-slate-50 border border-slate-200 rounded p-1.5 flex items-center justify-between"><span class="text-amber-800 font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-[13px] text-amber-600">explore</span>Heading: 178°</span><span class="text-[10px] text-amber-600 font-medium">Rev Drift</span></div></div>
+</div>
+<!-- Conflicting Dispositions (Driver vs Passenger) -->
+<div class="bg-white border border-slate-200 rounded p-2.5 space-y-2 shadow-2xs">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-xs font-semibold text-slate-800 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-slate-600">record_voice_over</span>
+            Conflicting Dispositions &amp; Signal Logs
+          </span>
+<span class="text-[10px] font-code-sm text-slate-400">Match Correlation: Incompatible</span>
+</div>
+<div class="grid grid-cols-2 gap-2 text-body-sm text-xs">
+<!-- Driver Explanation -->
+<div class="bg-amber-50/70 border border-amber-200 rounded p-2">
+<div class="flex items-center justify-between mb-1">
+<span class="font-semibold text-amber-900 flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-amber-700">commute</span>
+                Giải trình Tài xế (App)
+              </span>
+<span class="font-code-sm text-[10px] text-amber-700">08:15:32</span>
+</div>
+<p class="text-amber-950 leading-relaxed italic text-[11px]">
+              “Kẹt xe nghiêm trọng tại ngã tư không thể di chuyển được, đường tắc cứng không thể quay đầu hay tiến lên.”
+            </p>
+</div>
+<!-- Passenger Signal -->
+<div class="bg-rose-50/70 border border-rose-200 rounded p-2">
+<div class="flex items-center justify-between mb-1">
+<span class="font-semibold text-rose-900 flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-rose-700">person_cancel</span>
+                Tín hiệu Khách hàng (Hủy cuốc)
+              </span>
+<span class="font-code-sm text-[10px] text-rose-700">08:15:44</span>
+</div>
+<p class="text-rose-950 leading-relaxed italic text-[11px]">
+              “Tài xế đứng yên tại chỗ hơn 5 phút không tới đón, gọi điện không bắt máy. Phải tự hủy để đặt xe khác kịp giờ bay.”
+            </p>
+</div>
+</div>
+</div>
+<!-- One-Click HITL Sanction Console -->
+<div class="bg-white border border-slate-200 rounded p-3 space-y-2.5 shadow-2xs"><div class="space-y-2.5"><div class="flex flex-wrap items-center gap-2"><button class="w-auto inline-flex whitespace-nowrap items-center px-3 py-2 text-xs font-medium rounded border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-800 transition-colors cursor-pointer shadow-2xs" type="button">Dismiss</button><button class="w-auto inline-flex whitespace-nowrap items-center px-3 py-2 text-xs font-medium rounded border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-800 transition-colors cursor-pointer shadow-2xs" type="button">Request Evidence</button><button class="w-auto inline-flex whitespace-nowrap items-center px-3 py-2 text-xs font-medium rounded border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer shadow-2xs" type="button">Warn</button><button class="w-auto inline-flex whitespace-nowrap items-center px-3 py-2 text-xs font-medium rounded border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer shadow-2xs" type="button">Fine</button><button class="w-auto inline-flex whitespace-nowrap items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white shadow-xs transition-colors cursor-pointer" type="button"><span class="material-symbols-outlined text-[15px] text-white">check_circle</span>Suspend 24h</button><button class="w-auto inline-flex whitespace-nowrap items-center px-3 py-2 text-xs font-medium rounded border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-800 transition-colors cursor-pointer shadow-2xs" type="button">Escalate</button></div><div><div class="flex items-center justify-between mb-1"><label class="block text-[11px] font-medium text-slate-700">Lý do phán quyết (Bắt buộc theo chuẩn kiểm toán):</label><span class="text-[10px] font-code-sm text-slate-400 bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded">Policy: Reg-2026-v2</span></div><textarea class="w-full text-[11px] font-body-sm p-2 bg-slate-50 border border-slate-200 rounded focus:bg-white focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 text-slate-800 resize-none" rows="2">Xác nhận vi phạm ERR-02 theo Điều 14.2: Dừng đỗ cố tình 210s ép khách hủy, tái phạm lần 2 trong 30 ngày. Áp dụng tạm đình chỉ 24h &amp; khấu trừ 100% thưởng ngày.</textarea></div><div class="flex items-center justify-between pt-1"><label class="flex items-center gap-1.5 cursor-pointer text-[11px] text-slate-600"><input checked="" class="w-3.5 h-3.5 rounded text-emerald-600 border-slate-300 focus:ring-emerald-500" type="checkbox"><span class="">Đã đối soát bản đồ viễn thám và xác nhận không có lỗi hệ thống.</span></label><button class="w-auto inline-flex whitespace-nowrap items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white px-4 py-1.5 rounded font-label-sm text-xs font-semibold shadow-xs transition-colors cursor-pointer" type="button"><span class="material-symbols-outlined text-[15px]">send</span>Submit Decision (32s)</button></div></div></div>
+</section>
+<!-- ========================================================================= -->
+<!-- PANE 3: AI POLICY COPILOT (26%) -->
+<!-- ========================================================================= -->
+<section class="w-[26%] shrink-0 flex flex-col h-[calc(100vh-2.75rem)] bg-white select-none">
+<!-- Copilot Header -->
+<div class="h-10 px-3 border-b border-slate-200 flex items-center justify-between bg-slate-50/70 shrink-0">
+<div class="flex items-center gap-2">
+<div class="w-5 h-5 rounded bg-emerald-600 flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[13px]">smart_toy</span>
+</div>
+<span class="font-headline-sm text-xs font-semibold text-slate-800">AI Policy Copilot</span>
+<span class="font-code-sm text-[10px] text-slate-500 bg-white border border-slate-200 px-1 py-0.2 rounded">
+            #FC-8921
+          </span>
+</div>
+<!-- Circular Confidence Gauge -->
+<div class="flex items-center gap-1.5" title="Mức độ tin cậy phát hiện vi phạm: 92%">
+<div class="relative w-6 h-6 flex items-center justify-center">
+<svg class="w-6 h-6 -rotate-90" viewBox="0 0 36 36">
+<path class="text-slate-200" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.5"></path>
+<path class="text-red-500" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="92, 100" stroke-linecap="round" stroke-width="3.5"></path>
+</svg>
+<span class="absolute text-[8px] font-code-sm font-bold text-slate-800">92%</span>
+</div>
+<span class="text-[10px] font-label-sm font-bold text-red-600">CONF</span>
+</div>
+</div>
+<!-- Chat & RAG Stream Area -->
+<div class="flex-1 overflow-y-auto p-2.5 space-y-2.5 text-xs">
+<!-- FIRST MESSAGE: Automated Forensic Summary -->
+<div class="bg-emerald-50/50 border border-emerald-200 rounded p-2.5 space-y-1.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px] text-emerald-700">bolt</span>
+<span class="font-semibold text-emerald-900 text-[11px]">AI Forensic Summary</span>
+</div>
+<span class="text-[9px] font-code-sm text-emerald-700 bg-emerald-100/70 px-1 rounded">RAG Auto</span>
+</div>
+<p class="text-slate-800 leading-relaxed text-[11px]">
+            Tài xế <strong class="text-slate-900">Nguyễn Văn A</strong> nhận cuốc lúc 08:12 tại 12 Bà Triệu. Xe dừng bất động <strong class="text-red-600">210s</strong> tại ngã tư Bà Triệu - Lý Thường Kiệt dù đường thông thoáng (32 km/h). Độ tin cậy vi phạm: <strong class="text-red-600">92%</strong> (ERR-02: Cố tình ép khách hủy).
+          </p>
+<div class="bg-white/80 p-1.5 rounded border border-emerald-200/80 text-[10px] text-slate-700">
+<strong class="text-emerald-800">Đề xuất:</strong> Tạm khóa 24h và trừ thưởng ngày do tái phạm lần 2 theo Điều 14.2.
+          </div>
+<div class="pt-0.5">
+<button class="w-auto inline-flex whitespace-nowrap items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-semibold px-2 py-1 rounded shadow-2xs transition-colors" type="button">
+<span class="material-symbols-outlined text-[12px]">done_all</span>
+              Apply Recommendation
+            </button>
+</div>
+</div>
+<!-- SECOND MESSAGE: Analyst Query Bubble -->
+<div class="flex justify-end">
+<div class="bg-slate-900 text-white rounded-lg rounded-tr-none px-2.5 py-1.5 max-w-[85%] text-[11px]">
+            Điều 14.2 quy định mức phạt thế nào?
+          </div>
+</div>
+<!-- THIRD MESSAGE: Copilot RAG Answer -->
+<div class="bg-slate-50 border border-slate-200 rounded p-2.5 space-y-1.5">
+<div class="flex items-center gap-1 text-[11px] font-semibold text-slate-800">
+<span class="material-symbols-outlined text-[13px] text-emerald-600">menu_book</span>
+<span class="">Trợ lý Quy chuẩn GreenSM</span>
+</div>
+<p class="text-slate-700 leading-relaxed text-[11px]">
+            Theo <strong class="text-slate-900">Điều 14.2 Quy chế Đối tác GreenSM (Q3/2026)</strong>: Vi phạm lần 1 cảnh cáo; tái phạm trong 30 ngày <strong class="text-red-600 font-medium">tạm khóa 24 giờ</strong> và <strong class="text-red-600 font-medium">khấu trừ 100% thưởng ngày</strong>.
+          </p>
+</div>
+</div>
+<!-- Verified Policy Citations Deck -->
+<div class="px-3 py-2 border-t border-slate-100 bg-slate-50/50 space-y-1 shrink-0">
+<span class="text-[9px] font-code-sm text-slate-400 uppercase tracking-wider block">Verified Citations</span>
+<div class="flex flex-wrap gap-1">
+<button class="w-auto inline-flex whitespace-nowrap items-center gap-1 text-[10px] font-code-sm bg-white border border-slate-200 hover:border-slate-300 text-slate-700 px-1.5 py-0.5 rounded transition-colors" type="button">
+<span class="material-symbols-outlined text-[11px] text-emerald-600">article</span>
+            Quy chế §14.2 (0.94)
+          </button>
+<button class="w-auto inline-flex whitespace-nowrap items-center gap-1 text-[10px] font-code-sm bg-white border border-slate-200 hover:border-slate-300 text-slate-700 px-1.5 py-0.5 rounded transition-colors" type="button">
+<span class="material-symbols-outlined text-[11px] text-blue-600">history</span>
+            Tiền lệ #FC-7102 (96%)
+          </button>
+</div>
+</div>
+<!-- Suggested Quick Prompts -->
+<div class="px-3 py-1.5 border-t border-slate-100 bg-white flex items-center gap-1 overflow-x-auto shrink-0">
+<button class="w-auto inline-flex whitespace-nowrap items-center text-[10px] bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-0.5 rounded transition-colors" type="button">
+          Miễn trừ lỗi 4G
+        </button>
+<button class="w-auto inline-flex whitespace-nowrap items-center text-[10px] bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-0.5 rounded transition-colors" type="button">
+          Tra cứu Fake GPS
+        </button>
+<button class="w-auto inline-flex whitespace-nowrap items-center text-[10px] bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-0.5 rounded transition-colors" type="button">
+          Quy trình khiếu nại
+        </button>
+</div>
+<!-- Compact Chat Input Bar -->
+<div class="p-2 border-t border-slate-200 bg-white shrink-0">
+<div class="relative flex items-center">
+<input class="w-full h-7 pl-2 pr-14 bg-slate-50 border border-slate-200 rounded text-body-sm font-body-sm focus:outline-none focus:bg-white focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 text-slate-800 placeholder-slate-400 text-xs" placeholder="Hỏi trợ lý chính sách GreenSM..." type="text">
+<div class="absolute right-1 flex items-center gap-0.5">
+<button class="w-auto inline-flex whitespace-nowrap items-center p-1 text-slate-400 hover:text-slate-600" title="Đính kèm case log" type="button">
+<span class="material-symbols-outlined text-[14px]">attach_file</span>
+</button>
+<button class="w-auto inline-flex whitespace-nowrap items-center p-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded transition-colors" title="Gửi câu hỏi" type="button">
+<span class="material-symbols-outlined text-[13px]">arrow_upward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+
+
+
+
+
+
+</body></html>

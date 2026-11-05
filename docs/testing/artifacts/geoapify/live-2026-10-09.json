@@ -1,0 +1,74 @@
+{
+  "evidence_class": "bounded_live_provider_probe_summary",
+  "source_revision": "2d5d50eacf49703cbf1702dbc27395b2ef5d3708",
+  "environment": "local opt-in public Hanoi sample locations",
+  "transport": "Python standard-library urllib.request; sequential; timeout 10 seconds; no retries",
+  "limitations": [
+    "Credentials and raw provider responses are omitted.",
+    "Account plan, national coverage, application UI and hosted acceptance are unverified.",
+    "Map-matching timestamps are authored public examples, not measured historical telemetry.",
+    "No live invalid-key or paid route-details requests; failure cases use fixture transport."
+  ],
+  "operations": [
+    "geocode",
+    "reverse_geocode",
+    "routing",
+    "map_matching",
+    "map_style",
+    "mcp_tools"
+  ],
+  "results": [
+    {
+      "operation": "geocode",
+      "http_status": 200,
+      "feature_count": 1,
+      "geometry_type": "Point",
+      "country_code": "vn"
+    },
+    {
+      "operation": "reverse_geocode",
+      "http_status": 200,
+      "feature_count": 1,
+      "geometry_type": "Point",
+      "distance": 30.191869736884588,
+      "country_code": "vn"
+    },
+    {
+      "operation": "routing",
+      "http_status": 200,
+      "feature_count": 1,
+      "geometry_type": "MultiLineString",
+      "distance": 1317,
+      "time": 87.581,
+      "mode": "drive",
+      "traffic": "free_flow"
+    },
+    {
+      "operation": "map_matching",
+      "http_status": 200,
+      "feature_count": 1,
+      "geometry_type": "MultiLineString",
+      "distance": 102,
+      "time": 23,
+      "mode": "drive",
+      "match_types": [
+        "matched",
+        "matched",
+        "unmatched"
+      ]
+    },
+    {
+      "operation": "map_style",
+      "http_status": 200,
+      "style_version": 8,
+      "source_count": 1,
+      "layer_count": 111
+    },
+    {
+      "operation": "mcp_tools",
+      "http_status": 200,
+      "tool_count": 11
+    }
+  ],
+  "checked_at": "2026-10-09T08:28:15.445374+00:00"
+}

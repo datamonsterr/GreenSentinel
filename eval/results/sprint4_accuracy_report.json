@@ -1,0 +1,19 @@
+﻿{
+    "benchmark":  "sprint4-grounding-v1",
+    "generated_at":  "2026-10-13T12:40:26.9059782Z",
+    "source":  "eval/golden_set/rag_testset_100.json",
+    "total_cases":  100,
+    "policy_retrieval_precision_pct":  100,
+    "grounding_errors":  0,
+    "hallucination_rate_pct":  0,
+    "ambiguous_multi_clause_cases":  0,
+    "dpo_pairs":  1,
+    "acceptance":  {
+                       "precision_gte_95":  true,
+                       "hallucination_lte_1_5":  true,
+                       "grounding_errors_lte_1":  true
+                   },
+    "cases":  [
+
+              ]
+}

@@ -1,0 +1,10 @@
+F
+================================== FAILURES ===================================
+_____________________ test_e2e_driver_flow_full_lifecycle _____________________
+tests\e2e\test_driver_api_e2e.py:21: in test_e2e_driver_flow_full_lifecycle
+    assert data_cases["total"] > 0
+E   assert 0 > 0
+=========================== short test summary info ===========================
+FAILED tests/e2e/test_driver_api_e2e.py::test_e2e_driver_flow_full_lifecycle
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed in 15.85s

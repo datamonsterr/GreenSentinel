@@ -1,0 +1,3 @@
+SKIPPED [1] tests/e2e/test_real_agent_driver_gemini.py:98: Optional live OpenRouter test; set TEST_LIVE_OPENROUTER=1 and OPENROUTER_API_KEY
+SKIPPED [1] tests/test_rag_tool_routing.py:121: No live GEMINI_API_KEY available
+497 passed, 2 skipped, 6 warnings, 14 subtests passed in 152.54s (0:02:32)

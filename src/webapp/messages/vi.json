@@ -1,0 +1,476 @@
+{
+  "status": {
+    "dispute": {
+      "not_disputed": {
+        "label": "Chưa khiếu nại",
+        "explanation": "Chưa có yêu cầu đối soát cho sự việc này."
+      },
+      "in_dispute": {
+        "label": "Đang đối soát",
+        "explanation": "Hệ thống đang tiếp nhận và đối soát giải trình của bạn."
+      },
+      "driver_disputed": {
+        "label": "Đang đối soát",
+        "explanation": "Hệ thống đang tiếp nhận và đối soát giải trình của bạn."
+      },
+      "auto_dismissed": {
+        "label": "Miễn trừ tự động",
+        "explanation": "Vi phạm được hệ thống tự động miễn trừ do điều kiện khách quan hợp lệ."
+      },
+      "escalated": {
+        "label": "Chuyển chuyên viên",
+        "explanation": "Hồ sơ đã được chuyển lên chuyên viên thẩm định để đối chiếu thủ công."
+      },
+      "pending_review": {
+        "label": "Chờ chuyên viên",
+        "explanation": "Đang chờ chuyên viên thẩm định kiểm tra dữ liệu."
+      },
+      "pending_analyst_review": {
+        "label": "Chờ chuyên viên",
+        "explanation": "Đang chờ chuyên viên thẩm định kiểm tra dữ liệu."
+      },
+      "pending_confirmation": {
+        "label": "Chờ xác nhận",
+        "explanation": "Vui lòng kiểm tra và xác nhận nội dung giải trình trước khi gửi."
+      },
+      "pending": {
+        "label": "Chờ xử lý",
+        "explanation": "Hồ sơ đang trong hàng đợi xử lý."
+      },
+      "resolved": {
+        "label": "Đã giải quyết",
+        "explanation": "Vụ việc đã được xử lý hoàn tất."
+      },
+      "dismissed": {
+        "label": "Đã miễn trừ",
+        "explanation": "Vi phạm đã được hủy bỏ và miễn trừ trách nhiệm."
+      },
+      "upheld": {
+        "label": "Đã xác nhận vi phạm",
+        "explanation": "Vi phạm được xác nhận theo quy chế hoạt động."
+      },
+      "closed": {
+        "label": "Đã đóng",
+        "explanation": "Hồ sơ vụ việc đã kết thúc."
+      },
+      "expired": {
+        "label": "Hết hạn",
+        "explanation": "Thời hạn 48 giờ để gửi khiếu nại đã kết thúc."
+      }
+    },
+    "case": {
+      "open": {
+        "label": "Đang mở",
+        "explanation": "Vụ việc đang chờ xử lý."
+      },
+      "ready": {
+        "label": "Sẵn sàng",
+        "explanation": "Hồ sơ sẵn sàng đối soát."
+      },
+      "investigating": {
+        "label": "Đang thẩm tra",
+        "explanation": "Đang kiểm tra và xác minh các dữ liệu hành trình."
+      },
+      "in_review": {
+        "label": "Đang xem xét",
+        "explanation": "Hồ sơ đang được xem xét."
+      },
+      "resolved": {
+        "label": "Đã giải quyết",
+        "explanation": "Vụ việc đã được xử lý hoàn tất."
+      },
+      "closed": {
+        "label": "Đã đóng",
+        "explanation": "Hồ sơ vụ việc đã kết thúc."
+      }
+    },
+    "violation": {
+      "err_01": {
+        "label": "Chậm trễ đón khách",
+        "explanation": "Thời gian phương tiện tiếp cận điểm đón kéo dài bất thường so với dự kiến."
+      },
+      "err_02": {
+        "label": "Hủy chuyến bất thường",
+        "explanation": "Phát hiện hành vi hủy chuyến sau khi nhận khách hoặc hủy chuyến không hợp lệ."
+      },
+      "err_03": {
+        "label": "Bất thường định vị GPS",
+        "explanation": "Tín hiệu định vị GPS bị gián đoạn, giật đột ngột hoặc có dấu hiệu giả lập vị trí."
+      },
+      "err_04": {
+        "label": "Gián đoạn viễn thông",
+        "explanation": "Mất kết nối dữ liệu mạng hoặc thiết bị ngắt truyền phát tín hiệu telemetry."
+      },
+      "err_05": {
+        "label": "Sai lệch lộ trình",
+        "explanation": "Khoảng cách hoặc lộ trình di chuyển sai lệch đáng kể so với tuyến đường tối ưu."
+      },
+      "auto_dismissed": {
+        "label": "Miễn trừ tự động",
+        "explanation": "Được miễn trừ trách nhiệm theo quy chế vận hành."
+      },
+      "dic": {
+        "label": "Hủy chuyến chủ đích",
+        "explanation": "Tài xế chủ động hủy chuyến nhận cuốc."
+      },
+      "no_violation": {
+        "label": "Không có vi phạm",
+        "explanation": "Hành trình bình thường, không ghi nhận vi phạm."
+      }
+    },
+    "fallback": {
+      "label": "Cần xem xét",
+      "explanation": "Hồ sơ đang trong quy trình đối soát và xử lý."
+    },
+    "trip": {
+      "completed": {
+        "label": "Hoàn thành",
+        "explanation": "Chuyến đi đã hoàn tất bình thường."
+      },
+      "cancelled": {
+        "label": "Đã hủy",
+        "explanation": "Chuyến đi đã bị hủy trước khi hoàn tất."
+      },
+      "flagged": {
+        "label": "Đang xem xét",
+        "explanation": "Chuyến đi có vụ việc liên quan đang được xem xét."
+      },
+      "in_progress": {
+        "label": "Đang diễn ra",
+        "explanation": "Chuyến đi đang diễn ra."
+      }
+    }
+  },
+  "driver": {
+    "portalTitle": "Danh sách phiên vụ việc",
+    "casesCount": "{count} vụ việc",
+    "searchPlaceholder": "Tìm theo mã hồ sơ, sự cố...",
+    "allCases": "Tất cả",
+    "activeCases": "Đang xử lý",
+    "resolvedCases": "Đã giải quyết",
+    "loadingCases": "Đang tải danh sách vụ việc...",
+    "emptyCases": "Không tìm thấy hồ sơ vụ việc phù hợp.",
+    "sentinelAi": "🤖 Sentinel AI",
+    "riderReported": "👤 Khách báo",
+    "recent": "Gần đây",
+    "autoDismissedBadge": "Miễn trừ tự động",
+    "closedBadge": "Đã đóng",
+    "cases": {
+      "title": "Vụ việc của bạn",
+      "tabOpen": "Đang mở",
+      "tabResolved": "Đã xử lý",
+      "aiNoticeTitle": "Hệ thống AI tự động ghi nhận",
+      "aiNoticeBadge": "Bảo vệ",
+      "aiNoticeDesc": "Quyền lợi tài xế được bảo vệ tối đa. Hãy phản hồi các vụ việc trước thời hạn để giữ vững điểm tín nhiệm và chế độ thưởng tuần.",
+      "needActionSection": "Cần xử lý ngay",
+      "deadlineDays": "Còn {count} ngày để phản hồi",
+      "deadlineHours": "Còn {count} giờ để phản hồi",
+      "deadlinePassed": "Đã hết hạn phản hồi",
+      "deadlineUnderReview": "Dự kiến phản hồi trong 24h",
+      "emptyOpenTitle": "Không có vụ việc cần xử lý",
+      "emptyOpenDesc": "Hiện tại bạn không có cảnh báo hoặc vi phạm nào đang chờ giải quyết.",
+      "emptyResolvedTitle": "Chưa có vụ việc đã xử lý",
+      "emptyResolvedDesc": "Các vụ việc sau khi đối soát hoặc hoàn tất sẽ hiển thị tại đây.",
+      "loadingTitle": "Đang tải danh sách vụ việc...",
+      "errorTitle": "Không thể tải danh sách vụ việc",
+      "errorDesc": "Vui lòng kiểm tra kết nối mạng và thử lại.",
+      "retryButton": "Thử lại",
+      "shortIdAria": "Mã vụ việc {code}",
+      "caseAria": "Vụ việc {code}: {title}",
+      "todayAt": "Hôm nay, {time}",
+      "yesterdayAt": "Hôm qua, {time}",
+      "daysAgo": "{count} ngày trước",
+      "hoursAgo": "{count} giờ trước",
+      "minutesAgo": "{count} phút trước"
+    },
+    "gsupport": {
+      "title": "GSupport",
+      "aiCare": "Chăm sóc AI",
+      "systemName": "GreenSentinel",
+      "driverDefault": "Tài xế",
+      "backTooltip": "Quay lại danh sách vụ việc",
+      "mapButton": "Bản đồ",
+      "mapModalTitle": "Bản đồ GPS & Lộ trình thực tế",
+      "incidentLocation": "Vị trí sự cố",
+      "expectedPickup": "Điểm đón khách dự kiến",
+      "closeMap": "Đóng bản đồ",
+      "badgeAuto": "Miễn trừ",
+      "badgeExpired": "Hết hạn",
+      "badgeActive": "Đang xử lý",
+      "windowNotice": "⏱️ Thời hạn 48h",
+      "expiredBanner": "Thời hạn gửi khiếu nại (48h) đã kết thúc",
+      "resolvedBanner": "Hồ sơ đã được xử lý hoàn tất",
+      "dispositionLabel": "Phán quyết vụ việc:",
+      "exonerationSuccess": "Miễn trừ tự động thành công",
+      "zeroFine": "0 VNĐ Phạt",
+      "fineLevel": "Mức chế tài: 0 VNĐ",
+      "receiptLabel": "Biên nhận",
+      "exonerationDefaultSummary": "Xác thực lưu lượng giao thông vượt 3.4x tốc độ nền. Vi phạm được tự động miễn trừ.",
+      "analystBadge": "[Chuyên viên Thẩm định]",
+      "driverLabel": "Bạn (Tài xế)",
+      "gsupportLabel": "GSupport",
+      "greeting": "Chào đối tác {name}, tôi là GSupport - Trợ lý hỗ trợ đối soát hành trình GreenSM. Hệ thống ghi nhận cảnh báo mã {code} ({title}). Bạn có thể giải trình ngay bằng cách chọn lý do nhanh bên dưới hoặc nhập chi tiết sự việc để AI đối soát telemetry và miễn trừ tự động.",
+      "welcomePolicyArticle": "Điều 12.2 Quy chế GreenSM",
+      "welcomePolicyTitle": "Trường hợp bất khả kháng & Miễn trừ trách nhiệm",
+      "welcomePolicyChunk": "Trường hợp xe dừng đỗ hoặc di chuyển chậm do ùn tắc giao thông diện rộng, thời tiết xấu hoặc sự cố khách quan sẽ được tự động miễn trừ khi có đối chiếu viễn thông.",
+      "trafficPolicyArticle": "Điều 12.2 Quy chế GreenSM",
+      "trafficPolicyTitle": "Miễn trừ vi phạm do kẹt xe diện rộng",
+      "trafficPolicyChunk": "Dữ liệu vận tốc di chuyển và độ trễ hành trình được đối chiếu với lưu lượng giao thông thực tế để bảo vệ quyền lợi đối tác.",
+      "thinkingAnalyzing": "Đang phân tích dữ liệu GPS telemetry và đối chiếu lưu lượng đường thực tế...",
+      "thinkingExonerated": "Xác thực thành công: Tốc độ xe < 5 km/h, hệ số ùn tắc >= 2.0x, GPS hợp lệ, 0 vi phạm quá khứ. Đủ điều kiện miễn trừ tự động theo Điều 12.2.",
+      "thinkingEscalated": "Đã tổng hợp giải trình và dữ liệu đối chiếu vào hồ sơ giám sát cho Chuyên viên.",
+      "auditProcess": "Quy trình đối soát tự động",
+      "reasoningInProgress": "GSupport đang suy luận & kiểm tra...",
+      "reasoningLabel": "Lý luận:",
+      "toolLabel": "Công cụ:",
+      "processingExplanation": "Đang xử lý giải trình...",
+      "policyMatch": "Trùng khớp {score}",
+      "gpsTelemetryTitle": "Dữ liệu GPS & Viễn thông",
+      "openFullMap": "Mở bản đồ lớn →",
+      "speedLabel": "Vận tốc:",
+      "congestionFactor": "Hệ số kẹt:",
+      "connectionError": "GSupport tạm thời mất kết nối: {error}. Vui lòng thử lại.",
+      "retryConnection": "Thử kết nối lại",
+      "errorLoadFailed": "Không thể tải dữ liệu hồ sơ vụ việc",
+      "errorConnectionDefault": "Lỗi kết nối với GSupport",
+      "defaultCity": "Hà Nội",
+      "inputPlaceholder": "Nhập nội dung giải trình bổ sung…",
+      "send": "Gửi",
+      "sending": "Đang gửi…",
+      "loading": "Đang kết nối GSupport & tải hồ sơ vụ việc…",
+      "error403Title": "Bạn không có quyền truy cập hồ sơ vụ việc của đối tác khác",
+      "error403Desc": "Bạn chỉ có thể xem hồ sơ phát sinh từ chuyến xe của chính mình.",
+      "error404Title": "Không tìm thấy hồ sơ vụ việc",
+      "error404Desc": "Mã hồ sơ #{id} không tồn tại trong hệ thống.",
+      "backToPortal": "Quay lại Cổng đối tác"
+    },
+    "chat": {
+      "greetingTitle": "Chào {name} 👋",
+      "greetingSubtitle": "Tôi là GSupport. Bạn cần hỗ trợ gì hôm nay?",
+      "driverDefault": "đối tác",
+      "suggestion1": "Tôi có vụ việc nào đang mở không?",
+      "suggestion2": "Điều 12.2 quy định gì về kẹt xe?",
+      "suggestion3": "Xem điểm đánh giá 90 ngày của tôi",
+      "suggestion4": "Tôi muốn xem lịch sử chuyến đi gần nhất",
+      "autoSendPrompt": "Kiểm tra chi tiết vụ việc {code}",
+      "statusIdle": "Sẵn sàng",
+      "statusStreaming": "Đang trả lời…",
+      "statusCompleted": "Đã trả lời",
+      "statusError": "Lỗi kết nối",
+      "errorCaseNotFoundOrForbidden": "Không tìm thấy vụ việc hoặc bạn không có quyền xem vụ việc này",
+      "errorSessionExpired": "Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại",
+      "errorAssistantUnavailable": "Không kết nối được trợ lý, vui lòng thử lại",
+      "retry": "Thử lại",
+      "toolTraceLabel": "Công cụ đã dùng",
+      "composerPlaceholder": "Nhập nội dung…",
+      "send": "Gửi",
+      "caseStatusUnknown": "Chưa xác định",
+      "acceptViolation": "Chấp nhận vi phạm",
+      "rejectExplain": "Từ chối & giải trình",
+      "rejectPrompt": "Tôi muốn từ chối và giải trình",
+      "confirmAcknowledgeTitle": "Xác nhận chấp nhận vi phạm?",
+      "confirmAcknowledgeSummary": "Ghi nhận phản hồi chấp nhận vi phạm và chuyển chuyên viên xem xét.",
+      "confirmSubmitTitle": "Gửi giải trình này tới GreenSM để chuyên viên xem xét?",
+      "confirmSubmitSummary": "Hồ sơ sẽ được chuyển tới bộ phận Vận hành & Hỗ trợ Tài xế để thẩm định.",
+      "confirmIrreversibleNote": "Lưu ý: Hành động này không thể hoàn tác sau khi gửi.",
+      "confirmYes": "Có, gửi ngay",
+      "confirmNo": "Không, lưu nháp",
+      "draftSaved": "Đã lưu bản nháp giải trình. Bạn có thể tiếp tục bất kỳ lúc nào.",
+      "receiptSubmitted": "Đã gửi giải trình thành công. Hồ sơ đã chuyển chuyên viên xem xét.",
+      "receiptAcknowledged": "Đã ghi nhận phản hồi của bạn. Hồ sơ đã chuyển chuyên viên xem xét.",
+      "resumeDraft": "Bạn có bản nháp giải trình chưa gửi",
+      "resumeDraftAction": "Tiếp tục giải trình",
+      "dismissDraft": "Bỏ qua",
+      "checklistHeader": "Giải trình của bạn",
+      "checklistValidBadge": "Hợp lệ",
+      "checklistIncidentType": "Loại sự cố",
+      "checklistDescription": "Mô tả cụ thể",
+      "checklistEvidence": "Bằng chứng xác minh",
+      "checklistAcknowledgeDesc": "Xác nhận thông tin vụ việc"
+    },
+    "quickClaims": {
+      "traffic_gridlock": {
+        "label": "🚦 Kẹt xe / Ùn tắc",
+        "prompt": "Khu vực bị kẹt xe nghiêm trọng khiến xe không thể di chuyển đúng tiến độ."
+      },
+      "gps_issue": {
+        "label": "📍 Lỗi GPS / Mất sóng",
+        "prompt": "Ứng dụng tài xế bị mất kết nối mạng và tín hiệu GPS bị giật / mất liên lạc."
+      },
+      "passenger_wait": {
+        "label": "⏱️ Chờ hành khách",
+        "prompt": "Tôi đã có mặt tại điểm đón nhưng hành khách yêu cầu chờ quá thời gian quy định."
+      },
+      "breakdown": {
+        "label": "⚠️ Sự cố phương tiện",
+        "prompt": "Xe gặp sự cố kỹ thuật đột xuất, buộc phải dừng lại xử lý an toàn."
+      }
+    },
+    "authBoundary": {
+      "loadingSession": "Đang tải phiên làm việc…"
+    },
+    "tabs": {
+      "cases": "Vụ việc",
+      "profile": "Hồ sơ",
+      "chat": "GSupport",
+      "history": "Lịch sử",
+      "settings": "Cài đặt",
+      "navAriaLabel": "Thanh điều hướng tài xế"
+    },
+    "settings": {
+      "title": "Cài đặt",
+      "driverPartner": "Tài xế đối tác",
+      "goldPartner": "Đối tác GreenCar - Hạng Vàng",
+      "active": "Đang hoạt động",
+      "securityAndLicense": "Bảo mật & Giấy phép lái xe",
+      "manageAccount": "Quản lý tài khoản",
+      "vehicleInfo": "VinFast VF 5 Plus • Biển số",
+      "licensePlate": "29E - 584.92",
+      "batteryAvailable": "Pin khả dụng",
+      "batteryLevel": "82%",
+      "batteryRange": "(246 km)",
+      "sectionExperience": "Giao diện & Trải nghiệm",
+      "theme": "Giao diện",
+      "themeDesc": "Tối ưu độ tương phản ngày và đêm",
+      "themeLight": "Sáng",
+      "themeDark": "Tối",
+      "language": "Ngôn ngữ",
+      "languageDesc": "Ngôn ngữ hiển thị trên xe",
+      "langVi": "Tiếng Việt",
+      "langEn": "English",
+      "sectionInfo": "Thông tin & Hỗ trợ",
+      "appVersion": "Phiên bản ứng dụng",
+      "versionLatest": "Mới nhất",
+      "termsAndPolicies": "Điều khoản & Chính sách đối tác",
+      "operatingRegulations": "Quy chế hoạt động Xanh SM",
+      "hotline": "Tổng đài & Hỗ trợ khẩn cấp 24/7",
+      "hotlineNumber": "1900 2088 (Nhánh 1 cho Tài xế)",
+      "signOut": "Đăng xuất",
+      "partnerCode": "Mã định danh đối tác: GSM-VN-884920",
+      "avatarAlt": "Ảnh đại diện tài xế",
+      "noEmail": "Chưa có email"
+    },
+    "profile": {
+      "title": "Hồ sơ tài xế",
+      "backAriaLabel": "Quay lại",
+      "unnamedDriver": "Tài xế chưa đặt tên",
+      "memberSince": "Thành viên từ: {date}",
+      "noVehicle": "Chưa gán phương tiện",
+      "ratingSectionTitle": "Đánh giá chung",
+      "ratingSectionSubtitle": "Tổng hợp từ tất cả các chuyến xe",
+      "latestRatedWeek": "Tuần gần nhất có đánh giá: {score}",
+      "outOfFive": "/5",
+      "reviewCount": "{count} lượt đánh giá",
+      "noRatingsYet": "Chưa có đánh giá",
+      "trendTitle": "Xu hướng 8 tuần gần đây",
+      "dateLocale": "vi-VN",
+      "performanceTitle": "Hiệu suất vận hành 90 ngày",
+      "performanceSubtitle": "Chỉ số được đo trực tiếp từ hệ thống trong 90 ngày qua",
+      "kpiTotalTrips": "Tổng số chuyến được phân công",
+      "kpiTotalTripsUnit": "chuyến",
+      "kpiTotalTripsTooltip": "Tổng số chuyến xe được phân công cho tài xế trong 90 ngày qua.",
+      "kpiViolationRatio": "Tỷ lệ vụ việc / chuyến",
+      "kpiViolationRatioTooltip": "Tỷ lệ số vụ việc vi phạm trên tổng số chuyến trong 90 ngày qua.",
+      "kpiBenchmarkReference": "Tham chiếu hệ thống: {value}%",
+      "kpiFinedRatio": "Tỷ lệ bị xử phạt",
+      "kpiFinedRatioTooltip": "Tỷ lệ số vụ việc dẫn đến xử phạt trên tổng số vụ việc trong 90 ngày qua.",
+      "kpiCaseCount": "Số vụ việc",
+      "kpiCaseCountUnit": "vụ",
+      "kpiCaseCountTooltip": "Số lượng vụ việc được ghi nhận trong 90 ngày qua.",
+      "feedbackTitle": "Phản hồi từ khách hàng",
+      "feedbackSubtitle": "Nhận xét từ các chuyến đi gần nhất",
+      "anonymousCustomer": "Khách hàng",
+      "noComment": "Khách không để lại nhận xét",
+      "noRating": "Không có đánh giá sao",
+      "loadMore": "Tải thêm nhận xét",
+      "loadMoreFailed": "Không thể tải thêm nhận xét",
+      "noFeedbackYet": "Chưa có nhận xét từ khách hàng",
+      "loading": "Đang tải hồ sơ tài xế…",
+      "errorLoadFailed": "Không thể tải hồ sơ tài xế",
+      "errorLoadDesc": "Vui lòng kiểm tra kết nối mạng và thử lại.",
+      "retry": "Thử lại"
+    },
+    "placeholders": {
+      "profileTitle": "Hồ sơ tài xế",
+      "profileDesc": "Tính năng đánh giá và hồ sơ tài xế đang được hoàn thiện.",
+      "historyTitle": "Lịch sử chuyến đi",
+      "historyDesc": "Tính năng tra cứu lịch sử chuyến đi đang được hoàn thiện.",
+      "chatTitle": "GSupport Trợ lý AI",
+      "chatDesc": "Chào mừng bạn đến với GSupport. Vui lòng chọn một vụ việc để bắt đầu hỗ trợ."
+    },
+    "history": {
+      "title": "Lịch sử hoạt động",
+      "currencySymbol": "đ",
+      "monthlyEarnings": "Tổng thu nhập tháng",
+      "monthFormat": "Tháng {month}, {year}",
+      "tripCount": "Số chuyến",
+      "distance": "Quãng đường",
+      "rating": "Đánh giá",
+      "notRated": "Chưa đánh giá",
+      "unratedShort": "Chưa có",
+      "tabAll": "Tất cả",
+      "tabCompleted": "Hoàn thành",
+      "tabFlagged": "Có vấn đề",
+      "today": "Hôm nay",
+      "yesterday": "Hôm qua",
+      "tripsCountUnit": "{count} chuyến",
+      "kmUnit": "{km} km",
+      "emptyTitle": "Chưa có chuyến đi",
+      "emptyDesc": "Không tìm thấy chuyến đi nào trong khoảng thời gian này.",
+      "flaggedNotice": "Đang xem xét — nhấn để mở vụ việc",
+      "viewDisputeCase": "Xem vụ việc",
+      "paymentMethods": {
+        "wallet": "Ví VinClub",
+        "cash": "Tiền mặt",
+        "credit_card": "Thẻ tín dụng"
+      },
+      "loadMore": "Tải thêm",
+      "loading": "Đang tải dữ liệu…",
+      "filterMonthAria": "Chọn tháng lọc dữ liệu",
+      "durationMin": "{min} phút",
+      "syntheticDataLabel": "dữ liệu demo",
+      "syntheticDataTooltip": "Phương thức thanh toán là dữ liệu giả lập minh hoạ, không phải giao dịch thật.",
+      "errorTitle": "Không thể tải chuyến đi",
+      "errorDesc": "Vui lòng kiểm tra kết nối mạng và thử lại.",
+      "errorRetry": "Thử lại",
+      "prevMonth": "Tháng trước",
+      "nextMonth": "Tháng sau",
+      "loadMoreSentinelLabel": "Đang tải thêm chuyến đi"
+    }
+  },
+  "driverBlocks": {
+    "trip": "Chuyến đi",
+    "pickup": "Điểm đón",
+    "destination": "Điểm đến",
+    "fareRecorded": "Cước phí ghi nhận",
+    "tripDetails": "Chi tiết chuyến xe",
+    "casePrefix": "Vụ việc",
+    "inAppNavigation": "Điều hướng trong ứng dụng",
+    "evidenceHeader": "Bằng chứng & Dữ liệu ghi nhận",
+    "evidenceKinds": {
+      "weather": "Thời tiết",
+      "traffic": "Giao thông",
+      "telemetry": "Dữ liệu hộp đen & GPS",
+      "policy": "Chính sách quy chuẩn"
+    },
+    "nextStepsHeader": "Bước tiếp theo:",
+    "status": {
+      "under_investigation": "Đang giải quyết",
+      "pending": "Chờ xử lý",
+      "resolved": "Đã giải quyết",
+      "dismissed": "Miễn trừ",
+      "auto_dismissed": "Tự động miễn trừ",
+      "violation": "Xác nhận vi phạm",
+      "escalated": "Đã chuyển thẩm định",
+      "open": "Đang mở",
+      "closed": "Đã đóng",
+      "in_review": "Đang xem xét",
+      "approved": "Đã chấp thuận",
+      "rejected": "Đã từ chối",
+      "under_review": "Đang xem xét",
+      "draft": "Bản nháp",
+      "submitted": "Đã gửi",
+      "pending_analyst_review": "Chờ chuyên viên thẩm định"
+    }
+  }
+}

@@ -1,0 +1,13 @@
+# agy custom command: benchmark-grow (Gemini-style TOML)
+# Project-scoped: <repo>/.agy/commands/benchmark-grow.toml
+# Invoke: /benchmark-grow PLAN=v2:20261012:10000
+# (If this agy build does not load .agy/commands, use the `benchmark-grow`
+# skill under .agents/skills/ — it points to the same canonical file.)
+
+description = "Grow fraud benchmark with more distinct validated trips in parallel"
+
+prompt = """
+Read `.agents/commands/benchmark-grow.md` and follow it exactly.
+
+Arguments: {{args}} (plan as `name:seed:n[,name:seed:n...]`, e.g. `v2:20261012:10000`).
+"""

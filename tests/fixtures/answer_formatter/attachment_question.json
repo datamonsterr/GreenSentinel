@@ -1,0 +1,20 @@
+{
+  "scenario": "attachment_question",
+  "raw_answer": "Dựa trên hình ảnh ảnh chụp đồng hồ công-tơ-mét và bảng điều khiển xe được đính kèm, chỉ số ODO hiển thị 42.150 km, phù hợp với hành trình thực tế của chuyến trip_att_001 từ Gamuda Gardens đến Times City. Không phát hiện dấu hiệu can thiệp vật lý vào đồng hồ đo tốc độ của tài xế 018f2f4e-b300-7000-8000-000000000009 trong hồ sơ 018f2f4e-b000-7000-8000-000000000009.",
+  "citations": [],
+  "entities": {
+    "case_ids": ["018f2f4e-b000-7000-8000-000000000009"],
+    "driver_ids": ["018f2f4e-b300-7000-8000-000000000009"],
+    "trip_ids": ["trip_att_001"],
+    "citation_ids": []
+  },
+  "mock_formatted_output": {
+    "markdown": "**Chỉ số ODO 42.150 km trùng khớp với lịch trình chuyến đi.**\n\nPhân tích ảnh chụp đính kèm trong [Vụ việc](case://018f2f4e-b000-7000-8000-000000000009):\n\n- Tài xế cung cấp bằng chứng: [Tài xế Phan Thanh Hải](driver://018f2f4e-b300-7000-8000-000000000009)\n- Chuyến đi kiểm tra: [Gamuda Gardens → Times City](trip://trip_att_001?pickup=Gamuda+Gardens&dest=Times+City)\n- Kết quả kiểm tra: Đồng hồ ODO hiển thị 42.150 km, không phát hiện can thiệp vật lý",
+    "suggestions": [
+      {
+        "label": "Lưu bằng chứng hình ảnh",
+        "prompt": "Lưu trữ hình ảnh vào hồ sơ bằng chứng vụ việc"
+      }
+    ]
+  }
+}

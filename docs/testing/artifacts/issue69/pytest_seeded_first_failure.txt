@@ -1,0 +1,13 @@
+.F
+================================== FAILURES ===================================
+________________ test_driver_agent_model_is_gemini_flash_lite _________________
+tests\e2e\test_real_agent_driver_gemini.py:20: in test_driver_agent_model_is_gemini_flash_lite
+    model = get_driver_chat_model()
+            ^^^^^^^^^^^^^^^^^^^^^^^
+src\agents\driver_agent.py:56: in get_driver_chat_model
+    raise RuntimeError("OPENROUTER_API_KEY is not configured")
+E   RuntimeError: OPENROUTER_API_KEY is not configured
+=========================== short test summary info ===========================
+FAILED tests/e2e/test_real_agent_driver_gemini.py::test_driver_agent_model_is_gemini_flash_lite
+!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!
+1 failed, 1 passed in 189.13s (0:03:09)

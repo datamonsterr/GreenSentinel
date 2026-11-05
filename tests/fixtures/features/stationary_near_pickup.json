@@ -1,0 +1,239 @@
+{
+  "description": "Xe đứng yên 200 s, cách điểm đón ~40 m về phía bắc, mẫu mỗi 10 s (21 điểm). Chưa tới bán kính 30 m nên approach window là cả chuyến.",
+  "input": {
+    "pickup": [
+      105.85,
+      21.03
+    ],
+    "points": [
+      {
+        "latitude": 21.0303593,
+        "longitude": 105.85,
+        "occurred_at": "2026-09-27T08:00:00Z",
+        "speed_mps": 0.0,
+        "accuracy_m": 8.0,
+        "app_state": "foreground",
+        "network_state": "online",
+        "gps_state": "valid"
+      },
+      {
+        "latitude": 21.0303593,
+        "longitude": 105.85,
+        "occurred_at": "2026-09-27T08:00:10Z",
+        "speed_mps": 0.0,
+        "accuracy_m": 8.0,
+        "app_state": "foreground",
+        "network_state": "online",
+        "gps_state": "valid"
+      },
+      {
+        "latitude": 21.0303593,
+        "longitude": 105.85,
+        "occurred_at": "2026-09-27T08:00:20Z",
+        "speed_mps": 0.0,
+        "accuracy_m": 8.0,
+        "app_state": "foreground",
+        "network_state": "online",
+        "gps_state": "valid"
+      },
+      {
+        "latitude": 21.0303593,
+        "longitude": 105.85,
+        "occurred_at": "2026-09-27T08:00:30Z",
+        "speed_mps": 0.0,
+        "accuracy_m": 8.0,
+        "app_state": "foreground",
+        "network_state": "online",
+        "gps_state": "valid"
+      },
+      {
+        "latitude": 21.0303593,
+        "longitude": 105.85,
+        "occurred_at": "2026-09-27T08:00:40Z",
+        "speed_mps": 0.0,
+        "accuracy_m": 8.0,
+        "app_state": "foreground",
+        "network_state": "online",
+        "gps_state": "valid"
+      },
+      {
+        "latitude": 21.0303593,
+        "longitude": 105.85,
+        "occurred_at": "2026-09-27T08:00:50Z",
+        "speed_mps": 0.0,
+        "accuracy_m": 8.0,
+        "app_state": "foreground",
+        "network_state": "online",
+        "gps_state": "valid"
+      },
+      {
+        "latitude": 21.0303593,
+        "longitude": 105.85,
+        "occurred_at": "2026-09-27T08:01:00Z",
+        "speed_mps": 0.0,
+        "accuracy_m": 8.0,
+        "app_state": "foreground",
+        "network_state": "online",
+        "gps_state": "valid"
+      },
+      {
+        "latitude": 21.0303593,
+        "longitude": 105.85,
+        "occurred_at": "2026-09-27T08:01:10Z",
+        "speed_mps": 0.0,
+        "accuracy_m": 8.0,
+        "app_state": "foreground",
+        "network_state": "online",
+        "gps_state": "valid"
+      },
+      {
+        "latitude": 21.0303593,
+        "longitude": 105.85,
+        "occurred_at": "2026-09-27T08:01:20Z",
+        "speed_mps": 0.0,
+        "accuracy_m": 8.0,
+        "app_state": "foreground",
+        "network_state": "online",
+        "gps_state": "valid"
+      },
+      {
+        "latitude": 21.0303593,
+        "longitude": 105.85,
+        "occurred_at": "2026-09-27T08:01:30Z",
+        "speed_mps": 0.0,
+        "accuracy_m": 8.0,
+        "app_state": "foreground",
+        "network_state": "online",
+        "gps_state": "valid"
+      },
+      {
+        "latitude": 21.0303593,
+        "longitude": 105.85,
+        "occurred_at": "2026-09-27T08:01:40Z",
+        "speed_mps": 0.0,
+        "accuracy_m": 8.0,
+        "app_state": "foreground",
+        "network_state": "online",
+        "gps_state": "valid"
+      },
+      {
+        "latitude": 21.0303593,
+        "longitude": 105.85,
+        "occurred_at": "2026-09-27T08:01:50Z",
+        "speed_mps": 0.0,
+        "accuracy_m": 8.0,
+        "app_state": "foreground",
+        "network_state": "online",
+        "gps_state": "valid"
+      },
+      {
+        "latitude": 21.0303593,
+        "longitude": 105.85,
+        "occurred_at": "2026-09-27T08:02:00Z",
+        "speed_mps": 0.0,
+        "accuracy_m": 8.0,
+        "app_state": "foreground",
+        "network_state": "online",
+        "gps_state": "valid"
+      },
+      {
+        "latitude": 21.0303593,
+        "longitude": 105.85,
+        "occurred_at": "2026-09-27T08:02:10Z",
+        "speed_mps": 0.0,
+        "accuracy_m": 8.0,
+        "app_state": "foreground",
+        "network_state": "online",
+        "gps_state": "valid"
+      },
+      {
+        "latitude": 21.0303593,
+        "longitude": 105.85,
+        "occurred_at": "2026-09-27T08:02:20Z",
+        "speed_mps": 0.0,
+        "accuracy_m": 8.0,
+        "app_state": "foreground",
+        "network_state": "online",
+        "gps_state": "valid"
+      },
+      {
+        "latitude": 21.0303593,
+        "longitude": 105.85,
+        "occurred_at": "2026-09-27T08:02:30Z",
+        "speed_mps": 0.0,
+        "accuracy_m": 8.0,
+        "app_state": "foreground",
+        "network_state": "online",
+        "gps_state": "valid"
+      },
+      {
+        "latitude": 21.0303593,
+        "longitude": 105.85,
+        "occurred_at": "2026-09-27T08:02:40Z",
+        "speed_mps": 0.0,
+        "accuracy_m": 8.0,
+        "app_state": "foreground",
+        "network_state": "online",
+        "gps_state": "valid"
+      },
+      {
+        "latitude": 21.0303593,
+        "longitude": 105.85,
+        "occurred_at": "2026-09-27T08:02:50Z",
+        "speed_mps": 0.0,
+        "accuracy_m": 8.0,
+        "app_state": "foreground",
+        "network_state": "online",
+        "gps_state": "valid"
+      },
+      {
+        "latitude": 21.0303593,
+        "longitude": 105.85,
+        "occurred_at": "2026-09-27T08:03:00Z",
+        "speed_mps": 0.0,
+        "accuracy_m": 8.0,
+        "app_state": "foreground",
+        "network_state": "online",
+        "gps_state": "valid"
+      },
+      {
+        "latitude": 21.0303593,
+        "longitude": 105.85,
+        "occurred_at": "2026-09-27T08:03:10Z",
+        "speed_mps": 0.0,
+        "accuracy_m": 8.0,
+        "app_state": "foreground",
+        "network_state": "online",
+        "gps_state": "valid"
+      },
+      {
+        "latitude": 21.0303593,
+        "longitude": 105.85,
+        "occurred_at": "2026-09-27T08:03:20Z",
+        "speed_mps": 0.0,
+        "accuracy_m": 8.0,
+        "app_state": "foreground",
+        "network_state": "online",
+        "gps_state": "valid"
+      }
+    ]
+  },
+  "expected": {
+    "approach_stationary_duration_s": 200.0,
+    "stationary_duration_total_s": 200.0,
+    "davi": null,
+    "arrived_at_pickup": false,
+    "distance_to_pickup_m.min_m": 40.0,
+    "telemetry_coverage": 1.0,
+    "max_gap_s": 10.0,
+    "speed.mean_mps": 0.0,
+    "gps_quality.accuracy_p50_m": 8.0,
+    "missing_features": [
+      "davi"
+    ]
+  },
+  "tolerance": {
+    "distance_to_pickup_m.min_m": 0.5
+  },
+  "hand_calculation": "21 điểm cùng tọa độ, cách nhau 10 s -> 1 chuỗi đứng yên 0..200 s -> SSD trước khi tới điểm đón = SSD toàn window = 200 (chưa vào bán kính 30 m). Không có đoạn dịch chuyển >=15 m -> DAVI null. 20 khoảng 10 s đều <=30 s -> coverage=200/200=1.0, max_gap=10. Khoảng cách 40 m ~ 40/111320 độ vĩ."
+}

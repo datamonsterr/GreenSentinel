@@ -1,0 +1,76 @@
+[project]
+name = "p-063-agent"
+version = "0.1.0"
+description = "VinUni AI20K Build Phase - Team P-063 Production AI Agent"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.34.0",
+    "pydantic>=2.10.0",
+    "pydantic-settings>=2.7.0",
+    "python-dotenv>=1.0.0",
+    "langchain>=0.3.0",
+    "langchain-openai>=0.3.0",
+    "openai>=1.0.0",
+    "langgraph>=0.2.0",
+    "httpx>=0.28.0",
+    "psycopg[binary]>=3.3.6",
+    "shapely>=2.1.2",
+    "jsonschema>=4.26.0",
+    "redis>=8.1.0",
+    "psycopg2-binary>=2.9.13",
+    "qdrant-client>=1.11.0",
+    "google-genai>=1.0.0",
+    "clerk-backend-api>=7.0.0",
+    "langchain-google-genai>=4.4.0",
+    "pyarrow",
+]
+
+[project.optional-dependencies]
+benchmark = [
+    "numpy>=2.0,<3",
+    "pyyaml>=6.0,<7",
+    "pyarrow>=26.0,<27",
+    "huggingface_hub>=0.27",
+]
+dev = [
+    "ruff>=0.8.0",
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.24.0",
+    "pytest-xdist>=3.5.0",
+    "mypy>=1.10.0",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.8.0",
+    "pytest>=8.0.0",
+    "pytest-asyncio>=0.24.0",
+    "pytest-xdist>=3.5.0",
+    "mypy>=1.10.0",
+    "scikit-learn>=1.9.1",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.mypy]
+# Follow the active interpreter so installed dependency stubs use matching syntax.
+strict = false
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+addopts = "--import-mode=importlib --durations=10"
+asyncio_mode = "auto"
+testpaths = ["tests"]
+pythonpath = ["."]
+markers = [
+    "unit: isolated offline tests",
+    "integration: cross-component or backing-service tests",
+    "e2e: backend workflow tests",
+    "live: explicit external-provider tests (opt in)",
+    "docker: integration tests requiring Docker backing services",
+    "slow: long-running tests or micro-benchmarks",
+]

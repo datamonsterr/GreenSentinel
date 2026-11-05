@@ -1,0 +1,275 @@
+{
+  "assumptions": {
+    "backend-affected": "frozen profiles v1/v2/v3 and evidence-v2 byte-identical and untouched",
+    "dialogue": "20% 16-turn, remaining 4-12; local authored banks; within-trip timing synthetic",
+    "dialogue_holdout": "bank templates partitioned 70/15/15; paraphrase affixes raise surface uniqueness",
+    "enums": "cancellation reason/actor drawn from overlapping operational pools; not label-deterministic",
+    "fare": "completed fare = 12k VND + 12k VND/km capped at 100k/km; cancelled trips carry no charge",
+    "geography": "20% Porto anchors from licensed observed taxi template; synthetic geometry, not shortest-road evidence",
+    "gridlock": "10% honest; 3% of gridlock controlled SSD boundary fixtures from synthetic 400-trip calibration, not real traffic frequency",
+    "history": "only earlier terminal operational events; no current/future outcome or labels; profile priors separate",
+    "kinematics": "measured Porto pooled quantiles include stops; linear p05-p95 interpolation and [3,24] moving clipping assumptions; crawl/teleport scenario priors",
+    "labels": "enriched synthetic class mix; evidence sufficiency remains independent; no existing cases relabeled",
+    "locale": "per-trip city/country/locale metadata agrees with telemetry bbox",
+    "noise": "10% stress; AR1 rho=0.9 and accuracy/noise priors are synthetic assumptions; boundary subset excludes stress",
+    "splits": "stable driver hash 70/15/15; no holdout tuning and no claim of unseen-driver generalization"
+  },
+  "base_config_sha256": "28ef955ede7d74fb43ece313209bc4f3cb3b0bccda7bde1930e0a26d90912c4a",
+  "builder": "build_10k_v2",
+  "city_counts": {
+    "Hanoi": 8000,
+    "Porto": 2000
+  },
+  "class_counts": {
+    "ERR-01": 500,
+    "ERR-02": 800,
+    "ERR-03": 500,
+    "ERR-04": 300,
+    "ERR-05": 300,
+    "insufficient_evidence": 600,
+    "no_violation": 7000
+  },
+  "config_sha256": "1d055b405e87be0f5599ed594c4d4d012886535a71f7617a36cbcf14aff9ff07",
+  "environment": {
+    "PyYAML": "6.0.3",
+    "numpy": "2.4.6",
+    "pyarrow": "26.0.0",
+    "pydantic": "2.14.1",
+    "python": "3.11.15",
+    "shapely": "2.2.0"
+  },
+  "gates": [
+    {
+      "gate": "ghost never arrived",
+      "measured": 1.0,
+      "n": 253,
+      "pass": true,
+      "required": 1.0,
+      "status": "measured",
+      "stratum": "happy"
+    },
+    {
+      "gate": "gridlock boundary SSD>=180",
+      "measured": 1.0,
+      "n": 21,
+      "pass": true,
+      "required": 1.0,
+      "status": "measured",
+      "stratum": "happy"
+    },
+    {
+      "gate": "dropout max_gap>30",
+      "measured": 1.0,
+      "n": 538,
+      "pass": true,
+      "required": 1.0,
+      "status": "measured",
+      "stratum": "happy"
+    },
+    {
+      "gate": "spoof mock>=0.8",
+      "measured": 1.0,
+      "n": 269,
+      "pass": true,
+      "required": 1.0,
+      "status": "measured",
+      "stratum": "happy"
+    },
+    {
+      "gate": "ghost never arrived",
+      "measured": 1.0,
+      "n": 47,
+      "pass": true,
+      "required": 1.0,
+      "status": "measured",
+      "stratum": "stress"
+    },
+    {
+      "gate": "gridlock boundary SSD>=180",
+      "measured": null,
+      "n": 0,
+      "pass": null,
+      "required": 1.0,
+      "status": "not_applicable",
+      "stratum": "stress"
+    },
+    {
+      "gate": "dropout max_gap>30",
+      "measured": 1.0,
+      "n": 62,
+      "pass": true,
+      "required": 1.0,
+      "status": "measured",
+      "stratum": "stress"
+    },
+    {
+      "gate": "spoof mock>=0.8",
+      "measured": 1.0,
+      "n": 31,
+      "pass": true,
+      "required": 1.0,
+      "status": "measured",
+      "stratum": "stress"
+    },
+    {
+      "detail": "per-class recall: {\"ERR-01\": 0.392, \"ERR-02\": 0.3762, \"ERR-03\": 0.404, \"insufficient_evidence\": 0.44, \"no_violation\": 0.3714}",
+      "gate": "enum-latch label recall < 0.5",
+      "measured": 0.44,
+      "n": 3100,
+      "pass": true,
+      "required": "<0.5",
+      "status": "measured"
+    },
+    {
+      "gate": "locale consistency (bbox within city)",
+      "measured": 1.0,
+      "n": 10000,
+      "pass": true,
+      "required": 1.0,
+      "status": "measured"
+    },
+    {
+      "gate": "fare coherence (no fare on cancelled, per-km<=100k)",
+      "measured": 1.0,
+      "n": 10000,
+      "pass": true,
+      "required": 1.0,
+      "status": "measured"
+    },
+    {
+      "gate": "dialogue unique utterance fraction > 5%",
+      "measured": 0.5602,
+      "n": 96043,
+      "pass": true,
+      "required": ">0.05",
+      "status": "measured"
+    }
+  ],
+  "gridlock_boundary_count": 21,
+  "gridlock_count": 700,
+  "hardened": true,
+  "ledger_sha256": "6b54e5b12cbbc17f4e32f9d0cba2662ee074580aae5f4242a8eb4f0a64eced81",
+  "long_dialogue_count": 2000,
+  "parquet": {
+    "canonical": "trips.jsonl",
+    "format": "nested PyArrow table",
+    "rows": 10000,
+    "schema": "trip_ref: string\ntrip_id: string\nassignment_id: string\ndriver_id: string\npassenger_id: string\nvehicle_id: string\nlabel: string\nscenario: string\ngridlock_subset: bool\nrequested_at: string\npickup: struct<lon: double, lat: double, name: string>\n  child 0, lon: double\n  child 1, lat: double\n  child 2, name: string\ndropoff: struct<lon: double, lat: double, name: string>\n  child 0, lon: double\n  child 1, lat: double\n  child 2, name: string\nroute: struct<distance_m: double, duration_s: double, provenance: struct<provider: string, method: string,  (... 24 chars omitted)\n  child 0, distance_m: double\n  child 1, duration_s: double\n  child 2, provenance: struct<provider: string, method: string, is_shortest_path: bool>\n      child 0, provider: string\n      child 1, method: string\n      child 2, is_shortest_path: bool\ntelemetry: list<item: struct<sequence: int64, occurred_at: string, latitude: double, longitude: double, accurac (... 228 chars omitted)\n  child 0, item: struct<sequence: int64, occurred_at: string, latitude: double, longitude: double, accuracy_m: double (... 216 chars omitted)\n      child 0, sequence: int64\n      child 1, occurred_at: string\n      child 2, latitude: double\n      child 3, longitude: double\n      child 4, accuracy_m: double\n      child 5, speed_mps: double\n      child 6, bearing_deg: double\n      child 7, app_state: string\n      child 8, network_state: string\n      child 9, gps_state: string\n      child 10, mock_location_reported: bool\n      child 11, latency_ms: double\n      child 12, distance_to_pickup_m: null\n      child 13, davi_score: null\n      child 14, data_gap_s: null\ntraffic_observation: struct<congestion_level: string, source: string, is_simulated: bool, observed_at: string>\n  child 0, congestion_level: string\n  child 1, source: string\n  child 2, is_simulated: bool\n  child 3, observed_at: string\nplatform_incident: struct<incident_type: string, state: string, started_at: string, ended_at: string>\n  child 0, incident_type: string\n  child 1, state: string\n  child 2, started_at: string\n  child 3, ended_at: string\ntrip: struct<status: string, cancelled_at: string, completed_at: string, fare_amount_vnd: int64, match_typ (... 140 chars omitted)\n  child 0, status: string\n  child 1, cancelled_at: string\n  child 2, completed_at: string\n  child 3, fare_amount_vnd: int64\n  child 4, match_type: string\n  child 5, pickup_address: string\n  child 6, dropoff_address: string\n  child 7, district: string\n  child 8, city: string\n  child 9, fare_state: string\n  child 10, cancellation_fee_vnd: int64\nassignment: struct<state: string, offered_at: string, accepted_at: string, arrived_at: string, started_at: strin (... 77 chars omitted)\n  child 0, state: string\n  child 1, offered_at: string\n  child 2, accepted_at: string\n  child 3, arrived_at: string\n  child 4, started_at: string\n  child 5, ended_at: string\n  child 6, cancellation_actor: string\n  child 7, cancellation_reason: string\nconversation: list<item: struct<role: string, text: string, sent_at_offset_s: double, lang: string>>\n  child 0, item: struct<role: string, text: string, sent_at_offset_s: double, lang: string>\n      child 0, role: string\n      child 1, text: string\n      child 2, sent_at_offset_s: double\n      child 3, lang: string\ndriver_objection: struct<status: string, text: string>\n  child 0, status: string\n  child 1, text: string\ncustomer_report: string\ndriver_profile: struct<id: string, organization_id: string, principal_id: null, external_ref: string, partner_type:  (... 431 chars omitted)\n  child 0, id: string\n  child 1, organization_id: string\n  child 2, principal_id: null\n  child 3, external_ref: string\n  child 4, partner_type: string\n  child 5, account_status: string\n  child 6, is_synthetic: bool\n  child 7, created_at: string\n  child 8, display_name: string\n  child 9, birth_date: null\n  child 10, profile_provenance: struct<synthetic: bool, generator: string, version: string, tenure_days: int64, fraud_propensity: bo (... 90 chars omitted)\n      child 0, synthetic: bool\n      child 1, generator: string\n      child 2, version: string\n      child 3, tenure_days: int64\n      child 4, fraud_propensity: bool\n      child 5, prior_cancellation_rate: double\n      child 6, prior_sanctions_count: int64\n      child 7, complaint_rate: double\n  child 11, avatar_url: string\n  child 12, rating: double\n  child 13, acceptance_rate: double\n  child 14, cancellation_rate: double\n  child 15, total_trips: int64\ndriver_analytics: struct<driver_id: string, as_of: string, provenance: string, window_semantics: string, window_7d: st (... 189 chars omitted)\n  child 0, driver_id: string\n  child 1, as_of: string\n  child 2, provenance: string\n  child 3, window_semantics: string\n  child 4, window_7d: struct<trips: int64, cancellations: int64, cancellation_rate: double, complaints: int64>\n      child 0, trips: int64\n      child 1, cancellations: int64\n      child 2, cancellation_rate: double\n      child 3, complaints: int64\n  child 5, window_30d: struct<trips: int64, cancellations: int64, cancellation_rate: double, complaints: int64>\n      child 0, trips: int64\n      child 1, cancellations: int64\n      child 2, cancellation_rate: double\n      child 3, complaints: int64\nvehicle: struct<id: string, organization_id: string, registration_ref: string, vehicle_type: string, service_ (... 75 chars omitted)\n  child 0, id: string\n  child 1, organization_id: string\n  child 2, registration_ref: string\n  child 3, vehicle_type: string\n  child 4, service_class: string\n  child 5, telemetry_source: string\n  child 6, model: string\n  child 7, created_at: string\nmeasured_features: struct<approach_ssd_s: double, davi: double, coverage: double, max_gap_s: double, mock_ratio: double (... 26 chars omitted)\n  child 0, approach_ssd_s: double\n  child 1, davi: double\n  child 2, coverage: double\n  child 3, max_gap_s: double\n  child 4, mock_ratio: double\n  child 5, arrived_at_pickup: bool\nlabel_provenance: struct<synthetic: bool, generator: string, priors: struct<geometry: string, kinematics: string, sche (... 173 chars omitted)\n  child 0, synthetic: bool\n  child 1, generator: string\n  child 2, priors: struct<geometry: string, kinematics: string, scheduler: string, dialogue: string, population: string (... 50 chars omitted)\n      child 0, geometry: string\n      child 1, kinematics: string\n      child 2, scheduler: string\n      child 3, dialogue: string\n      child 4, population: string\n      child 5, scenario_thresholds: string\n      child 6, prevalence: string\n  child 3, hardening: string\n  child 4, fare_model: string\n  child 5, cancellation_narrative: string\ncity: string\nnoise_stratum: string\ngridlock_boundary: bool\nplanned_route: struct<coordinates: list<item: list<item: double>>, provenance: struct<source: string, is_shortest_p (... 27 chars omitted)\n  child 0, coordinates: list<item: list<item: double>>\n      child 0, item: list<item: double>\n          child 0, item: double\n  child 1, provenance: struct<source: string, is_shortest_path: bool, method: string>\n      child 0, source: string\n      child 1, is_shortest_path: bool\n      child 2, method: string\ngeneration_audit: struct<planned_origin: list<item: double>, planned_endpoint: list<item: double>, leg_speeds_mps: lis (... 162 chars omitted)\n  child 0, planned_origin: list<item: double>\n      child 0, item: double\n  child 1, planned_endpoint: list<item: double>\n      child 0, item: double\n  child 2, leg_speeds_mps: list<item: double>\n      child 0, item: double\n  child 3, leg_durations_s: list<item: double>\n      child 0, item: double\n  child 4, leg_phases: list<item: string>\n      child 0, item: string\n  child 5, long_dialogue: bool\n  child 6, speed_provenance: string\n  child 7, boundary_constraints: string\ngeography_provenance: struct<source: string, source_url: string, license: string, attribution: string, template_sha256: st (... 68 chars omitted)\n  child 0, source: string\n  child 1, source_url: string\n  child 2, license: string\n  child 3, attribution: string\n  child 4, template_sha256: string\n  child 5, method: string\n  child 6, city: string\n  child 7, locale: string\n  child 8, country: string\npassenger_observation: struct<source: string, observed_at: string, picked_up: bool, completed_claim_seen: bool>\n  child 0, source: string\n  child 1, observed_at: string\n  child 2, picked_up: bool\n  child 3, completed_claim_seen: bool\ndriver_ledger: list<item: struct<trip_ref: string, driver_id: string, occurred_at: string, cancelled: bool, passeng (... 37 chars omitted)\n  child 0, item: struct<trip_ref: string, driver_id: string, occurred_at: string, cancelled: bool, passenger_report:  (... 25 chars omitted)\n      child 0, trip_ref: string\n      child 1, driver_id: string\n      child 2, occurred_at: string\n      child 3, cancelled: bool\n      child 4, passenger_report: bool\n      child 5, provenance: string\nsplit: string\ndriver_prior_background: struct<provenance: string, profile_provenance: struct<synthetic: bool, generator: string, version: s (... 138 chars omitted)\n  child 0, provenance: string\n  child 1, profile_provenance: struct<synthetic: bool, generator: string, version: string, tenure_days: int64, fraud_propensity: bo (... 90 chars omitted)\n      child 0, synthetic: bool\n      child 1, generator: string\n      child 2, version: string\n      child 3, tenure_days: int64\n      child 4, fraud_propensity: bool\n      child 5, prior_cancellation_rate: double\n      child 6, prior_sanctions_count: int64\n      child 7, complaint_rate: double\n-- schema metadata --\ncanonical_format: 'JSONL'\nprovenance: 'synthetic benchmark; nested columns; nulls preserved'",
+    "sha256": "dc327c73fbee22d9a068ce858af16058993853a1c0307451df7b31b6f07036fb"
+  },
+  "porto_template_sha256": "3c33e8572f6d3096fc0cb91dd41cc28ad76ab8c7ccaa9b2c7a9ca4249764dd5d",
+  "profile": "evidence-v4",
+  "seed": 20261011,
+  "split_counts": {
+    "test": 1283,
+    "train": 6942,
+    "validation": 1775
+  },
+  "strata": {
+    "happy": {
+      "class_counts": {
+        "ERR-01": 445,
+        "ERR-02": 731,
+        "ERR-03": 466,
+        "ERR-04": 253,
+        "ERR-05": 269,
+        "insufficient_evidence": 538,
+        "no_violation": 6298
+      },
+      "gates": [
+        {
+          "gate": "ghost never arrived",
+          "measured": 1.0,
+          "n": 253,
+          "pass": true,
+          "required": 1.0,
+          "status": "measured",
+          "stratum": "happy"
+        },
+        {
+          "gate": "gridlock boundary SSD>=180",
+          "measured": 1.0,
+          "n": 21,
+          "pass": true,
+          "required": 1.0,
+          "status": "measured",
+          "stratum": "happy"
+        },
+        {
+          "gate": "dropout max_gap>30",
+          "measured": 1.0,
+          "n": 538,
+          "pass": true,
+          "required": 1.0,
+          "status": "measured",
+          "stratum": "happy"
+        },
+        {
+          "gate": "spoof mock>=0.8",
+          "measured": 1.0,
+          "n": 269,
+          "pass": true,
+          "required": 1.0,
+          "status": "measured",
+          "stratum": "happy"
+        }
+      ],
+      "ssd_ge_180_count": 997,
+      "trip_count": 9000
+    },
+    "stress": {
+      "class_counts": {
+        "ERR-01": 55,
+        "ERR-02": 69,
+        "ERR-03": 34,
+        "ERR-04": 47,
+        "ERR-05": 31,
+        "insufficient_evidence": 62,
+        "no_violation": 702
+      },
+      "gates": [
+        {
+          "gate": "ghost never arrived",
+          "measured": 1.0,
+          "n": 47,
+          "pass": true,
+          "required": 1.0,
+          "status": "measured",
+          "stratum": "stress"
+        },
+        {
+          "gate": "gridlock boundary SSD>=180",
+          "measured": null,
+          "n": 0,
+          "pass": null,
+          "required": 1.0,
+          "status": "not_applicable",
+          "stratum": "stress"
+        },
+        {
+          "gate": "dropout max_gap>30",
+          "measured": 1.0,
+          "n": 62,
+          "pass": true,
+          "required": 1.0,
+          "status": "measured",
+          "stratum": "stress"
+        },
+        {
+          "gate": "spoof mock>=0.8",
+          "measured": 1.0,
+          "n": 31,
+          "pass": true,
+          "required": 1.0,
+          "status": "measured",
+          "stratum": "stress"
+        }
+      ],
+      "ssd_ge_180_count": 68,
+      "trip_count": 1000
+    }
+  },
+  "trip_count": 10000,
+  "trips_sha256": "8379d090a55650c5d476b0ad7edbe5668c276591ed4688c75f05ce6626923071",
+  "version": "v4"
+}

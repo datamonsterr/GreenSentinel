@@ -1,0 +1,168 @@
+# Passenger feedback text bank for benchmark trip bundles (Issue #270).
+# Polarity groups: complaint (negative), praise (positive), neutral.
+# Every category carries >= 15 distinct variants with both vi and en entries.
+# Plain text only: no {placeholders}; build_10k samples entries verbatim.
+
+complaint:
+  late_pickup:
+    - {text: "Tài xế đến trễ hơn 15 phút mà không báo trước", lang: vi}
+    - {text: "Em đợi cả buổi, xe vẫn chưa thấy đâu", lang: vi}
+    - {text: "Đặt xe 10 phút rồi mà tài xế còn ở xa tít", lang: vi}
+    - {text: "Bác tài đi lòng vòng nên đón trễ quá", lang: vi}
+    - {text: "Giờ cao điểm mà tài xế nhận cuốc rồi ngâm", lang: vi}
+    - {text: "Em trễ họp vì tài xế tới muộn", lang: vi}
+    - {text: "Map báo 3 phút mà thực tế đợi 20 phút", lang: vi}
+    - {text: "Tài xế dừng đổ xăng giữa đường đi đón", lang: vi}
+    - {text: "Gọi điện thì bác tài bảo đợi thêm chút, rồi mất hút", lang: vi}
+    - {text: "Xe cứ đứng yên một chỗ, không chịu qua đón", lang: vi}
+    - {text: "Driver arrived more than 15 minutes late with no notice", lang: en}
+    - {text: "I waited ages and the car never showed up", lang: en}
+    - {text: "Booked 10 minutes ago and the driver is still far away", lang: en}
+    - {text: "The app said 3 minutes but I waited 20", lang: en}
+    - {text: "Driver kept stalling instead of coming to pick me up", lang: en}
+  rude_driver:
+    - {text: "Tài xế nói chuyện cộc cằn, khó chịu", lang: vi}
+    - {text: "Bác tài quát khách vì lên xe chậm 1 phút", lang: vi}
+    - {text: "Thái độ phục vụ rất tệ, không chào hỏi gì", lang: vi}
+    - {text: "Tài xế chửi thề khi kẹt xe, nghe rất khó chịu", lang: vi}
+    - {text: "Em hỏi đường thì bị gắt gỏng", lang: vi}
+    - {text: "Bác tài ép em hủy cuốc để khỏi bị phạt", lang: vi}
+    - {text: "Tài xế phân biệt đối xử với khách tỉnh lẻ", lang: vi}
+    - {text: "Gọi điện xác nhận mà tài xế tắt máy ngang", lang: vi}
+    - {text: "Bác tài cố tình đi đường xa để tính thêm tiền", lang: vi}
+    - {text: "Tài xế hút thuốc trên xe dù em đã nhắc", lang: vi}
+    - {text: "The driver was rude and dismissive throughout the ride", lang: en}
+    - {text: "He shouted at me for being one minute late", lang: en}
+    - {text: "Terrible attitude, no greeting at all", lang: en}
+    - {text: "Driver pressured me to cancel so he avoids a penalty", lang: en}
+    - {text: "He was smoking in the car despite my request", lang: en}
+  unsafe_driving:
+    - {text: "Tài xế phóng nhanh vượt ẩu, em sợ quá", lang: vi}
+    - {text: "Bác tài vừa lái xe vừa bấm điện thoại", lang: vi}
+    - {text: "Xe lạng lách qua các làn, suýt va chạm", lang: vi}
+    - {text: "Tài xế vượt đèn đỏ ở ngã tư", lang: vi}
+    - {text: "Đi đường đèo mà bác tài không giảm tốc", lang: vi}
+    - {text: "Em nhắc thắt dây an toàn thì tài xế cười trừ", lang: vi}
+    - {text: "Xe thắng gấp mấy lần, em suýt đập đầu", lang: vi}
+    - {text: "Bác tài buồn ngủ mà vẫn cố chạy tiếp", lang: vi}
+    - {text: "Tài xế đi ngược chiều một đoạn ngắn", lang: vi}
+    - {text: "Mưa to mà xe vẫn chạy tốc độ cao", lang: vi}
+    - {text: "The driver was speeding and weaving dangerously", lang: en}
+    - {text: "He kept texting while driving", lang: en}
+    - {text: "Ran a red light at the intersection", lang: en}
+    - {text: "Hard braking several times, I almost hit my head", lang: en}
+    - {text: "Drowsy driver who refused to pull over and rest", lang: en}
+  overcharge_dispute:
+    - {text: "Cước thu cao gấp đôi giá hiển thị lúc đặt", lang: vi}
+    - {text: "Tài xế đòi thêm tiền mặt ngoài cước app", lang: vi}
+    - {text: "Đi đường vòng nên cước đội lên rất nhiều", lang: vi}
+    - {text: "App báo một giá, tới nơi thu một giá khác", lang: vi}
+    - {text: "Bác tài nói nhầm giá rồi thu thêm 50 nghìn", lang: vi}
+    - {text: "Em đi tuyến này hoài, giá này là chặt chém", lang: vi}
+    - {text: "Tài xế không chịu mở điều hòa trừ khi trả thêm", lang: vi}
+    - {text: "Phí cầu đường thu hai lần trong một cuốc", lang: vi}
+    - {text: "Cuốc xe bị tính phí chờ dù tài xế đến trễ", lang: vi}
+    - {text: "Tài xế tự ý bật phí dịch vụ không báo trước", lang: vi}
+    - {text: "Charged double the fare shown at booking time", lang: en}
+    - {text: "Driver demanded extra cash on top of the app fare", lang: en}
+    - {text: "Long detour inflated the fare unfairly", lang: en}
+    - {text: "I take this route often, this price is a rip-off", lang: en}
+    - {text: "Toll fee collected twice on a single trip", lang: en}
+  no_show_ghost:
+    - {text: "Tài xế xác nhận rồi biến mất, gọi không nghe", lang: vi}
+    - {text: "Xe báo đã tới mà thực tế chẳng thấy ai", lang: vi}
+    - {text: "Đợi 20 phút rồi tài xế tự hủy không lý do", lang: vi}
+    - {text: "Bác tài nhận cuốc ảo, không bao giờ tới điểm đón", lang: vi}
+    - {text: "App hiện xe ở gần mà tài xế không di chuyển", lang: vi}
+    - {text: "Tài xế hủy vô cớ sau khi bắt em đợi lâu", lang: vi}
+    - {text: "Nhắn tin không trả lời, gọi thì thuê bao", lang: vi}
+    - {text: "Xe chạy qua điểm đón luôn, không dừng lại", lang: vi}
+    - {text: "Tài xế báo tới nơi nhưng GPS thì ở chỗ khác", lang: vi}
+    - {text: "Đặt lại 3 lần vẫn gặp tình trạng tương tự", lang: vi}
+    - {text: "Driver accepted then vanished, calls unanswered", lang: en}
+    - {text: "App showed arrived but nobody was there", lang: en}
+    - {text: "Waited 20 minutes then the driver cancelled for no reason", lang: en}
+    - {text: "Ghost ride: accepted but never came to pickup", lang: en}
+    - {text: "Driver marked arrived while GPS showed him elsewhere", lang: en}
+praise:
+  polite:
+    - {text: "Bác tài rất lịch sự, chào hỏi đàng hoàng", lang: vi}
+    - {text: "Tài xế nhiệt tình giúp em mang vali lên xe", lang: vi}
+    - {text: "Thái độ phục vụ tuyệt vời, 5 sao", lang: vi}
+    - {text: "Bác tài vui vẻ, trò chuyện dễ thương", lang: vi}
+    - {text: "Tài xế chủ động mở cửa và hỏi thăm", lang: vi}
+    - {text: "Đi cùng người già mà bác tài rất kiên nhẫn", lang: vi}
+    - {text: "Tài xế gọi xác nhận điểm đón rất chuyên nghiệp", lang: vi}
+    - {text: "Bác tài nhường nhịn, không hề cằn nhằn khi em trễ", lang: vi}
+    - {text: "Cảm ơn bác tài đã đợi em thêm vài phút", lang: vi}
+    - {text: "Tài xế tận tâm, chỉ em quán ăn ngon gần đó", lang: vi}
+    - {text: "Very polite driver, warm greeting", lang: en}
+    - {text: "Helped me carry my luggage, much appreciated", lang: en}
+    - {text: "Excellent service attitude, five stars", lang: en}
+    - {text: "Friendly chat and a smooth ride", lang: en}
+    - {text: "Professional pickup confirmation call", lang: en}
+  clean_car:
+    - {text: "Xe sạch sẽ, thơm tho, ghế êm", lang: vi}
+    - {text: "Nội thất xe gọn gàng, không mùi khó chịu", lang: vi}
+    - {text: "Xe mới, điều hòa mát, rất thoải mái", lang: vi}
+    - {text: "Bác tài giữ xe sạch bóng, có cả khăn giấy", lang: vi}
+    - {text: "Sàn xe sạch, không rác như mấy xe khác", lang: vi}
+    - {text: "Xe có nước suối miễn phí cho khách", lang: vi}
+    - {text: "Ghế da sạch, ngồi rất dễ chịu", lang: vi}
+    - {text: "Cửa kính trong, nhìn đường thoáng", lang: vi}
+    - {text: "Xe thơm nhẹ, không bị say xe", lang: vi}
+    - {text: "Cốp rộng rãi, để vali thoải mái", lang: vi}
+    - {text: "Spotless car, fresh smell, comfy seats", lang: en}
+    - {text: "Tidy interior with working air conditioning", lang: en}
+    - {text: "Clean car with free bottled water", lang: en}
+    - {text: "Well-kept vehicle, pleasant ride", lang: en}
+    - {text: "No bad odour, did not feel carsick at all", lang: en}
+  fast_pickup:
+    - {text: "Tài xế tới đón chỉ trong 2 phút, quá nhanh", lang: vi}
+    - {text: "Xe tới sớm hơn dự kiến, rất đúng giờ", lang: vi}
+    - {text: "Bác tài đậu đúng điểm ghim, khỏi phải tìm", lang: vi}
+    - {text: "Đặt xe cái là có tài xế nhận ngay", lang: vi}
+    - {text: "Tài xế gọi trước khi tới, đón rất gọn", lang: vi}
+    - {text: "Đi giờ cao điểm mà vẫn được đón nhanh", lang: vi}
+    - {text: "Bác tài thuộc đường nên tới đón lẹ lắm", lang: vi}
+    - {text: "Xe tới trước cả khi em xuống sảnh", lang: vi}
+    - {text: "Đón đúng giờ hẹn, không phải chờ đợi", lang: vi}
+    - {text: "Tài xế chủ động nhắn biển số xe để dễ tìm", lang: vi}
+    - {text: "Picked up in just 2 minutes, super fast", lang: en}
+    - {text: "Arrived earlier than estimated, right on time", lang: en}
+    - {text: "Driver parked exactly at the pin, easy to find", lang: en}
+    - {text: "Instant match right after booking", lang: en}
+    - {text: "On-time pickup, zero waiting", lang: en}
+  safe_driving:
+    - {text: "Bác tài lái xe cẩn thận, đi đúng tốc độ", lang: vi}
+    - {text: "Tài xế giữ khoảng cách an toàn, em yên tâm", lang: vi}
+    - {text: "Đi êm, không phanh gấp, không lạng lách", lang: vi}
+    - {text: "Bác tài nhắc cả nhà thắt dây an toàn", lang: vi}
+    - {text: "Trời mưa mà tài xế vẫn lái rất vững", lang: vi}
+    - {text: "Tài xế tuân thủ đèn tín hiệu đầy đủ", lang: vi}
+    - {text: "Đi đường dài mà bác tài rất điềm đạm", lang: vi}
+    - {text: "Xe chạy mượt, em ngủ được một giấc", lang: vi}
+    - {text: "Bác tài giảm tốc ở đoạn đường xấu", lang: vi}
+    - {text: "Cảm giác an toàn suốt chuyến đi", lang: vi}
+    - {text: "Careful driver, steady speed throughout", lang: en}
+    - {text: "Safe following distance, felt secure", lang: en}
+    - {text: "Smooth ride, no harsh braking", lang: en}
+    - {text: "Reminded everyone to fasten seatbelts", lang: en}
+    - {text: "Confident driving even in heavy rain", lang: en}
+neutral:
+  general:
+    - {text: "Chuyến đi bình thường, không có gì đặc biệt", lang: vi}
+    - {text: "Tài xế đón và trả đúng điểm, mọi thứ ổn", lang: vi}
+    - {text: "Xe đi đúng giờ, giá cước như hiển thị", lang: vi}
+    - {text: "Chuyến xe tạm được, không khen không chê", lang: vi}
+    - {text: "Mọi thứ đúng quy trình, không vấn đề gì", lang: vi}
+    - {text: "Tài xế ít nói nhưng vẫn hoàn thành cuốc xe", lang: vi}
+    - {text: "Đi hơi chậm vì kẹt xe, còn lại ổn", lang: vi}
+    - {text: "Xe cũ một chút nhưng vẫn chạy tốt", lang: vi}
+    - {text: "Cước hơi cao giờ cao điểm, chấp nhận được", lang: vi}
+    - {text: "Chuyến đi ổn, đúng như kỳ vọng", lang: vi}
+    - {text: "Average trip, nothing special", lang: en}
+    - {text: "Pickup and drop-off as expected, all fine", lang: en}
+    - {text: "On time with the fare as displayed", lang: en}
+    - {text: "Decent ride, no complaints", lang: en}
+    - {text: "Everything went as expected", lang: en}

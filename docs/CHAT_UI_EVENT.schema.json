@@ -1,0 +1,769 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Chat UI Event v1.0",
+  "description": "Lead handoff contract. One JSON object per SSE event. Not yet wired into production.",
+  "oneOf": [
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0"
+        },
+        "event_id": {
+          "$ref": "#/$defs/id"
+        },
+        "run_id": {
+          "$ref": "#/$defs/id"
+        },
+        "message_id": {
+          "$ref": "#/$defs/id"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "timestamp": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "type": {
+          "const": "status.thinking"
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "enum": [
+                "Reviewing request",
+                "Looking up records",
+                "Preparing response"
+              ]
+            }
+          },
+          "required": [
+            "label"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schema_version",
+        "event_id",
+        "run_id",
+        "message_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0"
+        },
+        "event_id": {
+          "$ref": "#/$defs/id"
+        },
+        "run_id": {
+          "$ref": "#/$defs/id"
+        },
+        "message_id": {
+          "$ref": "#/$defs/id"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "timestamp": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "type": {
+          "const": "tool.start"
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "tool_call_id": {
+              "$ref": "#/$defs/id"
+            },
+            "tool_name": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]{0,63}$"
+            },
+            "label": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "tool_call_id",
+            "tool_name",
+            "label"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schema_version",
+        "event_id",
+        "run_id",
+        "message_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0"
+        },
+        "event_id": {
+          "$ref": "#/$defs/id"
+        },
+        "run_id": {
+          "$ref": "#/$defs/id"
+        },
+        "message_id": {
+          "$ref": "#/$defs/id"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "timestamp": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "type": {
+          "const": "tool.end"
+        },
+        "payload": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "tool_call_id": {
+                  "$ref": "#/$defs/id"
+                },
+                "tool_name": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{0,63}$"
+                },
+                "status": {
+                  "const": "succeeded"
+                },
+                "duration_ms": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "summary": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "tool_call_id",
+                "tool_name",
+                "status",
+                "duration_ms",
+                "summary"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "tool_call_id": {
+                  "$ref": "#/$defs/id"
+                },
+                "tool_name": {
+                  "type": "string",
+                  "pattern": "^[a-z][a-z0-9_]{0,63}$"
+                },
+                "status": {
+                  "const": "failed"
+                },
+                "duration_ms": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "error": {
+                  "$ref": "#/$defs/error"
+                }
+              },
+              "required": [
+                "tool_call_id",
+                "tool_name",
+                "status",
+                "duration_ms",
+                "error"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        }
+      },
+      "required": [
+        "schema_version",
+        "event_id",
+        "run_id",
+        "message_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0"
+        },
+        "event_id": {
+          "$ref": "#/$defs/id"
+        },
+        "run_id": {
+          "$ref": "#/$defs/id"
+        },
+        "message_id": {
+          "$ref": "#/$defs/id"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "timestamp": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "type": {
+          "const": "driver.link"
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "driver": {
+              "$ref": "#/$defs/driver"
+            },
+            "label": {
+              "type": "string",
+              "minLength": 1
+            },
+            "action": {
+              "const": "open_driver"
+            }
+          },
+          "required": [
+            "driver",
+            "label",
+            "action"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schema_version",
+        "event_id",
+        "run_id",
+        "message_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0"
+        },
+        "event_id": {
+          "$ref": "#/$defs/id"
+        },
+        "run_id": {
+          "$ref": "#/$defs/id"
+        },
+        "message_id": {
+          "$ref": "#/$defs/id"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "timestamp": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "type": {
+          "const": "routes"
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "case_id": {
+              "$ref": "#/$defs/id"
+            },
+            "driver_id": {
+              "$ref": "#/$defs/id"
+            },
+            "selected_route_id": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/id"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "routes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/route"
+              },
+              "maxItems": 10
+            }
+          },
+          "required": [
+            "case_id",
+            "driver_id",
+            "selected_route_id",
+            "routes"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schema_version",
+        "event_id",
+        "run_id",
+        "message_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0"
+        },
+        "event_id": {
+          "$ref": "#/$defs/id"
+        },
+        "run_id": {
+          "$ref": "#/$defs/id"
+        },
+        "message_id": {
+          "$ref": "#/$defs/id"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "timestamp": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "type": {
+          "const": "case.list"
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "list_id": {
+              "$ref": "#/$defs/id"
+            },
+            "items": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/case"
+              },
+              "maxItems": 100
+            },
+            "next_cursor": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "minLength": 1
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "total_count": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "list_id",
+            "items",
+            "next_cursor",
+            "total_count"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schema_version",
+        "event_id",
+        "run_id",
+        "message_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0"
+        },
+        "event_id": {
+          "$ref": "#/$defs/id"
+        },
+        "run_id": {
+          "$ref": "#/$defs/id"
+        },
+        "message_id": {
+          "$ref": "#/$defs/id"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "timestamp": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "type": {
+          "const": "text.delta"
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "delta": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "delta"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schema_version",
+        "event_id",
+        "run_id",
+        "message_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0"
+        },
+        "event_id": {
+          "$ref": "#/$defs/id"
+        },
+        "run_id": {
+          "$ref": "#/$defs/id"
+        },
+        "message_id": {
+          "$ref": "#/$defs/id"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "timestamp": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "type": {
+          "const": "run.completed"
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "status": {
+              "enum": [
+                "completed",
+                "cancelled"
+              ]
+            }
+          },
+          "required": [
+            "status"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schema_version",
+        "event_id",
+        "run_id",
+        "message_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload"
+      ],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "schema_version": {
+          "const": "1.0"
+        },
+        "event_id": {
+          "$ref": "#/$defs/id"
+        },
+        "run_id": {
+          "$ref": "#/$defs/id"
+        },
+        "message_id": {
+          "$ref": "#/$defs/id"
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "timestamp": {
+          "$ref": "#/$defs/timestamp"
+        },
+        "type": {
+          "const": "run.error"
+        },
+        "payload": {
+          "type": "object",
+          "properties": {
+            "error": {
+              "$ref": "#/$defs/error"
+            }
+          },
+          "required": [
+            "error"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "schema_version",
+        "event_id",
+        "run_id",
+        "message_id",
+        "sequence",
+        "timestamp",
+        "type",
+        "payload"
+      ],
+      "additionalProperties": false
+    }
+  ],
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}\\.\\d{3}Z$"
+    },
+    "driver": {
+      "type": "object",
+      "properties": {
+        "driver_id": {
+          "$ref": "#/$defs/id"
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "driver_id",
+        "display_name"
+      ],
+      "additionalProperties": false
+    },
+    "error": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^[A-Z][A-Z0-9_]+$"
+        },
+        "message": {
+          "type": "string",
+          "minLength": 1
+        },
+        "retryable": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "code",
+        "message",
+        "retryable"
+      ],
+      "additionalProperties": false
+    },
+    "point": {
+      "type": "array",
+      "prefixItems": [
+        {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180
+        },
+        {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90
+        }
+      ],
+      "items": false,
+      "minItems": 2,
+      "maxItems": 2
+    },
+    "route": {
+      "type": "object",
+      "properties": {
+        "route_id": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "geometry": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "LineString"
+            },
+            "coordinates": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/point"
+              },
+              "maxItems": 10000,
+              "minItems": 2
+            }
+          },
+          "required": [
+            "type",
+            "coordinates"
+          ],
+          "additionalProperties": false
+        },
+        "distance_m": {
+          "type": "number",
+          "minimum": 0
+        },
+        "duration_s": {
+          "type": "number",
+          "minimum": 0
+        },
+        "source": {
+          "enum": [
+            "observed",
+            "planned",
+            "mock"
+          ]
+        },
+        "observed_at": {
+          "$ref": "#/$defs/timestamp"
+        }
+      },
+      "required": [
+        "route_id",
+        "label",
+        "geometry",
+        "distance_m",
+        "duration_s",
+        "source",
+        "observed_at"
+      ],
+      "additionalProperties": false
+    },
+    "case": {
+      "type": "object",
+      "properties": {
+        "case_id": {
+          "$ref": "#/$defs/id"
+        },
+        "driver": {
+          "$ref": "#/$defs/driver"
+        },
+        "category": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "enum": [
+            "ready",
+            "in_review",
+            "evidence_requested",
+            "escalated",
+            "resolved"
+          ]
+        },
+        "priority": {
+          "enum": [
+            "P0",
+            "P1",
+            "P2"
+          ]
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "updated_at": {
+          "$ref": "#/$defs/timestamp"
+        }
+      },
+      "required": [
+        "case_id",
+        "driver",
+        "category",
+        "status",
+        "priority",
+        "summary",
+        "updated_at"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

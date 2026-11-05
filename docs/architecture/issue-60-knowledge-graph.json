@@ -1,0 +1,1448 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "P-063 issue-60 scoped agent architecture",
+    "languages": [
+      "python",
+      "typescript",
+      "markdown",
+      "json"
+    ],
+    "frameworks": [
+      "FastAPI",
+      "LangGraph",
+      "Pydantic",
+      "Next.js",
+      "React"
+    ],
+    "description": "Scoped existing-source architecture. Excludes unrelated repository files and proposed code. Existing test edges do not establish PRD conformance or hosted acceptance.",
+    "analyzedAt": "2026-10-01T14:22:19.262245+00:00",
+    "gitCommitHash": "f175f9682b9e9b3d5a8ce535bd49569eef2ea30e"
+  },
+  "nodes": [
+    {
+      "id": "file:src/api/auth.py",
+      "type": "file",
+      "name": "auth.py",
+      "filePath": "src/api/auth.py",
+      "summary": "Clerk verification and existing header/role identity shortcuts.",
+      "tags": [
+        "transport",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/api/routes.py",
+      "type": "file",
+      "name": "routes.py",
+      "filePath": "src/api/routes.py",
+      "summary": "Existing transport artifact routes.py inspected for issue #60.",
+      "tags": [
+        "transport",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/agents/state.py",
+      "type": "file",
+      "name": "state.py",
+      "filePath": "src/agents/state.py",
+      "summary": "Existing agents artifact state.py inspected for issue #60.",
+      "tags": [
+        "agents",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/agents/graph.py",
+      "type": "file",
+      "name": "graph.py",
+      "filePath": "src/agents/graph.py",
+      "summary": "Independent analyst LangGraph agent/ToolNode loop; not the cockpit SSE executor.",
+      "tags": [
+        "agents",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/agents/driver_agent.py",
+      "type": "file",
+      "name": "driver_agent.py",
+      "filePath": "src/agents/driver_agent.py",
+      "summary": "Separate driver LangGraph and background invocation.",
+      "tags": [
+        "agents",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/agents/tools/analyst_tools.py",
+      "type": "file",
+      "name": "analyst_tools.py",
+      "filePath": "src/agents/tools/analyst_tools.py",
+      "summary": "Sixteen analyst operations and legacy provider/fallback/write behavior.",
+      "tags": [
+        "agents",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/agents/tools/driver_tools.py",
+      "type": "file",
+      "name": "driver_tools.py",
+      "filePath": "src/agents/tools/driver_tools.py",
+      "summary": "Six driver operations including advisory rules and recursive submission capability.",
+      "tags": [
+        "agents",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/rag/cockpit_agent.py",
+      "type": "file",
+      "name": "cockpit_agent.py",
+      "filePath": "src/rag/cockpit_agent.py",
+      "summary": "Actual cockpit Gemini/offline ReAct declarations and direct tool dispatch.",
+      "tags": [
+        "agents",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/rag/store.py",
+      "type": "file",
+      "name": "store.py",
+      "filePath": "src/rag/store.py",
+      "summary": "Qdrant Vector Store client connecting to Qdrant Docker or Qdrant Cloud.",
+      "tags": [
+        "agents",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/services/case_service.py",
+      "type": "file",
+      "name": "case_service.py",
+      "filePath": "src/services/case_service.py",
+      "summary": "Case operations, durable analyst chat sessions, and legacy policy SSE.",
+      "tags": [
+        "services",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/services/driver_dispute_service.py",
+      "type": "file",
+      "name": "driver_dispute_service.py",
+      "filePath": "src/services/driver_dispute_service.py",
+      "summary": "Driver evidence, handoff, persistence, and legacy automatic dismissal.",
+      "tags": [
+        "services",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/services/supabase.py",
+      "type": "file",
+      "name": "supabase.py",
+      "filePath": "src/services/supabase.py",
+      "summary": "Existing services artifact supabase.py inspected for issue #60.",
+      "tags": [
+        "services",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/models/schemas.py",
+      "type": "file",
+      "name": "schemas.py",
+      "filePath": "src/models/schemas.py",
+      "summary": "Existing models artifact schemas.py inspected for issue #60.",
+      "tags": [
+        "models",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/config.py",
+      "type": "file",
+      "name": "config.py",
+      "filePath": "src/config.py",
+      "summary": "Existing models artifact config.py inspected for issue #60.",
+      "tags": [
+        "models",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/main.py",
+      "type": "file",
+      "name": "main.py",
+      "filePath": "src/main.py",
+      "summary": "Existing transport artifact main.py inspected for issue #60.",
+      "tags": [
+        "transport",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/webapp/lib/api-client.ts",
+      "type": "file",
+      "name": "api-client.ts",
+      "filePath": "src/webapp/lib/api-client.ts",
+      "summary": "Authenticated API requests and current legacy SSE dispatch.",
+      "tags": [
+        "frontend",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/webapp/types/schemas.ts",
+      "type": "file",
+      "name": "schemas.ts",
+      "filePath": "src/webapp/types/schemas.ts",
+      "summary": "Existing frontend artifact schemas.ts inspected for issue #60.",
+      "tags": [
+        "frontend",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/webapp/components/views/cockpit-view.tsx",
+      "type": "file",
+      "name": "cockpit-view.tsx",
+      "filePath": "src/webapp/components/views/cockpit-view.tsx",
+      "summary": "Existing frontend artifact cockpit-view.tsx inspected for issue #60.",
+      "tags": [
+        "frontend",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/webapp/components/driver/gsupport-chat-view.tsx",
+      "type": "file",
+      "name": "gsupport-chat-view.tsx",
+      "filePath": "src/webapp/components/driver/gsupport-chat-view.tsx",
+      "summary": "Existing frontend artifact gsupport-chat-view.tsx inspected for issue #60.",
+      "tags": [
+        "frontend",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/webapp/tests/api-client.test.ts",
+      "type": "file",
+      "name": "api-client.test.ts",
+      "filePath": "src/webapp/tests/api-client.test.ts",
+      "summary": "Existing verification artifact api-client.test.ts inspected for issue #60.",
+      "tags": [
+        "verification",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/webapp/tests/cockpit-live.test.tsx",
+      "type": "file",
+      "name": "cockpit-live.test.tsx",
+      "filePath": "src/webapp/tests/cockpit-live.test.tsx",
+      "summary": "Existing verification artifact cockpit-live.test.tsx inspected for issue #60.",
+      "tags": [
+        "verification",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:src/webapp/tests/driver-dispute.test.tsx",
+      "type": "file",
+      "name": "driver-dispute.test.tsx",
+      "filePath": "src/webapp/tests/driver-dispute.test.tsx",
+      "summary": "Existing verification artifact driver-dispute.test.tsx inspected for issue #60.",
+      "tags": [
+        "verification",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/ba/PRD.md",
+      "type": "document",
+      "name": "PRD.md",
+      "filePath": "docs/ba/PRD.md",
+      "summary": "Strict Phase 1 authority: human confirmation and optional advisory policy.",
+      "tags": [
+        "specifications",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/ba/MVP.md",
+      "type": "document",
+      "name": "MVP.md",
+      "filePath": "docs/ba/MVP.md",
+      "summary": "Existing specifications artifact MVP.md inspected for issue #60.",
+      "tags": [
+        "specifications",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/ba/USER_STORIES.md",
+      "type": "document",
+      "name": "USER_STORIES.md",
+      "filePath": "docs/ba/USER_STORIES.md",
+      "summary": "Existing specifications artifact USER_STORIES.md inspected for issue #60.",
+      "tags": [
+        "specifications",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/architecture/adr-006-shared-use-cases-for-api-and-agent-tools.md",
+      "type": "document",
+      "name": "adr-006-shared-use-cases-for-api-and-agent-tools.md",
+      "filePath": "docs/architecture/adr-006-shared-use-cases-for-api-and-agent-tools.md",
+      "summary": "Existing specifications artifact adr-006-shared-use-cases-for-api-and-agent-tools.md inspected for issue #60.",
+      "tags": [
+        "specifications",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/architecture/adr-008-poc-v2-async-driver-agent-and-a2a-collaboration.md",
+      "type": "document",
+      "name": "adr-008-poc-v2-async-driver-agent-and-a2a-collaboration.md",
+      "filePath": "docs/architecture/adr-008-poc-v2-async-driver-agent-and-a2a-collaboration.md",
+      "summary": "Historical A2A architecture containing the confirmed automatic-dismissal divergence.",
+      "tags": [
+        "specifications",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "document:docs/CHAT_UI_EVENT_CONTRACT.md",
+      "type": "document",
+      "name": "CHAT_UI_EVENT_CONTRACT.md",
+      "filePath": "docs/CHAT_UI_EVENT_CONTRACT.md",
+      "summary": "Unwired strict event envelope, lifecycle rules and negotiation proposal.",
+      "tags": [
+        "specifications",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:docs/CHAT_UI_EVENT.schema.json",
+      "type": "config",
+      "name": "CHAT_UI_EVENT.schema.json",
+      "filePath": "docs/CHAT_UI_EVENT.schema.json",
+      "summary": "Existing specifications artifact CHAT_UI_EVENT.schema.json inspected for issue #60.",
+      "tags": [
+        "specifications",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "config:docs/CHAT_UI_EVENT_SAMPLES.json",
+      "type": "config",
+      "name": "CHAT_UI_EVENT_SAMPLES.json",
+      "filePath": "docs/CHAT_UI_EVENT_SAMPLES.json",
+      "summary": "Existing specifications artifact CHAT_UI_EVENT_SAMPLES.json inspected for issue #60.",
+      "tags": [
+        "specifications",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:eval/validate_chat_ui_events.py",
+      "type": "file",
+      "name": "validate_chat_ui_events.py",
+      "filePath": "eval/validate_chat_ui_events.py",
+      "summary": "Validate the Lead handoff fixtures: python -m eval.validate_chat_ui_events.",
+      "tags": [
+        "verification",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/test_services/test_case_agent_sessions.py",
+      "type": "file",
+      "name": "test_case_agent_sessions.py",
+      "filePath": "tests/test_services/test_case_agent_sessions.py",
+      "summary": "Existing verification artifact test_case_agent_sessions.py inspected for issue #60.",
+      "tags": [
+        "verification",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/test_services/test_driver_dispute_service.py",
+      "type": "file",
+      "name": "test_driver_dispute_service.py",
+      "filePath": "tests/test_services/test_driver_dispute_service.py",
+      "summary": "TDD Tests for DriverDisputeService (Slice 1).",
+      "tags": [
+        "verification",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/test_agents/test_driver_tools.py",
+      "type": "file",
+      "name": "test_driver_tools.py",
+      "filePath": "tests/test_agents/test_driver_tools.py",
+      "summary": "TDD Tests for Driver Tools (Slice 1).",
+      "tags": [
+        "verification",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/test_agents/test_analyst_tools_extended.py",
+      "type": "file",
+      "name": "test_analyst_tools_extended.py",
+      "filePath": "tests/test_agents/test_analyst_tools_extended.py",
+      "summary": "TDD tests for extended GreenSM Fraud Analyst tools.",
+      "tags": [
+        "verification",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/test_agents/test_db_tools.py",
+      "type": "file",
+      "name": "test_db_tools.py",
+      "filePath": "tests/test_agents/test_db_tools.py",
+      "summary": "Tests for database tools and integration with the LangGraph fraud analyst agent.",
+      "tags": [
+        "verification",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/test_agents/test_graph.py",
+      "type": "file",
+      "name": "test_graph.py",
+      "filePath": "tests/test_agents/test_graph.py",
+      "summary": "Existing verification artifact test_graph.py inspected for issue #60.",
+      "tags": [
+        "verification",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/test_api/test_driver_api.py",
+      "type": "file",
+      "name": "test_driver_api.py",
+      "filePath": "tests/test_api/test_driver_api.py",
+      "summary": "TDD Tests for Driver API, SSE Streaming, and A2A Delegation (Slice 2).",
+      "tags": [
+        "verification",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/test_api/test_clerk_auth.py",
+      "type": "file",
+      "name": "test_clerk_auth.py",
+      "filePath": "tests/test_api/test_clerk_auth.py",
+      "summary": "The hosted case API must not trust browser-supplied identity.",
+      "tags": [
+        "verification",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/test_api/test_poc_api.py",
+      "type": "file",
+      "name": "test_poc_api.py",
+      "filePath": "tests/test_api/test_poc_api.py",
+      "summary": "Existing verification artifact test_poc_api.py inspected for issue #60.",
+      "tags": [
+        "verification",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/test_api/test_stream_chat_e2e.py",
+      "type": "file",
+      "name": "test_stream_chat_e2e.py",
+      "filePath": "tests/test_api/test_stream_chat_e2e.py",
+      "summary": "End-to-end tests for Policy Chat Stream API across all environments (DoD: 5 messages pass).",
+      "tags": [
+        "verification",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/e2e/test_driver_api_e2e.py",
+      "type": "file",
+      "name": "test_driver_api_e2e.py",
+      "filePath": "tests/e2e/test_driver_api_e2e.py",
+      "summary": "End-to-End API test for GreenSM Driver Application and GSupport Agent.",
+      "tags": [
+        "verification",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/test_chat_ui_contract.py",
+      "type": "file",
+      "name": "test_chat_ui_contract.py",
+      "filePath": "tests/test_chat_ui_contract.py",
+      "summary": "Schema and lifecycle rejection tests; no external services required.",
+      "tags": [
+        "verification",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/test_rag_tool_routing.py",
+      "type": "file",
+      "name": "test_rag_tool_routing.py",
+      "filePath": "tests/test_rag_tool_routing.py",
+      "summary": "Tests verifying that the RAG agent routes each user prompt to the correct corresponding tool.",
+      "tags": [
+        "verification",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "file:tests/test_rag_db_tools.py",
+      "type": "file",
+      "name": "test_rag_db_tools.py",
+      "filePath": "tests/test_rag_db_tools.py",
+      "summary": "Unit and integration tests for RAG read-only database query tools.",
+      "tags": [
+        "verification",
+        "issue-60",
+        "existing-source"
+      ],
+      "complexity": "moderate"
+    }
+  ],
+  "edges": [
+    {
+      "source": "file:src/api/auth.py",
+      "target": "file:src/config.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/api/auth.py",
+      "target": "file:src/services/case_service.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/api/routes.py",
+      "target": "file:src/agents/graph.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/api/routes.py",
+      "target": "file:src/api/auth.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/api/routes.py",
+      "target": "file:src/config.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/api/routes.py",
+      "target": "file:src/models/schemas.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/api/routes.py",
+      "target": "file:src/services/case_service.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/api/routes.py",
+      "target": "file:src/services/driver_dispute_service.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/agents/graph.py",
+      "target": "file:src/agents/state.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/agents/graph.py",
+      "target": "file:src/agents/tools/analyst_tools.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/agents/graph.py",
+      "target": "file:src/config.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/agents/driver_agent.py",
+      "target": "file:src/agents/state.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/agents/driver_agent.py",
+      "target": "file:src/agents/tools/driver_tools.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/agents/driver_agent.py",
+      "target": "file:src/config.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/agents/tools/analyst_tools.py",
+      "target": "file:src/models/schemas.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/agents/tools/analyst_tools.py",
+      "target": "file:src/services/case_service.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/agents/tools/analyst_tools.py",
+      "target": "file:src/rag/store.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/agents/tools/analyst_tools.py",
+      "target": "file:src/services/driver_dispute_service.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/agents/tools/driver_tools.py",
+      "target": "file:src/models/schemas.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/agents/tools/driver_tools.py",
+      "target": "file:src/services/driver_dispute_service.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/rag/cockpit_agent.py",
+      "target": "file:src/models/schemas.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/rag/cockpit_agent.py",
+      "target": "file:src/rag/store.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/rag/cockpit_agent.py",
+      "target": "file:src/agents/tools/analyst_tools.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/rag/store.py",
+      "target": "file:src/config.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/case_service.py",
+      "target": "file:src/config.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/case_service.py",
+      "target": "file:src/models/schemas.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/case_service.py",
+      "target": "file:src/services/supabase.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/case_service.py",
+      "target": "file:src/rag/cockpit_agent.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/driver_dispute_service.py",
+      "target": "file:src/config.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/driver_dispute_service.py",
+      "target": "file:src/models/schemas.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/driver_dispute_service.py",
+      "target": "file:src/services/case_service.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/driver_dispute_service.py",
+      "target": "file:src/agents/driver_agent.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/services/supabase.py",
+      "target": "file:src/config.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/main.py",
+      "target": "file:src/api/routes.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/main.py",
+      "target": "file:src/config.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/main.py",
+      "target": "file:src/models/schemas.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/main.py",
+      "target": "file:src/services/case_service.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_services/test_case_agent_sessions.py",
+      "target": "file:src/models/schemas.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_services/test_case_agent_sessions.py",
+      "target": "file:src/services/case_service.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_services/test_driver_dispute_service.py",
+      "target": "file:src/models/schemas.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_services/test_driver_dispute_service.py",
+      "target": "file:src/services/case_service.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_services/test_driver_dispute_service.py",
+      "target": "file:src/services/driver_dispute_service.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_agents/test_driver_tools.py",
+      "target": "file:src/agents/tools/driver_tools.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_agents/test_driver_tools.py",
+      "target": "file:src/services/case_service.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_agents/test_driver_tools.py",
+      "target": "file:src/services/driver_dispute_service.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_agents/test_analyst_tools_extended.py",
+      "target": "file:src/agents/tools/analyst_tools.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_agents/test_analyst_tools_extended.py",
+      "target": "file:src/rag/cockpit_agent.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_agents/test_db_tools.py",
+      "target": "file:src/agents/graph.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_agents/test_db_tools.py",
+      "target": "file:src/agents/tools/analyst_tools.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_agents/test_db_tools.py",
+      "target": "file:src/services/case_service.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_agents/test_graph.py",
+      "target": "file:src/agents/graph.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_agents/test_graph.py",
+      "target": "file:src/agents/tools/analyst_tools.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_agents/test_graph.py",
+      "target": "file:src/config.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_agents/test_graph.py",
+      "target": "file:src/models/schemas.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_agents/test_graph.py",
+      "target": "file:src/services/case_service.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_api/test_driver_api.py",
+      "target": "file:src/services/case_service.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_api/test_driver_api.py",
+      "target": "file:src/services/driver_dispute_service.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_api/test_clerk_auth.py",
+      "target": "file:src/api/routes.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_api/test_clerk_auth.py",
+      "target": "file:src/config.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_api/test_clerk_auth.py",
+      "target": "file:src/services/case_service.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_api/test_clerk_auth.py",
+      "target": "file:src/api/auth.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_api/test_poc_api.py",
+      "target": "file:src/services/case_service.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_api/test_poc_api.py",
+      "target": "file:src/api/auth.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_api/test_poc_api.py",
+      "target": "file:src/config.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_api/test_poc_api.py",
+      "target": "file:src/main.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_api/test_stream_chat_e2e.py",
+      "target": "file:src/api/routes.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_api/test_stream_chat_e2e.py",
+      "target": "file:src/config.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_api/test_stream_chat_e2e.py",
+      "target": "file:src/services/case_service.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/e2e/test_driver_api_e2e.py",
+      "target": "file:src/main.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/e2e/test_driver_api_e2e.py",
+      "target": "file:src/services/driver_dispute_service.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_chat_ui_contract.py",
+      "target": "file:eval/validate_chat_ui_events.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_rag_tool_routing.py",
+      "target": "file:src/rag/cockpit_agent.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_rag_db_tools.py",
+      "target": "file:src/rag/cockpit_agent.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:tests/test_rag_db_tools.py",
+      "target": "file:src/services/case_service.py",
+      "type": "imports",
+      "weight": 0.7
+    },
+    {
+      "source": "file:src/api/routes.py",
+      "target": "file:src/services/case_service.py",
+      "type": "calls",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/api/routes.py",
+      "target": "file:src/services/driver_dispute_service.py",
+      "type": "calls",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/case_service.py",
+      "target": "file:src/rag/cockpit_agent.py",
+      "type": "calls",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/rag/cockpit_agent.py",
+      "target": "file:src/agents/tools/analyst_tools.py",
+      "type": "calls",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/agents/graph.py",
+      "target": "file:src/agents/tools/analyst_tools.py",
+      "type": "calls",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/agents/driver_agent.py",
+      "target": "file:src/agents/tools/driver_tools.py",
+      "type": "calls",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/driver_dispute_service.py",
+      "target": "file:src/agents/driver_agent.py",
+      "type": "calls",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/agents/tools/driver_tools.py",
+      "target": "file:src/services/driver_dispute_service.py",
+      "type": "calls",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/webapp/components/views/cockpit-view.tsx",
+      "target": "file:src/webapp/lib/api-client.ts",
+      "type": "calls",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/webapp/components/driver/gsupport-chat-view.tsx",
+      "target": "file:src/webapp/lib/api-client.ts",
+      "type": "calls",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/webapp/lib/api-client.ts",
+      "target": "file:src/api/routes.py",
+      "type": "calls",
+      "weight": 0.8
+    },
+    {
+      "source": "file:src/services/case_service.py",
+      "target": "file:tests/test_services/test_case_agent_sessions.py",
+      "type": "tested_by",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/services/driver_dispute_service.py",
+      "target": "file:tests/test_services/test_driver_dispute_service.py",
+      "type": "tested_by",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/agents/tools/driver_tools.py",
+      "target": "file:tests/test_agents/test_driver_tools.py",
+      "type": "tested_by",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/agents/tools/analyst_tools.py",
+      "target": "file:tests/test_agents/test_analyst_tools_extended.py",
+      "type": "tested_by",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/agents/tools/analyst_tools.py",
+      "target": "file:tests/test_agents/test_db_tools.py",
+      "type": "tested_by",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/agents/graph.py",
+      "target": "file:tests/test_agents/test_graph.py",
+      "type": "tested_by",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/api/auth.py",
+      "target": "file:tests/test_api/test_clerk_auth.py",
+      "type": "tested_by",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/api/routes.py",
+      "target": "file:tests/test_api/test_driver_api.py",
+      "type": "tested_by",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/api/routes.py",
+      "target": "file:tests/test_api/test_poc_api.py",
+      "type": "tested_by",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/api/routes.py",
+      "target": "file:tests/test_api/test_stream_chat_e2e.py",
+      "type": "tested_by",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/api/routes.py",
+      "target": "file:tests/e2e/test_driver_api_e2e.py",
+      "type": "tested_by",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/rag/cockpit_agent.py",
+      "target": "file:tests/test_rag_tool_routing.py",
+      "type": "tested_by",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/rag/cockpit_agent.py",
+      "target": "file:tests/test_rag_db_tools.py",
+      "type": "tested_by",
+      "weight": 0.5
+    },
+    {
+      "source": "file:eval/validate_chat_ui_events.py",
+      "target": "file:tests/test_chat_ui_contract.py",
+      "type": "tested_by",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/webapp/lib/api-client.ts",
+      "target": "file:src/webapp/tests/api-client.test.ts",
+      "type": "tested_by",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/webapp/components/views/cockpit-view.tsx",
+      "target": "file:src/webapp/tests/cockpit-live.test.tsx",
+      "type": "tested_by",
+      "weight": 0.5
+    },
+    {
+      "source": "file:src/webapp/components/driver/gsupport-chat-view.tsx",
+      "target": "file:src/webapp/tests/driver-dispute.test.tsx",
+      "type": "tested_by",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/ba/PRD.md",
+      "target": "file:src/services/case_service.py",
+      "type": "documents",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/ba/PRD.md",
+      "target": "file:src/services/driver_dispute_service.py",
+      "type": "documents",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/ba/MVP.md",
+      "target": "file:src/services/case_service.py",
+      "type": "documents",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/ba/MVP.md",
+      "target": "file:src/services/driver_dispute_service.py",
+      "type": "documents",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/ba/USER_STORIES.md",
+      "target": "file:src/services/case_service.py",
+      "type": "documents",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/ba/USER_STORIES.md",
+      "target": "file:src/services/driver_dispute_service.py",
+      "type": "documents",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/architecture/adr-006-shared-use-cases-for-api-and-agent-tools.md",
+      "target": "file:src/agents/graph.py",
+      "type": "documents",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/architecture/adr-006-shared-use-cases-for-api-and-agent-tools.md",
+      "target": "file:src/agents/driver_agent.py",
+      "type": "documents",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/architecture/adr-008-poc-v2-async-driver-agent-and-a2a-collaboration.md",
+      "target": "file:src/agents/graph.py",
+      "type": "documents",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/architecture/adr-008-poc-v2-async-driver-agent-and-a2a-collaboration.md",
+      "target": "file:src/agents/driver_agent.py",
+      "type": "documents",
+      "weight": 0.5
+    },
+    {
+      "source": "document:docs/CHAT_UI_EVENT_CONTRACT.md",
+      "target": "file:eval/validate_chat_ui_events.py",
+      "type": "documents",
+      "weight": 0.5
+    },
+    {
+      "source": "config:docs/CHAT_UI_EVENT.schema.json",
+      "target": "file:eval/validate_chat_ui_events.py",
+      "type": "documents",
+      "weight": 0.5
+    },
+    {
+      "source": "config:docs/CHAT_UI_EVENT_SAMPLES.json",
+      "target": "file:eval/validate_chat_ui_events.py",
+      "type": "documents",
+      "weight": 0.5
+    }
+  ],
+  "layers": [
+    {
+      "id": "layer:transport",
+      "name": "Transport",
+      "description": "Existing transport artifacts relevant to agent tool runtime and stream behavior.",
+      "nodeIds": [
+        "file:src/api/auth.py",
+        "file:src/api/routes.py",
+        "file:src/main.py"
+      ]
+    },
+    {
+      "id": "layer:agents",
+      "name": "Agents",
+      "description": "Existing agents artifacts relevant to agent tool runtime and stream behavior.",
+      "nodeIds": [
+        "file:src/agents/state.py",
+        "file:src/agents/graph.py",
+        "file:src/agents/driver_agent.py",
+        "file:src/agents/tools/analyst_tools.py",
+        "file:src/agents/tools/driver_tools.py",
+        "file:src/rag/cockpit_agent.py",
+        "file:src/rag/store.py"
+      ]
+    },
+    {
+      "id": "layer:services",
+      "name": "Services",
+      "description": "Existing services artifacts relevant to agent tool runtime and stream behavior.",
+      "nodeIds": [
+        "file:src/services/case_service.py",
+        "file:src/services/driver_dispute_service.py",
+        "file:src/services/supabase.py"
+      ]
+    },
+    {
+      "id": "layer:models",
+      "name": "Models",
+      "description": "Existing models artifacts relevant to agent tool runtime and stream behavior.",
+      "nodeIds": [
+        "file:src/models/schemas.py",
+        "file:src/config.py"
+      ]
+    },
+    {
+      "id": "layer:frontend",
+      "name": "Frontend",
+      "description": "Existing frontend artifacts relevant to agent tool runtime and stream behavior.",
+      "nodeIds": [
+        "file:src/webapp/lib/api-client.ts",
+        "file:src/webapp/types/schemas.ts",
+        "file:src/webapp/components/views/cockpit-view.tsx",
+        "file:src/webapp/components/driver/gsupport-chat-view.tsx"
+      ]
+    },
+    {
+      "id": "layer:verification",
+      "name": "Verification",
+      "description": "Existing verification artifacts relevant to agent tool runtime and stream behavior.",
+      "nodeIds": [
+        "file:src/webapp/tests/api-client.test.ts",
+        "file:src/webapp/tests/cockpit-live.test.tsx",
+        "file:src/webapp/tests/driver-dispute.test.tsx",
+        "file:eval/validate_chat_ui_events.py",
+        "file:tests/test_services/test_case_agent_sessions.py",
+        "file:tests/test_services/test_driver_dispute_service.py",
+        "file:tests/test_agents/test_driver_tools.py",
+        "file:tests/test_agents/test_analyst_tools_extended.py",
+        "file:tests/test_agents/test_db_tools.py",
+        "file:tests/test_agents/test_graph.py",
+        "file:tests/test_api/test_driver_api.py",
+        "file:tests/test_api/test_clerk_auth.py",
+        "file:tests/test_api/test_poc_api.py",
+        "file:tests/test_api/test_stream_chat_e2e.py",
+        "file:tests/e2e/test_driver_api_e2e.py",
+        "file:tests/test_chat_ui_contract.py",
+        "file:tests/test_rag_tool_routing.py",
+        "file:tests/test_rag_db_tools.py"
+      ]
+    },
+    {
+      "id": "layer:specifications",
+      "name": "Specifications",
+      "description": "Existing specifications artifacts relevant to agent tool runtime and stream behavior.",
+      "nodeIds": [
+        "document:docs/ba/PRD.md",
+        "document:docs/ba/MVP.md",
+        "document:docs/ba/USER_STORIES.md",
+        "document:docs/architecture/adr-006-shared-use-cases-for-api-and-agent-tools.md",
+        "document:docs/architecture/adr-008-poc-v2-async-driver-agent-and-a2a-collaboration.md",
+        "document:docs/CHAT_UI_EVENT_CONTRACT.md",
+        "config:docs/CHAT_UI_EVENT.schema.json",
+        "config:docs/CHAT_UI_EVENT_SAMPLES.json"
+      ]
+    }
+  ],
+  "tour": [
+    {
+      "order": 1,
+      "title": "Product authority",
+      "description": "Read strict PRD and identify conflicting historical autonomy.",
+      "nodeIds": [
+        "document:docs/ba/PRD.md",
+        "document:docs/architecture/adr-008-poc-v2-async-driver-agent-and-a2a-collaboration.md"
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Analyst path",
+      "description": "Follow the actual cockpit SSE executor.",
+      "nodeIds": [
+        "file:src/api/routes.py",
+        "file:src/services/case_service.py",
+        "file:src/rag/cockpit_agent.py"
+      ]
+    },
+    {
+      "order": 3,
+      "title": "Driver path",
+      "description": "Follow statements, the background graph and reentrant submission.",
+      "nodeIds": [
+        "file:src/services/driver_dispute_service.py",
+        "file:src/agents/driver_agent.py",
+        "file:src/agents/tools/driver_tools.py"
+      ]
+    },
+    {
+      "order": 4,
+      "title": "Authority and evidence",
+      "description": "Inspect identity and model-selectable capabilities.",
+      "nodeIds": [
+        "file:src/api/auth.py",
+        "file:src/agents/tools/analyst_tools.py",
+        "file:src/models/schemas.py"
+      ]
+    },
+    {
+      "order": 5,
+      "title": "Events and proof",
+      "description": "Compare unwired contracts with existing consumers and tests.",
+      "nodeIds": [
+        "document:docs/CHAT_UI_EVENT_CONTRACT.md",
+        "file:src/webapp/lib/api-client.ts",
+        "file:tests/test_chat_ui_contract.py"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "corpus_version": "eval-v1",
+  "run_id": "baseline-inventory-2026-10-02",
+  "environment": "repository-artifact-review",
+  "source_revision": "16c1ad6bdc910badbe852418bc5de5b456759156",
+  "results": [
+    {
+      "case_id": "driver-a2a-traffic",
+      "status": "fail",
+      "failures": [
+        "Legacy driver fixture expects AUTO_DISMISS and is_auto_dismissed=true; PRD FR-03 requires analyst-confirmed dismissal."
+      ]
+    }
+  ]
+}

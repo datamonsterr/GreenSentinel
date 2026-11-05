@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html class="h-full bg-background" lang="en">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>GreenSentinel - Unified Prototype</title>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-high": "#dce9ff",
+            "primary-container": "#00855d",
+            "on-secondary-fixed": "#131b2e",
+            "secondary-container": "#dae2fd",
+            "error": "#ba1a1a",
+            "inverse-surface": "#213145",
+            "on-secondary-container": "#5c647a",
+            "on-secondary": "#ffffff",
+            "secondary": "#565e74",
+            "on-surface-variant": "#3d4a42",
+            "background": "#f8f9ff",
+            "surface-tint": "#006c4a",
+            "surface-container-low": "#eff4ff",
+            "on-primary": "#ffffff",
+            "on-tertiary-fixed": "#001a42",
+            "inverse-on-surface": "#eaf1ff",
+            "inverse-primary": "#68dba9",
+            "surface-container-highest": "#d3e4fe",
+            "surface-container": "#e5eeff",
+            "on-tertiary-fixed-variant": "#004395",
+            "error-container": "#ffdad6",
+            "surface-dim": "#cbdbf5",
+            "outline": "#6d7a72",
+            "tertiary-container": "#2170e4",
+            "on-tertiary": "#ffffff",
+            "primary-fixed-dim": "#68dba9",
+            "on-primary-fixed-variant": "#005137",
+            "outline-variant": "#bccac0",
+            "primary-fixed": "#85f8c4",
+            "on-error-container": "#93000a",
+            "surface-container-lowest": "#ffffff",
+            "on-background": "#0b1c30",
+            "on-tertiary-container": "#fefcff",
+            "tertiary": "#0058be",
+            "surface": "#f8f9ff",
+            "secondary-fixed-dim": "#bec6e0",
+            "on-primary-container": "#f5fff7",
+            "tertiary-fixed": "#d8e2ff",
+            "on-secondary-fixed-variant": "#3f465c",
+            "surface-variant": "#d3e4fe",
+            "secondary-fixed": "#dae2fd",
+            "on-primary-fixed": "#002114",
+            "primary": "#006948",
+            "tertiary-fixed-dim": "#adc6ff",
+            "on-surface": "#0b1c30",
+            "surface-bright": "#f8f9ff",
+            "on-error": "#ffffff"
+          },
+          borderRadius: {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          spacing: {
+            "space-xs": "0.25rem",
+            "space-xl": "1rem",
+            "gutter": "0.75rem",
+            "space-md": "0.5rem",
+            "space-lg": "0.75rem",
+            "space-sm": "0.375rem",
+            "margin": "1rem"
+          },
+          fontFamily: {
+            "code-sm": ["JetBrains Mono"],
+            "body-lg": ["Inter"],
+            "label-md": ["Inter"],
+            "headline-sm": ["Inter"],
+            "body-sm": ["Inter"],
+            "headline-lg": ["Inter"],
+            "code-md": ["JetBrains Mono"],
+            "headline-md": ["Inter"],
+            "label-lg": ["Inter"],
+            "body-md": ["Inter"],
+            "label-sm": ["Inter"]
+          },
+          fontSize: {
+            "code-sm": ["10px", { lineHeight: "12px", fontWeight: "500" }],
+            "body-lg": ["13px", { lineHeight: "18px", fontWeight: "400" }],
+            "label-md": ["11px", { lineHeight: "14px", letterSpacing: "0.02em", fontWeight: "500" }],
+            "headline-sm": ["14px", { lineHeight: "18px", letterSpacing: "-0.005em", fontWeight: "600" }],
+            "body-sm": ["11px", { lineHeight: "14px", fontWeight: "400" }],
+            "headline-lg": ["20px", { lineHeight: "28px", letterSpacing: "-0.015em", fontWeight: "600" }],
+            "code-md": ["11px", { lineHeight: "14px", fontWeight: "500" }],
+            "headline-md": ["16px", { lineHeight: "22px", letterSpacing: "-0.01em", fontWeight: "600" }],
+            "label-lg": ["12px", { lineHeight: "16px", fontWeight: "600" }],
+            "body-md": ["12px", { lineHeight: "16px", fontWeight: "400" }],
+            "label-sm": ["10px", { lineHeight: "12px", letterSpacing: "0.04em", fontWeight: "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+    font-size: 15px;
+    line-height: 1;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .material-symbols-outlined.fill-current {
+    font-variation-settings: 'FILL' 1;
+  }
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f1f5f9;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 2px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+  }
+  /* Tab layout styling */
+  .tab-content {
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 40px - 41px - 32px); /* header ~40, tab bar ~41, footer ~32 */
+    flex: 1;
+    overflow: hidden;
+  }
+  .tab-content.hidden {
+    display: none !important;
+  }
+  #tab-cockpit > main, #tab-analytics > main, #tab-profile > main {
+    flex: 1;
+    overflow-y: auto;
+  }
+</style>
+</head>
+<body class="h-full font-body-md text-on-surface bg-background antialiased flex flex-col overflow-hidden selection:bg-primary-fixed-dim selection:text-on-primary-fixed">
+<header class="sticky top-0 z-40 h-10 w-full bg-surface-container-lowest border-b border-outline-variant/60 flex items-center justify-between px-margin select-none">
+<!-- Left: Shield Emblem & 'LT' Avatar Profile -->
+<div class="flex items-center gap-space-md"><div class="flex items-center gap-space-sm">
+  <button class="flex items-center justify-center p-1 rounded hover:bg-surface-container transition-colors" title="GreenSM Sentinel">
+    <span class="material-symbols-outlined text-primary text-[20px]" data-icon="shield" style="font-variation-settings: 'FILL' 1;">shield</span>
+  </button>
+  <div class="h-6 w-6 rounded bg-primary text-on-primary font-code-sm text-code-sm font-semibold flex items-center justify-center tracking-wider cursor-pointer" title="Lead Fraud Risk Analyst Profile (Lê Tuấn)">
+    LT
+  </div>
+</div></div>
+<!-- Center: Monospace Search Bar with Ctrl+K shortcut -->
+<div class="flex-1 max-w-lg px-space-md hidden md:block">
+<div class="relative flex items-center w-full">
+<span class="material-symbols-outlined absolute left-2 text-secondary text-[16px] pointer-events-none" data-icon="search">search</span>
+<input class="w-full h-7 pl-7 pr-14 text-body-sm font-body-sm bg-surface rounded border border-outline-variant/70 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-colors" placeholder="Search driver ID, vehicle plate, geohash, rule tag (e.g. usr:8492, #ERR-02)..." type="text">
+<kbd class="absolute right-2 font-code-sm text-code-sm bg-surface-container-lowest text-secondary px-1 py-0.5 rounded border border-outline-variant shadow-none">Ctrl+K</kbd>
+</div>
+</div>
+<!-- Right: Active Telemetry Badge & Quick Actions -->
+<div class="flex items-center gap-space-sm justify-end min-w-[240px]">
+<button class="h-7 px-2.5 rounded bg-error-container text-on-error-container border border-error/20 font-label-md text-label-md flex items-center gap-1.5 font-semibold active:opacity-90 transition-opacity">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-error animate-ping"></span>
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-error -ml-3"></span>
+<span class="">23 cases active</span>
+</button>
+<div class="h-4 w-px bg-outline-variant/60 mx-1"></div>
+<button class="h-7 w-7 rounded flex items-center justify-center text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" title="System Notifications">
+<span class="material-symbols-outlined text-[18px]" data-icon="notifications_active">notifications_active</span>
+</button>
+<button class="h-7 w-7 rounded flex items-center justify-center text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" title="Operational Tune">
+<span class="material-symbols-outlined text-[18px]" data-icon="tune">tune</span>
+</button>
+<button class="h-7 w-7 rounded flex items-center justify-center text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" title="Operations Documentation">
+<span class="material-symbols-outlined text-[18px]" data-icon="help_outline">help_outline</span>
+</button>
+</div>
+</header>
+
+<div class="bg-surface-container-lowest border-b border-outline-variant px-margin flex items-center gap-4 select-none shrink-0 z-30 relative">
+  <button id="btn-tab-cockpit" onclick="switchTab('tab-cockpit')" class="tab-btn border-b-2 border-primary text-primary font-headline-sm text-sm py-2 px-1 transition-colors">Adjudication Cockpit</button>
+  <button id="btn-tab-analytics" onclick="switchTab('tab-analytics')" class="tab-btn border-b-2 border-transparent text-secondary font-headline-sm text-sm py-2 px-1 hover:text-on-surface transition-colors">Analytics Dashboard</button>
+  <button id="btn-tab-profile" onclick="switchTab('tab-profile')" class="tab-btn border-b-2 border-transparent text-secondary font-headline-sm text-sm py-2 px-1 hover:text-on-surface transition-colors">Analyst Profile</button>
+</div>
+
+
+<div id="tab-cockpit" class="tab-content">
+  <main class="flex-1 flex overflow-hidden">
+<!-- ========================================================================= -->
+<!-- PANE 1: PRIORITY TRIAGE QUEUE (22%) -->
+<!-- ========================================================================= -->
+<section class="w-[22%] shrink-0 border-r border-slate-200 flex flex-col h-[calc(100vh-2.75rem)] bg-white select-none">
+<!-- Pane Subheader -->
+<div class="h-9 px-3 border-b border-slate-200 flex items-center justify-between bg-slate-50/70">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-xs font-semibold text-slate-800">Triage Queue</span>
+<span class="px-1.5 py-0.2 bg-slate-200 text-slate-700 rounded-full font-code-sm text-[10px] font-medium">23</span>
+</div>
+<div class="flex items-center gap-1">
+<button class="w-auto inline-flex whitespace-nowrap items-center p-1 text-slate-500 hover:text-slate-800 hover:bg-slate-200/60 rounded transition-colors" title="Làm mới hàng đợi" type="button">
+<span class="material-symbols-outlined text-[15px]">sync</span>
+</button>
+<button class="w-auto inline-flex whitespace-nowrap items-center p-1 text-slate-500 hover:text-slate-800 hover:bg-slate-200/60 rounded transition-colors" title="Sắp xếp theo SLA" type="button">
+<span class="material-symbols-outlined text-[15px]">sort</span>
+</button>
+</div>
+</div>
+<!-- Queue Items List -->
+<div class="flex-1 overflow-y-auto divide-y divide-slate-100 p-1.5 space-y-1"><!-- Row 1: Active Selected (P0) -->
+<article class="p-2 rounded bg-red-50/80 border-l-4 border-red-500 ring-1 ring-red-300 cursor-pointer transition-all shadow-xs">
+  <div class="flex items-center justify-between mb-1">
+    <div class="flex items-center gap-1.5 whitespace-nowrap">
+      <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-red-600 text-white tracking-wider">P0</span>
+      <span class="font-code-md text-xs font-bold text-slate-900">#FC-8921</span>
+    </div>
+    <div class="flex items-center gap-1 whitespace-nowrap">
+      <span class="material-symbols-outlined text-[12px] text-amber-600">lock</span>
+      <span class="font-code-sm text-[10px] font-bold text-red-600 bg-red-100 px-1 py-0.5 rounded border border-red-200">03:14</span>
+    </div>
+  </div>
+  <div class="flex items-center justify-between text-body-sm text-xs text-slate-700 whitespace-nowrap">
+    <span class="font-medium text-slate-900 truncate">Nguyễn Văn A</span>
+    <span class="font-code-sm text-[10px] text-slate-500 shrink-0 ml-1">29E-123.45</span>
+  </div>
+  <div class="flex items-center justify-between mt-1 text-[10px] text-slate-500 whitespace-nowrap">
+    <span class="flex items-center gap-0.5 truncate text-slate-600">
+      <span class="material-symbols-outlined text-[11px] text-slate-400">location_on</span>
+      Hoàn Kiếm
+    </span>
+    <span class="text-red-700 font-medium bg-red-100/60 px-1 rounded shrink-0">Stall: 210s</span>
+  </div>
+</article>
+<!-- Row 2: P0 -->
+<article class="p-2 rounded bg-red-50/30 hover:bg-red-50/70 border-l-4 border-red-500 cursor-pointer transition-colors">
+  <div class="flex items-center justify-between mb-1">
+    <div class="flex items-center gap-1.5 whitespace-nowrap">
+      <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-700 border border-red-200">P0</span>
+      <span class="font-code-md text-xs font-semibold text-slate-800">#FC-8920</span>
+    </div>
+    <span class="font-code-sm text-[10px] font-medium text-red-600 bg-red-50 px-1 py-0.5 rounded whitespace-nowrap">04:45</span>
+  </div>
+  <div class="flex items-center justify-between text-body-sm text-xs text-slate-600 whitespace-nowrap">
+    <span class="font-medium text-slate-800 truncate">Trần Đình Trọng</span>
+    <span class="font-code-sm text-[10px] text-slate-500 shrink-0 ml-1">30F-982.11</span>
+  </div>
+  <div class="flex items-center justify-between mt-1 text-[10px] text-slate-400 whitespace-nowrap">
+    <span class="truncate">Thanh Xuân</span>
+    <span class="text-slate-500 font-code-sm shrink-0">Fake GPS</span>
+  </div>
+</article>
+<!-- Row 3: P1 -->
+<article class="p-2 rounded bg-amber-50/40 hover:bg-amber-50/80 border-l-4 border-amber-500 cursor-pointer transition-colors">
+  <div class="flex items-center justify-between mb-1">
+    <div class="flex items-center gap-1.5 whitespace-nowrap">
+      <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">P1</span>
+      <span class="font-code-md text-xs font-semibold text-slate-800">#FC-8919</span>
+    </div>
+    <span class="font-code-sm text-[10px] font-medium text-amber-700 whitespace-nowrap">07:20</span>
+  </div>
+  <div class="flex items-center justify-between text-body-sm text-xs text-slate-600 whitespace-nowrap">
+    <span class="font-medium text-slate-800 truncate">Phạm Hoàng Long</span>
+    <span class="font-code-sm text-[10px] text-slate-500 shrink-0 ml-1">29D-441.82</span>
+  </div>
+  <div class="flex items-center justify-between mt-1 text-[10px] text-slate-400 whitespace-nowrap">
+    <span class="truncate">Cầu Giấy</span>
+    <span class="text-amber-800 font-code-sm shrink-0">Fare Surging</span>
+  </div>
+</article>
+<!-- Row 4: P1 -->
+<article class="p-2 rounded bg-amber-50/40 hover:bg-amber-50/80 border-l-4 border-amber-500 cursor-pointer transition-colors">
+  <div class="flex items-center justify-between mb-1">
+    <div class="flex items-center gap-1.5 whitespace-nowrap">
+      <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">P1</span>
+      <span class="font-code-md text-xs font-semibold text-slate-800">#FC-8918</span>
+    </div>
+    <span class="font-code-sm text-[10px] font-medium text-amber-700 whitespace-nowrap">08:50</span>
+  </div>
+  <div class="flex items-center justify-between text-body-sm text-xs text-slate-600 whitespace-nowrap">
+    <span class="font-medium text-slate-800 truncate">Vũ Quốc Huy</span>
+    <span class="font-code-sm text-[10px] text-slate-500 shrink-0 ml-1">30E-552.19</span>
+  </div>
+  <div class="flex items-center justify-between mt-1 text-[10px] text-slate-400 whitespace-nowrap">
+    <span class="truncate">Ba Đình</span>
+    <span class="text-slate-500 font-code-sm shrink-0">Off-route</span>
+  </div>
+</article>
+<!-- Row 5: P2 -->
+<article class="p-2 rounded bg-blue-50/40 hover:bg-blue-50/80 border-l-4 border-blue-500 cursor-pointer transition-colors">
+  <div class="flex items-center justify-between mb-1">
+    <div class="flex items-center gap-1.5 whitespace-nowrap">
+      <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">P2</span>
+      <span class="font-code-md text-xs font-semibold text-slate-800">#FC-8917</span>
+    </div>
+    <span class="font-code-sm text-[10px] font-medium text-blue-700 whitespace-nowrap">14:10</span>
+  </div>
+  <div class="flex items-center justify-between text-body-sm text-xs text-slate-600 whitespace-nowrap">
+    <span class="font-medium text-slate-800 truncate">Đỗ Minh Đức</span>
+    <span class="font-code-sm text-[10px] text-slate-500 shrink-0 ml-1">29A-671.03</span>
+  </div>
+  <div class="flex items-center justify-between mt-1 text-[10px] text-slate-400 whitespace-nowrap">
+    <span class="truncate">Hoàng Mai</span>
+    <span class="text-slate-500 font-code-sm shrink-0">Jitter spike</span>
+  </div>
+</article>
+<!-- Row 6: P2 -->
+<article class="p-2 rounded bg-blue-50/40 hover:bg-blue-50/80 border-l-4 border-blue-500 cursor-pointer transition-colors">
+  <div class="flex items-center justify-between mb-1">
+    <div class="flex items-center gap-1.5 whitespace-nowrap">
+      <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">P2</span>
+      <span class="font-code-md text-xs font-semibold text-slate-800">#FC-8916</span>
+    </div>
+    <span class="font-code-sm text-[10px] font-medium text-blue-700 whitespace-nowrap">16:40</span>
+  </div>
+  <div class="flex items-center justify-between text-body-sm text-xs text-slate-600 whitespace-nowrap">
+    <span class="font-medium text-slate-800 truncate">Lê Quốc Toàn</span>
+    <span class="font-code-sm text-[10px] text-slate-500 shrink-0 ml-1">29C-881.90</span>
+  </div>
+  <div class="flex items-center justify-between mt-1 text-[10px] text-slate-400 whitespace-nowrap">
+    <span class="truncate">Đống Đa</span>
+    <span class="text-slate-500 font-code-sm shrink-0">Toll bump</span>
+  </div>
+</article></div>
+<!-- Queue Pagination & Hotkey hints -->
+<div class="h-8 px-3 border-t border-slate-200 bg-slate-50 flex items-center justify-between text-[10px] text-slate-500 shrink-0">
+<span class="font-code-sm">1-6 of 23 cases</span>
+<div class="flex items-center gap-1">
+<kbd class="px-1 py-0.2 bg-white border border-slate-200 rounded font-code-sm text-slate-600">J</kbd>
+<kbd class="px-1 py-0.2 bg-white border border-slate-200 rounded font-code-sm text-slate-600">K</kbd>
+<span class="text-slate-400">Nav</span>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- PANE 2: DETAILED CASE ADJUDICATION WORKSPACE (52%) -->
+<!-- ========================================================================= -->
+<section class="w-[52%] shrink-0 border-r border-slate-200 overflow-y-auto h-[calc(100vh-2.75rem)] p-2.5 space-y-2.5 bg-slate-50/70">
+<!-- Case Metadata Strip -->
+<div class="bg-white border border-slate-200 rounded p-2.5 shadow-2xs"><div class="flex items-center justify-between pb-2 border-b border-slate-100">
+  <div class="flex items-center gap-2 flex-wrap">
+    <span class="font-headline-sm text-sm font-bold text-slate-900 whitespace-nowrap">#FC-8921</span>
+    <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-red-600 text-white whitespace-nowrap">P0 CRITICAL</span>
+    <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-50 text-amber-800 border border-amber-200 whitespace-nowrap">
+      <span class="material-symbols-outlined text-[11px] text-amber-600">lock</span>
+      Tuấn LM
+    </span>
+  </div>
+  <div class="flex items-center gap-1.5 whitespace-nowrap shrink-0">
+    <span class="text-[11px] font-code-sm text-slate-500">⏱ SLA:</span>
+    <span class="font-code-sm text-xs font-bold text-red-600 bg-red-50 px-1.5 py-0.5 rounded border border-red-200">00:28 / 00:45s</span>
+  </div>
+</div>
+<!-- Driver & Trip Specifics with robust single-line layout -->
+<div class="flex items-center justify-between gap-3 pt-2 text-xs">
+  <!-- Driver Info -->
+  <div class="flex items-center gap-2.5 min-w-0">
+    <div class="w-8 h-8 rounded-full bg-slate-100 border border-slate-200 flex items-center justify-center font-bold text-slate-700 text-xs shrink-0">
+      VA
+    </div>
+    <div class="min-w-0">
+      <div class="flex items-center gap-1.5 font-medium text-slate-900 whitespace-nowrap">
+        <span class="truncate font-semibold">Nguyễn Văn A</span>
+        <span class="text-slate-300">•</span>
+        <span class="font-code-sm text-slate-700">VF 8</span>
+        <span class="font-code-sm text-slate-600 font-bold bg-slate-100 px-1 rounded border border-slate-200">29E-123.45</span>
+      </div>
+      <div class="flex items-center gap-2 text-[11px] text-slate-500 mt-0.5 font-code-sm whitespace-nowrap">
+        <span class="text-amber-600 font-semibold">4.85 ★</span>
+        <span class="">AR: <strong class="text-slate-700">94.2%</strong></span>
+        <span class="">CR: <strong class="text-red-600 font-semibold">12.4%</strong></span>
+        <span class="text-rose-600 bg-rose-50 px-1 rounded border border-rose-200">2 warnings (90d)</span>
+      </div>
+    </div>
+  </div>
+  <!-- Trip & Guardrail -->
+  <div class="flex flex-col items-end border-l border-slate-100 pl-3 shrink-0 whitespace-nowrap">
+    <div class="text-[11px] font-medium text-slate-800 text-right truncate">
+      Hoàn Kiếm → Sân bay Nội Bài
+    </div>
+    <div class="flex items-center gap-2 mt-0.5">
+      <span class="font-code-sm text-[11px] font-bold text-emerald-700">340,000 VND</span>
+      <span class="inline-flex items-center gap-0.5 text-[10px] text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200 font-medium">
+        <span class="material-symbols-outlined text-[12px] text-emerald-600">verified</span>
+        Guardrail Passed
+      </span>
+    </div>
+  </div>
+</div></div>
+<!-- Spatial Telemetry GIS Map Card -->
+<div class="bg-white border border-slate-200 rounded p-2 shadow-2xs relative"><div class="flex items-center justify-end mb-1.5 px-1"><div class="flex items-center gap-1 whitespace-nowrap"><button class="w-auto inline-flex whitespace-nowrap items-center px-1.5 py-0.5 text-[10px] font-medium rounded bg-emerald-50 text-emerald-700 border border-emerald-300 shadow-2xs" type="button">✓ Traffic</button><button class="w-auto inline-flex whitespace-nowrap items-center px-1.5 py-0.5 text-[10px] font-medium rounded bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors border border-slate-200" type="button">Breadcrumbs</button><button class="w-auto inline-flex whitespace-nowrap items-center px-1.5 py-0.5 text-[10px] font-medium rounded bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors border border-slate-200" type="button">OSRM Shortest</button><button class="w-auto inline-flex whitespace-nowrap items-center px-1.5 py-0.5 text-[10px] font-medium rounded bg-slate-100 text-slate-700 hover:bg-slate-200 transition-colors border border-slate-200" type="button">Hotspots</button></div></div><div class="w-full h-56 bg-slate-100 rounded relative overflow-hidden border border-slate-200"><svg class="w-full h-full" fill="none" viewBox="0 0 700 240" xmlns="http://www.w3.org/2000/svg"><rect fill="#f8fafc" height="240" width="700" x="0" y="0"></rect><path d="M0 60 H700" stroke="#e2e8f0" stroke-dasharray="4 4" stroke-width="2"></path><path d="M0 130 H700" stroke="#ffffff" stroke-width="12"></path><path d="M0 130 H700" stroke="#cbd5e1" stroke-width="2"></path><path d="M0 200 H700" stroke="#e2e8f0" stroke-dasharray="4 4" stroke-width="2"></path><path d="M120 0 V240" stroke="#e2e8f0" stroke-width="2"></path><path d="M260 0 V240" stroke="#ffffff" stroke-width="10"></path><path d="M260 0 V240" stroke="#cbd5e1" stroke-width="2"></path><path d="M420 0 V240" stroke="#ffffff" stroke-width="14"></path><path d="M420 0 V240" stroke="#cbd5e1" stroke-width="2.5"></path><path d="M580 0 V240" stroke="#e2e8f0" stroke-width="2"></path><text fill="#475569" font-family="JetBrains Mono" font-size="10" font-weight="600" x="268" y="25">PHỐ TRẦN HƯNG ĐẠO</text><text fill="#1e293b" font-family="JetBrains Mono" font-size="10" font-weight="bold" x="428" y="25">PHỐ BÀ TRIỆU</text><text fill="#1e293b" font-family="JetBrains Mono" font-size="10" font-weight="bold" x="15" y="122">PHỐ LÝ THƯỜNG KIỆT</text><text fill="#475569" font-family="JetBrains Mono" font-size="10" font-weight="600" x="15" y="192">PHỐ HAI BÀ TRƯNG</text><path d="M140 130 H420 V40" stroke="#0284c7" stroke-dasharray="6 4" stroke-linecap="round" stroke-width="3.5"></path><path d="M140 130 H360 C380 130 400 130 410 130 L420 130 L420 148 L415 152 L405 152 L405 130" stroke="#ea580c" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5"></path><circle cx="140" cy="130" fill="#059669" r="5.5" stroke="#ffffff" stroke-width="2"></circle><rect fill="#ecfdf5" height="16" rx="3" stroke="#a7f3d0" stroke-width="1" width="100" x="100" y="102"></rect><text fill="#047857" font-family="Inter" font-size="9" font-weight="600" x="106" y="114">Khách đón (08:12)</text><circle cx="420" cy="40" fill="#0284c7" r="5.5" stroke="#ffffff" stroke-width="2"></circle><rect fill="#f0f9ff" height="16" rx="3" stroke="#bae6fd" stroke-width="1" width="86" x="432" y="32"></rect><text fill="#0369a1" font-family="Inter" font-size="9" font-weight="600" x="438" y="44">Lộ trình chuẩn</text><g transform="translate(420, 130)"><circle cx="0" cy="0" fill="#ef4444" fill-opacity="0.25" r="16"><animate attributeName="r" dur="1.8s" repeatCount="indefinite" values="8;20;8"></animate><animate attributeName="fill-opacity" dur="1.8s" repeatCount="indefinite" values="0.35;0.05;0.35"></animate></circle><circle cx="0" cy="0" fill="#dc2626" r="7" stroke="#ffffff" stroke-width="2"></circle><circle cx="0" cy="0" fill="#ffffff" r="2.5"></circle></g></svg></div><div class="mt-2 p-2 bg-slate-50 border border-slate-200 rounded grid grid-cols-3 gap-2 text-[11px] font-code-sm select-none"><div class="flex items-center gap-1.5 whitespace-nowrap"><span class="w-2 h-2 rounded-full bg-red-500 animate-pulse shrink-0"></span><span class="text-slate-500">Stall Point D:</span><span class="font-bold text-red-600 bg-red-50 px-1 py-0.2 rounded border border-red-200">210s</span></div><div class="flex items-center gap-1.5 whitespace-nowrap"><span class="text-slate-500">DAVI Drift:</span><span class="font-bold text-amber-700 bg-amber-50 px-1 py-0.2 rounded border border-amber-200">-0.84</span></div><div class="flex items-center gap-1.5 justify-end whitespace-nowrap text-emerald-700 font-medium"><span class="material-symbols-outlined text-[13px] text-emerald-600 shrink-0">speed</span><span class="">Ambient: <strong class="text-slate-800">32 km/h</strong></span></div></div></div>
+<!-- Kinematic Velocity Graph & Sensor Telemetry -->
+<div class="bg-white border border-slate-200 rounded p-2.5 space-y-2 shadow-2xs">
+
+<!-- SVG Micro Graph -->
+<div class="w-full h-12 bg-slate-50 rounded border border-slate-200 px-2 py-1 flex items-center">
+<svg class="w-full h-10" fill="none" preserveAspectRatio="none" viewBox="0 0 500 40">
+<!-- Grid Lines -->
+<line stroke="#e2e8f0" stroke-width="1" x1="0" x2="500" y1="35" y2="35"></line>
+<line stroke="#f1f5f9" stroke-width="1" x1="0" x2="500" y1="15" y2="15"></line>
+<!-- Velocity Profile Path -->
+<path d="M0 25 L70 12 L120 16 L180 35 L330 35 L380 20 L500 22" fill="none" stroke="#ef4444" stroke-linejoin="round" stroke-width="2"></path>
+<!-- Shaded Stall Zone -->
+<rect fill="#ef4444" fill-opacity="0.12" height="32" width="150" x="180" y="4"></rect>
+<text fill="#dc2626" font-family="JetBrains Mono" font-size="9" font-weight="bold" x="215" y="22">STALL DETECTED (210s)</text>
+</svg>
+</div>
+<!-- Sensor Diagnostics Matrix -->
+<div class="grid grid-cols-3 gap-2 pt-1 font-code-sm text-[11px]"><div class="bg-slate-50 border border-slate-200 rounded p-1.5 flex items-center justify-between"><span class="text-emerald-700 font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-emerald-600">battery_charging_full</span>84% Battery</span><span class="text-[10px] text-slate-400 font-medium">Optimal</span></div><div class="bg-slate-50 border border-slate-200 rounded p-1.5 flex items-center justify-between"><span class="text-slate-700 font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-[13px] text-slate-400">satellite_alt</span>GPS: &lt; 2.5m</span><span class="text-[10px] text-emerald-600 font-medium">Valid CEP</span></div><div class="bg-slate-50 border border-slate-200 rounded p-1.5 flex items-center justify-between"><span class="text-amber-800 font-semibold flex items-center gap-1"><span class="material-symbols-outlined text-[13px] text-amber-600">explore</span>Heading: 178°</span><span class="text-[10px] text-amber-600 font-medium">Rev Drift</span></div></div>
+</div>
+<!-- Conflicting Dispositions (Driver vs Passenger) -->
+<div class="bg-white border border-slate-200 rounded p-2.5 space-y-2 shadow-2xs">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-xs font-semibold text-slate-800 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-slate-600">record_voice_over</span>
+            Conflicting Dispositions &amp; Signal Logs
+          </span>
+<span class="text-[10px] font-code-sm text-slate-400">Match Correlation: Incompatible</span>
+</div>
+<div class="grid grid-cols-2 gap-2 text-body-sm text-xs">
+<!-- Driver Explanation -->
+<div class="bg-amber-50/70 border border-amber-200 rounded p-2">
+<div class="flex items-center justify-between mb-1">
+<span class="font-semibold text-amber-900 flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-amber-700">commute</span>
+                Giải trình Tài xế (App)
+              </span>
+<span class="font-code-sm text-[10px] text-amber-700">08:15:32</span>
+</div>
+<p class="text-amber-950 leading-relaxed italic text-[11px]">
+              “Kẹt xe nghiêm trọng tại ngã tư không thể di chuyển được, đường tắc cứng không thể quay đầu hay tiến lên.”
+            </p>
+</div>
+<!-- Passenger Signal -->
+<div class="bg-rose-50/70 border border-rose-200 rounded p-2">
+<div class="flex items-center justify-between mb-1">
+<span class="font-semibold text-rose-900 flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-rose-700">person_cancel</span>
+                Tín hiệu Khách hàng (Hủy cuốc)
+              </span>
+<span class="font-code-sm text-[10px] text-rose-700">08:15:44</span>
+</div>
+<p class="text-rose-950 leading-relaxed italic text-[11px]">
+              “Tài xế đứng yên tại chỗ hơn 5 phút không tới đón, gọi điện không bắt máy. Phải tự hủy để đặt xe khác kịp giờ bay.”
+            </p>
+</div>
+</div>
+</div>
+<!-- One-Click HITL Sanction Console -->
+<div class="bg-white border border-slate-200 rounded p-3 space-y-2.5 shadow-2xs"><div class="space-y-2.5"><div class="flex flex-wrap items-center gap-2"><button class="w-auto inline-flex whitespace-nowrap items-center px-3 py-2 text-xs font-medium rounded border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-800 transition-colors cursor-pointer shadow-2xs" type="button">Dismiss</button><button class="w-auto inline-flex whitespace-nowrap items-center px-3 py-2 text-xs font-medium rounded border border-slate-200 bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-800 transition-colors cursor-pointer shadow-2xs" type="button">Request Evidence</button><button class="w-auto inline-flex whitespace-nowrap items-center px-3 py-2 text-xs font-medium rounded border border-slate-200 bg-white text-slate-700 hover:bg-slate-100 transition-colors cursor-pointer shadow-2xs" type="button">Warn</button><button class="w-auto inline-flex whitespace-nowrap items-center px-3 py-2 text-xs font-medium rounded border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 transition-colors cursor-pointer shadow-2xs" type="button">Fine</button><button class="w-auto inline-flex whitespace-nowrap items-center gap-1.5 px-3.5 py-2 text-xs font-semibold rounded bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white shadow-xs transition-colors cursor-pointer" type="button"><span class="material-symbols-outlined text-[15px] text-white">check_circle</span>Suspend 24h</button><button class="w-auto inline-flex whitespace-nowrap items-center px-3 py-2 text-xs font-medium rounded border border-amber-300 bg-amber-50 hover:bg-amber-100 text-amber-800 transition-colors cursor-pointer shadow-2xs" type="button">Escalate</button></div><div><div class="flex items-center justify-between mb-1"><label class="block text-[11px] font-medium text-slate-700">Lý do phán quyết (Bắt buộc theo chuẩn kiểm toán):</label><span class="text-[10px] font-code-sm text-slate-400 bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded">Policy: Reg-2026-v2</span></div><textarea class="w-full text-[11px] font-body-sm p-2 bg-slate-50 border border-slate-200 rounded focus:bg-white focus:outline-none focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 text-slate-800 resize-none" rows="2">Xác nhận vi phạm ERR-02 theo Điều 14.2: Dừng đỗ cố tình 210s ép khách hủy, tái phạm lần 2 trong 30 ngày. Áp dụng tạm đình chỉ 24h &amp; khấu trừ 100% thưởng ngày.</textarea></div><div class="flex items-center justify-between pt-1"><label class="flex items-center gap-1.5 cursor-pointer text-[11px] text-slate-600"><input checked="" class="w-3.5 h-3.5 rounded text-emerald-600 border-slate-300 focus:ring-emerald-500" type="checkbox"><span class="">Đã đối soát bản đồ viễn thám và xác nhận không có lỗi hệ thống.</span></label><button class="w-auto inline-flex whitespace-nowrap items-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white px-4 py-1.5 rounded font-label-sm text-xs font-semibold shadow-xs transition-colors cursor-pointer" type="button"><span class="material-symbols-outlined text-[15px]">send</span>Submit Decision (32s)</button></div></div></div>
+</section>
+<!-- ========================================================================= -->
+<!-- PANE 3: AI POLICY COPILOT (26%) -->
+<!-- ========================================================================= -->
+<section class="w-[26%] shrink-0 flex flex-col h-[calc(100vh-2.75rem)] bg-white select-none">
+<!-- Copilot Header -->
+<div class="h-10 px-3 border-b border-slate-200 flex items-center justify-between bg-slate-50/70 shrink-0">
+<div class="flex items-center gap-2">
+<div class="w-5 h-5 rounded bg-emerald-600 flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[13px]">smart_toy</span>
+</div>
+<span class="font-headline-sm text-xs font-semibold text-slate-800">AI Policy Copilot</span>
+<span class="font-code-sm text-[10px] text-slate-500 bg-white border border-slate-200 px-1 py-0.2 rounded">
+            #FC-8921
+          </span>
+</div>
+<!-- Circular Confidence Gauge -->
+<div class="flex items-center gap-1.5" title="Mức độ tin cậy phát hiện vi phạm: 92%">
+<div class="relative w-6 h-6 flex items-center justify-center">
+<svg class="w-6 h-6 -rotate-90" viewBox="0 0 36 36">
+<path class="text-slate-200" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-width="3.5"></path>
+<path class="text-red-500" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="currentColor" stroke-dasharray="92, 100" stroke-linecap="round" stroke-width="3.5"></path>
+</svg>
+<span class="absolute text-[8px] font-code-sm font-bold text-slate-800">92%</span>
+</div>
+<span class="text-[10px] font-label-sm font-bold text-red-600">CONF</span>
+</div>
+</div>
+<!-- Chat & RAG Stream Area -->
+<div class="flex-1 overflow-y-auto p-2.5 space-y-2.5 text-xs">
+<!-- FIRST MESSAGE: Automated Forensic Summary -->
+<div class="bg-emerald-50/50 border border-emerald-200 rounded p-2.5 space-y-1.5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[14px] text-emerald-700">bolt</span>
+<span class="font-semibold text-emerald-900 text-[11px]">AI Forensic Summary</span>
+</div>
+<span class="text-[9px] font-code-sm text-emerald-700 bg-emerald-100/70 px-1 rounded">RAG Auto</span>
+</div>
+<p class="text-slate-800 leading-relaxed text-[11px]">
+            Tài xế <strong class="text-slate-900">Nguyễn Văn A</strong> nhận cuốc lúc 08:12 tại 12 Bà Triệu. Xe dừng bất động <strong class="text-red-600">210s</strong> tại ngã tư Bà Triệu - Lý Thường Kiệt dù đường thông thoáng (32 km/h). Độ tin cậy vi phạm: <strong class="text-red-600">92%</strong> (ERR-02: Cố tình ép khách hủy).
+          </p>
+<div class="bg-white/80 p-1.5 rounded border border-emerald-200/80 text-[10px] text-slate-700">
+<strong class="text-emerald-800">Đề xuất:</strong> Tạm khóa 24h và trừ thưởng ngày do tái phạm lần 2 theo Điều 14.2.
+          </div>
+<div class="pt-0.5">
+<button class="w-auto inline-flex whitespace-nowrap items-center gap-1 bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-semibold px-2 py-1 rounded shadow-2xs transition-colors" type="button">
+<span class="material-symbols-outlined text-[12px]">done_all</span>
+              Apply Recommendation
+            </button>
+</div>
+</div>
+<!-- SECOND MESSAGE: Analyst Query Bubble -->
+<div class="flex justify-end">
+<div class="bg-slate-900 text-white rounded-lg rounded-tr-none px-2.5 py-1.5 max-w-[85%] text-[11px]">
+            Điều 14.2 quy định mức phạt thế nào?
+          </div>
+</div>
+<!-- THIRD MESSAGE: Copilot RAG Answer -->
+<div class="bg-slate-50 border border-slate-200 rounded p-2.5 space-y-1.5">
+<div class="flex items-center gap-1 text-[11px] font-semibold text-slate-800">
+<span class="material-symbols-outlined text-[13px] text-emerald-600">menu_book</span>
+<span class="">Trợ lý Quy chuẩn GreenSM</span>
+</div>
+<p class="text-slate-700 leading-relaxed text-[11px]">
+            Theo <strong class="text-slate-900">Điều 14.2 Quy chế Đối tác GreenSM (Q3/2026)</strong>: Vi phạm lần 1 cảnh cáo; tái phạm trong 30 ngày <strong class="text-red-600 font-medium">tạm khóa 24 giờ</strong> và <strong class="text-red-600 font-medium">khấu trừ 100% thưởng ngày</strong>.
+          </p>
+</div>
+</div>
+<!-- Verified Policy Citations Deck -->
+<div class="px-3 py-2 border-t border-slate-100 bg-slate-50/50 space-y-1 shrink-0">
+<span class="text-[9px] font-code-sm text-slate-400 uppercase tracking-wider block">Verified Citations</span>
+<div class="flex flex-wrap gap-1">
+<button class="w-auto inline-flex whitespace-nowrap items-center gap-1 text-[10px] font-code-sm bg-white border border-slate-200 hover:border-slate-300 text-slate-700 px-1.5 py-0.5 rounded transition-colors" type="button">
+<span class="material-symbols-outlined text-[11px] text-emerald-600">article</span>
+            Quy chế §14.2 (0.94)
+          </button>
+<button class="w-auto inline-flex whitespace-nowrap items-center gap-1 text-[10px] font-code-sm bg-white border border-slate-200 hover:border-slate-300 text-slate-700 px-1.5 py-0.5 rounded transition-colors" type="button">
+<span class="material-symbols-outlined text-[11px] text-blue-600">history</span>
+            Tiền lệ #FC-7102 (96%)
+          </button>
+</div>
+</div>
+<!-- Suggested Quick Prompts -->
+<div class="px-3 py-1.5 border-t border-slate-100 bg-white flex items-center gap-1 overflow-x-auto shrink-0">
+<button class="w-auto inline-flex whitespace-nowrap items-center text-[10px] bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-0.5 rounded transition-colors" type="button">
+          Miễn trừ lỗi 4G
+        </button>
+<button class="w-auto inline-flex whitespace-nowrap items-center text-[10px] bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-0.5 rounded transition-colors" type="button">
+          Tra cứu Fake GPS
+        </button>
+<button class="w-auto inline-flex whitespace-nowrap items-center text-[10px] bg-slate-100 hover:bg-slate-200 text-slate-700 px-2 py-0.5 rounded transition-colors" type="button">
+          Quy trình khiếu nại
+        </button>
+</div>
+<!-- Compact Chat Input Bar -->
+<div class="p-2 border-t border-slate-200 bg-white shrink-0">
+<div class="relative flex items-center">
+<input class="w-full h-7 pl-2 pr-14 bg-slate-50 border border-slate-200 rounded text-body-sm font-body-sm focus:outline-none focus:bg-white focus:border-emerald-600 focus:ring-1 focus:ring-emerald-600 text-slate-800 placeholder-slate-400 text-xs" placeholder="Hỏi trợ lý chính sách GreenSM..." type="text">
+<div class="absolute right-1 flex items-center gap-0.5">
+<button class="w-auto inline-flex whitespace-nowrap items-center p-1 text-slate-400 hover:text-slate-600" title="Đính kèm case log" type="button">
+<span class="material-symbols-outlined text-[14px]">attach_file</span>
+</button>
+<button class="w-auto inline-flex whitespace-nowrap items-center p-1 bg-emerald-600 hover:bg-emerald-700 text-white rounded transition-colors" title="Gửi câu hỏi" type="button">
+<span class="material-symbols-outlined text-[13px]">arrow_upward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+
+<div id="tab-analytics" class="tab-content hidden">
+  <div class="bg-surface-container-lowest border-b border-outline-variant/60 px-margin py-1.5 flex flex-wrap items-center justify-between gap-space-md">
+<!-- Left Controls: Range Selector & Telemetry Vitals -->
+<div class="flex items-center flex-wrap gap-space-md">
+<!-- Time Range Segmented Control -->
+<div class="inline-flex rounded border border-outline-variant/70 p-0.5 bg-surface text-secondary">
+<button class="px-2.5 py-1 rounded-sm text-label-sm font-label-sm font-semibold bg-surface-container-lowest text-primary shadow-sm">Today (Live)</button>
+<button class="px-2.5 py-1 rounded-sm text-label-sm font-label-sm hover:text-on-surface transition-colors">Last 7 Days</button>
+<button class="px-2.5 py-1 rounded-sm text-label-sm font-label-sm hover:text-on-surface transition-colors">Custom Range</button>
+</div>
+<div class="h-4 w-px bg-outline-variant/60 hidden lg:block"></div>
+<!-- Telemetry Health Indicator -->
+<div class="flex items-center gap-1.5 text-body-sm font-body-sm text-secondary">
+<span class="material-symbols-outlined text-primary text-[15px]" data-icon="radar" style="font-variation-settings: 'FILL' 1;">radar</span>
+<span class="text-on-surface-variant font-medium">Pipeline Stream:</span>
+<span class="font-code-sm text-code-sm bg-surface-container px-1.5 py-0.5 rounded text-primary font-semibold">Latency: 140ms</span>
+<span class="font-code-sm text-code-sm bg-surface-container px-1.5 py-0.5 rounded text-primary-container font-semibold">99.98% uptime</span>
+</div>
+<!-- Auto-refresh pill -->
+<div class="hidden sm:flex items-center gap-1 text-code-sm font-code-sm text-secondary bg-surface px-2 py-1 rounded border border-outline-variant/60">
+<span class="material-symbols-outlined text-primary text-[14px] animate-spin" data-icon="sync_alt" style="animation-duration: 4s;">sync_alt</span>
+<span class="">Refresh: 30s</span>
+</div>
+</div>
+<!-- Right Controls: Export & Primary Action -->
+<div class="flex items-center gap-space-sm ml-auto">
+<div class="inline-flex rounded border border-outline-variant/70 bg-surface-container-lowest">
+<button class="px-2 py-1 text-label-sm font-label-sm text-secondary hover:text-on-surface hover:bg-surface flex items-center gap-1 border-r border-outline-variant/60 transition-colors">
+<span class="material-symbols-outlined text-[14px]" data-icon="file_download">file_download</span>
+<span class="">CSV</span>
+</button>
+<button class="px-2 py-1 text-label-sm font-label-sm text-secondary hover:text-on-surface hover:bg-surface flex items-center gap-1 transition-colors">
+<span class="">PDF</span>
+</button>
+</div>
+
+</div>
+</div>
+<main class="flex-1 px-margin py-space-md space-y-space-md overflow-y-auto">
+<!-- TOP KPI SUMMARY BANNER -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter"><div class="bg-surface-container-lowest border border-outline-variant/70 rounded-lg p-space-md flex flex-col justify-between hover:border-outline transition-colors"><div class="flex items-center justify-between text-secondary"><span class="font-label-sm uppercase tracking-wider text-secondary font-semibold">Mean Time to Resolution</span><span class="material-symbols-outlined text-primary text-[16px]" data-icon="timer">timer</span></div><div class="mt-1 flex items-baseline justify-between"><span class="font-headline-lg font-bold text-on-surface tracking-tight">32.4s</span><span class="font-code-sm text-primary font-semibold flex items-center bg-primary-fixed/40 px-1.5 py-0.5 rounded"><span class="material-symbols-outlined text-[12px] mr-0.5" data-icon="trending_down">trending_down</span>-95.7%</span></div><div class="mt-1 text-code-sm text-secondary font-medium">Target: &lt;45s (Compliant)</div></div><div class="bg-surface-container-lowest border border-outline-variant/70 rounded-lg p-space-md flex flex-col justify-between hover:border-outline transition-colors"><div class="flex items-center justify-between text-secondary"><span class="font-label-sm uppercase tracking-wider text-secondary font-semibold">HITL Enforcement Ratio</span><span class="material-symbols-outlined text-primary text-[16px]" data-icon="verified_user">verified_user</span></div><div class="mt-1 flex items-baseline justify-between"><span class="font-headline-lg font-bold text-on-surface tracking-tight">100.0%</span><span class="font-code-sm bg-primary text-on-primary px-1.5 py-0.5 rounded font-semibold">0 Bypass</span></div><div class="mt-1 text-code-sm text-secondary font-medium">1,420 human signs · 0 auto-penalties</div></div><div class="bg-surface-container-lowest border border-outline-variant/70 rounded-lg p-space-md flex flex-col justify-between hover:border-outline transition-colors"><div class="flex items-center justify-between text-secondary"><span class="font-label-sm uppercase tracking-wider text-secondary font-semibold">Active Triage Backlog</span><span class="material-symbols-outlined text-tertiary text-[16px]" data-icon="inbox">inbox</span></div><div class="mt-1 flex items-baseline justify-between"><span class="font-headline-lg font-bold text-on-surface tracking-tight">14 <span class="text-headline-sm font-normal text-secondary">cases</span></span><span class="font-code-sm text-tertiary font-semibold bg-surface-container px-1.5 py-0.5 rounded">SLA 98.6%</span></div><div class="mt-1 text-code-sm text-secondary font-medium">Velocity: 118 cases/hr</div></div><div class="bg-surface-container-lowest border border-outline-variant/70 rounded-lg p-space-md flex flex-col justify-between hover:border-outline transition-colors"><div class="flex items-center justify-between text-secondary"><span class="font-label-sm uppercase tracking-wider text-secondary font-semibold">Daily Ingestion Volume</span><span class="material-symbols-outlined text-primary text-[16px]" data-icon="hub">hub</span></div><div class="mt-1 flex items-baseline justify-between"><span class="font-headline-lg font-bold text-on-surface tracking-tight">2,184 <span class="text-headline-sm font-normal text-secondary">alerts</span></span><span class="font-code-sm bg-surface-container text-secondary px-1.5 py-0.5 rounded font-semibold">121/hr avg</span></div><div class="mt-1 text-code-sm text-secondary font-medium">Fleet coverage: 18,500 units</div></div></div>
+<!-- MAIN BENTO GRID: ANALYTICAL WORKSPACES -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- LEFT COLUMN: Hourly Ingestion vs Clearance Velocity (7 Cols) -->
+<div class="lg:col-span-7 bg-surface-container-lowest border border-outline-variant/70 rounded-lg p-space-md flex flex-col justify-between space-y-space-md"><div class="flex items-center justify-between border-b border-outline-variant/40 pb-2"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-[18px]" data-icon="query_stats">query_stats</span><h2 class="font-headline-sm font-bold text-on-surface">Hourly Ingestion vs Clearance Velocity</h2></div><div class="flex items-center gap-3 text-label-sm"><div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-secondary/40"></span><span class="text-secondary">Ingestion Volume</span></div><div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-primary"></span><span class="text-primary font-semibold">Cleared (98.4%)</span></div></div></div><div class="relative w-full h-44 pt-2"><div class="absolute inset-0 flex flex-col justify-between pointer-events-none text-code-sm font-code-sm text-secondary/60"><div class="border-b border-outline-variant/30 w-full flex justify-between pr-2"><span class="">240</span><span class="">100%</span></div><div class="border-b border-outline-variant/30 w-full flex justify-between pr-2"><span class="">180</span><span class="">75%</span></div><div class="border-b border-outline-variant/30 w-full flex justify-between pr-2"><span class="">120</span><span class="">50%</span></div><div class="border-b border-outline-variant/30 w-full flex justify-between pr-2"><span class="">60</span><span class="">25%</span></div><div class="w-full flex justify-between pr-2"><span class="">0</span><span class="">0%</span></div></div><div class="absolute inset-0 pt-4 pb-2 px-2 flex items-end justify-between gap-1 z-10"><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/20 rounded-t-sm" style="height: 22%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/30 rounded-t-sm" style="height: 48%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center relative"><span class="absolute -top-3 text-[9px] font-code-sm font-bold text-error bg-error-container px-1 rounded shadow-none">218 (Peak)</span><div class="w-full max-w-[14px] bg-error rounded-t-sm" style="height: 92%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/30 rounded-t-sm" style="height: 74%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/20 rounded-t-sm" style="height: 61%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/20 rounded-t-sm" style="height: 52%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/30 rounded-t-sm" style="height: 68%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/20 rounded-t-sm" style="height: 44%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/20 rounded-t-sm" style="height: 38%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/20 rounded-t-sm" style="height: 42%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/30 rounded-t-sm" style="height: 58%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/40 rounded-t-sm" style="height: 79%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/30 rounded-t-sm" style="height: 66%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/20 rounded-t-sm" style="height: 47%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/20 rounded-t-sm" style="height: 33%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-primary rounded-t-sm" style="height: 25%;"></div></div></div><svg class="absolute inset-0 w-full h-full pointer-events-none z-20 pt-4 pb-2 px-2" preserveAspectRatio="none" viewBox="0 0 100 100"><polyline fill="none" points="3,80 9,56 16,14 22,30 28,42 34,50 40,36 47,58 53,64 59,60 66,45 72,26 78,38 84,55 91,69 97,76" stroke="#006948" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"></polyline></svg></div><div class="flex justify-between items-center text-code-sm font-code-sm text-secondary pt-1 border-t border-outline-variant/30"><span class="">06:00</span><span class="">08:30 (Peak)</span><span class="">11:00</span><span class="">14:00</span><span class="">17:30</span><span class="text-primary font-bold">21:00 (Live)</span></div></div>
+<!-- RIGHT COLUMN: Anomaly & Violation Breakdown (5 Cols) -->
+<div class="lg:col-span-5 bg-surface-container-lowest border border-outline-variant/70 rounded-lg p-space-md flex flex-col justify-between"><div class="flex items-center justify-between border-b border-outline-variant/40 pb-2">
+  <div class="flex items-center gap-2">
+    <span class="material-symbols-outlined text-primary text-[18px]" data-icon="pie_chart">pie_chart</span>
+    <h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">Violation Breakdown</h2>
+  </div>
+  <span class="font-code-sm text-code-sm text-secondary font-medium">2,184 Total Alerts</span>
+</div>
+<div class="space-y-2.5 py-2">
+  <!-- ERR-02: Stalling DIC -->
+  <div class="space-y-1">
+    <div class="flex justify-between items-center text-body-sm font-body-sm">
+      <span class="font-code-sm text-code-sm font-semibold text-error">ERR-02 Stalling DIC</span>
+      <span class="text-on-surface font-semibold font-code-sm text-code-sm">1,135 cases (52%)</span>
+    </div>
+    <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+      <div class="bg-error h-full rounded-full" style="width: 52%"></div>
+    </div>
+  </div>
+  <!-- ERR-04: Fake GPS / Mock Location -->
+  <div class="space-y-1">
+    <div class="flex justify-between items-center text-body-sm font-body-sm">
+      <span class="font-code-sm text-code-sm font-semibold text-[#D97706]">ERR-05 Fake GPS / Mock</span>
+      <span class="text-on-surface font-semibold font-code-sm text-code-sm">524 cases (24%)</span>
+    </div>
+    <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+      <div class="bg-[#D97706] h-full rounded-full" style="width: 24%"></div>
+    </div>
+  </div>
+  <!-- ERR-01: Route Deviation -->
+  <div class="space-y-1">
+    <div class="flex justify-between items-center text-body-sm font-body-sm">
+      <span class="font-code-sm text-code-sm font-semibold text-tertiary">ERR-02 Route Deviation / DIC</span>
+      <span class="text-on-surface font-semibold font-code-sm text-code-sm">306 cases (14%)</span>
+    </div>
+    <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+      <div class="bg-tertiary h-full rounded-full" style="width: 14%"></div>
+    </div>
+  </div>
+  <!-- ERR-03: Phantom Booking -->
+  <div class="space-y-1">
+    <div class="flex justify-between items-center text-body-sm font-body-sm">
+      <span class="font-code-sm text-code-sm font-semibold text-secondary">ERR-04 Phantom Booking</span>
+      <span class="text-on-surface font-semibold font-code-sm text-code-sm">131 cases (6%)</span>
+    </div>
+    <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+      <div class="bg-secondary h-full rounded-full" style="width: 6%"></div>
+    </div>
+  </div>
+  <!-- ERR-05: 4G Drop Glitch -->
+  <div class="space-y-1">
+    <div class="flex justify-between items-center text-body-sm font-body-sm">
+      <span class="font-code-sm text-code-sm font-semibold text-outline">Technical: 4G Drop</span>
+      <span class="text-on-surface font-semibold font-code-sm text-code-sm">88 cases (4%)</span>
+    </div>
+    <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+      <div class="bg-outline h-full rounded-full" style="width: 4%"></div>
+    </div>
+  </div>
+</div>
+<div class="pt-2 border-t border-outline-variant/30 flex justify-between items-center text-label-sm font-label-sm text-secondary">
+  <span class="">Primary Threat Vector:</span>
+  <span class="text-error font-semibold flex items-center gap-1">
+    <span class="material-symbols-outlined text-[14px]" data-icon="report_problem">report_problem</span>
+    Driver Incentive Manipulation (DIC)
+  </span>
+</div></div>
+</div>
+<!-- SECOND ROW: Spatial Hotspots & HITL Outcomes & Analyst Leaderboard -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- SPATIAL ANOMALY HOTSPOTS (4 Cols) -->
+<div class="md:col-span-4 bg-surface-container-lowest border border-outline-variant/70 rounded-lg p-space-md flex flex-col justify-between"><div>
+  <div class="flex items-center justify-between border-b border-outline-variant/40 pb-2 mb-2">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-primary text-[18px]" data-icon="pin_drop">pin_drop</span>
+      <h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">Spatial Hotspots</h2>
+    </div>
+    <span class="font-code-sm text-code-sm text-secondary font-medium">Geohash L8</span>
+  </div>
+  <!-- Hotspot Listing -->
+  <div class="grid grid-cols-2 gap-1.5 py-1"><div class="p-1.5 rounded border border-outline-variant/40 bg-surface flex items-center justify-between gap-1 overflow-hidden"><div class="flex items-center gap-1 min-w-0"><span class="font-label-md font-bold text-on-surface truncate">Hoàn Kiếm</span><span class="font-code-sm px-1 py-0.2 bg-error-container text-on-error-container rounded font-bold text-[9px] whitespace-nowrap">P0</span></div><span class="font-code-sm font-bold text-error bg-error-container/40 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap shrink-0">54 alerts</span></div><div class="p-1.5 rounded border border-outline-variant/40 bg-surface flex items-center justify-between gap-1 overflow-hidden"><div class="flex items-center gap-1 min-w-0"><span class="font-label-md font-bold text-on-surface truncate">Cầu Giấy</span><span class="font-code-sm px-1 py-0.2 bg-[#FFFBEB] text-[#D97706] border border-[#FDE68A] rounded font-bold text-[9px] whitespace-nowrap">P1</span></div><span class="font-code-sm font-bold text-[#D97706] bg-[#FFFBEB] px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap shrink-0">47 alerts</span></div><div class="p-1.5 rounded border border-outline-variant/40 bg-surface flex items-center justify-between gap-1 overflow-hidden"><div class="flex items-center gap-1 min-w-0"><span class="font-label-md font-bold text-on-surface truncate">Đống Đa</span><span class="font-code-sm px-1 py-0.2 bg-surface-container text-tertiary rounded font-bold text-[9px] whitespace-nowrap">P2</span></div><span class="font-code-sm font-bold text-tertiary bg-surface-container px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap shrink-0">41 alerts</span></div><div class="p-1.5 rounded border border-outline-variant/40 bg-surface flex items-center justify-between gap-1 overflow-hidden"><div class="flex items-center gap-1 min-w-0"><span class="font-label-md font-bold text-on-surface truncate">Ba Đình</span><span class="font-code-sm px-1 py-0.2 bg-surface text-secondary border border-outline-variant/60 rounded font-medium text-[9px] whitespace-nowrap">Elevated</span></div><span class="font-code-sm font-bold text-secondary bg-surface-container px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap shrink-0">38 alerts</span></div></div>
+</div>
+<button class="mt-2 w-full py-1 text-label-sm font-label-sm text-primary hover:bg-surface-container flex items-center justify-center gap-1 border border-primary/20 rounded transition-colors">
+  <span class="material-symbols-outlined text-[14px]" data-icon="map">map</span>
+  <span class="">Open Spatial Geofence Matrix</span>
+</button></div>
+<!-- HITL SANCTION OUTCOMES BREAKDOWN (3 Cols) -->
+<div class="md:col-span-3 bg-surface-container-lowest border border-outline-variant/70 rounded-lg p-space-md flex flex-col justify-between"><div>
+  <div class="flex items-center justify-between border-b border-outline-variant/40 pb-2 mb-2">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-primary text-[18px]" data-icon="gavel">gavel</span>
+      <h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">Adjudication Sanctions</h2>
+    </div>
+  </div>
+  <div class="space-y-2.5 py-1">
+    <!-- Dismissed False Alarm -->
+    <div>
+      <div class="flex justify-between items-center text-body-sm font-body-sm">
+        <span class="text-on-surface-variant font-medium">Dismissed False Alarm</span>
+        <span class="font-code-sm text-code-sm font-bold text-primary">46%</span>
+      </div>
+      <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden mt-1">
+        <div class="bg-primary h-full rounded-full" style="width: 46%"></div>
+      </div>
+    </div>
+    <!-- Official Warning -->
+    <div>
+      <div class="flex justify-between items-center text-body-sm font-body-sm">
+        <span class="text-on-surface-variant font-medium">Official Warning</span>
+        <span class="font-code-sm text-code-sm font-bold text-tertiary">28%</span>
+      </div>
+      <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden mt-1">
+        <div class="bg-tertiary h-full rounded-full" style="width: 28%"></div>
+      </div>
+    </div>
+    <!-- Fine & Clawback -->
+    <div>
+      <div class="flex justify-between items-center text-body-sm font-body-sm">
+        <span class="text-on-surface-variant font-medium">Fine &amp; Clawback</span>
+        <span class="font-code-sm text-code-sm font-bold text-[#D97706]">18%</span>
+      </div>
+      <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden mt-1">
+        <div class="bg-[#D97706] h-full rounded-full" style="width: 18%"></div>
+      </div>
+    </div>
+    <!-- Account Suspension -->
+    <div>
+      <div class="flex justify-between items-center text-body-sm font-body-sm">
+        <span class="text-on-surface-variant font-medium">Account Suspension</span>
+        <span class="font-code-sm text-code-sm font-bold text-error">8%</span>
+      </div>
+      <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden mt-1">
+        <div class="bg-error h-full rounded-full" style="width: 8%"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="bg-surface-container p-2 rounded border border-outline-variant/40 mt-2">
+  <div class="flex items-center justify-between text-body-sm font-body-sm">
+    <span class="text-secondary">Adjudication Accuracy:</span>
+    <span class="font-code-sm text-code-sm font-bold text-primary">99.2%</span>
+  </div>
+  <div class="text-[10px] text-secondary mt-0.5">Reversal rate holds at 0.8%</div>
+</div></div>
+<!-- ANALYST THROUGHPUT & SLA LEADERBOARD (5 Cols) -->
+<div class="md:col-span-5 bg-surface-container-lowest border border-outline-variant/70 rounded-lg p-space-md flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between border-b border-outline-variant/40 pb-2 mb-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="leaderboard">leaderboard</span>
+<h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">Analyst Throughput &amp; SLA</h2>
+</div>
+<span class="font-code-sm text-code-sm text-secondary">Active Shift</span>
+</div>
+<!-- Leaderboard Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant/40 text-label-sm font-label-sm text-secondary">
+<th class="py-1 font-semibold">Analyst</th>
+<th class="py-1 font-semibold text-right">Resolved</th>
+<th class="py-1 font-semibold text-right">MTTR</th>
+<th class="py-1 font-semibold text-right">Overturn</th>
+<th class="py-1 font-semibold text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20 font-body-sm text-body-sm">
+<!-- Lê Minh Tuấn -->
+<tr class="hover:bg-surface transition-colors">
+<td class="py-1.5">
+<div class="font-semibold text-on-surface">Lê Minh Tuấn</div>
+<div class="font-code-sm text-code-sm text-secondary">FA-8492</div>
+</td>
+<td class="py-1.5 text-right font-code-sm text-code-sm font-bold text-on-surface">42 cases</td>
+<td class="py-1.5 text-right font-code-sm text-code-sm text-primary font-bold">31.8s</td>
+<td class="py-1.5 text-right font-code-sm text-code-sm text-secondary">0.8%</td>
+<td class="py-1.5 text-right">
+<span class="inline-block w-2 h-2 rounded-full bg-primary" title="Active"></span>
+</td>
+</tr>
+<!-- Trần Thanh Mai -->
+<tr class="hover:bg-surface transition-colors">
+<td class="py-1.5">
+<div class="font-semibold text-on-surface">Trần Thanh Mai</div>
+<div class="font-code-sm text-code-sm text-secondary">FA-7310</div>
+</td>
+<td class="py-1.5 text-right font-code-sm text-code-sm font-bold text-on-surface">39 cases</td>
+<td class="py-1.5 text-right font-code-sm text-code-sm text-primary font-bold">33.2s</td>
+<td class="py-1.5 text-right font-code-sm text-code-sm text-secondary">0.5%</td>
+<td class="py-1.5 text-right">
+<span class="inline-block w-2 h-2 rounded-full bg-primary" title="Active"></span>
+</td>
+</tr>
+<!-- Hoàng Đức Anh -->
+<tr class="hover:bg-surface transition-colors">
+<td class="py-1.5">
+<div class="font-semibold text-on-surface">Hoàng Đức Anh</div>
+<div class="font-code-sm text-code-sm text-secondary">FA-6504</div>
+</td>
+<td class="py-1.5 text-right font-code-sm text-code-sm font-bold text-on-surface">35 cases</td>
+<td class="py-1.5 text-right font-code-sm text-code-sm text-primary font-bold">34.6s</td>
+<td class="py-1.5 text-right font-code-sm text-code-sm text-secondary">1.1%</td>
+<td class="py-1.5 text-right">
+<span class="inline-block w-2 h-2 rounded-full bg-primary" title="Active"></span>
+</td>
+</tr>
+<!-- Nguyễn Thảo Vy -->
+<tr class="hover:bg-surface transition-colors">
+<td class="py-1.5">
+<div class="font-semibold text-on-surface">Nguyễn Thảo Vy</div>
+<div class="font-code-sm text-code-sm text-secondary">FA-9122</div>
+</td>
+<td class="py-1.5 text-right font-code-sm text-code-sm font-bold text-on-surface">31 cases</td>
+<td class="py-1.5 text-right font-code-sm text-code-sm text-primary font-bold">32.9s</td>
+<td class="py-1.5 text-right font-code-sm text-code-sm text-secondary">0.0%</td>
+<td class="py-1.5 text-right">
+<span class="inline-block w-2 h-2 rounded-full bg-tertiary" title="Shift Handover"></span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="pt-2 border-t border-outline-variant/30 flex items-center justify-between text-label-sm font-label-sm text-secondary">
+<span class="">Active Squad SLA Adherence:</span>
+<span class="font-code-sm text-code-sm text-primary font-bold">99.7%</span>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+<div id="tab-profile" class="tab-content hidden">
+  <section class="bg-surface-container-lowest border-b border-outline-variant px-margin py-1.5 flex flex-wrap items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-2">
+<div class="relative flex items-center justify-center">
+<div class="w-7 h-7 rounded bg-primary text-on-primary font-bold text-label-md flex items-center justify-center">LT</div>
+<span class="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-primary-fixed-dim border border-surface-container-lowest rounded-full"></span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Lê Minh Tuấn</span>
+<span class="px-1.5 py-0.2 rounded bg-primary-container text-on-primary-container font-code-sm text-code-sm font-semibold">FA-8492</span>
+<span class="px-1.5 py-0.2 rounded bg-surface-container font-label-sm text-label-sm text-secondary">Tier-2 Active</span>
+</div>
+</div>
+<div class="h-3.5 w-px bg-outline-variant"></div>
+<div class="flex items-center gap-1 text-code-sm text-secondary font-code-sm">
+<span class="material-symbols-outlined text-[13px] text-primary" data-icon="schedule">schedule</span>
+<span class="font-medium text-on-surface">07:00 – 15:30 ICT</span>
+<span class="text-primary font-semibold">(06h 14m on duty)</span>
+</div>
+<div class="h-3.5 w-px bg-outline-variant"></div>
+<div class="flex items-center gap-1.5 px-2 py-0.5 rounded bg-surface-container-low border border-outline-variant/60 font-code-sm text-code-sm">
+<span class="material-symbols-outlined text-[14px] text-primary" data-icon="key">key</span>
+<span class="text-on-surface font-medium">YubiKey 5C NFC</span>
+<span class="px-1 rounded bg-primary-fixed text-on-primary-fixed text-label-sm font-bold">ATTACHED</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="h-6 px-2 bg-surface-container-low hover:bg-surface-container border border-outline-variant text-on-surface rounded font-label-sm text-label-sm flex items-center gap-1 transition">
+<span class="material-symbols-outlined text-[13px] text-secondary" data-icon="picture_as_pdf">picture_as_pdf</span>
+<span class="">Export Audit</span>
+</button>
+<button class="h-6 px-2 bg-error text-on-error hover:opacity-90 rounded font-label-sm text-label-sm flex items-center gap-1 transition shadow-sm active:scale-95">
+<span class="material-symbols-outlined text-[13px]" data-icon="logout">logout</span>
+<span class="">End Shift</span>
+</button>
+</div>
+</section>
+<main class="p-margin space-y-space-md max-w-[1720px] mx-auto"><!-- 4 ESSENTIAL METRICS ROW -->
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-space-sm">
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-space-sm flex items-center justify-between shadow-sm">
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase font-semibold block">Today's Decisions</span>
+<div class="flex items-baseline gap-1.5 mt-0.5">
+<span class="font-headline-md text-headline-md font-bold text-on-surface">42</span>
+<span class="font-label-sm text-label-sm text-primary font-semibold flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[12px]" data-icon="trending_up">trending_up</span>+5% quota
+</span>
+</div>
+</div>
+<div class="w-8 h-8 rounded bg-surface-container-low flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[18px]" data-icon="fact_check">fact_check</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-space-sm flex items-center justify-between shadow-sm">
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase font-semibold block">Average MTTR</span>
+<div class="flex items-baseline gap-1.5 mt-0.5">
+<span class="font-headline-md text-headline-md font-bold text-primary">31.8s</span>
+<span class="font-label-sm text-label-sm text-secondary font-medium">target &lt;45s</span>
+</div>
+</div>
+<div class="w-8 h-8 rounded bg-surface-container-low flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]" data-icon="timer">timer</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-space-sm flex items-center justify-between shadow-sm">
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase font-semibold block">Quality &amp; Overturn</span>
+<div class="flex items-baseline gap-1.5 mt-0.5">
+<span class="font-headline-md text-headline-md font-bold text-on-surface">0.8%</span>
+<span class="font-label-sm text-label-sm text-secondary font-medium">benchmark &lt;3%</span>
+</div>
+</div>
+<div class="w-8 h-8 rounded bg-surface-container-low flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[18px]" data-icon="balance">balance</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-space-sm flex items-center justify-between shadow-sm">
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase font-semibold block">30-Day Adjudications</span>
+<div class="flex items-baseline gap-1.5 mt-0.5">
+<span class="font-headline-md text-headline-md font-bold text-on-surface">1,420</span>
+<span class="font-code-sm text-code-sm text-primary font-semibold">100% HITL</span>
+</div>
+</div>
+<div class="w-8 h-8 rounded bg-surface-container-low flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[18px]" data-icon="history_edu">history_edu</span>
+</div>
+</div>
+</div>
+
+<!-- ACTIVE LOCKS STREAMLINED BANNER -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-space-sm flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm">
+<div class="flex items-center gap-space-sm">
+<span class="w-2.5 h-2.5 rounded-full bg-primary animate-ping"></span>
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-label-sm text-label-sm font-semibold text-secondary uppercase">Active Review Lock:</span>
+<span class="font-code-md text-code-md font-semibold text-primary">#FC-8921</span>
+<span class="px-1.5 py-0.2 rounded bg-error-container text-on-error-container font-label-sm text-label-sm font-bold">P0 CRITICAL</span>
+<span class="font-label-md text-label-md font-semibold text-on-surface">Stalling DIC &amp; Telemetry Spoof</span>
+<span class="font-body-sm text-body-sm text-secondary">(DRV-9012 • Hanoi Outer Ring 3)</span>
+</div>
+</div>
+<div class="flex items-center gap-space-md self-end sm:self-center">
+<div class="flex items-center gap-1 font-code-sm text-code-sm">
+<span class="text-secondary">TTL:</span>
+<span class="font-bold text-error">00:48 remaining</span>
+</div>
+<button class="h-6 px-2.5 rounded bg-primary text-on-primary font-label-sm text-label-sm font-semibold hover:bg-primary-container active:scale-95 transition flex items-center gap-1 shadow-sm">
+<span class="">Resume Case</span>
+<span class="material-symbols-outlined text-[13px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+
+<!-- VERDICT AUDIT TRAIL DATA TABLE -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded overflow-hidden">
+<div class="h-8 px-space-md border-b border-outline-variant flex items-center justify-between bg-surface-container-lowest">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[16px]" data-icon="receipt_long">receipt_long</span>
+<h3 class="font-headline-sm text-headline-sm text-on-surface">Today's Verdict Audit Trail</h3>
+<span class="font-code-sm text-code-sm bg-surface-container px-1.5 py-0.2 rounded text-secondary font-medium">Append-only · Request Hashed</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="h-5 px-1.5 rounded border border-outline-variant text-secondary hover:text-on-surface font-label-sm text-label-sm flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[12px]" data-icon="filter_list">filter_list</span>
+<span class="">Filter</span>
+</button>
+<button class="h-5 px-1.5 rounded border border-outline-variant text-secondary hover:text-on-surface font-label-sm text-label-sm flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[12px]" data-icon="download">download</span>
+<span class="">Export CSV</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant font-label-sm text-label-sm text-secondary uppercase tracking-wider h-6">
+<th class="px-space-md py-0.5 font-semibold">Timestamp</th>
+<th class="px-space-md py-0.5 font-semibold">Case Token</th>
+<th class="px-space-md py-0.5 font-semibold">Subject Entity</th>
+<th class="px-space-md py-0.5 font-semibold">Triggered Violation</th>
+<th class="px-space-md py-0.5 font-semibold">Adjudicated Verdict</th>
+<th class="px-space-md py-0.5 font-semibold">Applied Sanction</th>
+<th class="px-space-md py-0.5 font-semibold text-right">Signature</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/40 font-body-sm text-body-sm">
+<tr class="hover:bg-surface-container-low/60 transition-colors h-8">
+<td class="px-space-md py-0.5 font-code-sm text-code-sm text-secondary">08:02:44</td>
+<td class="px-space-md py-0.5 font-code-md text-code-md font-semibold text-primary">#FC-8904</td>
+<td class="px-space-md py-0.5"><span class="font-medium text-on-surface">Trần Văn B</span> <span class="font-code-sm text-code-sm text-secondary">(DRV-4421)</span></td>
+<td class="px-space-md py-0.5"><span class="font-code-sm text-code-sm px-1 py-0.2 bg-surface-container rounded border border-outline-variant/60 text-secondary">DEV_ROUTE_THRESHOLD_P1</span></td>
+<td class="px-space-md py-0.5"><span class="px-1.5 py-0.2 rounded bg-surface-container font-label-sm text-label-sm text-secondary font-semibold border border-outline-variant">DISMISSED</span></td>
+<td class="px-space-md py-0.5 text-secondary">Valid traffic diversion confirmed (Roadworks QL1A)</td>
+<td class="px-space-md py-0.5 text-right font-code-sm text-code-sm text-primary"><code>7c4a...e109</code></td>
+</tr>
+<tr class="hover:bg-surface-container-low/60 transition-colors h-8">
+<td class="px-space-md py-0.5 font-code-sm text-code-sm text-secondary">07:44:19</td>
+<td class="px-space-md py-0.5 font-code-md text-code-md font-semibold text-primary">#FC-8898</td>
+<td class="px-space-md py-0.5"><span class="font-medium text-on-surface">Hoàng Đình C</span> <span class="font-code-sm text-code-sm text-secondary">(DRV-7819)</span></td>
+<td class="px-space-md py-0.5"><span class="font-code-sm text-code-sm px-1 py-0.2 bg-error-container text-on-error-container rounded font-medium">GPS_MOCK_SPOOF_P0</span></td>
+<td class="px-space-md py-0.5"><span class="px-1.5 py-0.2 rounded bg-error-container text-on-error-container font-label-sm text-label-sm font-bold border border-error/30">SANCTIONED</span></td>
+<td class="px-space-md py-0.5 text-error font-medium">48h Fleet Lockout + Fine 1,500,000 VND</td>
+<td class="px-space-md py-0.5 text-right font-code-sm text-code-sm text-primary"><code>bb90...842a</code></td>
+</tr>
+<tr class="hover:bg-surface-container-low/60 transition-colors h-8">
+<td class="px-space-md py-0.5 font-code-sm text-code-sm text-secondary">07:31:02</td>
+<td class="px-space-md py-0.5 font-code-md text-code-md font-semibold text-primary">#FC-8891</td>
+<td class="px-space-md py-0.5"><span class="font-medium text-on-surface">Lê Quang D</span> <span class="font-code-sm text-code-sm text-secondary">(DRV-3102)</span></td>
+<td class="px-space-md py-0.5"><span class="font-code-sm text-code-sm px-1 py-0.2 bg-surface-container rounded border border-outline-variant/60 text-secondary">MULTI_DEVICE_LOGIN_P2</span></td>
+<td class="px-space-md py-0.5"><span class="px-1.5 py-0.2 rounded bg-surface-container font-label-sm text-label-sm text-secondary font-semibold border border-outline-variant">WARNED</span></td>
+<td class="px-space-md py-0.5 text-secondary">Formal Advisory issued &amp; Session Invalidation</td>
+<td class="px-space-md py-0.5 text-right font-code-sm text-code-sm text-primary"><code>33d1...ff7b</code></td>
+</tr>
+<tr class="hover:bg-surface-container-low/60 transition-colors h-8">
+<td class="px-space-md py-0.5 font-code-sm text-code-sm text-secondary">07:15:58</td>
+<td class="px-space-md py-0.5 font-code-md text-code-md font-semibold text-primary">#FC-8884</td>
+<td class="px-space-md py-0.5"><span class="font-medium text-on-surface">Vũ Đức E</span> <span class="font-code-sm text-code-sm text-secondary">(DRV-9941)</span></td>
+<td class="px-space-md py-0.5"><span class="font-code-sm text-code-sm px-1 py-0.2 bg-surface-container rounded border border-outline-variant/60 text-secondary">VOUCHER_COLLUSION_P1</span></td>
+<td class="px-space-md py-0.5"><span class="px-1.5 py-0.2 rounded bg-surface-container font-label-sm text-label-sm text-secondary font-semibold border border-outline-variant">DISMISSED</span></td>
+<td class="px-space-md py-0.5 text-secondary">Legitimate marketing voucher redemption verified</td>
+<td class="px-space-md py-0.5 text-right font-code-sm text-code-sm text-primary"><code>a12e...66c0</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="h-7 px-space-md bg-surface-container-low border-t border-outline-variant/80 flex items-center justify-between text-secondary font-label-sm text-label-sm">
+<span class="">Showing 4 of 42 decisions recorded this shift</span>
+<div class="flex items-center gap-space-sm">
+<button class="hover:text-on-surface disabled:opacity-30" disabled="">Previous</button>
+<span class="">Page 1 of 11</span>
+<button class="hover:text-on-surface font-semibold text-primary">Next</button>
+</div>
+</div>
+</div>
+
+<!-- COMPACT GOVERNANCE & LIMITS BAR -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-space-sm flex flex-wrap items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md flex-wrap">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="verified_user">verified_user</span>
+<span class="font-label-sm text-label-sm font-semibold uppercase text-secondary">Delegated Limits:</span>
+</div>
+<div class="flex items-center gap-1.5 flex-wrap font-label-sm text-label-sm">
+<span class="px-2 py-0.5 rounded bg-surface-container-low border border-outline-variant/50 text-secondary">Dismiss: <strong class="text-primary font-semibold">Unrestricted</strong></span>
+<span class="px-2 py-0.5 rounded bg-surface-container-low border border-outline-variant/50 text-secondary">Warning: <strong class="text-primary font-semibold">Authorized</strong></span>
+<span class="px-2 py-0.5 rounded bg-surface-container-low border border-outline-variant/50 text-secondary">Direct Fine: <strong class="text-on-surface font-semibold font-code-sm">≤ 2M VND</strong></span>
+<span class="px-2 py-0.5 rounded bg-surface-container-low border border-outline-variant/50 text-secondary">Suspension: <strong class="text-error font-semibold font-code-sm">24h/48h Lockout</strong></span>
+</div>
+</div>
+<div class="flex items-center gap-space-sm text-label-sm font-label-sm text-secondary">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary" data-icon="psychology">psychology</span>
+<span class="">Model Agreement: <strong class="text-primary font-semibold font-code-sm">98.4%</strong></span>
+</span>
+<div class="h-3 w-px bg-outline-variant"></div>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary" data-icon="encrypted">encrypted</span>
+<span class="">Clerk Session Required</span>
+</span>
+<div class="h-3 w-px bg-outline-variant"></div>
+<span class="text-on-surface-variant font-medium">Least-Privilege Access</span>
+</div>
+</div></main>
+</div>
+
+<footer class="h-8 bg-surface-container-lowest border-t border-outline-variant/60 px-margin flex items-center justify-between text-code-sm font-code-sm text-secondary select-none"><div class="flex items-center gap-space-md overflow-hidden whitespace-nowrap">
+  <div class="flex items-center gap-1.5">
+    <span class="material-symbols-outlined text-primary text-[14px]" data-icon="lock" style="font-variation-settings: 'FILL' 1;">lock</span>
+    <span class="font-semibold text-on-surface">Audit Chain:</span>
+    <span class="text-primary font-medium">Active Verified</span>
+  </div>
+  <span class="text-outline-variant">|</span>
+  <div class="flex items-center gap-1">
+    <span class="">Block:</span>
+    <span class="text-on-surface font-semibold">#1,402,891</span>
+  </div>
+</div>
+<div class="flex items-center gap-space-md whitespace-nowrap">
+  <span class="hidden md:inline-block text-secondary">Sentinel Node 04-HN</span>
+  <span class="inline-flex items-center gap-1 text-primary">
+    <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+    <span class="font-semibold">Zero Bypass Active</span>
+  </span>
+</div></footer>
+
+<script>
+  function switchTab(tabId) {
+    document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+    document.querySelectorAll('.tab-btn').forEach(el => {
+      el.classList.remove('border-primary', 'text-primary');
+      el.classList.add('border-transparent', 'text-secondary');
+    });
+
+    document.getElementById(tabId).classList.remove('hidden');
+    document.getElementById('btn-' + tabId).classList.remove('border-transparent', 'text-secondary');
+    document.getElementById('btn-' + tabId).classList.add('border-primary', 'text-primary');
+  }
+</script>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('keydown', (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        const searchInput = document.querySelector('input[type="text"]');
+        if (searchInput) searchInput.focus();
+      }
+    });
+  });
+</script>
+</body>
+</html>

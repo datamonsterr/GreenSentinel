@@ -1,0 +1,110 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://p063.example/schemas/telemetry-event.schema.json",
+  "title": "P-063 telemetry event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "event_id",
+    "event_type",
+    "source",
+    "occurred_at",
+    "correlation_id",
+    "trip_id",
+    "assignment_id",
+    "driver_id",
+    "sequence",
+    "payload"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "event_id": { "type": "string", "format": "uuid" },
+    "event_type": {
+      "enum": [
+        "telemetry.observed",
+        "driver.app_crashed",
+        "driver.network_changed",
+        "telemetry.missingness_alert"
+      ]
+    },
+    "source": { "type": "string", "minLength": 1, "maxLength": 100 },
+    "occurred_at": { "type": "string", "format": "date-time" },
+    "correlation_id": { "type": "string", "format": "uuid" },
+    "causation_id": { "type": ["string", "null"], "format": "uuid" },
+    "simulation_run_id": { "type": ["string", "null"], "format": "uuid" },
+    "trip_id": { "type": "string", "format": "uuid" },
+    "assignment_id": { "type": "string", "format": "uuid" },
+    "driver_id": { "type": "string", "format": "uuid" },
+    "sequence": { "type": "integer", "minimum": 0 },
+    "payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["position", "app_state", "network_state", "gps_state"],
+      "properties": {
+        "position": {
+          "oneOf": [
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["latitude", "longitude", "accuracy_m"],
+              "properties": {
+                "latitude": { "type": "number", "minimum": -90, "maximum": 90 },
+                "longitude": { "type": "number", "minimum": -180, "maximum": 180 },
+                "accuracy_m": { "type": ["number", "null"], "minimum": 0 }
+              }
+            },
+            { "type": "null" }
+          ]
+        },
+        "speed_mps": { "type": ["number", "null"], "minimum": 0 },
+        "bearing_deg": { "type": ["number", "null"], "minimum": 0, "exclusiveMaximum": 360 },
+        "app_state": { "enum": ["foreground", "background", "crashed", "unknown"] },
+        "network_state": { "enum": ["online", "offline", "degraded", "unknown"] },
+        "gps_state": { "enum": ["valid", "jitter", "unavailable", "mock_reported", "unknown"] },
+        "mock_location_reported": { "type": ["boolean", "null"] },
+        "latency_ms": { "type": ["number", "null"], "minimum": 0 },
+        "distance_to_pickup_m": { "type": ["number", "null"], "minimum": 0 },
+        "davi_score": { "type": ["number", "null"], "minimum": -1, "maximum": 1 },
+        "data_gap_s": { "type": ["number", "null"], "minimum": 0 }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "event_type": { "const": "telemetry.observed" }
+        }
+      },
+      "then": {
+        "properties": {
+          "payload": {
+            "anyOf": [
+              {
+                "properties": {
+                  "position": { "type": "object" }
+                }
+              },
+              {
+                "properties": {
+                  "app_state": { "const": "crashed" }
+                }
+              },
+              {
+                "properties": {
+                  "network_state": { "enum": ["offline", "degraded"] }
+                }
+              },
+              {
+                "properties": {
+                  "gps_state": { "enum": ["unavailable", "unknown"] }
+                }
+              }
+            ]
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,3 @@
+FFFF.....................F.F......FF...................F.......s. [  8%]
+......s.
+Interrupted task full-suite process after 389 seconds before a final failure summary.

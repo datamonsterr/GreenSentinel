@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="40" viewBox="0 0 300 40" role="img" aria-labelledby="svg-title svg-desc">
+  <title id="svg-title">Chưa có GPS (14:22:15 - 14:22:57)</title>
+  <desc id="svg-desc">Mất kết nối GPS lớn hơn 30 giây được biểu diễn bằng dải màu đỏ đứt đoạn trên thanh tiến trình</desc>
+  <defs>
+    <pattern id="red-dash" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="12" stroke="rgba(220, 38, 38, 0.2)" stroke-width="4"/>
+    </pattern>
+  </defs>
+  <!-- Background timeline track -->
+  <rect x="0" y="16" width="300" height="8" rx="4" fill="#cbd5e1" />
+  
+  <!-- GPS Gap Warning Band -->
+  <rect x="80" y="16" width="80" height="8" fill="url(#red-dash)" stroke="none" />
+  <line x1="80" y1="16" x2="160" y2="16" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,4" />
+  <line x1="80" y1="24" x2="160" y2="24" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,4" />
+  
+  <!-- Visual Label (Not focusable, read via title/desc) -->
+  <g transform="translate(120, 0)">
+    <rect x="-45" y="0" width="90" height="14" rx="2" fill="white" stroke="#fca5a5" stroke-width="1" />
+    <text x="0" y="10" font-family="sans-serif" font-size="8" font-weight="bold" fill="#b91c1c" text-anchor="middle">Chưa có GPS</text>
+  </g>
+</svg>

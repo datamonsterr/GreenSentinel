@@ -1,0 +1,137 @@
+{
+  "model_version": "r3d-2026.10.18",
+  "corpus_sha256": "d52e52ff7dd2cc7b6d23631191d1cdbf32d9f1b636f43117ad496809ac0d3fdf",
+  "hf_repo_id": "datamonsterr/p-063-r3d-classifier",
+  "hf_revision": "268003f795b2950893e9ef6a54b250dec13eeee6",
+  "source_runs": {
+    "r3c": {
+      "experiment": "R3C",
+      "pr": 553,
+      "artifact": "model.pkl"
+    },
+    "r3f": {
+      "experiment": "R3F",
+      "pr": 552,
+      "artifact": "model.pt"
+    },
+    "r3d": {
+      "experiment": "R3D",
+      "pr": 556,
+      "artifact": "stacker.pkl"
+    }
+  },
+  "class_order": [
+    "no_violation",
+    "ERR-01",
+    "ERR-02",
+    "ERR-03",
+    "ERR-04",
+    "ERR-05",
+    "insufficient_evidence"
+  ],
+  "model_classes": [
+    "no_violation",
+    "ERR-01",
+    "ERR-02",
+    "ERR-03",
+    "ERR-04",
+    "ERR-05"
+  ],
+  "feature_names": {
+    "tabular": [
+      "speed_std_kmh",
+      "speed_p95_kmh",
+      "speed_max_kmh",
+      "speed_disagreement_mean_kmh",
+      "speed_disagreement_max_kmh",
+      "speed_disagreement_ratio_gt_20kmh",
+      "heading_change_total_deg",
+      "heading_change_mean_deg",
+      "heading_change_max_deg",
+      "stop_count_gt_60s",
+      "stop_count_gt_180s",
+      "data_gap_max_s",
+      "data_gap_mean_s",
+      "data_gap_count_gt_30s",
+      "teleport_jump_count",
+      "teleport_jump_max_kmh",
+      "mock_location_count",
+      "mock_location_ratio",
+      "has_mock_location",
+      "planned_route_length_m",
+      "detour_ratio",
+      "detour_excess_m",
+      "min_pickup_distance_m",
+      "reached_pickup",
+      "pickup_dist_trend_first_half",
+      "wrong_direction_ratio",
+      "reached_dropoff",
+      "point_count",
+      "trip_duration_s",
+      "driver_rating",
+      "driver_total_trips",
+      "driver_acceptance_rate",
+      "driver_cancellation_rate",
+      "driver_w7_cancellation_rate",
+      "driver_w30_cancellation_rate",
+      "driver_dispute_history_count",
+      "driver_prior_sanctions_count"
+    ],
+    "stacker": [
+      "r3c_p_no_violation",
+      "r3c_p_ERR-01",
+      "r3c_p_ERR-02",
+      "r3c_p_ERR-03",
+      "r3c_p_ERR-04",
+      "r3c_p_ERR-05",
+      "r3f_p_no_violation",
+      "r3f_p_ERR-01",
+      "r3f_p_ERR-02",
+      "r3f_p_ERR-03",
+      "r3f_p_ERR-04",
+      "r3f_p_ERR-05",
+      "diff_p_no_violation",
+      "diff_p_ERR-01",
+      "diff_p_ERR-02",
+      "diff_p_ERR-03",
+      "diff_p_ERR-04",
+      "diff_p_ERR-05",
+      "r3c_entropy",
+      "r3f_entropy"
+    ]
+  },
+  "artifacts": {
+    "r3c": {
+      "file": "r3c.txt",
+      "format": "lightgbm_text",
+      "sha256": "0eb2e54522e8baaefd022d87e8325e9c9c86d1becfe2ffd07b8ce394ae48fd7a",
+      "size_bytes": 4977034
+    },
+    "r3f": {
+      "file": "r3f.onnx",
+      "format": "onnx",
+      "opset": 17,
+      "sha256": "23e9d5a2b96ab02e6a4825f092d5eac6fbeadb26f9a0fbc92b172a8507d0f554",
+      "size_bytes": 1269437
+    },
+    "stacker": {
+      "file": "stacker.txt",
+      "format": "lightgbm_text",
+      "sha256": "1559cd14cd74306e9d17023205acd26c9b64b560a5e496279ae676b3ea16f957",
+      "size_bytes": 546469
+    }
+  },
+  "metrics": {
+    "dev300": {
+      "macro_f1": 0.8688,
+      "class_matches": 300,
+      "max_prob_diff": 2.220446049250313e-16
+    },
+    "test_6000": {
+      "macro_f1": 0.868,
+      "accuracy": 0.9507,
+      "no_violation_fpr": 0.027,
+      "ece": 0.056
+    }
+  }
+}

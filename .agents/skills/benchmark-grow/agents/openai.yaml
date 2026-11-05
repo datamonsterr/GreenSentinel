@@ -1,0 +1,12 @@
+---
+interface:
+  display_name: "Benchmark Grow"
+  short_description: "Generate more distinct fraud-benchmark trips in parallel, fully validated"
+  default_prompt: "Use $benchmark-grow with PLAN=<name:seed:n[,name:seed:n...]> (e.g. PLAN=v2:20261012:10000). Read .agents/commands/benchmark-grow.md and follow it exactly."
+policy:
+  allow_implicit_invocation: true
+  invocation_triggers:
+    - "generate more benchmark data"
+    - "grow the benchmark dataset"
+    - "more distinct trips"
+    - "scale up the benchmark"

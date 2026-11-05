@@ -1,0 +1,32 @@
+{
+  "scenario": "err_05_fake_gps",
+  "raw_answer": "Kết luận điều tra: Hồ sơ vụ việc 018f2f4e-b000-7000-8000-000000000005 xác nhận cờ mock_location_reported == true trong chuyến trip_err05_001. Tài xế 018f2f4e-b300-7000-8000-000000000005 sử dụng ứng dụng can thiệp tọa độ khi nhận chuyến tại Aeon Mall Long Biên đi Vinpearl Cửa Sót. Điều 15.3 quy định xử lý nghiêm hành vi giả lập GPS.",
+  "citations": [
+    {
+      "id": "c1",
+      "source": "Quy chế xử lý vi phạm 2026",
+      "section": "Điều 15.3",
+      "content": "Sử dụng phần mềm can thiệp GPS hoặc giả lập vị trí Mock Location cấu thành vi phạm ERR-05.",
+      "score": 0.98
+    }
+  ],
+  "entities": {
+    "case_ids": ["018f2f4e-b000-7000-8000-000000000005"],
+    "driver_ids": ["018f2f4e-b300-7000-8000-000000000005"],
+    "trip_ids": ["trip_err05_001"],
+    "citation_ids": ["c1"]
+  },
+  "mock_formatted_output": {
+    "markdown": "**Xác nhận sử dụng phần mềm giả lập vị trí GPS (Mock Location).**\n\nCảnh báo hệ thống trong [Vụ việc](case://018f2f4e-b000-7000-8000-000000000005) ghi nhận cờ giả mạo tọa độ được kích hoạt.\n\nThông tin chi tiết:\n- Tài xế: [Tài xế Vũ Đình Trọng](driver://018f2f4e-b300-7000-8000-000000000005)\n- Tuyến ghi nhận: [Aeon Mall Long Biên → Vinpearl Cửa Sót](trip://trip_err05_001?pickup=Aeon+Mall+Long+Bi%C3%AAn&dest=Vinpearl+C%E1%BB%ADa+S%C3%B3t)\n- Trạng thái mock_location: Kích hoạt (true)\n\nHành vi vi phạm được dẫn chiếu tại [1](policy://c1).",
+    "suggestions": [
+      {
+        "label": "Xem nhật ký thiết bị",
+        "prompt": "Kiểm tra phiên bản ứng dụng và thông số thiết bị tài xế"
+      },
+      {
+        "label": "Yêu cầu giải trình",
+        "prompt": "Gửi thông báo yêu cầu tài xế giải trình về vị trí GPS"
+      }
+    ]
+  }
+}

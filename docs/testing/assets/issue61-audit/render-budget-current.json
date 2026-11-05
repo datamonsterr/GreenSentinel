@@ -1,0 +1,13 @@
+{
+  "elapsedMs": 1221,
+  "completed": true,
+  "budgetMs": 1500,
+  "definition": "warm application, fresh case selection; click to both routes and observed GPS dot; offline basemap",
+  "environment": {
+    "os": "Linux",
+    "release": "7.2.4-arch1-2",
+    "architecture": "x64",
+    "cpus": 12,
+    "browser": "chromium"
+  }
+}

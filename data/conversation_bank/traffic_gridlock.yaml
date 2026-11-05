@@ -1,0 +1,43 @@
+context: traffic_gridlock
+driver:
+  - {text: "Kẹt cứng ở ngã tư, em đợi xíu nha", lang: vi}
+  - {text: "Đường đỏ lòm luôn, anh nhích từng mét", lang: vi}
+  - {text: "Kẹt xe toàn tuyến, anh tới trễ {wait_min} phút", lang: vi}
+  - {text: "Ngập cả đường, xe không nhúc nhích được", lang: vi}
+  - {text: "Anh gửi ảnh kẹt xe cho em coi nè", lang: vi}
+  - {text: "Đang giờ tan tầm, chỗ nào cũng kẹt", lang: vi}
+  - {text: "Anh đi đường vòng mà vẫn kẹt, em thông cảm", lang: vi}
+  - {text: "Cầu kẹt dài 2km, anh đang xếp hàng nè", lang: vi}
+  - {text: "Mưa lớn ngập đường, xe chết máy hàng loạt", lang: vi}
+  - {text: "Có tai nạn phía trước nên kẹt, em đợi nhé", lang: vi}
+  - {text: "Anh đang ở {pickup} mà không vào được vì kẹt", lang: vi}
+  - {text: "Đèn đỏ 3 nhịp chưa qua được ngã tư", lang: vi}
+  - {text: "Đường cấm nên dồn hết qua đây, kẹt lắm", lang: vi}
+  - {text: "Anh mở map cho em coi, đỏ cả tuyến", lang: vi}
+  - {text: "Stuck in gridlock, moving inch by inch", lang: en}
+  - {text: "Heavy jam near {pickup}, please wait", lang: en}
+  - {text: "Rush hour traffic, {wait_min} minutes late", lang: en}
+  - {text: "Accident ahead, whole road blocked", lang: en}
+  - {text: "Flooded street, cars stalled everywhere", lang: en}
+  - {text: "I'll send you a photo of the jam", lang: en}
+customer:
+  - {text: "Em thấy đường đỏ lòm, anh cứ từ từ", lang: vi}
+  - {text: "Kẹt xe thì anh đi cẩn thận, em đợi được", lang: vi}
+  - {text: "Em coi map cũng thấy kẹt, không sao đâu anh", lang: vi}
+  - {text: "Giờ cao điểm kẹt là bình thường, anh đừng vội", lang: vi}
+  - {text: "Em đứng trong quán đợi, bao giờ tới cũng được", lang: vi}
+  - {text: "Anh gửi ảnh kẹt xe là em hiểu mà", lang: vi}
+  - {text: "Kẹt ở {pickup} đúng không, em thấy rồi", lang: vi}
+  - {text: "Em không hủy đâu, anh cứ qua từ từ", lang: vi}
+  - {text: "Mưa ngập vậy thì kẹt là phải, anh giữ sức khỏe", lang: vi}
+  - {text: "Em trễ xíu không sao, an toàn là chính", lang: vi}
+  - {text: "Anh bật đèn ưu tiên mà nhích từ từ nhé", lang: vi}
+  - {text: "Kẹt chung cả thành phố, ai cũng vậy thôi", lang: vi}
+  - {text: "Em dời lịch họp rồi, anh đừng áp lực", lang: vi}
+  - {text: "Tới {dest} trễ {wait_min} phút cũng được, em ok", lang: vi}
+  - {text: "I see the jam on the map, no worries", lang: en}
+  - {text: "Rush hour gridlock, take your time", lang: en}
+  - {text: "Stay safe, I can wait {wait_min} minutes", lang: en}
+  - {text: "No problem, traffic is bad everywhere", lang: en}
+  - {text: "Drive safe, I won't cancel", lang: en}
+  - {text: "I can see red all over {pickup}, understood", lang: en}

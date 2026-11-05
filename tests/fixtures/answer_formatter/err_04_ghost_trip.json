@@ -1,0 +1,32 @@
+{
+  "scenario": "err_04_ghost_trip",
+  "raw_answer": "Kết luận ban đầu: Vụ việc 018f2f4e-b000-7000-8000-000000000004 ghi nhận chuyến đi trip_err04_001 có dấu hiệu chuyến ảo. Tài xế 018f2f4e-b300-7000-8000-000000000004 không có tương tác đón trả khách tại vị trí thực tế trên tuyến Vincom Metropolis đến Sân bay Nội Bài. Toàn bộ lộ trình hoàn thành trong 8 phút cho quãng đường 28 km, tốc độ trung bình 210 km/h là không khả thi. Căn cứ Điều 14.4 về gian lận tạo chuyến ảo.",
+  "citations": [
+    {
+      "id": "c1",
+      "source": "Quy chế xử lý vi phạm 2026",
+      "section": "Điều 14.4",
+      "content": "Tạo chuyến đi khống hoặc hoàn thành chuyến mà không có hành khách thực tế là vi phạm chuyến ảo ERR-04.",
+      "score": 0.94
+    }
+  ],
+  "entities": {
+    "case_ids": ["018f2f4e-b000-7000-8000-000000000004"],
+    "driver_ids": ["018f2f4e-b300-7000-8000-000000000004"],
+    "trip_ids": ["trip_err04_001"],
+    "citation_ids": ["c1"]
+  },
+  "mock_formatted_output": {
+    "markdown": "**Xác định dấu hiệu tạo chuyến ảo với tốc độ bất khả thi 210 km/h.**\n\nHồ sơ [Vụ việc](case://018f2f4e-b000-7000-8000-000000000004) phát hiện chuyến đi không có sự di chuyển thực của phương tiện.\n\nThông số chuyến đi đáng ngờ:\n- Tài xế: [Tài xế Hoàng Văn Đức](driver://018f2f4e-b300-7000-8000-000000000004)\n- Tuyến đường: [Vincom Metropolis → Sân bay Nội Bài](trip://trip_err04_001?pickup=Vincom+Metropolis&dest=S%C3%A2n+bay+N%E1%BB%99i+B%C3%A0i)\n- Thời gian di chuyển: 8 phút cho 28 km\n\nQuy định xử lý hành vi này căn cứ theo [1](policy://c1).",
+    "suggestions": [
+      {
+        "label": "Xem chi tiết viễn thám",
+        "prompt": "Kiểm tra chi tiết tọa độ GPS và tốc độ di chuyển từng chặng"
+      },
+      {
+        "label": "Tra soát tài khoản khách",
+        "prompt": "Kiểm tra thông tin hành khách tạo chuyến"
+      }
+    ]
+  }
+}

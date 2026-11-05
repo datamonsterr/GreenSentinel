@@ -1,0 +1,21 @@
+{
+  "boundary": "Local test-auth browser; real isolated API/database; live OpenFreeMap basemap; captured OSRM geometry and synthetic GPS/traffic",
+  "case_id": "018f2f4e-a000-7000-8000-000000000048",
+  "destination_route_matches_api": true,
+  "first_observation": "2026-09-22T11:29:00+00:00",
+  "implementation_revision": "8a1c53d5753037e33eb50b0b756edbb646839574",
+  "last_observation": "2026-09-22T11:41:52.600000+00:00",
+  "max_observation_gap_s": 59.966,
+  "pickup_route_matches_api": true,
+  "position": [
+    105.783595,
+    21.016748
+  ],
+  "position_matches_api": true,
+  "rendered_route_features": 2,
+  "scrub_seconds": 773,
+  "source_loaded": true,
+  "speed": "\u26a137.7 km/h",
+  "speed_matches_api": true,
+  "telemetry_count": 74
+}

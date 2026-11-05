@@ -1,0 +1,55 @@
+{
+  "boundary": "Local test-auth browser; real isolated API/database",
+  "case_id": "018f2f4e-a000-7000-8000-000000000020",
+  "checkpoint_controls": 0,
+  "horizontal_overflow": false,
+  "marks": [
+    {
+      "center_delta": 0,
+      "expected_percent": 0,
+      "height": 12,
+      "label": "Điểm bắt đầu (2026-09-22T08:13:00+00:00)",
+      "left_percent": 0,
+      "pointer_events": "none",
+      "tab_index": -1,
+      "tag": "SPAN",
+      "width": 2
+    },
+    {
+      "center_delta": 0,
+      "expected_percent": 1.2812580895676935,
+      "height": 12,
+      "label": "Bất thường dừng đỗ (240s) (2026-09-22T08:13:09.899000+00:00)",
+      "left_percent": 1.28126,
+      "pointer_events": "none",
+      "tab_index": -1,
+      "tag": "SPAN",
+      "width": 2
+    },
+    {
+      "center_delta": 0,
+      "expected_percent": 98.72663732850116,
+      "height": 12,
+      "label": "Điểm đón khách (Pickup Point) (2026-09-22T08:25:42.762000+00:00)",
+      "left_percent": 98.7266,
+      "pointer_events": "none",
+      "tab_index": -1,
+      "tag": "SPAN",
+      "width": 2
+    },
+    {
+      "center_delta": 0,
+      "expected_percent": 100,
+      "height": 12,
+      "label": "Đích đến (Dropoff Destination) (2026-09-22T08:25:52.600000+00:00)",
+      "left_percent": 100,
+      "pointer_events": "none",
+      "tab_index": -1,
+      "tag": "SPAN",
+      "width": 2
+    }
+  ],
+  "marks_on_track": true,
+  "timeline_button_count": 1,
+  "viewport": 1440
+}

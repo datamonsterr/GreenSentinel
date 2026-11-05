@@ -1,0 +1,25 @@
+{
+  "mcpServers": {
+    "context7": {
+      "type": "sse",
+      "url": "https://mcp.context7.com/mcp",
+      "serverUrl": "https://mcp.context7.com/mcp"
+    },
+    "markitdown": {
+      "command": "python3",
+      "args": [
+        "/home/dat/.local/share/mcp-servers/markitdown-server.py"
+      ]
+    },
+    "mnemoverse": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@mnemoverse/mcp-memory-server@latest"
+      ],
+      "env": {
+        "MNEMOVERSE_API_URL": "https://core.mnemoverse.com/api/v1"
+      }
+    }
+  }
+}

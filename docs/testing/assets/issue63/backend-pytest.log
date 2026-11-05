@@ -1,0 +1,19 @@
+................................................................. [ 14%]
+................................................................. [ 29%]
+.....................................................s.................. [ 45%]
+........................................................................ [ 61%]
+........................................................................ [ 77%]
+........................................................................ [ 93%]
+...........................                                              [100%]
+=============================== warnings summary ===============================
+tests/test_skills_security.py::test_design_system_validate_output_dir_safe
+tests/test_skills_security.py::test_design_system_validate_output_dir_traversal_blocked
+tests/test_skills_security.py::test_design_system_validate_output_dir_sensitive_system_dir
+tests/test_skills_security.py::test_design_system_validate_output_dir_unc_and_root_blocked
+tests/test_skills_security.py::test_design_system_validate_output_dir_symlink_escape_blocked
+tests/test_skills_security.py::test_design_system_persist_concurrency_no_partial_pages_dir
+  /home/dat/dev/vinuni_aia/P-063-worktrees/feat-63/.agents/jev_skills/ui-ux-pro-max/scripts/design_system.py:1021: DeprecationWarning: pathlib.PurePath.is_reserved() is deprecated and scheduled for removal in Python 3.15. Use os.path.isreserved() to detect reserved paths on Windows.
+    if candidate.is_reserved():
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+444 passed, 1 skipped, 6 warnings, 14 subtests passed in 155.02s (0:02:35)

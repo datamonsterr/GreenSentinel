@@ -1,0 +1,236 @@
+{
+  "n": 10000,
+  "accuracy": 0.6778,
+  "macro_f1": 0.4941,
+  "per_class": {
+    "no_violation": {
+      "n": 7000,
+      "predicted": 4877,
+      "tp": 4673,
+      "fp": 204,
+      "fn": 2327,
+      "precision": 0.9582,
+      "recall": 0.6676,
+      "f1": 0.7869
+    },
+    "ERR-01": {
+      "n": 500,
+      "predicted": 475,
+      "tp": 475,
+      "fp": 0,
+      "fn": 25,
+      "precision": 1.0,
+      "recall": 0.95,
+      "f1": 0.9744
+    },
+    "ERR-02": {
+      "n": 800,
+      "predicted": 730,
+      "tp": 730,
+      "fp": 0,
+      "fn": 70,
+      "precision": 1.0,
+      "recall": 0.9125,
+      "f1": 0.9542
+    },
+    "ERR-03": {
+      "n": 500,
+      "predicted": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 500,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    "ERR-04": {
+      "n": 300,
+      "predicted": 0,
+      "tp": 0,
+      "fp": 0,
+      "fn": 300,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0
+    },
+    "ERR-05": {
+      "n": 300,
+      "predicted": 1343,
+      "tp": 300,
+      "fp": 1043,
+      "fn": 0,
+      "precision": 0.2234,
+      "recall": 1.0,
+      "f1": 0.3652
+    },
+    "insufficient_evidence": {
+      "n": 600,
+      "predicted": 2575,
+      "tp": 600,
+      "fp": 1975,
+      "fn": 0,
+      "precision": 0.233,
+      "recall": 1.0,
+      "f1": 0.378
+    }
+  },
+  "confusion": {
+    "no_violation": {
+      "no_violation": 4673,
+      "ERR-01": 0,
+      "ERR-02": 0,
+      "ERR-03": 0,
+      "ERR-04": 0,
+      "ERR-05": 908,
+      "insufficient_evidence": 1419
+    },
+    "ERR-01": {
+      "no_violation": 0,
+      "ERR-01": 475,
+      "ERR-02": 0,
+      "ERR-03": 0,
+      "ERR-04": 0,
+      "ERR-05": 25,
+      "insufficient_evidence": 0
+    },
+    "ERR-02": {
+      "no_violation": 0,
+      "ERR-01": 0,
+      "ERR-02": 730,
+      "ERR-03": 0,
+      "ERR-04": 0,
+      "ERR-05": 47,
+      "insufficient_evidence": 23
+    },
+    "ERR-03": {
+      "no_violation": 0,
+      "ERR-01": 0,
+      "ERR-02": 0,
+      "ERR-03": 0,
+      "ERR-04": 0,
+      "ERR-05": 23,
+      "insufficient_evidence": 477
+    },
+    "ERR-04": {
+      "no_violation": 204,
+      "ERR-01": 0,
+      "ERR-02": 0,
+      "ERR-03": 0,
+      "ERR-04": 0,
+      "ERR-05": 40,
+      "insufficient_evidence": 56
+    },
+    "ERR-05": {
+      "no_violation": 0,
+      "ERR-01": 0,
+      "ERR-02": 0,
+      "ERR-03": 0,
+      "ERR-04": 0,
+      "ERR-05": 300,
+      "insufficient_evidence": 0
+    },
+    "insufficient_evidence": {
+      "no_violation": 0,
+      "ERR-01": 0,
+      "ERR-02": 0,
+      "ERR-03": 0,
+      "ERR-04": 0,
+      "ERR-05": 0,
+      "insufficient_evidence": 600
+    }
+  },
+  "guardrail": {
+    "violations": 0,
+    "violation_refs": [],
+    "blocked_total": 1830
+  },
+  "priority_tier_by_label": {
+    "no_violation": {
+      "P2": 6092,
+      "P0": 908
+    },
+    "ERR-02": {
+      "P1": 730,
+      "P0": 47,
+      "P2": 23
+    },
+    "insufficient_evidence": {
+      "P2": 600
+    },
+    "ERR-01": {
+      "P0": 25,
+      "P2": 475
+    },
+    "ERR-03": {
+      "P2": 477,
+      "P0": 23
+    },
+    "ERR-04": {
+      "P2": 260,
+      "P0": 40
+    },
+    "ERR-05": {
+      "P0": 300
+    }
+  },
+  "calibration": {
+    "ece_10bin": 0.1589,
+    "brier": 0.1813,
+    "bins": [
+      {
+        "bin": "[0.0,0.1)",
+        "n": 2575,
+        "acc": 0.233,
+        "conf": 0.0
+      },
+      {
+        "bin": "[0.8,0.9)",
+        "n": 475,
+        "acc": 1.0,
+        "conf": 0.85
+      },
+      {
+        "bin": "[0.9,1.0)",
+        "n": 6950,
+        "acc": 0.8206,
+        "conf": 0.9526
+      }
+    ],
+    "caveat": "uncalibrated_model_confidence: heuristic emits constant confidence per branch, so ECE/Brier diagnose the constant scheme, not a learned model."
+  },
+  "gap_gridlock_ssd_fp": {
+    "n_gridlock": 693,
+    "err02_predicted": 0,
+    "fp_rate": 0.0
+  },
+  "gap_clock_jitter": {
+    "note": "external figure, no rebuild (--noise stress rebuild of N=500 too slow). Per docs/data/TELEMETRY_DISTRIBUTION.md finding 3 (400-trip stress variant): full-stress DIC detection 50%; without clock jitter 66%; without jitter and stall accuracy <=15m 73%.",
+    "stress_dic_detection": 0.5,
+    "stress_no_clock_jitter": 0.66
+  },
+  "gap_keyword_brittleness": {
+    "ERR-01": {
+      "keyword_n": 117,
+      "keyword_recall": 0.9658,
+      "paraphrase_n": 383,
+      "paraphrase_recall": 0.9452
+    },
+    "ERR-04": {
+      "keyword_n": 82,
+      "keyword_recall": 0.0,
+      "paraphrase_n": 218,
+      "paraphrase_recall": 0.0
+    }
+  },
+  "latency_ms": {
+    "mean_ms": 0.02,
+    "p50_ms": 0.02,
+    "p95_ms": 0.035,
+    "max_ms": 3.107
+  },
+  "runtime_wall_s": 2.0,
+  "sampled": false,
+  "sample_seed": null,
+  "input": "/home/dat/dev/vinuni_aia/P-063-worktrees/build-benchmark-dataset/data/benchmark-10k/combined_trips.jsonl",
+  "predictions": "/home/dat/dev/vinuni_aia/P-063-worktrees/build-benchmark-dataset/data/benchmark-10k/combined_predictions.jsonl"
+}

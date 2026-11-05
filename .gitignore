@@ -1,0 +1,102 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg-info/
+dist/
+build/
+.eggs/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+
+# Virtual environments
+venv/
+.venv
+.venv/
+env/
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Data (never commit large data; processed policy text is < 300KB)
+data/*
+!data/processed/
+!data/conversation_bank/
+!data/benchmark-10k/
+data/benchmark-10k/*
+!data/benchmark-10k/*/
+data/benchmark-10k/*/*
+!data/benchmark-10k/*/manifest.json
+!data/benchmark-10k/*/sample_100.jsonl
+!data/benchmark-10k/combined.json
+!data/benchmark-10k/combined_labels.csv
+!data/benchmark-10k/STORAGE.md
+!data/benchmark-10k/profiles/
+data/benchmark-10k/profiles/*
+!data/benchmark-10k/profiles/evidence-v2/
+data/benchmark-10k/profiles/evidence-v2/*
+!data/benchmark-10k/profiles/evidence-v2/manifest.json
+!data/benchmark-10k/profiles/evidence-v2/sample_100.jsonl
+!data/benchmark-10k/profiles/evidence-v4/
+data/benchmark-10k/profiles/evidence-v4/*
+!data/benchmark-10k/profiles/evidence-v4/manifest.json
+!data/benchmark-10k/profiles/evidence-v4/sample_100.jsonl
+!data/benchmark-10k/profiles/synthesized_vietnam_trip/
+data/benchmark-10k/profiles/synthesized_vietnam_trip/*
+!data/benchmark-10k/profiles/synthesized_vietnam_trip/manifest.json
+!data/benchmark-10k/profiles/synthesized_vietnam_trip/sample_100.jsonl
+!data/benchmark-10k/profiles/synthesized_vietnam_trip/checksums.json
+!data/benchmark-10k/vietnam_road_corridors.json
+data/benchmark-10k/releases_v1/
+*.db
+*.sqlite3
+
+# Logs
+logs/
+*.log
+
+# Test coverage
+htmlcov/
+.coverage
+coverage.xml
+
+# Docker
+docker-compose.override.yml
+
+# Node (frontend)
+node_modules/
+.next/
+out/
+.nuxt/
+test-results/
+playwright-report/
+/artifacts/gis-persisted/
+
+# Build
+*.pyc
+*.pyo
+
+# AI logs — tracked structure, ignored content
+.ai-log/*.jsonl
+.ai-log/archive/
+.vercel
+.worktrees/
+.claude/worktrees/
+
+# Generated TypeScript build metadata
+*.tsbuildinfo

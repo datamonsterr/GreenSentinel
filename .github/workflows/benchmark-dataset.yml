@@ -1,0 +1,50 @@
+name: benchmark-dataset
+
+# Verifies the published benchmark corpora are fetchable and reproducible.
+# Manual dispatch, or a PR labelled "benchmark". Public HF repo needs no secret;
+# set the optional repo secret HF_TOKEN for private forks.
+
+on:
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: Corpus profile to fetch
+        type: choice
+        options: [evidence-v4, combined]
+        default: evidence-v4
+  pull_request:
+    types: [labeled]
+
+permissions:
+  contents: read
+
+jobs:
+  fetch-verify-benchmark:
+    if: github.event_name == 'workflow_dispatch' || github.event.label.name == 'benchmark'
+    runs-on: self-hosted
+    env:
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install benchmark deps
+        run: pip install ".[benchmark]" pytest
+      - name: Fetch evidence-v4 corpus (checksum-verified)
+        run: python scripts/benchmark/fetch_dataset.py --profile releases_v1 --out .ci-benchmark
+      - name: Benchmark unit gates
+        run: pytest tests/unit/test_build_10k_v4.py tests/unit/test_dialogue_synth.py tests/unit/test_benchmark_versions.py -q --noconftest
+      - name: Smoke-run frozen detector on fetched corpus (sampled)
+        run: |
+          python scripts/benchmark/run_10k.py \
+            --in .ci-benchmark/releases_v1/trips.jsonl \
+            --out .ci-benchmark/preds.jsonl \
+            --metrics-out .ci-benchmark/metrics.json \
+            --sample 500
+          python - <<'PY'
+          import json
+          m = json.load(open(".ci-benchmark/metrics.json"))
+          print("sample accuracy", m["accuracy"], "macro_f1", m["macro_f1"])
+          assert 0.0 <= m["accuracy"] <= 1.0
+          PY

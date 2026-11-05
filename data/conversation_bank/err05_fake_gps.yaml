@@ -1,0 +1,43 @@
+context: err05_fake_gps
+driver:
+  - {text: "Anh bật app phụ là map nhảy liền, em đừng lo", lang: vi}
+  - {text: "GPS anh đứng chỗ mà app hiện xa {dist_km}km", lang: vi}
+  - {text: "Anh dùng tool chỉnh vị trí, tới nhanh lắm", lang: vi}
+  - {text: "Map anh bị lag, lúc ở đây lúc ở quận khác", lang: vi}
+  - {text: "Anh fake vị trí để nhận cuốc ngon thôi", lang: vi}
+  - {text: "Em thấy xe bay qua bay lại là do app đó", lang: vi}
+  - {text: "Anh root máy rồi, GPS muốn đâu được đó", lang: vi}
+  - {text: "Tốc độ app báo 150km/h là lỗi hiển thị thôi", lang: vi}
+  - {text: "Anh chỉnh mock location để khỏi bị dí deadline", lang: vi}
+  - {text: "Định vị anh nhảy từ {pickup} qua {dest} trong 1 phút", lang: vi}
+  - {text: "Mấy cái này ai cũng làm, em đừng tố anh", lang: vi}
+  - {text: "Anh tắt chia sẻ vị trí thật rồi, em không thấy đâu", lang: vi}
+  - {text: "App báo anh tới nơi trong khi anh còn ở nhà", lang: vi}
+  - {text: "Anh dùng 2 điện thoại, cái định vị để một chỗ", lang: vi}
+  - {text: "My GPS jumps around, ignore the map", lang: en}
+  - {text: "I spoof my location to get better rides", lang: en}
+  - {text: "Mock location on, the app thinks I'm close", lang: en}
+  - {text: "Speed glitch, I was never that fast", lang: en}
+  - {text: "The pin teleports, it's just my tool", lang: en}
+  - {text: "Two phones, tracker stays at home", lang: en}
+customer:
+  - {text: "Sao map hiện xe ở quận khác, anh ở đâu vậy", lang: vi}
+  - {text: "Vị trí xe nhảy lung tung, em chóng mặt luôn", lang: vi}
+  - {text: "App báo xe chạy 150km/h trong phố, điêu quá", lang: vi}
+  - {text: "Xe bay từ {pickup} tới {dest} trong 1 phút là sao", lang: vi}
+  - {text: "Định vị tài xế đứng im mà tới nơi là sao", lang: vi}
+  - {text: "Em nghi ảnh dùng app giả mạo vị trí", lang: vi}
+  - {text: "Map hiện ảnh tới rồi mà em chẳng thấy ai", lang: vi}
+  - {text: "Vị trí ảnh nhảy qua lại 3 quận trong 5 phút", lang: vi}
+  - {text: "Ảnh thừa nhận chỉnh GPS để nhận cuốc", lang: vi}
+  - {text: "Em thấy xe dịch chuyển kiểu bay, không phải chạy", lang: vi}
+  - {text: "Tốc độ vô lý quá, đề nghị kiểm tra định vị", lang: vi}
+  - {text: "Ảnh ở một nơi, map hiện một nẻo", lang: vi}
+  - {text: "Em gọi thì ảnh nói đang đứng trước mặt em, mà không có ai", lang: vi}
+  - {text: "Định vị đứng yên {wait_min} phút rồi nhảy phát tới nơi", lang: vi}
+  - {text: "The pin teleports across the city", lang: en}
+  - {text: "GPS shows 150km/h downtown, impossible", lang: en}
+  - {text: "He admitted spoofing his location", lang: en}
+  - {text: "Car jumps {dist_km}km in one minute, fake GPS", lang: en}
+  - {text: "Map says arrived but nobody is here", lang: en}
+  - {text: "Location frozen then teleported to {dest}", lang: en}

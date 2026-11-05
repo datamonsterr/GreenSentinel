@@ -1,0 +1,169 @@
+{
+  "evidence_class": "authenticated_live_provider_probe_summary",
+  "source_revision": "05bb3daa3bcf40658f145f006786cbef6d382bd0",
+  "environment": "local capability investigation using public Hanoi sample locations",
+  "python_version": "3.14.7",
+  "transport": "Python standard-library urllib.request; request timeout 20 seconds; concurrency 3",
+  "credential_handling": "Credential values, authenticated query strings, raw responses and credential-bearing style asset URLs omitted. MCP authenticated with x-api-key.",
+  "limitations": [
+    "No application adapter, UI, deployed revision or operator UAT was tested.",
+    "One key and sample Hanoi requests do not establish national coverage or account quota/licensing.",
+    "Timestamps in the map-matching request are authored samples, not measured historical trip data."
+  ],
+  "requests": [
+    {
+      "operation": "geocode",
+      "method": "GET",
+      "endpoint": "https://api.geoapify.com/v1/geocode/search",
+      "parameters": {
+        "text": "Hoan Kiem Lake, Hanoi, Vietnam",
+        "filter": "countrycode:vn",
+        "limit": 1
+      }
+    },
+    {
+      "operation": "reverse_geocode",
+      "method": "GET",
+      "endpoint": "https://api.geoapify.com/v1/geocode/reverse",
+      "parameters": {
+        "lat": 21.0278,
+        "lon": 105.8342,
+        "limit": 1
+      }
+    },
+    {
+      "operation": "routing",
+      "method": "GET",
+      "endpoint": "https://api.geoapify.com/v1/routing",
+      "parameters": {
+        "waypoints": "21.0278,105.8342|21.0285,105.8443",
+        "mode": "drive",
+        "traffic": "free_flow"
+      }
+    },
+    {
+      "operation": "map_matching",
+      "method": "POST",
+      "endpoint": "https://api.geoapify.com/v1/mapmatching",
+      "body": {
+        "mode": "drive",
+        "waypoints": [
+          {
+            "location": [
+              105.8342,
+              21.0278
+            ],
+            "timestamp": "2026-10-08T08:00:00Z"
+          },
+          {
+            "location": [
+              105.8352,
+              21.028
+            ],
+            "timestamp": "2026-10-08T08:00:30Z"
+          },
+          {
+            "location": [
+              105.8362,
+              21.0282
+            ],
+            "timestamp": "2026-10-08T08:01:00Z"
+          }
+        ]
+      }
+    },
+    {
+      "operation": "map_style",
+      "method": "GET",
+      "endpoint": "https://maps.geoapify.com/v1/styles/osm-bright/style.json"
+    },
+    {
+      "operation": "mcp_tools",
+      "method": "POST",
+      "endpoint": "https://api.geoapify.com/v1/mcp",
+      "body": {
+        "jsonrpc": "2.0",
+        "id": 1,
+        "method": "tools/list"
+      }
+    }
+  ],
+  "results": [
+    {
+      "operation": "geocode",
+      "checked_at": "2026-10-08T14:33:52.103877+00:00",
+      "http_status": 200,
+      "feature_count": 1,
+      "geometry_type": "Point",
+      "country_code": "vn",
+      "elapsed_ms": 1468
+    },
+    {
+      "operation": "reverse_geocode",
+      "checked_at": "2026-10-08T14:33:52.105288+00:00",
+      "http_status": 200,
+      "feature_count": 1,
+      "geometry_type": "Point",
+      "country_code": "vn",
+      "distance": 30.191869736884588,
+      "elapsed_ms": 1368
+    },
+    {
+      "operation": "routing",
+      "checked_at": "2026-10-08T14:33:52.106012+00:00",
+      "http_status": 200,
+      "feature_count": 1,
+      "geometry_type": "MultiLineString",
+      "distance": 1317,
+      "time": 87.581,
+      "mode": "drive",
+      "traffic": "free_flow",
+      "elapsed_ms": 1058
+    },
+    {
+      "operation": "map_matching",
+      "checked_at": "2026-10-08T14:33:53.164170+00:00",
+      "http_status": 200,
+      "feature_count": 1,
+      "geometry_type": "MultiLineString",
+      "distance": 102,
+      "time": 23,
+      "mode": "drive",
+      "match_types": [
+        "matched",
+        "matched",
+        "unmatched"
+      ],
+      "elapsed_ms": 660
+    },
+    {
+      "operation": "map_style",
+      "checked_at": "2026-10-08T14:33:53.473582+00:00",
+      "http_status": 200,
+      "style_version": 8,
+      "source_count": 1,
+      "layer_count": 111,
+      "elapsed_ms": 488
+    },
+    {
+      "operation": "mcp_tools",
+      "checked_at": "2026-10-08T14:33:53.572164+00:00",
+      "http_status": 200,
+      "tools": [
+        "geocode_address",
+        "geocode_structured_address",
+        "reverse_geocode_coordinates",
+        "search_places",
+        "list_place_categories",
+        "calculate_route",
+        "calculate_route_matrix",
+        "combine_geometries",
+        "evaluate_spatial_relation",
+        "measure_geometry",
+        "transform_geometry"
+      ],
+      "jsonrpc_error_code": null,
+      "elapsed_ms": 1060
+    }
+  ]
+}

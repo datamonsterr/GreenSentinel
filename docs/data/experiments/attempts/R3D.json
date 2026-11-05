@@ -1,0 +1,42 @@
+{
+  "attempt": null,
+  "exp_id": "R3D",
+  "variant": "r3d_stacked",
+  "issue": "554",
+  "pr": "",
+  "primary": 0.8705,
+  "ci": [
+    0.8636,
+    0.8772
+  ],
+  "guards": {
+    "fpr_ok": true,
+    "cand_fpr": 0.0302,
+    "best_fpr": 0.0778,
+    "recall_at_budget_ok": true,
+    "cand_recall_at_budget": 0.0,
+    "best_recall_at_budget": 0.0,
+    "pr_auc_ok": true,
+    "pr_auc_drops": {
+      "no_violation": 0.0036,
+      "ERR-01": 0.0,
+      "ERR-02": 0.0,
+      "ERR-03": -0.0006,
+      "ERR-04": 0.0162,
+      "ERR-05": 0.0,
+      "insufficient_evidence": 0.0
+    },
+    "ece_ok": true,
+    "cand_ece": 0.0559,
+    "best_ece": 0.0591,
+    "all_passed": true
+  },
+  "decision": "revert",
+  "best_so_far": 0.8695,
+  "date": "2026-10-18",
+  "corpus_trips_sha256": "d52e52ff7dd2cc7b6d23631191d1cdbf32d9f1b636f43117ad496809ac0d3fdf",
+  "split": "validation",
+  "sample": 6000,
+  "enum_blind": true,
+  "git_sha": "8869223880a920830e18b8219ebb860f216a9f53"
+}

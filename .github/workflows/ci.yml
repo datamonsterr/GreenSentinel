@@ -1,0 +1,612 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+    # ready_for_review re-runs the full tier when an agent flips
+    # draft -> ready. Heavy jobs below additionally guard on draft.
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Let active verification finish, including reruns of expensive GIS checks.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  format-and-lint:
+    name: Code Quality & Linting
+    # Ready-tier only: drafts use ci-draft.yml Draft Lint. Push-to-main
+    # and workflow_dispatch always run (no PR object).
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    runs-on: self-hosted
+    timeout-minutes: 10
+    steps:
+      - name: Clean root-owned Docker volumes from previous runs
+        run: |
+          if [ -d "$GITHUB_WORKSPACE/.git" ] && command -v docker >/dev/null 2>&1; then
+            docker run --rm -v "$GITHUB_WORKSPACE:/target" alpine \
+              chown -R "$(id -u):$(id -g)" /target/.git
+          fi
+          if [ -d "$GITHUB_WORKSPACE/data" ]; then
+            if command -v docker >/dev/null 2>&1; then
+              docker run --rm -v "$GITHUB_WORKSPACE/data:/target" alpine \
+                sh -c "rm -rf /target/*" || true
+            fi
+            rm -rf "$GITHUB_WORKSPACE/data" || true
+          fi
+      - uses: actions/checkout@v7
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: false
+
+      - name: Configure uv cache
+        run: |
+          set -euo pipefail
+          export UV_CACHE_DIR="${RUNNER_TEMP}/p063-uv-cache"
+          mkdir -p "$UV_CACHE_DIR"
+          echo "UV_CACHE_DIR=$UV_CACHE_DIR" >> "$GITHUB_ENV"
+
+          command -v uv
+          uv --version
+
+      - name: Cache uv packages
+        uses: actions/cache@v6
+        with:
+          path: ${{ runner.temp }}/p063-uv-cache
+          key: uv-${{ runner.os }}-${{ hashFiles('requirements.txt', 'uv.lock', 'pyproject.toml') }}
+          restore-keys: uv-${{ runner.os }}-
+
+      - name: Setup virtual environment
+        run: |
+          set -euo pipefail
+          rm -rf .venv
+          uv venv --python 3.12 .venv
+          uv pip install --python .venv -r requirements.txt
+          echo "$PWD/.venv/bin" >> $GITHUB_PATH
+
+      - name: Lint with ruff
+        run: ruff check src/ tests/
+
+      - name: Format check with ruff
+        run: ruff format --check src/ tests/
+
+  unit-tests:
+    name: Unit Tests
+    # Ready-tier only: drafts use ci-draft.yml Draft Unit Tests.
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    needs: [format-and-lint]
+    runs-on: self-hosted
+    env:
+      LLM_MODEL: openai
+      RAG_EMBEDDING_PROVIDER: openai
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || 'test-key' }}
+    # Shared runners have shown ~13 minutes of startup delay before pytest.
+    timeout-minutes: 40
+    steps:
+      - name: Clean root-owned Docker volumes from previous runs
+        run: |
+          if [ -d "$GITHUB_WORKSPACE/.git" ] && command -v docker >/dev/null 2>&1; then
+            docker run --rm -v "$GITHUB_WORKSPACE:/target" alpine \
+              chown -R "$(id -u):$(id -g)" /target/.git
+          fi
+          if [ -d "$GITHUB_WORKSPACE/data" ]; then
+            if command -v docker >/dev/null 2>&1; then
+              docker run --rm -v "$GITHUB_WORKSPACE/data:/target" alpine \
+                sh -c "rm -rf /target/*" || true
+            fi
+            rm -rf "$GITHUB_WORKSPACE/data" || true
+          fi
+      - uses: actions/checkout@v7
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: false
+
+      - name: Configure uv cache
+        run: |
+          set -euo pipefail
+          export UV_CACHE_DIR="${RUNNER_TEMP}/p063-uv-cache"
+          mkdir -p "$UV_CACHE_DIR"
+          echo "UV_CACHE_DIR=$UV_CACHE_DIR" >> "$GITHUB_ENV"
+
+          command -v uv
+          uv --version
+
+      - name: Cache uv packages
+        uses: actions/cache@v6
+        with:
+          path: ${{ runner.temp }}/p063-uv-cache
+          key: uv-${{ runner.os }}-${{ hashFiles('requirements.txt', 'uv.lock', 'pyproject.toml') }}
+          restore-keys: uv-${{ runner.os }}-
+
+      - name: Setup virtual environment
+        run: |
+          set -euxo pipefail
+          rm -rf .venv
+          uv venv --python 3.12 .venv
+          uv pip install --python .venv -r requirements.txt
+
+          test -x .venv/bin/python
+          .venv/bin/python --version
+          .venv/bin/python -m pytest --version
+
+          echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
+
+      - name: Generate synthetic dataset for test fixtures
+        run: python scripts/generate_synthetic_data.py
+
+      - name: Isolate pytest temporary files
+        run: mkdir -p "$RUNNER_TEMP/pytest-$GITHUB_RUN_ID"
+        env:
+          TMPDIR: ${{ runner.temp }}/pytest-${{ github.run_id }}
+          TMP: ${{ runner.temp }}/pytest-${{ github.run_id }}
+          TEMP: ${{ runner.temp }}/pytest-${{ github.run_id }}
+
+      - name: Verify Python test environment
+        run: |
+          set -euxo pipefail
+          command -v uv
+          uv --version
+          ls -la .venv/bin
+          .venv/bin/python --version
+          .venv/bin/python -m pytest --version
+          .venv/bin/python -m pytest --help >/dev/null
+
+      - name: Run Pytest Unit Tests (Parallel)
+        # Unit scope only: tests/integration and tests/e2e need live
+        # Postgres/Redis/Qdrant, which this job does not start. Collecting
+        # them here hangs on connection retry (main CI sat 77min then failed).
+        # Integration/E2E run in integration-tests and browser-e2e below.
+        # Bound workers on self-hosted machines: visible host CPUs can exceed
+        # the ephemeral runner's available CPU/memory budget.
+        # uv run (not a bare .venv path) resolves the venv interpreter, so a
+        # broken PATH surfaces as a readable error instead of silent 127.
+        run: |
+          set -euxo pipefail
+          bash scripts/ci_runner_diagnostics.sh || true
+
+          uv run --python .venv python -m pytest \
+            tests/unit/ -q -n 1 --tb=short \
+            2> "$RUNNER_TEMP/pytest-startup.log"
+        env:
+          TMPDIR: ${{ runner.temp }}/pytest-${{ github.run_id }}
+          TMP: ${{ runner.temp }}/pytest-${{ github.run_id }}
+          TEMP: ${{ runner.temp }}/pytest-${{ github.run_id }}
+          APP_ENV: test
+          OPENAI_API_KEY: test-key
+          OPENROUTER_API_KEY: test-key
+          QDRANT_URL: http://localhost:6333
+          DATABASE_URL: postgresql://postgres:postgrespassword@localhost:5432/postgres
+          REDIS_URL: redis://localhost:6379/0
+
+      - name: Upload pytest startup diagnostics
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/oci-upload
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.OCI_S3_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.OCI_S3_SECRET_KEY }}
+          AWS_DEFAULT_REGION: ${{ vars.OCI_REGION || secrets.OCI_REGION }}
+          AWS_ENDPOINT_URL: ${{ vars.OCI_S3_ENDPOINT || secrets.OCI_S3_ENDPOINT }}
+          OCI_S3_BUCKET: ${{ vars.OCI_S3_BUCKET }}
+        with:
+          name: pytest-startup-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pytest-startup.log
+          if-no-files-found: warn
+
+  frontend-vitest:
+    name: Frontend Vitest & Typecheck
+    # Ready-tier only: drafts use ci-draft.yml Draft Frontend Vitest.
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    needs: [format-and-lint]
+    runs-on: self-hosted
+    timeout-minutes: 45
+    steps:
+      - name: Clean root-owned frontend dependencies from previous runs
+        run: |
+          if [ -d "$GITHUB_WORKSPACE" ] && command -v docker >/dev/null 2>&1; then
+            docker run --rm -v "$GITHUB_WORKSPACE:/target" alpine sh -c '
+              rm -rf /target/src/webapp/node_modules /target/src/webapp/test-results
+              chown -R '"$(id -u):$(id -g)"' /target
+            '
+          fi
+          if [ -d "$GITHUB_WORKSPACE/src/webapp/node_modules" ] && command -v docker >/dev/null 2>&1; then
+            docker run --rm -v "$GITHUB_WORKSPACE:/target" alpine \
+              rm -rf /target/src/webapp/node_modules
+          fi
+      - uses: actions/checkout@v7
+
+      - name: Setup Node.js and pnpm
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11
+          dest: ${{ runner.temp }}/pnpm-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}
+          cache: true
+          cache_dependency_path: src/webapp/pnpm-lock.yaml
+
+      - name: Install webapp dependencies
+        run: |
+          cd src/webapp
+          pnpm install --frozen-lockfile
+
+      - name: Run full frontend Vitest suite
+        # NOTE: no /usr/bin/time wrapper; the `time` package is not
+        # installed on the self-hosted runner (exit 127).
+        run: |
+          bash scripts/ci_runner_diagnostics.sh
+          export TMPDIR="${RUNNER_TEMP}/p063-vitest-tmp"
+          mkdir -p "$TMPDIR"
+          cd src/webapp
+          pnpm test -- --maxWorkers=2 --minWorkers=1
+
+      - name: Run frontend test typecheck
+        run: |
+          bash scripts/ci_runner_diagnostics.sh
+          cd src/webapp
+          pnpm test:typecheck
+
+  webapp-build:
+    name: Webapp Build (E2E bundle)
+    # Ready-tier only: drafts use ci-draft.yml.
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    needs: [frontend-vitest]
+    runs-on: self-hosted
+    # Shared self-hosted runners can spend more than 20 minutes in queued I/O
+    # during dependency install and Next.js compilation.
+    timeout-minutes: 35
+    steps:
+      - name: Clean root-owned frontend dependencies from previous runs
+        run: |
+          if [ -d "$GITHUB_WORKSPACE/.git" ] && command -v docker >/dev/null 2>&1; then
+            docker run --rm -v "$GITHUB_WORKSPACE:/target" alpine \
+              chown -R "$(id -u):$(id -g)" /target/.git
+          fi
+          if [ -d "$GITHUB_WORKSPACE/src/webapp/node_modules" ] && command -v docker >/dev/null 2>&1; then
+            docker run --rm -v "$GITHUB_WORKSPACE:/target" alpine \
+              rm -rf /target/src/webapp/node_modules
+          fi
+      - uses: actions/checkout@v7
+
+      - name: Setup Node.js and pnpm
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11
+          dest: ${{ runner.temp }}/pnpm-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}
+          cache: true
+          cache_dependency_path: src/webapp/pnpm-lock.yaml
+
+      - name: Cache Next.js build cache
+        uses: actions/cache@v6
+        with:
+          path: src/webapp/.next-gis/cache
+          key: nextjs-build-${{ runner.os }}-${{ hashFiles('src/webapp/pnpm-lock.yaml') }}-${{ hashFiles('src/webapp/package.json', 'src/webapp/next.config.*', 'src/webapp/tsconfig.json') }}
+          restore-keys: |
+            nextjs-build-${{ runner.os }}-${{ hashFiles('src/webapp/pnpm-lock.yaml') }}-
+            nextjs-build-${{ runner.os }}-
+
+      - name: Install webapp dependencies
+        run: |
+          cd src/webapp
+          pnpm install --frozen-lockfile
+
+      - name: Build webapp (E2E bundle)
+        run: |
+          cd src/webapp
+          pnpm build
+        env:
+          NEXT_PUBLIC_E2E_TEST: "true"
+          NEXT_PUBLIC_GIS_OPTIMIZED_TEST: "true"
+          NEXT_PUBLIC_API_URL: "http://127.0.0.1:8000"
+          NODE_OPTIONS: --max-old-space-size=3072
+
+      # Test-only artifact: uses isolated GIS build escape hatch for localTestAuthentication under NODE_ENV=production. Never deployed; retention is managed by the OCI bucket lifecycle.
+      - name: Upload Webapp Next.js bundle
+        uses: ./.github/actions/oci-upload
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.OCI_S3_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.OCI_S3_SECRET_KEY }}
+          AWS_DEFAULT_REGION: ${{ vars.OCI_REGION || secrets.OCI_REGION }}
+          AWS_ENDPOINT_URL: ${{ vars.OCI_S3_ENDPOINT || secrets.OCI_S3_ENDPOINT }}
+          OCI_S3_BUCKET: ${{ vars.OCI_S3_BUCKET }}
+        with:
+          name: webapp-next
+          path: src/webapp/.next-gis
+          if-no-files-found: error
+          include-hidden-files: true
+          exclude: cache
+
+  integration-tests:
+    name: Integration Tests (Docker services)
+    # Ready-tier only: drafts use ci-draft.yml (lint + unit + vitest).
+    # On draft PRs this job skips without touching Docker or runner RAM.
+    # Push-to-main and workflow_dispatch always run (no PR object).
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    needs: [unit-tests]
+    runs-on: self-hosted
+    timeout-minutes: 25
+    # Serialize guarded runs; per-run ports/names below isolate against
+    # branches that predate the guard. Keep up to 100 pending required runs
+    # instead of replacing the prior pending run.
+    concurrency:
+      group: p063-docker-services
+      cancel-in-progress: false
+      queue: max
+    env:
+      APP_ENV: test
+      # Reuse Docker's existing bridge; the shared daemon has exhausted the
+      # subnet pool used to create a new Compose network for every run.
+      P063_DOCKER_NETWORK_MODE: bridge
+      P063_PG_MEMORY: 768m
+      P063_REDIS_MEMORY: 256m
+      P063_QDRANT_MEMORY: 768m
+    steps:
+      - name: Clean root-owned Docker volumes from previous runs
+        run: |
+          if [ -d "$GITHUB_WORKSPACE/.git" ] && command -v docker >/dev/null 2>&1; then
+            docker run --rm -v "$GITHUB_WORKSPACE:/target" alpine \
+              chown -R "$(id -u):$(id -g)" /target/.git
+          fi
+          if [ -d "$GITHUB_WORKSPACE/data" ]; then
+            if command -v docker >/dev/null 2>&1; then
+              docker run --rm -v "$GITHUB_WORKSPACE/data:/target" alpine \
+                sh -c "rm -rf /target/*" || true
+            fi
+            rm -rf "$GITHUB_WORKSPACE/data" || true
+          fi
+      - uses: actions/checkout@v7
+      - name: Ensure Docker and build tools
+        run: bash scripts/ci/ensure_docker.sh
+
+      # Allocate free host ports and unique container/data names for this run.
+      # Everything downstream (docker_up.sh, test_integration.sh)
+      # inherits these via GITHUB_ENV. Local dev keeps compose defaults.
+      - name: Allocate isolated service ports and names
+        run: |
+          PG_SUFFIX="${GITHUB_RUN_ID}_${GITHUB_RUN_ATTEMPT}"
+          PG_SUFFIX="${PG_SUFFIX//-/_}"
+          read -r POSTGRES_PORT REDIS_PORT QDRANT_PORT QDRANT_GRPC_PORT <<<"$(
+            python3 -c "
+          import socket
+          # Hold all sockets open while reading ports: sequential bind/close
+          # lets the OS hand the same ephemeral port back twice, which made
+          # Postgres/Redis/Qdrant share one port (bind conflict in docker_up).
+          sockets = [socket.socket() for _ in range(4)]
+          for sock in sockets:
+              sock.bind(('', 0))
+          print(' '.join(str(sock.getsockname()[1]) for sock in sockets))
+          ")"
+          for candidate in "$POSTGRES_PORT" "$REDIS_PORT" "$QDRANT_PORT" "$QDRANT_GRPC_PORT"; do
+            others="$(printf '%s\n' "$POSTGRES_PORT" "$REDIS_PORT" "$QDRANT_PORT" "$QDRANT_GRPC_PORT" | grep -c "^${candidate}$")"
+            if [ "$others" -ne 1 ]; then
+              echo "Allocated ports are not distinct; aborting before docker_up." >&2
+              exit 1
+            fi
+          done
+          {
+            echo "PG_NAME=p063-pg-${PG_SUFFIX}"
+            echo "REDIS_NAME=p063-redis-${PG_SUFFIX}"
+            echo "QDRANT_NAME=p063-qdrant-${PG_SUFFIX}"
+            echo "COMPOSE_PROJECT_NAME=p063-${PG_SUFFIX,,}"
+            echo "POSTGRES_PORT=${POSTGRES_PORT}"
+            echo "REDIS_PORT=${REDIS_PORT}"
+            echo "QDRANT_PORT=${QDRANT_PORT}"
+            echo "QDRANT_GRPC_PORT=${QDRANT_GRPC_PORT}"
+            echo "DATABASE_URL=postgresql://postgres:postgrespassword@localhost:${POSTGRES_PORT}/postgres"
+            echo "ISSUE63_DATABASE_URL=postgresql://postgres:postgrespassword@localhost:${POSTGRES_PORT}/postgres"
+            echo "REDIS_URL=redis://localhost:${REDIS_PORT}/0"
+            echo "QDRANT_URL=http://localhost:${QDRANT_PORT}"
+            echo "PGDATA=${RUNNER_TEMP}/p063-pgdata-${PG_SUFFIX}"
+            echo "QDRANT_DATA=${RUNNER_TEMP}/p063-qdrant-${PG_SUFFIX}"
+            NET_A=$(( (GITHUB_RUN_ID % 200) + 20 ))
+            NET_B=$(( ((GITHUB_RUN_ID / 200) + GITHUB_RUN_ATTEMPT) % 250 + 1 ))
+            echo "P063_NETWORK_SUBNET=10.${NET_A}.${NET_B}.0/24"
+          } >> "$GITHUB_ENV"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: false
+
+      - name: Configure uv cache
+        run: |
+          set -euo pipefail
+          export UV_CACHE_DIR="${RUNNER_TEMP}/p063-uv-cache"
+          mkdir -p "$UV_CACHE_DIR"
+          echo "UV_CACHE_DIR=$UV_CACHE_DIR" >> "$GITHUB_ENV"
+
+          command -v uv
+          uv --version
+
+      - name: Cache uv packages
+        uses: actions/cache@v6
+        with:
+          path: ${{ runner.temp }}/p063-uv-cache
+          key: uv-${{ runner.os }}-${{ hashFiles('requirements.txt', 'uv.lock', 'pyproject.toml') }}
+          restore-keys: uv-${{ runner.os }}-
+
+      - name: Setup Python environment
+        run: |
+          set -euo pipefail
+          rm -rf .venv
+          uv venv --python 3.12 .venv
+          uv pip install --python .venv -r requirements.txt
+          echo "$PWD/.venv/bin" >> $GITHUB_PATH
+
+      - name: Generate synthetic dataset for seed data
+        run: python scripts/generate_synthetic_data.py
+
+      - name: Remove own stale containers (never siblings')
+        run: |
+          docker rm -f "$PG_NAME" "$REDIS_NAME" "$QDRANT_NAME" 2>/dev/null || true
+
+      - name: Start Docker backing services (Postgres, Redis, Qdrant)
+        run: ./scripts/docker_up.sh
+
+      - name: Run Integration Tests (migrate + seed + suite)
+        run: ./scripts/test_integration.sh
+
+      - name: Stop Docker backing services
+        if: always()
+        run: ./scripts/docker_down.sh
+
+  browser-e2e:
+    name: Browser E2E (Playwright, mocked API)
+    # Ready-tier only: drafts use ci-draft.yml.
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    needs: [webapp-build]
+    runs-on: self-hosted
+    timeout-minutes: 25
+    concurrency:
+      group: p063-browser-e2e
+      cancel-in-progress: false
+      queue: max
+    env:
+      NODE_OPTIONS: --max-old-space-size=1024
+      CI: "true"
+    steps:
+      - name: Clean root-owned frontend dependencies from previous runs
+        run: |
+          if [ -d "$GITHUB_WORKSPACE" ] && command -v docker >/dev/null 2>&1; then
+            docker run --rm -v "$GITHUB_WORKSPACE:/target" alpine sh -c '
+              rm -rf /target/src/webapp/node_modules /target/src/webapp/test-results
+              chown -R '"$(id -u):$(id -g)"' /target
+            '
+          fi
+          if [ -d "$GITHUB_WORKSPACE/src/webapp/node_modules" ] && command -v docker >/dev/null 2>&1; then
+            docker run --rm -v "$GITHUB_WORKSPACE:/target" alpine \
+              rm -rf /target/src/webapp/node_modules
+          fi
+      - uses: actions/checkout@v7
+
+      - name: Setup Node.js and pnpm
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11
+          dest: ${{ runner.temp }}/pnpm-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}
+          cache: true
+          cache_dependency_path: src/webapp/pnpm-lock.yaml
+
+      - name: Cache Playwright browsers
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('src/webapp/pnpm-lock.yaml') }}
+          restore-keys: playwright-${{ runner.os }}-
+
+      - name: Install webapp dependencies & browsers
+        run: |
+          cd src/webapp
+          pnpm install --frozen-lockfile
+          npx playwright install chromium
+
+      - name: Download webapp build artifact
+        id: webapp-artifact
+        uses: ./.github/actions/oci-download
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.OCI_S3_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.OCI_S3_SECRET_KEY }}
+          AWS_DEFAULT_REGION: ${{ vars.OCI_REGION || secrets.OCI_REGION }}
+          AWS_ENDPOINT_URL: ${{ vars.OCI_S3_ENDPOINT || secrets.OCI_S3_ENDPOINT }}
+          OCI_S3_BUCKET: ${{ vars.OCI_S3_BUCKET }}
+        with:
+          name: webapp-next
+          path: src/webapp/.next-gis
+
+      - name: Build webapp when OCI credentials are unavailable
+        if: steps.webapp-artifact.outputs.downloaded != 'true'
+        working-directory: src/webapp
+        run: pnpm build
+        env:
+          NEXT_PUBLIC_E2E_TEST: "true"
+          NEXT_PUBLIC_GIS_OPTIMIZED_TEST: "true"
+          NEXT_PUBLIC_API_URL: "http://127.0.0.1:8000"
+          NODE_OPTIONS: --max-old-space-size=3072
+
+      - name: Run Local E2E Tests (Playwright)
+        env:
+          PLAYWRIGHT_SERVER_MODE: start
+        run: |
+          export TMPDIR="${RUNNER_TEMP}/p063-playwright-tmp"
+          mkdir -p "$TMPDIR"
+          cd src/webapp
+          PORT=$(node -e 'const s=require("net").createServer();s.listen(0,()=>{console.log(s.address().port);s.close();})')
+          echo "Selected isolated E2E port: $PORT"
+          PORT=$PORT PLAYWRIGHT_TEST_BASE_URL="http://localhost:$PORT" PLAYWRIGHT_SERVER_MODE=start pnpm test:browser
+
+      - name: Upload Playwright report
+        if: failure()
+        uses: ./.github/actions/oci-upload
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.OCI_S3_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.OCI_S3_SECRET_KEY }}
+          AWS_DEFAULT_REGION: ${{ vars.OCI_REGION || secrets.OCI_REGION }}
+          AWS_ENDPOINT_URL: ${{ vars.OCI_S3_ENDPOINT || secrets.OCI_S3_ENDPOINT }}
+          OCI_S3_BUCKET: ${{ vars.OCI_S3_BUCKET }}
+        with:
+          name: playwright-report-${{ github.run_attempt }}
+          path: src/webapp/playwright-report
+          if-no-files-found: warn
+
+  build-and-cache:
+    name: Build & Cache Verification
+    # Ready-tier only, verifies build artifacts after all test jobs pass.
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    needs: [frontend-vitest, integration-tests, browser-e2e, webapp-build]
+    runs-on: self-hosted
+    timeout-minutes: 20
+    steps:
+      - name: Clean root-owned Docker volumes from previous runs
+        run: |
+          if [ -d "$GITHUB_WORKSPACE/.git" ] && command -v docker >/dev/null 2>&1; then
+            docker run --rm -v "$GITHUB_WORKSPACE:/target" alpine \
+              chown -R "$(id -u):$(id -g)" /target/.git
+          fi
+          if [ -d "$GITHUB_WORKSPACE/data" ]; then
+            if command -v docker >/dev/null 2>&1; then
+              docker run --rm -v "$GITHUB_WORKSPACE/data:/target" alpine \
+                sh -c "rm -rf /target/*" || true
+            fi
+            rm -rf "$GITHUB_WORKSPACE/data" || true
+          fi
+      - uses: actions/checkout@v7
+
+      - name: Validate Docker Compose Configuration
+        run: docker compose config
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Backend Docker Image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: false
+          load: false
+          tags: p063-backend:ci
+          cache-from: type=gha,scope=p063-backend
+          cache-to: type=gha,mode=max,scope=p063-backend
+

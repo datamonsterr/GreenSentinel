@@ -1,0 +1,43 @@
+context: err03_loop
+driver:
+  - {text: "Anh quay đầu cái đã, sắp tới rồi", lang: vi}
+  - {text: "Anh đi thêm vòng cho đủ km nha em", lang: vi}
+  - {text: "Vòng qua đây tránh công an, em đừng lo", lang: vi}
+  - {text: "Anh lạc đường, đang tìm chỗ quay lại {pickup}", lang: vi}
+  - {text: "Map chỉ vậy đó, anh đi theo map mà", lang: vi}
+  - {text: "Anh chạy vòng vòng tìm chỗ đậu xe", lang: vi}
+  - {text: "Đi thêm có {dist_km}km cho thoáng, em thông cảm", lang: vi}
+  - {text: "Anh nhớ đường này mà, quay một vòng là tới", lang: vi}
+  - {text: "Đường kia cấm nên anh phải vòng lại", lang: vi}
+  - {text: "Anh đón khách khác tiện đường luôn rồi qua", lang: vi}
+  - {text: "Vòng xoay này khó ra, em đợi anh xíu", lang: vi}
+  - {text: "Anh chạy theo cảm tính, map sai hoài", lang: vi}
+  - {text: "Quay 2 vòng rồi mà chưa thấy {pickup} đâu", lang: vi}
+  - {text: "Anh đi ngược chiều xíu cho nhanh", lang: vi}
+  - {text: "One more loop and I'll be there", lang: en}
+  - {text: "GPS is wrong, I know a shortcut around the block", lang: en}
+  - {text: "Going around the roundabout again, almost there", lang: en}
+  - {text: "Avoiding traffic, taking a longer loop", lang: en}
+  - {text: "Just circling to find parking, one minute", lang: en}
+  - {text: "Missed the turn, looping back now", lang: en}
+customer:
+  - {text: "Sao anh cứ quay vòng vòng vậy, đi thẳng đi", lang: vi}
+  - {text: "Map báo anh quay 2 vòng quanh khu này rồi", lang: vi}
+  - {text: "Anh ơi anh chạy lố qua {pickup} mấy lần rồi kìa", lang: vi}
+  - {text: "Sao cuốc xe lòng vòng vậy, tiền ai chịu", lang: vi}
+  - {text: "Tài xế cố tình đi vòng để tính thêm tiền", lang: vi}
+  - {text: "Em thấy xe chạy vòng tròn chứ không lại gần", lang: vi}
+  - {text: "Đi thẳng có {dist_km}km mà anh vẽ ra cả vòng lớn", lang: vi}
+  - {text: "Anh dừng quay vòng đi, em đang vội lắm", lang: vi}
+  - {text: "Xe cứ quanh quẩn một chỗ, anh có biết đường không", lang: vi}
+  - {text: "Vẽ vòng tròn đốt tiền của em à", lang: vi}
+  - {text: "Anh chở em đi đâu vậy, quay đầu hoài", lang: vi}
+  - {text: "Map hiện xe đi thành vòng tròn luôn kìa", lang: vi}
+  - {text: "Em đợi ở {pickup} mà anh cứ lượn đi đâu", lang: vi}
+  - {text: "Anh tắt lòng vòng đi, em sẽ đánh giá 1 sao", lang: vi}
+  - {text: "You keep going in circles, drive straight!", lang: en}
+  - {text: "The map shows you looping around the block", lang: en}
+  - {text: "Stop circling, go straight to {pickup}", lang: en}
+  - {text: "Why is the trip {dist_km}km longer than quoted?", lang: en}
+  - {text: "Circling on purpose to inflate the fare, I will report", lang: en}
+  - {text: "You passed the pickup three times already", lang: en}

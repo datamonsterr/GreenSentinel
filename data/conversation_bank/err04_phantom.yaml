@@ -1,0 +1,43 @@
+context: err04_phantom
+driver:
+  - {text: "Cuốc ảo này xong nhanh, tiền vẫn về", lang: vi, trap: keyword}
+  - {text: "Anh bấm xong cuốc ảo rồi, khỏi đón", lang: vi, trap: keyword}
+  - {text: "Chạy cuốc ảo quen rồi, hệ thống không biết đâu", lang: vi, trap: keyword}
+  - {text: "Em phối hợp giùm anh cuốc ảo này nhé", lang: vi, trap: keyword}
+  - {text: "Cuốc ảo mà, em ở nhà cũng tính tiền", lang: vi, trap: keyword}
+  - {text: "Anh chuyên trị mấy cuốc ảo giờ cao điểm", lang: vi, trap: keyword}
+  - {text: "Ghost trip done, no passenger needed", lang: en, trap: keyword}
+  - {text: "This ghost ride pays the same, stay home", lang: en, trap: keyword}
+  - {text: "Anh bấm xong cuốc rồi, em khỏi xuống cũng được", lang: vi, trap: paraphrase}
+  - {text: "Anh tự kết thúc chuyến trên app nhé, tiền anh vẫn nhận đủ", lang: vi, trap: paraphrase}
+  - {text: "Em không cần lên xe đâu, anh xử lý trên hệ thống rồi", lang: vi, trap: paraphrase}
+  - {text: "Anh cho xe chạy không một đoạn là app tính tiền", lang: vi, trap: paraphrase}
+  - {text: "Em cứ ở yên đó, anh lo phần còn lại cho", lang: vi, trap: paraphrase}
+  - {text: "Anh chạy vòng vòng cho đủ km rồi bấm xong", lang: vi, trap: paraphrase}
+  - {text: "Để anh tự xử lý cuốc này, em không cần làm gì", lang: vi, trap: paraphrase}
+  - {text: "App đã tính cước rồi, em về đi nhé", lang: vi, trap: paraphrase}
+  - {text: "I finished the ride in the app, stay where you are", lang: en, trap: paraphrase}
+  - {text: "No need to get in, I'll close the trip myself", lang: en, trap: paraphrase}
+  - {text: "Ride completed in the app, you can go home", lang: en, trap: paraphrase}
+  - {text: "I closed the trip early, fare is mine now", lang: en, trap: paraphrase}
+customer:
+  - {text: "Chuyến này là cuốc ảo, em chưa hề lên xe", lang: vi, trap: keyword}
+  - {text: "Tài xế chạy cuốc ảo rồi thu tiền em", lang: vi, trap: keyword}
+  - {text: "App hiện cuốc ảo hoàn thành mà em còn ở nhà", lang: vi, trap: keyword}
+  - {text: "Em tố cáo cuốc ảo này, hoàn tiền cho em", lang: vi, trap: keyword}
+  - {text: "Tài xế rủ em diễn cuốc ảo ăn chia", lang: vi, trap: keyword}
+  - {text: "Cuốc ảo giờ cao điểm, em không đồng ý", lang: vi, trap: keyword}
+  - {text: "Ghost trip! I never got in the car", lang: en, trap: keyword}
+  - {text: "He ran a ghost ride and charged me", lang: en, trap: keyword}
+  - {text: "Em còn đứng ở {pickup} mà app báo đã trả khách ở {dest}", lang: vi, trap: paraphrase}
+  - {text: "Em chưa hề bước lên xe mà chuyến đã xong", lang: vi, trap: paraphrase}
+  - {text: "Tài xế bấm hoàn thành khi em còn ở nhà", lang: vi, trap: paraphrase}
+  - {text: "Em chưa gặp mặt tài xế mà app đã thu tiền", lang: vi, trap: paraphrase}
+  - {text: "Em đợi ở sảnh mà chuyến tự kết thúc luôn", lang: vi, trap: paraphrase}
+  - {text: "Tài xế tự bấm xong chuyến, em chưa đi mét nào", lang: vi, trap: paraphrase}
+  - {text: "Em còn chưa ra khỏi nhà mà cước đã trừ", lang: vi, trap: paraphrase}
+  - {text: "Chuyến kết thúc lúc em vẫn đang đợi thang máy", lang: vi, trap: paraphrase}
+  - {text: "I'm still at {pickup} but the trip shows completed", lang: en, trap: paraphrase}
+  - {text: "Never met the driver, yet I got charged", lang: en, trap: paraphrase}
+  - {text: "The ride finished by itself while I waited", lang: en, trap: paraphrase}
+  - {text: "Charged for a ride I never took", lang: en, trap: paraphrase}

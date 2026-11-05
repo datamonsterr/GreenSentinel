@@ -1,0 +1,44 @@
+context: err02_slowcrawl
+driver:
+  - {text: "Anh đi chậm cho an toàn, em đợi xíu", lang: vi}
+  - {text: "Đường đông nên anh bò từ từ, {wait_min} phút nữa tới", lang: vi}
+  - {text: "Xe anh yếu, leo dốc phải đi chậm thôi", lang: vi}
+  - {text: "Anh đi đúng tốc độ cho phép mà, vội thì hủy đi", lang: vi}
+  - {text: "Còn {dist_km}km nữa, anh đang qua dần đây", lang: vi}
+  - {text: "Kẹt xe quá, nhích từng mét một em ơi", lang: vi}
+  - {text: "Anh tiết kiệm xăng nên không dám đạp ga", lang: vi}
+  - {text: "Em hủy đi rồi anh chạy nhanh, đứng đây tốn xăng", lang: vi}
+  - {text: "Anh nghỉ chân xíu rồi bò tiếp, đợi nhé", lang: vi}
+  - {text: "Đi chậm cho chắc, va quẹt ai chịu", lang: vi}
+  - {text: "Anh đang tìm chỗ quay đầu nên đi chậm", lang: vi}
+  - {text: "Xe đông thế này, bò là nhanh rồi đó em", lang: vi}
+  - {text: "Muốn nhanh thì hủy cuốc này book lại giá khác", lang: vi}
+  - {text: "Anh chờ giá surge lên mới chạy nhanh nha em", lang: vi}
+  - {text: "I'm driving slowly for safety, please wait", lang: en}
+  - {text: "Traffic is bad, crawling meter by meter", lang: en}
+  - {text: "Cancel if you're in a hurry, I'm going slow", lang: en}
+  - {text: "Not speeding up until surge price goes up", lang: en}
+  - {text: "Almost there, just {dist_km}km more at this pace", lang: en}
+  - {text: "Saving fuel so I drive slowly, sorry", lang: en}
+customer:
+  - {text: "Anh ơi sao xe bò chậm vậy, {wait_min} phút rồi mới nhích được tí", lang: vi}
+  - {text: "Đường thì thoáng mà xe anh cứ lết từng mét", lang: vi}
+  - {text: "Anh đi nhanh giúp em với, em đang vội lắm", lang: vi}
+  - {text: "Xe cứ bò 5km/h thế này thì bao giờ mới tới", lang: vi}
+  - {text: "Tài xế cố tình đi chậm để ép em hủy cuốc", lang: vi}
+  - {text: "Ảnh kêu em tự hủy thì mới chạy nhanh", lang: vi}
+  - {text: "Em đợi ở {pickup} cả buổi, xe nhích được có {dist_km}km", lang: vi}
+  - {text: "Anh lết thế này, em hủy thì ai chịu phí", lang: vi}
+  - {text: "Ảnh nói đợi giá lên mới chạy nhanh, vô lý quá", lang: vi}
+  - {text: "Đi bộ còn nhanh hơn xe anh bò", lang: vi}
+  - {text: "Anh có định qua đón không vậy, sao cứ lòng vòng", lang: vi}
+  - {text: "Em trễ giờ làm rồi vì xe anh đi quá chậm", lang: vi}
+  - {text: "Ảnh đi chậm như rùa, chắc muốn em tự hủy", lang: vi}
+  - {text: "The car is crawling, barely moving for {wait_min} minutes", lang: en}
+  - {text: "Driver is deliberately driving slowly to force a cancel", lang: en}
+  - {text: "No traffic but he crawls at walking pace", lang: en}
+  - {text: "He says he will speed up only if I cancel and rebook", lang: en}
+  - {text: "Walking would be faster than this crawl", lang: en}
+  - {text: "Please hurry up, I am already late", lang: en}
+  - {text: "Anh bò chậm thế này là cố ý câu giờ đúng không", lang: vi}
+  - {text: "Em sẽ báo cáo cuốc này vì tài xế đi quá chậm", lang: vi}

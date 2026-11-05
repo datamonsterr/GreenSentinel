@@ -1,0 +1,467 @@
+[
+  {
+    "case_id": "mock-001-stall",
+    "category": "ERR-02",
+    "confidence": 0.8,
+    "score_semantics": {
+      "scale": "0.0_to_1.0_ordinal_support",
+      "calibrated": false,
+      "is_violation_probability": false,
+      "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+    },
+    "evidence": [
+      {
+        "source": "telemetry_points",
+        "value": 25,
+        "description": "Observed input field: telemetry_points."
+      },
+      {
+        "source": "platform_outage",
+        "value": false,
+        "description": "Observed input field: platform_outage."
+      },
+      {
+        "source": "gps_degraded",
+        "value": false,
+        "description": "Observed input field: gps_degraded."
+      },
+      {
+        "source": "stationary_duration_s",
+        "value": 240.0,
+        "description": "Observed input field: stationary_duration_s."
+      },
+      {
+        "source": "lifecycle_state",
+        "value": "cancelled",
+        "description": "Observed input field: lifecycle_state."
+      },
+      {
+        "source": "cancellation_actor",
+        "value": "passenger",
+        "description": "Observed input field: cancellation_actor."
+      }
+    ],
+    "summary": "At least 180 seconds stationary precedes passenger cancellation; intent remains unproven.",
+    "policy_version": null,
+    "retrieved_policy_clauses": [],
+    "policy_citations": [],
+    "uncertainty_score": 0.2,
+    "abstention": false,
+    "abstention_rationale": null,
+    "human_confirmation_required": true,
+    "sanctions_prohibited": true
+  },
+  {
+    "case_id": "mock-002-gps",
+    "category": "ERR-05",
+    "confidence": 0.9,
+    "score_semantics": {
+      "scale": "0.0_to_1.0_ordinal_support",
+      "calibrated": false,
+      "is_violation_probability": false,
+      "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+    },
+    "evidence": [
+      {
+        "source": "telemetry_points",
+        "value": 25,
+        "description": "Observed input field: telemetry_points."
+      },
+      {
+        "source": "platform_outage",
+        "value": false,
+        "description": "Observed input field: platform_outage."
+      },
+      {
+        "source": "gps_degraded",
+        "value": false,
+        "description": "Observed input field: gps_degraded."
+      },
+      {
+        "source": "mock_location_reported",
+        "value": true,
+        "description": "Observed input field: mock_location_reported."
+      }
+    ],
+    "summary": "Mock location is reported; suspected GPS manipulation requires analyst review.",
+    "policy_version": null,
+    "retrieved_policy_clauses": [],
+    "policy_citations": [],
+    "uncertainty_score": 0.1,
+    "abstention": false,
+    "abstention_rationale": null,
+    "human_confirmation_required": true,
+    "sanctions_prohibited": true
+  },
+  {
+    "case_id": "mock-003-normal",
+    "category": "no_violation",
+    "confidence": 0.7,
+    "score_semantics": {
+      "scale": "0.0_to_1.0_ordinal_support",
+      "calibrated": false,
+      "is_violation_probability": false,
+      "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+    },
+    "evidence": [
+      {
+        "source": "telemetry_points",
+        "value": 25,
+        "description": "Observed input field: telemetry_points."
+      },
+      {
+        "source": "platform_outage",
+        "value": false,
+        "description": "Observed input field: platform_outage."
+      },
+      {
+        "source": "gps_degraded",
+        "value": false,
+        "description": "Observed input field: gps_degraded."
+      },
+      {
+        "source": "lifecycle_state",
+        "value": "completed",
+        "description": "Observed input field: lifecycle_state."
+      },
+      {
+        "source": "mock_location_reported",
+        "value": false,
+        "description": "Observed input field: mock_location_reported."
+      }
+    ],
+    "summary": "Completed trip triggers none of the supported rules; this does not establish absence of fraud.",
+    "policy_version": null,
+    "retrieved_policy_clauses": [],
+    "policy_citations": [],
+    "uncertainty_score": 0.3,
+    "abstention": false,
+    "abstention_rationale": null,
+    "human_confirmation_required": true,
+    "sanctions_prohibited": true
+  },
+  {
+    "case_id": "mock-004-outage",
+    "category": "insufficient_evidence",
+    "confidence": 0.0,
+    "score_semantics": {
+      "scale": "0.0_to_1.0_ordinal_support",
+      "calibrated": false,
+      "is_violation_probability": false,
+      "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+    },
+    "evidence": [
+      {
+        "source": "telemetry_points",
+        "value": 25,
+        "description": "Observed input field: telemetry_points."
+      },
+      {
+        "source": "platform_outage",
+        "value": true,
+        "description": "Observed input field: platform_outage."
+      },
+      {
+        "source": "gps_degraded",
+        "value": false,
+        "description": "Observed input field: gps_degraded."
+      }
+    ],
+    "summary": "Telemetry is missing or unreliable; hold for analyst review.",
+    "policy_version": null,
+    "retrieved_policy_clauses": [],
+    "policy_citations": [],
+    "uncertainty_score": 1.0,
+    "abstention": true,
+    "abstention_rationale": "Technical failure or degraded telemetry.",
+    "human_confirmation_required": true,
+    "sanctions_prohibited": true
+  },
+  {
+    "case_id": "mock-005-missing",
+    "category": "insufficient_evidence",
+    "confidence": 0.0,
+    "score_semantics": {
+      "scale": "0.0_to_1.0_ordinal_support",
+      "calibrated": false,
+      "is_violation_probability": false,
+      "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+    },
+    "evidence": [
+      {
+        "source": "telemetry_points",
+        "value": 0,
+        "description": "Observed input field: telemetry_points."
+      },
+      {
+        "source": "platform_outage",
+        "value": false,
+        "description": "Observed input field: platform_outage."
+      },
+      {
+        "source": "gps_degraded",
+        "value": false,
+        "description": "Observed input field: gps_degraded."
+      }
+    ],
+    "summary": "Telemetry is missing or unreliable; hold for analyst review.",
+    "policy_version": null,
+    "retrieved_policy_clauses": [],
+    "policy_citations": [],
+    "uncertainty_score": 1.0,
+    "abstention": true,
+    "abstention_rationale": "Technical failure or degraded telemetry.",
+    "human_confirmation_required": true,
+    "sanctions_prohibited": true
+  },
+  {
+    "case_id": "mock-006-boundary",
+    "category": "ERR-02",
+    "confidence": 0.8,
+    "score_semantics": {
+      "scale": "0.0_to_1.0_ordinal_support",
+      "calibrated": false,
+      "is_violation_probability": false,
+      "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+    },
+    "evidence": [
+      {
+        "source": "telemetry_points",
+        "value": 25,
+        "description": "Observed input field: telemetry_points."
+      },
+      {
+        "source": "platform_outage",
+        "value": false,
+        "description": "Observed input field: platform_outage."
+      },
+      {
+        "source": "gps_degraded",
+        "value": false,
+        "description": "Observed input field: gps_degraded."
+      },
+      {
+        "source": "stationary_duration_s",
+        "value": 180.0,
+        "description": "Observed input field: stationary_duration_s."
+      },
+      {
+        "source": "lifecycle_state",
+        "value": "cancelled",
+        "description": "Observed input field: lifecycle_state."
+      },
+      {
+        "source": "cancellation_actor",
+        "value": "passenger",
+        "description": "Observed input field: cancellation_actor."
+      }
+    ],
+    "summary": "At least 180 seconds stationary precedes passenger cancellation; intent remains unproven.",
+    "policy_version": null,
+    "retrieved_policy_clauses": [],
+    "policy_citations": [],
+    "uncertainty_score": 0.2,
+    "abstention": false,
+    "abstention_rationale": null,
+    "human_confirmation_required": true,
+    "sanctions_prohibited": true
+  },
+  {
+    "case_id": "mock-007-below-boundary",
+    "category": "insufficient_evidence",
+    "confidence": 0.0,
+    "score_semantics": {
+      "scale": "0.0_to_1.0_ordinal_support",
+      "calibrated": false,
+      "is_violation_probability": false,
+      "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+    },
+    "evidence": [
+      {
+        "source": "telemetry_points",
+        "value": 25,
+        "description": "Observed input field: telemetry_points."
+      },
+      {
+        "source": "platform_outage",
+        "value": false,
+        "description": "Observed input field: platform_outage."
+      },
+      {
+        "source": "gps_degraded",
+        "value": false,
+        "description": "Observed input field: gps_degraded."
+      },
+      {
+        "source": "stationary_duration_s",
+        "value": 179.0,
+        "description": "Observed input field: stationary_duration_s."
+      },
+      {
+        "source": "lifecycle_state",
+        "value": "cancelled",
+        "description": "Observed input field: lifecycle_state."
+      },
+      {
+        "source": "cancellation_actor",
+        "value": "passenger",
+        "description": "Observed input field: cancellation_actor."
+      },
+      {
+        "source": "mock_location_reported",
+        "value": false,
+        "description": "Observed input field: mock_location_reported."
+      }
+    ],
+    "summary": "Available evidence does not support a baseline classification; analyst review required.",
+    "policy_version": null,
+    "retrieved_policy_clauses": [],
+    "policy_citations": [],
+    "uncertainty_score": 1.0,
+    "abstention": true,
+    "abstention_rationale": "Inconclusive feature combination.",
+    "human_confirmation_required": true,
+    "sanctions_prohibited": true
+  },
+  {
+    "case_id": "mock-008-degraded",
+    "category": "insufficient_evidence",
+    "confidence": 0.0,
+    "score_semantics": {
+      "scale": "0.0_to_1.0_ordinal_support",
+      "calibrated": false,
+      "is_violation_probability": false,
+      "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+    },
+    "evidence": [
+      {
+        "source": "telemetry_points",
+        "value": 25,
+        "description": "Observed input field: telemetry_points."
+      },
+      {
+        "source": "platform_outage",
+        "value": false,
+        "description": "Observed input field: platform_outage."
+      },
+      {
+        "source": "gps_degraded",
+        "value": true,
+        "description": "Observed input field: gps_degraded."
+      }
+    ],
+    "summary": "Telemetry is missing or unreliable; hold for analyst review.",
+    "policy_version": null,
+    "retrieved_policy_clauses": [],
+    "policy_citations": [],
+    "uncertainty_score": 1.0,
+    "abstention": true,
+    "abstention_rationale": "Technical failure or degraded telemetry.",
+    "human_confirmation_required": true,
+    "sanctions_prohibited": true
+  },
+  {
+    "case_id": "mock-009-driver-cancel",
+    "category": "insufficient_evidence",
+    "confidence": 0.0,
+    "score_semantics": {
+      "scale": "0.0_to_1.0_ordinal_support",
+      "calibrated": false,
+      "is_violation_probability": false,
+      "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+    },
+    "evidence": [
+      {
+        "source": "telemetry_points",
+        "value": 25,
+        "description": "Observed input field: telemetry_points."
+      },
+      {
+        "source": "platform_outage",
+        "value": false,
+        "description": "Observed input field: platform_outage."
+      },
+      {
+        "source": "gps_degraded",
+        "value": false,
+        "description": "Observed input field: gps_degraded."
+      },
+      {
+        "source": "stationary_duration_s",
+        "value": 240.0,
+        "description": "Observed input field: stationary_duration_s."
+      },
+      {
+        "source": "lifecycle_state",
+        "value": "cancelled",
+        "description": "Observed input field: lifecycle_state."
+      },
+      {
+        "source": "cancellation_actor",
+        "value": "driver",
+        "description": "Observed input field: cancellation_actor."
+      },
+      {
+        "source": "mock_location_reported",
+        "value": false,
+        "description": "Observed input field: mock_location_reported."
+      }
+    ],
+    "summary": "Available evidence does not support a baseline classification; analyst review required.",
+    "policy_version": null,
+    "retrieved_policy_clauses": [],
+    "policy_citations": [],
+    "uncertainty_score": 1.0,
+    "abstention": true,
+    "abstention_rationale": "Inconclusive feature combination.",
+    "human_confirmation_required": true,
+    "sanctions_prohibited": true
+  },
+  {
+    "case_id": "mock-010-long-completed",
+    "category": "no_violation",
+    "confidence": 0.7,
+    "score_semantics": {
+      "scale": "0.0_to_1.0_ordinal_support",
+      "calibrated": false,
+      "is_violation_probability": false,
+      "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+    },
+    "evidence": [
+      {
+        "source": "telemetry_points",
+        "value": 25,
+        "description": "Observed input field: telemetry_points."
+      },
+      {
+        "source": "platform_outage",
+        "value": false,
+        "description": "Observed input field: platform_outage."
+      },
+      {
+        "source": "gps_degraded",
+        "value": false,
+        "description": "Observed input field: gps_degraded."
+      },
+      {
+        "source": "lifecycle_state",
+        "value": "completed",
+        "description": "Observed input field: lifecycle_state."
+      },
+      {
+        "source": "mock_location_reported",
+        "value": false,
+        "description": "Observed input field: mock_location_reported."
+      }
+    ],
+    "summary": "Completed trip triggers none of the supported rules; this does not establish absence of fraud.",
+    "policy_version": null,
+    "retrieved_policy_clauses": [],
+    "policy_citations": [],
+    "uncertainty_score": 0.3,
+    "abstention": false,
+    "abstention_rationale": null,
+    "human_confirmation_required": true,
+    "sanctions_prohibited": true
+  }
+]

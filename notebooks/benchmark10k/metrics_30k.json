@@ -1,0 +1,279 @@
+{
+  "batches": {
+    "v1": {
+      "n": 10000,
+      "sha_match": true,
+      "trips_sha256": "b6aed4a2a6058c9bd6c4a002493f27254e70fcaba2f3df154b7931ed12a88154",
+      "class_counts": {
+        "ERR-01": 500,
+        "ERR-02": 800,
+        "ERR-03": 500,
+        "ERR-04": 300,
+        "ERR-05": 300,
+        "insufficient_evidence": 600,
+        "no_violation": 7000
+      },
+      "accuracy": 0.7043,
+      "macro_f1": 0.5059,
+      "guardrail_blocked": 1894,
+      "guardrail_block_rate": 0.1894,
+      "per_class": {
+        "ERR-01": {
+          "precision": 1.0,
+          "recall": 0.958,
+          "f1": 0.9785,
+          "support": 500
+        },
+        "ERR-02": {
+          "precision": 1.0,
+          "recall": 0.9313,
+          "f1": 0.9644,
+          "support": 800
+        },
+        "ERR-03": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 500
+        },
+        "ERR-04": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 300
+        },
+        "ERR-05": {
+          "precision": 0.2396,
+          "recall": 1.0,
+          "f1": 0.3866,
+          "support": 300
+        },
+        "insufficient_evidence": {
+          "precision": 0.2508,
+          "recall": 1.0,
+          "f1": 0.4011,
+          "support": 600
+        },
+        "no_violation": {
+          "precision": 0.9585,
+          "recall": 0.7027,
+          "f1": 0.8109,
+          "support": 7000
+        }
+      },
+      "coverage": {}
+    },
+    "v2": {
+      "n": 10000,
+      "sha_match": true,
+      "trips_sha256": "8675f823b27e0b79768e89ea4cc30834f59069ca155f1a891598fef75207c1b0",
+      "class_counts": {
+        "ERR-01": 500,
+        "ERR-02": 800,
+        "ERR-03": 500,
+        "ERR-04": 300,
+        "ERR-05": 300,
+        "insufficient_evidence": 600,
+        "no_violation": 7000
+      },
+      "accuracy": 0.6778,
+      "macro_f1": 0.4941,
+      "guardrail_blocked": 1830,
+      "guardrail_block_rate": 0.183,
+      "per_class": {
+        "ERR-01": {
+          "precision": 1.0,
+          "recall": 0.95,
+          "f1": 0.9744,
+          "support": 500
+        },
+        "ERR-02": {
+          "precision": 1.0,
+          "recall": 0.9125,
+          "f1": 0.9542,
+          "support": 800
+        },
+        "ERR-03": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 500
+        },
+        "ERR-04": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 300
+        },
+        "ERR-05": {
+          "precision": 0.2234,
+          "recall": 1.0,
+          "f1": 0.3652,
+          "support": 300
+        },
+        "insufficient_evidence": {
+          "precision": 0.233,
+          "recall": 1.0,
+          "f1": 0.378,
+          "support": 600
+        },
+        "no_violation": {
+          "precision": 0.9582,
+          "recall": 0.6676,
+          "f1": 0.7869,
+          "support": 7000
+        }
+      },
+      "coverage": {
+        "empty_conversation": 1219,
+        "legit_cancel_subset": 350
+      }
+    },
+    "v3": {
+      "n": 10000,
+      "sha_match": true,
+      "trips_sha256": "8ba376474d2af19925eb160303f3cbf79dd370a5ce50089e04b54f1cb273fb1b",
+      "class_counts": {
+        "ERR-01": 500,
+        "ERR-02": 800,
+        "ERR-03": 500,
+        "ERR-04": 300,
+        "ERR-05": 300,
+        "insufficient_evidence": 600,
+        "no_violation": 7000
+      },
+      "accuracy": 0.6583,
+      "macro_f1": 0.4695,
+      "guardrail_blocked": 1839,
+      "guardrail_block_rate": 0.1839,
+      "per_class": {
+        "ERR-01": {
+          "precision": 1.0,
+          "recall": 0.946,
+          "f1": 0.9723,
+          "support": 500
+        },
+        "ERR-02": {
+          "precision": 1.0,
+          "recall": 0.6613,
+          "f1": 0.7961,
+          "support": 800
+        },
+        "ERR-03": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 500
+        },
+        "ERR-04": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 300
+        },
+        "ERR-05": {
+          "precision": 0.2346,
+          "recall": 1.0,
+          "f1": 0.38,
+          "support": 300
+        },
+        "insufficient_evidence": {
+          "precision": 0.2133,
+          "recall": 1.0,
+          "f1": 0.3516,
+          "support": 600
+        },
+        "no_violation": {
+          "precision": 0.9541,
+          "recall": 0.6687,
+          "f1": 0.7863,
+          "support": 7000
+        }
+      },
+      "coverage": {
+        "empty_conversation": 1142,
+        "legit_cancel_subset": 367,
+        "loop_subset": 138,
+        "slowcrawl_subset": 233
+      }
+    }
+  },
+  "combined": {
+    "n": 30000,
+    "class_counts": {
+      "ERR-01": 1500,
+      "ERR-02": 2400,
+      "ERR-03": 1500,
+      "ERR-04": 900,
+      "ERR-05": 900,
+      "insufficient_evidence": 1800,
+      "no_violation": 21000
+    },
+    "accuracy": 0.6801,
+    "macro_f1": 0.4904,
+    "per_class": {
+      "ERR-01": {
+        "precision": 1.0,
+        "recall": 0.9513,
+        "f1": 0.9751,
+        "support": 1500
+      },
+      "ERR-02": {
+        "precision": 1.0,
+        "recall": 0.835,
+        "f1": 0.9101,
+        "support": 2400
+      },
+      "ERR-03": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 1500
+      },
+      "ERR-04": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 900
+      },
+      "ERR-05": {
+        "precision": 0.2323,
+        "recall": 1.0,
+        "f1": 0.377,
+        "support": 900
+      },
+      "insufficient_evidence": {
+        "precision": 0.2314,
+        "recall": 1.0,
+        "f1": 0.3758,
+        "support": 1800
+      },
+      "no_violation": {
+        "precision": 0.957,
+        "recall": 0.6797,
+        "f1": 0.7948,
+        "support": 21000
+      }
+    },
+    "cross_batch_duplicates": {},
+    "distinct_drivers": 5924,
+    "drivers_spanning_batches": 0,
+    "dialogue_modes": {
+      "v1:full-legacy": 10000,
+      "v2:customer_only": 604,
+      "v2:empty": 1219,
+      "v2:full": 8177,
+      "v3:customer_only": 551,
+      "v3:empty": 1142,
+      "v3:full": 8307
+    },
+    "subset_totals": {
+      "v2:legit_cancel_subset": 350,
+      "v3:legit_cancel_subset": 367,
+      "v3:loop_subset": 138,
+      "v3:slowcrawl_subset": 233
+    },
+    "trips_with_feedback_block": 20000,
+    "trips_with_feedback_rating": 13983
+  }
+}

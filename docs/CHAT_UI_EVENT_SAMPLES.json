@@ -1,0 +1,306 @@
+{
+  "description": "Synthetic renderer fixtures; no real driver or trip data.",
+  "streams": [
+    {
+      "name": "success_all_renderers",
+      "events": [
+        {
+          "schema_version": "1.0",
+          "event_id": "evt_mock_000",
+          "run_id": "run_mock_001",
+          "message_id": "msg_mock_001",
+          "sequence": 0,
+          "timestamp": "2026-09-24T10:00:00.000Z",
+          "type": "status.thinking",
+          "payload": {
+            "label": "Reviewing request"
+          }
+        },
+        {
+          "schema_version": "1.0",
+          "event_id": "evt_mock_001",
+          "run_id": "run_mock_001",
+          "message_id": "msg_mock_001",
+          "sequence": 1,
+          "timestamp": "2026-09-24T10:00:01.000Z",
+          "type": "tool.start",
+          "payload": {
+            "tool_call_id": "call_mock_001",
+            "tool_name": "get_driver_card",
+            "label": "Loading driver profile"
+          }
+        },
+        {
+          "schema_version": "1.0",
+          "event_id": "evt_mock_002",
+          "run_id": "run_mock_001",
+          "message_id": "msg_mock_001",
+          "sequence": 2,
+          "timestamp": "2026-09-24T10:00:02.000Z",
+          "type": "tool.end",
+          "payload": {
+            "tool_call_id": "call_mock_001",
+            "tool_name": "get_driver_card",
+            "status": "succeeded",
+            "duration_ms": 320,
+            "summary": "Driver record loaded"
+          }
+        },
+        {
+          "schema_version": "1.0",
+          "event_id": "evt_mock_003",
+          "run_id": "run_mock_001",
+          "message_id": "msg_mock_001",
+          "sequence": 3,
+          "timestamp": "2026-09-24T10:00:03.000Z",
+          "type": "driver.link",
+          "payload": {
+            "driver": {
+              "driver_id": "driver_mock_001",
+              "display_name": "Mock Driver 001"
+            },
+            "label": "Open Mock Driver 001",
+            "action": "open_driver"
+          }
+        },
+        {
+          "schema_version": "1.0",
+          "event_id": "evt_mock_004",
+          "run_id": "run_mock_001",
+          "message_id": "msg_mock_001",
+          "sequence": 4,
+          "timestamp": "2026-09-24T10:00:04.000Z",
+          "type": "tool.start",
+          "payload": {
+            "tool_call_id": "call_mock_002",
+            "tool_name": "list_cases",
+            "label": "Loading linked cases"
+          }
+        },
+        {
+          "schema_version": "1.0",
+          "event_id": "evt_mock_005",
+          "run_id": "run_mock_001",
+          "message_id": "msg_mock_001",
+          "sequence": 5,
+          "timestamp": "2026-09-24T10:00:05.000Z",
+          "type": "tool.end",
+          "payload": {
+            "tool_call_id": "call_mock_002",
+            "tool_name": "list_cases",
+            "status": "succeeded",
+            "duration_ms": 210,
+            "summary": "One case found"
+          }
+        },
+        {
+          "schema_version": "1.0",
+          "event_id": "evt_mock_006",
+          "run_id": "run_mock_001",
+          "message_id": "msg_mock_001",
+          "sequence": 6,
+          "timestamp": "2026-09-24T10:00:06.000Z",
+          "type": "case.list",
+          "payload": {
+            "list_id": "list_mock_001",
+            "items": [
+              {
+                "case_id": "case_mock_001",
+                "driver": {
+                  "driver_id": "driver_mock_001",
+                  "display_name": "Mock Driver 001"
+                },
+                "category": "ERR-02",
+                "status": "ready",
+                "priority": "P1",
+                "summary": "Stationary interval requires review.",
+                "updated_at": "2026-09-24T09:58:00.000Z"
+              }
+            ],
+            "next_cursor": null,
+            "total_count": 1
+          }
+        },
+        {
+          "schema_version": "1.0",
+          "event_id": "evt_mock_007",
+          "run_id": "run_mock_001",
+          "message_id": "msg_mock_001",
+          "sequence": 7,
+          "timestamp": "2026-09-24T10:00:07.000Z",
+          "type": "routes",
+          "payload": {
+            "case_id": "case_mock_001",
+            "driver_id": "driver_mock_001",
+            "selected_route_id": "route_mock_001",
+            "routes": [
+              {
+                "route_id": "route_mock_001",
+                "label": "Synthetic observed route",
+                "geometry": {
+                  "type": "LineString",
+                  "coordinates": [
+                    [
+                      105.8342,
+                      21.0278
+                    ],
+                    [
+                      105.8351,
+                      21.0285
+                    ],
+                    [
+                      105.836,
+                      21.029
+                    ]
+                  ]
+                },
+                "distance_m": 240,
+                "duration_s": 65,
+                "source": "mock",
+                "observed_at": "2026-09-24T09:58:00.000Z"
+              }
+            ]
+          }
+        },
+        {
+          "schema_version": "1.0",
+          "event_id": "evt_mock_008",
+          "run_id": "run_mock_001",
+          "message_id": "msg_mock_001",
+          "sequence": 8,
+          "timestamp": "2026-09-24T10:00:08.000Z",
+          "type": "text.delta",
+          "payload": {
+            "delta": "One case is ready for analyst review."
+          }
+        },
+        {
+          "schema_version": "1.0",
+          "event_id": "evt_mock_009",
+          "run_id": "run_mock_001",
+          "message_id": "msg_mock_001",
+          "sequence": 9,
+          "timestamp": "2026-09-24T10:00:09.000Z",
+          "type": "run.completed",
+          "payload": {
+            "status": "completed"
+          }
+        }
+      ]
+    },
+    {
+      "name": "tool_failure",
+      "events": [
+        {
+          "schema_version": "1.0",
+          "event_id": "err_0",
+          "run_id": "run_error",
+          "message_id": "msg_error",
+          "sequence": 0,
+          "timestamp": "2026-09-24T10:00:00.000Z",
+          "type": "status.thinking",
+          "payload": {
+            "label": "Reviewing request"
+          }
+        },
+        {
+          "schema_version": "1.0",
+          "event_id": "err_1",
+          "run_id": "run_error",
+          "message_id": "msg_error",
+          "sequence": 1,
+          "timestamp": "2026-09-24T10:00:01.000Z",
+          "type": "tool.start",
+          "payload": {
+            "tool_call_id": "call_mock_001",
+            "tool_name": "get_driver_card",
+            "label": "Loading driver profile"
+          }
+        },
+        {
+          "schema_version": "1.0",
+          "event_id": "err_2",
+          "run_id": "run_error",
+          "message_id": "msg_error",
+          "sequence": 2,
+          "timestamp": "2026-09-24T10:00:02.000Z",
+          "type": "tool.end",
+          "payload": {
+            "tool_call_id": "call_mock_001",
+            "tool_name": "get_driver_card",
+            "status": "failed",
+            "duration_ms": 500,
+            "error": {
+              "code": "TOOL_TIMEOUT",
+              "message": "Driver lookup timed out.",
+              "retryable": true
+            }
+          }
+        },
+        {
+          "schema_version": "1.0",
+          "event_id": "err_3",
+          "run_id": "run_error",
+          "message_id": "msg_error",
+          "sequence": 3,
+          "timestamp": "2026-09-24T10:00:03.000Z",
+          "type": "run.error",
+          "payload": {
+            "error": {
+              "code": "LOOKUP_UNAVAILABLE",
+              "message": "Please retry the request.",
+              "retryable": true
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "empty_results",
+      "events": [
+        {
+          "schema_version": "1.0",
+          "event_id": "empty_0",
+          "run_id": "run_empty",
+          "message_id": "msg_empty",
+          "sequence": 0,
+          "timestamp": "2026-09-24T10:00:00.000Z",
+          "type": "case.list",
+          "payload": {
+            "list_id": "list_empty",
+            "items": [],
+            "next_cursor": null,
+            "total_count": 0
+          }
+        },
+        {
+          "schema_version": "1.0",
+          "event_id": "empty_1",
+          "run_id": "run_empty",
+          "message_id": "msg_empty",
+          "sequence": 1,
+          "timestamp": "2026-09-24T10:00:01.000Z",
+          "type": "routes",
+          "payload": {
+            "case_id": "case_empty",
+            "driver_id": "driver_mock_001",
+            "routes": [],
+            "selected_route_id": null
+          }
+        },
+        {
+          "schema_version": "1.0",
+          "event_id": "empty_2",
+          "run_id": "run_empty",
+          "message_id": "msg_empty",
+          "sequence": 2,
+          "timestamp": "2026-09-24T10:00:02.000Z",
+          "type": "run.completed",
+          "payload": {
+            "status": "completed"
+          }
+        }
+      ]
+    }
+  ]
+}

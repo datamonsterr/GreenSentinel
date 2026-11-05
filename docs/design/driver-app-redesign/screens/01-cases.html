@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>GreenSM Driver - Vụ việc của bạn</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-high": "#e2e7ff",
+            "surface-container": "#eaedff",
+            "on-tertiary-fixed": "#2f1500",
+            "surface-container-lowest": "#ffffff",
+            "on-tertiary-container": "#fffbff",
+            "primary-fixed-dim": "#68dba9",
+            "surface-bright": "#faf8ff",
+            "inverse-surface": "#283044",
+            "error-container": "#ffdad6",
+            "on-primary-container": "#f5fff7",
+            "on-background": "#131b2e",
+            "on-primary-fixed": "#002114",
+            "error": "#ba1a1a",
+            "on-tertiary": "#ffffff",
+            "on-surface-variant": "#3d4a42",
+            "surface": "#faf8ff",
+            "on-primary": "#ffffff",
+            "on-secondary": "#ffffff",
+            "secondary-fixed-dim": "#93ccff",
+            "inverse-on-surface": "#eef0ff",
+            "secondary-container": "#5bb8fe",
+            "tertiary-fixed": "#ffdcc3",
+            "on-error-container": "#93000a",
+            "on-secondary-container": "#00476e",
+            "inverse-primary": "#68dba9",
+            "tertiary-container": "#b15f00",
+            "surface-container-highest": "#dae2fd",
+            "on-tertiary-fixed-variant": "#6e3900",
+            "primary": "#006948",
+            "primary-container": "#00855d",
+            "outline-variant": "#bccac0",
+            "surface-container-low": "#f2f3ff",
+            "surface-dim": "#d2d9f4",
+            "tertiary": "#8d4b00",
+            "outline": "#6d7a72",
+            "on-secondary-fixed": "#001d31",
+            "secondary": "#006398",
+            "surface-variant": "#dae2fd",
+            "on-primary-fixed-variant": "#005137",
+            "secondary-fixed": "#cce5ff",
+            "background": "#faf8ff",
+            "on-surface": "#131b2e",
+            "surface-tint": "#006c4a",
+            "on-secondary-fixed-variant": "#004b73",
+            "primary-fixed": "#85f8c4",
+            "tertiary-fixed-dim": "#ffb77d",
+            "on-error": "#ffffff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "3xl": "1.5rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "gutter": "1rem",
+            "space-xxs": "0.125rem",
+            "margin-lg": "1.25rem",
+            "space-xs": "0.25rem",
+            "margin": "1rem",
+            "gutter-sm": "0.75rem",
+            "space-xl": "2rem"
+          },
+          "fontFamily": {
+            "headline-sm": ["Inter"],
+            "metric-numeral": ["Inter"],
+            "label-sm": ["Inter"],
+            "display-lg-mobile": ["Inter"],
+            "headline-md": ["Inter"],
+            "headline-lg": ["Inter"],
+            "label-md": ["Inter"],
+            "body-sm": ["Inter"],
+            "title-md": ["Inter"],
+            "body-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "display-lg": ["Inter"],
+            "label-lg": ["Inter"]
+          },
+          "fontSize": {
+            "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "metric-numeral": ["24px", { "lineHeight": "28px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-sm": ["10px", { "lineHeight": "12px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "display-lg-mobile": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "headline-lg": ["28px", { "lineHeight": "34px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "title-md": ["16px", { "lineHeight": "22px", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "display-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-lg": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill {
+      font-variation-settings: 'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 24;
+    }
+    body {
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-slate-100 flex justify-center items-start min-h-screen sm:py-6 antialiased font-body-md text-on-surface">
+<!-- Mobile Viewport Frame -->
+<main class="w-full max-w-[412px] min-h-screen sm:min-h-[860px] bg-background flex flex-col relative overflow-hidden sm:rounded-[36px] sm:shadow-2xl sm:border sm:border-outline-variant/30">
+<!-- Mobile Native Status Bar -->
+<div class="w-full h-11 pt-2.5 px-6 flex justify-between items-center text-on-surface font-label-md select-none z-50 bg-surface-container-lowest">
+<span class="font-bold tracking-tight">09:41</span>
+<div class="flex items-center space-x-1.5">
+<span class="material-symbols-outlined text-[17px]">signal_cellular_alt</span>
+<span class="material-symbols-outlined text-[17px]">wifi</span>
+<span class="material-symbols-outlined text-[19px] rotate-90">battery_full</span>
+</div>
+</div>
+<!-- Top App Bar (Shared Component Architecture) -->
+<header class="w-full z-40 flex items-center justify-between px-4 h-14 bg-surface-container-lowest shadow-sm">
+<div class="flex items-center space-x-2.5">
+<div class="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[22px] fill">shield</span>
+</div>
+<div>
+<div class="flex items-center space-x-1.5">
+<h1 class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">Vụ việc của bạn</h1>
+<span class="inline-flex items-center justify-center px-1.5 py-0.5 rounded-full text-[11px] font-bold bg-primary text-on-primary">(3)</span>
+</div>
+<p class="font-label-sm text-[11px] text-outline font-medium">Tài xế: Nguyễn Văn Hưng • 29E-884.21</p>
+</div>
+</div>
+<button class="relative w-10 h-10 rounded-full flex items-center justify-center hover:bg-surface-container-low transition-colors active:scale-95 duration-150 text-on-surface-variant">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 rounded-full bg-error ring-2 ring-surface-container-lowest"></span>
+</button>
+</header>
+<!-- Scrollable Content Canvas -->
+<div class="flex-1 overflow-y-auto px-4 pt-3 pb-28 space-y-4">
+<!-- AI Assurance Notice Banner -->
+<div class="rounded-2xl p-3.5 bg-gradient-to-r from-emerald-50 via-teal-50/60 to-surface-container-lowest border border-primary/20 shadow-sm flex items-start space-x-3">
+<div class="w-8 h-8 rounded-xl bg-primary text-on-primary flex items-center justify-center flex-shrink-0 mt-0.5 shadow-sm">
+<span class="material-symbols-outlined text-[18px] fill">auto_awesome</span>
+</div>
+<div class="flex-1">
+<div class="flex items-center space-x-1 mb-0.5">
+<span class="font-label-md text-label-md text-primary font-bold">Hệ thống AI tự động ghi nhận</span>
+<span class="text-[10px] uppercase font-bold tracking-wide px-1 rounded bg-primary/15 text-primary">Bảo vệ</span>
+</div>
+<p class="font-body-sm text-[12px] leading-relaxed text-on-surface-variant">
+            Quyền lợi tài xế được bảo vệ tối đa. Hãy phản hồi các vụ việc trước thời hạn để giữ vững điểm tín nhiệm và chế độ thưởng tuần.
+          </p>
+</div>
+</div>
+<!-- Segmented Control Filter Tabs -->
+<div class="p-1 bg-surface-container-low rounded-2xl flex items-center border border-outline-variant/30">
+<button class="flex-1 py-2 px-3 rounded-xl bg-primary text-on-primary font-label-md text-label-md font-bold shadow-sm flex items-center justify-center space-x-1.5 transition-all" id="tab-open">
+<span>Đang mở</span>
+<span class="w-5 h-5 rounded-full bg-on-primary/20 text-on-primary text-[11px] font-bold flex items-center justify-center">3</span>
+</button>
+<button class="flex-1 py-2 px-3 rounded-xl text-on-surface-variant hover:text-on-surface font-label-md text-label-md font-medium flex items-center justify-center space-x-1.5 transition-all" id="tab-resolved">
+<span>Đã xử lý</span>
+<span class="w-5 h-5 rounded-full bg-surface-container-high/60 text-outline text-[11px] font-semibold flex items-center justify-center">12</span>
+</button>
+</div>
+<!-- Section Title & Counter -->
+<div class="flex items-center justify-between pt-1">
+<span class="font-label-md text-label-md text-outline uppercase tracking-wider font-bold">Cần xử lý ngay</span>
+<span class="font-label-sm text-label-sm text-primary font-semibold flex items-center space-x-1">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+<span>Cập nhật 2 phút trước</span>
+</span>
+</div>
+<!-- Case Cards List -->
+<div class="space-y-3">
+<!-- Case Card 1 -->
+<article class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/40 shadow-sm hover:shadow-md transition-all active:scale-[0.99] duration-150 cursor-pointer relative overflow-hidden group">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-amber-500"></div>
+<!-- Top Row: Short ID & Natural Status Pill -->
+<div class="flex items-center justify-between mb-2.5">
+<span class="font-mono text-xs font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
+              #A3F9
+            </span>
+<!-- Amber Warning Pill -->
+<div class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200 space-x-1">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping"></span>
+<span>Chờ bạn phản hồi</span>
+</div>
+</div>
+<!-- Case Title -->
+<h2 class="font-title-md text-title-md text-on-surface font-bold group-hover:text-primary transition-colors leading-snug">
+            Lệch tuyến đường so với lộ trình
+          </h2>
+<!-- Trip details row -->
+<div class="flex items-center text-xs text-on-surface-variant font-medium mt-1.5 space-x-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">electric_car</span>
+<span>Chuyến xe #SM-8291</span>
+<span class="text-slate-300">•</span>
+<span>VinFast VF e34</span>
+</div>
+<!-- Bottom Meta & Deadline Bar -->
+<div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between">
+<div class="flex items-center space-x-2 text-xs">
+<span class="text-slate-500 flex items-center">
+<span class="material-symbols-outlined text-[14px] mr-1">schedule</span>
+                Hôm qua, 14:20
+              </span>
+<span class="text-slate-300">•</span>
+<span class="font-bold text-amber-700 bg-amber-50 px-2 py-0.5 rounded border border-amber-200/80">
+                Còn 2 ngày để phản hồi
+              </span>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-xl group-hover:translate-x-0.5 transition-transform">chevron_right</span>
+</div>
+</article>
+<!-- Case Card 2 -->
+<article class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/40 shadow-sm hover:shadow-md transition-all active:scale-[0.99] duration-150 cursor-pointer relative overflow-hidden group">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-sky-500"></div>
+<!-- Top Row -->
+<div class="flex items-center justify-between mb-2.5">
+<span class="font-mono text-xs font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
+              #B7K2
+            </span>
+<!-- Sky Blue Status Pill -->
+<div class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-sky-50 text-sky-700 border border-sky-200 space-x-1">
+<span class="material-symbols-outlined text-[13px]">manage_search</span>
+<span>Đang được chuyên viên xem xét</span>
+</div>
+</div>
+<!-- Title -->
+<h2 class="font-title-md text-title-md text-on-surface font-bold group-hover:text-primary transition-colors leading-snug">
+            Chuyến đi kết thúc bất thường
+          </h2>
+<!-- Details row -->
+<div class="flex items-center text-xs text-on-surface-variant font-medium mt-1.5 space-x-1.5">
+<span class="material-symbols-outlined text-[16px] text-sky-600">person_cancel</span>
+<span>Chuyến xe #SM-7104</span>
+<span class="text-slate-300">•</span>
+<span>Khách hủy giữa chừng</span>
+</div>
+<!-- Bottom Meta -->
+<div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between">
+<div class="flex items-center space-x-2 text-xs">
+<span class="text-slate-500 flex items-center">
+<span class="material-symbols-outlined text-[14px] mr-1">schedule</span>
+                2 ngày trước, 09:15
+              </span>
+<span class="text-slate-300">•</span>
+<span class="text-sky-700 font-medium bg-sky-50 px-2 py-0.5 rounded border border-sky-200/80">
+                Dự kiến phản hồi trong 24h
+              </span>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-xl group-hover:translate-x-0.5 transition-transform">chevron_right</span>
+</div>
+</article>
+<!-- Case Card 3 -->
+<article class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/40 shadow-sm hover:shadow-md transition-all active:scale-[0.99] duration-150 cursor-pointer relative overflow-hidden group">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-amber-500"></div>
+<!-- Top Row -->
+<div class="flex items-center justify-between mb-2.5">
+<span class="font-mono text-xs font-bold px-2 py-0.5 rounded-md bg-slate-100 text-slate-700 border border-slate-200">
+              #C4M8
+            </span>
+<!-- Amber Warning Pill -->
+<div class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200 space-x-1">
+<span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping"></span>
+<span>Chờ bạn phản hồi</span>
+</div>
+</div>
+<!-- Title -->
+<h2 class="font-title-md text-title-md text-on-surface font-bold group-hover:text-primary transition-colors leading-snug">
+            Dừng đón trả khách sai điểm chỉ định
+          </h2>
+<!-- Details row -->
+<div class="flex items-center text-xs text-on-surface-variant font-medium mt-1.5 space-x-1.5">
+<span class="material-symbols-outlined text-[16px] text-amber-600">wrong_location</span>
+<span>Chuyến xe #SM-6950</span>
+<span class="text-slate-300">•</span>
+<span>Cổng Bến xe Mỹ Đình</span>
+</div>
+<!-- Bottom Meta & Urgent Hint -->
+<div class="mt-3 pt-3 border-t border-slate-100 flex items-center justify-between">
+<div class="flex items-center space-x-2 text-xs">
+<span class="text-slate-500 flex items-center">
+<span class="material-symbols-outlined text-[14px] mr-1">schedule</span>
+                15 Th05, 18:40
+              </span>
+<span class="text-slate-300">•</span>
+<span class="font-bold text-amber-800 bg-amber-100/90 px-2 py-0.5 rounded border border-amber-300 flex items-center space-x-1">
+<span class="material-symbols-outlined text-[13px] text-amber-700">hourglass_top</span>
+<span>Còn 18 giờ để phản hồi</span>
+</span>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-xl group-hover:translate-x-0.5 transition-transform">chevron_right</span>
+</div>
+</article>
+</div>
+<!-- Empty State Preview / Driver Health Indicator -->
+<section class="mt-5 rounded-2xl p-4 bg-surface-container-lowest border border-dashed border-emerald-300/80 shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[11px] font-bold text-outline uppercase tracking-wider">Trạng thái hồ sơ tài xế</span>
+<span class="px-2 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">Chuẩn 5 Sao</span>
+</div>
+<div class="flex items-center space-x-3.5">
+<div class="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center text-primary flex-shrink-0 border border-emerald-100">
+<span class="material-symbols-outlined text-2xl fill">verified</span>
+</div>
+<div class="flex-1">
+<h3 class="font-title-md text-sm font-bold text-on-surface">Điểm uy tín: 99/100 ⭐</h3>
+<p class="font-body-sm text-xs text-on-surface-variant mt-0.5">
+              Khi không có vụ việc cần xử lý, hệ thống tự động ưu tiên phân phối cuốc xe cự ly ngắn &amp; khu vực trung tâm cho bạn.
+            </p>
+</div>
+</div>
+</section>
+<!-- Quick Tips Bento Widget -->
+<div class="rounded-2xl p-3.5 bg-surface-container-lowest border border-outline-variant/30 flex items-center justify-between text-xs text-on-surface-variant">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-primary text-[20px]">lightbulb</span>
+<span>Cần khiếu nại bằng camera hành trình?</span>
+</div>
+<button class="font-bold text-primary hover:underline">Gửi file</button>
+</div>
+</div>
+<!-- Persistent Bottom Navigation Bar (5 tabs from JSON specification with elevated center AI GSupport) -->
+<nav class="fixed bottom-0 left-0 right-0 sm:absolute w-full z-50 bg-surface-container-lowest border-t border-outline-variant/20 px-2 pt-1.5 pb-5 shadow-[0_-4px_16px_0_rgba(15,23,42,0.06)]">
+<div class="flex justify-around items-end">
+<!-- Tab 1: Vụ việc (ACTIVE) -->
+<a class="flex flex-col items-center justify-center text-primary font-bold py-1 w-16 active:scale-95 transition-transform duration-150" href="#cases">
+<div class="relative">
+<span class="material-symbols-outlined text-[24px] fill">shield</span>
+<span class="absolute -top-0.5 -right-1 w-2 h-2 rounded-full bg-primary ring-2 ring-white"></span>
+</div>
+<span class="font-label-sm text-[10px] mt-1 tracking-tight">Vụ việc</span>
+<span class="w-4 h-1 rounded-full bg-primary mt-0.5"></span>
+</a>
+<!-- Tab 2: Hồ sơ -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary py-1 w-16 active:scale-95 transition-transform duration-150" href="#profile">
+<span class="material-symbols-outlined text-[24px]">person</span>
+<span class="font-label-sm text-[10px] mt-1 font-medium tracking-tight">Hồ sơ</span>
+<span class="w-4 h-1 rounded-full bg-transparent mt-0.5"></span>
+</a>
+<!-- Tab 3: GSupport (Center Emphasized FAB-like Button) -->
+<div class="relative -top-3 flex flex-col items-center justify-center w-16">
+<button class="w-12 h-12 rounded-full bg-primary text-on-primary shadow-lg shadow-primary/30 flex items-center justify-center hover:bg-primary-container active:scale-95 transition-all duration-150">
+<span class="material-symbols-outlined text-[26px] fill">smart_toy</span>
+</button>
+<span class="font-label-sm text-[10px] mt-0.5 font-bold text-primary tracking-tight">GSupport</span>
+</div>
+<!-- Tab 4: Lịch sử -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary py-1 w-16 active:scale-95 transition-transform duration-150" href="#history">
+<span class="material-symbols-outlined text-[24px]">history</span>
+<span class="font-label-sm text-[10px] mt-1 font-medium tracking-tight">Lịch sử</span>
+<span class="w-4 h-1 rounded-full bg-transparent mt-0.5"></span>
+</a>
+<!-- Tab 5: Cài đặt -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary py-1 w-16 active:scale-95 transition-transform duration-150" href="#settings">
+<span class="material-symbols-outlined text-[24px]">settings</span>
+<span class="font-label-sm text-[10px] mt-1 font-medium tracking-tight">Cài đặt</span>
+<span class="w-4 h-1 rounded-full bg-transparent mt-0.5"></span>
+</a>
+</div>
+</nav>
+</main>
+<script>
+    // Tab switching interactivity
+    const tabOpen = document.getElementById('tab-open');
+    const tabResolved = document.getElementById('tab-resolved');
+
+    tabOpen?.addEventListener('click', () => {
+      tabOpen.className = "flex-1 py-2 px-3 rounded-xl bg-primary text-on-primary font-label-md text-label-md font-bold shadow-sm flex items-center justify-center space-x-1.5 transition-all";
+      tabResolved.className = "flex-1 py-2 px-3 rounded-xl text-on-surface-variant hover:text-on-surface font-label-md text-label-md font-medium flex items-center justify-center space-x-1.5 transition-all";
+    });
+
+    tabResolved?.addEventListener('click', () => {
+      tabResolved.className = "flex-1 py-2 px-3 rounded-xl bg-primary text-on-primary font-label-md text-label-md font-bold shadow-sm flex items-center justify-center space-x-1.5 transition-all";
+      tabOpen.className = "flex-1 py-2 px-3 rounded-xl text-on-surface-variant hover:text-on-surface font-label-md text-label-md font-medium flex items-center justify-center space-x-1.5 transition-all";
+    });
+  </script>
+</body></html>

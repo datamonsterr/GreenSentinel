@@ -1,0 +1,14 @@
+
+Running 7 tests using 1 worker
+
+(node:2963226) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  1 [chromium] › e2e/cockpit.spec.ts:10:7 › Persisted case workspace contract › opens the API case without placeholder or forensic summary content (2.3s)
+  ✓  2 [chromium] › e2e/cockpit.spec.ts:21:7 › Persisted case workspace contract › keeps the decision surface compact and removes legacy sanctions (1.9s)
+  ✓  3 [chromium] › e2e/cockpit.spec.ts:33:7 › Persisted case workspace contract › completes a conversation of 5 messages in cockpit agent chat (DoD) (4.2s)
+  ✓  4 [chromium] › e2e/mvp-full-flow.spec.ts:11:7 › POC v1 workspace › loads a real API shaped queue and case workspace (2.2s)
+  ✓  5 [chromium] › e2e/mvp-full-flow.spec.ts:19:7 › POC v1 workspace › supports map controls and compact Agents streaming states (1.9s)
+  ✓  6 [chromium] › e2e/mvp-full-flow.spec.ts:30:7 › POC v1 workspace › uses send menu for the three current case actions (2.4s)
+  ✓  7 [chromium] › e2e/road-telemetry.spec.ts:37:7 › road telemetry fixture in the real browser map › renders both canonical legs and scrubs canonical telemetry (4.6s)
+
+  7 passed (24.6s)

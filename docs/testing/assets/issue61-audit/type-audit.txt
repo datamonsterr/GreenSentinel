@@ -1,0 +1,41 @@
+Issue #61 type audit (read-only)
+
+Environment
+- Python: 3.13.13 (.venv)
+- Mypy: 2.3.1
+- NumPy: 2.5.3
+- Project runtime minimum: >=3.11 (unchanged)
+- Configured Mypy target: 3.11 (unchanged)
+
+Baseline comparison
+- f175f96, Mypy target 3.12 override: 113 errors, 11 files.
+- Current tree, Mypy target 3.12 override: 108 errors, 9 files.
+- Counts are full src/ checks; unrelated existing debt remains included.
+
+Minimal blocker
+- Current configured target 3.11 stops before project checking:
+  numpy/__init__.pyi:737: Type statement is only supported in Python 3.12 and greater [syntax]
+- Target 3.12 clears only this NumPy stub parser blocker.
+- No global target/minruntime change or broad ignore is recommended.
+
+Scoped audit
+- Current Issue #61 service files with normal imports pull unrelated existing errors.
+- With follow-imports=skip, two local case_service errors remain:
+  line 29: HTTPException redefinition
+  line 1018: possibly-None dict indexed
+- Parent may fix these local types separately; no edits made here.
+
+Live-provider test audit
+- tests/e2e/test_real_agent_driver_gemini.py directly constructs the production
+  driver graph and calls OpenRouter/Gemini through ChatOpenAI.
+- APP_ENV=test does not make these calls deterministic or offline.
+- Existing skip handling covers selected auth/event-loop failures only; empty
+  replies and other provider failures can still fail nondeterministically.
+- Recommendation: keep live-provider tests opt-in (for example,
+  TEST_LIVE_GEMINI=1), mark them integration/live, and use a fixture/mock model
+  for default CI assertions. Mock the model boundary (get_driver_chat_model or
+  graph model) with deterministic AIMessage tool-call/tool-result sequences;
+  retain a separate opt-in live smoke test for provider/model identity.
+- Driver test changes are deferred/outside Issue #61.
+
+No production, dependency, configuration, or credential files were changed.

@@ -1,0 +1,104 @@
+{
+  "liveBasemap": true,
+  "checks": [
+    {
+      "dockFraction": 0.4004474272930649
+    },
+    {
+      "collapsedMapTaller": true
+    },
+    {
+      "marker": "initial",
+      "dragUpdatesAddress": true
+    },
+    {
+      "marker": "pickup",
+      "dragUpdatesAddress": true
+    },
+    {
+      "marker": "destination",
+      "dragUpdatesAddress": true
+    },
+    {
+      "keyboardMove": true
+    },
+    {
+      "addressAlternative": true
+    },
+    {
+      "completeDisabledBeforeRun": true
+    },
+    {
+      "runToPause": true
+    },
+    {
+      "pauseToResume": true
+    },
+    {
+      "resumeToPause": true
+    },
+    {
+      "reasonRequired": true
+    },
+    {
+      "validReasonClearsError": true
+    },
+    {
+      "customerEvidence": true
+    },
+    {
+      "cancellationStates": true
+    },
+    {
+      "driverEvidence": true
+    },
+    {
+      "cancelCannotComplete": true
+    },
+    {
+      "completeEnabledAtDestination": true
+    },
+    {
+      "normalCompletion": true
+    },
+    {
+      "width": 1024,
+      "section": "manual",
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "section": "presets",
+      "overflow": false
+    },
+    {
+      "width": 1024,
+      "section": "history",
+      "overflow": false
+    },
+    {
+      "width": 1600,
+      "section": "manual",
+      "overflow": false
+    },
+    {
+      "width": 1600,
+      "section": "presets",
+      "overflow": false
+    },
+    {
+      "width": 1600,
+      "section": "history",
+      "overflow": false
+    },
+    {
+      "keyboardTabs": true
+    },
+    {
+      "mapClickAddsNoStop": true
+    }
+  ],
+  "tripRequests": 0,
+  "pageErrors": [],
+  "supportedViewports": "Desktop only (1024px and wider); mobile captures removed by stakeholder request on 2026-10-15."
+}

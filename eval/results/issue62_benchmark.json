@@ -1,0 +1,1655 @@
+{
+  "metadata": {
+    "benchmark_version": "issue62-paired-v1",
+    "dataset_version": "issue62-development-v1",
+    "dataset_sha256": "6272e7653069654b6783974c613940896a18468682876a4add92fe8fb4a1380a",
+    "corpus_version": "eval-v1",
+    "corpus_sha256": "b602500c9023329fd9f32c9439beb051f17fe04bf598010d0a9b04ad25ee8e0b",
+    "revision": "1b81fdad556bedebfd9de79074eb1a3a71826ef3",
+    "baseline_version": "forensic-rules-v1",
+    "candidate_version": "forensic-grounded-v2",
+    "model_code_sha256": "1b048fdd69637d95b03c18d85c4012de4494d55bf295e567c0a1938cbf3a30f9",
+    "retrieval_sha256": "f09cee802e57a933abcce4ae16a80ccab87fc9081f55a6b77fef99c88e239264",
+    "schema_sha256": "6aa4718a46923f96a189b8a2aa5d5aeb76f975832fec583f6ff2b1455243383c",
+    "policy_schema_sha256": "9c427686f7c0084b4e0841bf5abed123b1f52c7c1654225eb1d89573bf69201a",
+    "policy_source_sha256": "17d6585380252d4af2d342a45f45a2776355529e266cf20d9b28cec23041c18d",
+    "prompt_version": "none-deterministic-rules",
+    "harness_sha256": "18178f9a5b2b5bc7d829f1b48d2c782616b77e1e4a7334d646a616c9d40cd2b3",
+    "paired_case_ids": [
+      "mock-001-stall",
+      "mock-002-gps",
+      "mock-003-normal",
+      "mock-004-outage",
+      "mock-005-missing",
+      "mock-006-boundary",
+      "mock-007-below-boundary",
+      "mock-008-degraded",
+      "mock-009-driver-cancel",
+      "mock-010-long-completed"
+    ],
+    "independent_held_out": false,
+    "scope": "Existing exposed synthetic development fixtures; no unseen or production accuracy claim.",
+    "approval": "User approved thresholds 2026-10-03 before session tuning; fixture/local only."
+  },
+  "baseline": {
+    "sample_count": 10,
+    "overall_accuracy": 1.0,
+    "per_class": {
+      "ERR-02": {
+        "support": 2,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "ERR-05": {
+        "support": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "no_violation": {
+        "support": 2,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "insufficient_evidence": {
+        "support": 5,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "confusion_matrix": {
+      "ERR-02": {
+        "ERR-02": 2,
+        "ERR-05": 0,
+        "no_violation": 0,
+        "insufficient_evidence": 0
+      },
+      "ERR-05": {
+        "ERR-02": 0,
+        "ERR-05": 1,
+        "no_violation": 0,
+        "insufficient_evidence": 0
+      },
+      "no_violation": {
+        "ERR-02": 0,
+        "ERR-05": 0,
+        "no_violation": 2,
+        "insufficient_evidence": 0
+      },
+      "insufficient_evidence": {
+        "ERR-02": 0,
+        "ERR-05": 0,
+        "no_violation": 0,
+        "insufficient_evidence": 5
+      }
+    },
+    "schema_validity": 1.0,
+    "grounding_error_count": 0,
+    "grounding_claim_count": 49,
+    "grounding_error_rate": 0.0,
+    "automated_sanctions": 0,
+    "calibration": {
+      "ece_diagnostic": 0.6100000000000001,
+      "brier_diagnostic": 0.5269999999999999,
+      "bins": [
+        {
+          "lower": 0.0,
+          "upper": 0.2,
+          "count": 5,
+          "accuracy": 1.0,
+          "mean_support": 0.0
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.8,
+          "count": 2,
+          "accuracy": 1.0,
+          "mean_support": 0.7
+        },
+        {
+          "lower": 0.8,
+          "upper": 1.0,
+          "count": 3,
+          "accuracy": 1.0,
+          "mean_support": 0.8333333333333334
+        }
+      ],
+      "calibrated": false,
+      "semantics": "Ordinal support vs category correctness; not violation probability. Abstention is a category."
+    },
+    "cases": [
+      {
+        "case_id": "mock-001-stall",
+        "expected": "ERR-02",
+        "predicted": "ERR-02",
+        "support": 0.8,
+        "schema_valid": true,
+        "grounding_errors": [],
+        "output": {
+          "case_id": "mock-001-stall",
+          "category": "ERR-02",
+          "confidence": 0.8,
+          "score_semantics": {
+            "scale": "0.0_to_1.0_ordinal_support",
+            "calibrated": false,
+            "is_violation_probability": false,
+            "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+          },
+          "evidence": [
+            {
+              "source": "telemetry_points",
+              "value": 25,
+              "description": "Observed input field: telemetry_points."
+            },
+            {
+              "source": "platform_outage",
+              "value": false,
+              "description": "Observed input field: platform_outage."
+            },
+            {
+              "source": "gps_degraded",
+              "value": false,
+              "description": "Observed input field: gps_degraded."
+            },
+            {
+              "source": "stationary_duration_s",
+              "value": 240.0,
+              "description": "Observed input field: stationary_duration_s."
+            },
+            {
+              "source": "lifecycle_state",
+              "value": "cancelled",
+              "description": "Observed input field: lifecycle_state."
+            },
+            {
+              "source": "cancellation_actor",
+              "value": "passenger",
+              "description": "Observed input field: cancellation_actor."
+            }
+          ],
+          "summary": "At least 180 seconds stationary precedes passenger cancellation; intent remains unproven.",
+          "policy_version": null,
+          "retrieved_policy_clauses": [],
+          "policy_citations": [],
+          "uncertainty_score": 0.2,
+          "abstention": false,
+          "abstention_rationale": null,
+          "human_confirmation_required": true,
+          "sanctions_prohibited": true
+        }
+      },
+      {
+        "case_id": "mock-002-gps",
+        "expected": "ERR-05",
+        "predicted": "ERR-05",
+        "support": 0.9,
+        "schema_valid": true,
+        "grounding_errors": [],
+        "output": {
+          "case_id": "mock-002-gps",
+          "category": "ERR-05",
+          "confidence": 0.9,
+          "score_semantics": {
+            "scale": "0.0_to_1.0_ordinal_support",
+            "calibrated": false,
+            "is_violation_probability": false,
+            "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+          },
+          "evidence": [
+            {
+              "source": "telemetry_points",
+              "value": 25,
+              "description": "Observed input field: telemetry_points."
+            },
+            {
+              "source": "platform_outage",
+              "value": false,
+              "description": "Observed input field: platform_outage."
+            },
+            {
+              "source": "gps_degraded",
+              "value": false,
+              "description": "Observed input field: gps_degraded."
+            },
+            {
+              "source": "mock_location_reported",
+              "value": true,
+              "description": "Observed input field: mock_location_reported."
+            }
+          ],
+          "summary": "Mock location is reported; suspected GPS manipulation requires analyst review.",
+          "policy_version": null,
+          "retrieved_policy_clauses": [],
+          "policy_citations": [],
+          "uncertainty_score": 0.1,
+          "abstention": false,
+          "abstention_rationale": null,
+          "human_confirmation_required": true,
+          "sanctions_prohibited": true
+        }
+      },
+      {
+        "case_id": "mock-003-normal",
+        "expected": "no_violation",
+        "predicted": "no_violation",
+        "support": 0.7,
+        "schema_valid": true,
+        "grounding_errors": [],
+        "output": {
+          "case_id": "mock-003-normal",
+          "category": "no_violation",
+          "confidence": 0.7,
+          "score_semantics": {
+            "scale": "0.0_to_1.0_ordinal_support",
+            "calibrated": false,
+            "is_violation_probability": false,
+            "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+          },
+          "evidence": [
+            {
+              "source": "telemetry_points",
+              "value": 25,
+              "description": "Observed input field: telemetry_points."
+            },
+            {
+              "source": "platform_outage",
+              "value": false,
+              "description": "Observed input field: platform_outage."
+            },
+            {
+              "source": "gps_degraded",
+              "value": false,
+              "description": "Observed input field: gps_degraded."
+            },
+            {
+              "source": "lifecycle_state",
+              "value": "completed",
+              "description": "Observed input field: lifecycle_state."
+            },
+            {
+              "source": "mock_location_reported",
+              "value": false,
+              "description": "Observed input field: mock_location_reported."
+            }
+          ],
+          "summary": "Completed trip triggers none of the supported rules; this does not establish absence of fraud.",
+          "policy_version": null,
+          "retrieved_policy_clauses": [],
+          "policy_citations": [],
+          "uncertainty_score": 0.3,
+          "abstention": false,
+          "abstention_rationale": null,
+          "human_confirmation_required": true,
+          "sanctions_prohibited": true
+        }
+      },
+      {
+        "case_id": "mock-004-outage",
+        "expected": "insufficient_evidence",
+        "predicted": "insufficient_evidence",
+        "support": 0.0,
+        "schema_valid": true,
+        "grounding_errors": [],
+        "output": {
+          "case_id": "mock-004-outage",
+          "category": "insufficient_evidence",
+          "confidence": 0.0,
+          "score_semantics": {
+            "scale": "0.0_to_1.0_ordinal_support",
+            "calibrated": false,
+            "is_violation_probability": false,
+            "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+          },
+          "evidence": [
+            {
+              "source": "telemetry_points",
+              "value": 25,
+              "description": "Observed input field: telemetry_points."
+            },
+            {
+              "source": "platform_outage",
+              "value": true,
+              "description": "Observed input field: platform_outage."
+            },
+            {
+              "source": "gps_degraded",
+              "value": false,
+              "description": "Observed input field: gps_degraded."
+            }
+          ],
+          "summary": "Telemetry is missing or unreliable; hold for analyst review.",
+          "policy_version": null,
+          "retrieved_policy_clauses": [],
+          "policy_citations": [],
+          "uncertainty_score": 1.0,
+          "abstention": true,
+          "abstention_rationale": "Technical failure or degraded telemetry.",
+          "human_confirmation_required": true,
+          "sanctions_prohibited": true
+        }
+      },
+      {
+        "case_id": "mock-005-missing",
+        "expected": "insufficient_evidence",
+        "predicted": "insufficient_evidence",
+        "support": 0.0,
+        "schema_valid": true,
+        "grounding_errors": [],
+        "output": {
+          "case_id": "mock-005-missing",
+          "category": "insufficient_evidence",
+          "confidence": 0.0,
+          "score_semantics": {
+            "scale": "0.0_to_1.0_ordinal_support",
+            "calibrated": false,
+            "is_violation_probability": false,
+            "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+          },
+          "evidence": [
+            {
+              "source": "telemetry_points",
+              "value": 0,
+              "description": "Observed input field: telemetry_points."
+            },
+            {
+              "source": "platform_outage",
+              "value": false,
+              "description": "Observed input field: platform_outage."
+            },
+            {
+              "source": "gps_degraded",
+              "value": false,
+              "description": "Observed input field: gps_degraded."
+            }
+          ],
+          "summary": "Telemetry is missing or unreliable; hold for analyst review.",
+          "policy_version": null,
+          "retrieved_policy_clauses": [],
+          "policy_citations": [],
+          "uncertainty_score": 1.0,
+          "abstention": true,
+          "abstention_rationale": "Technical failure or degraded telemetry.",
+          "human_confirmation_required": true,
+          "sanctions_prohibited": true
+        }
+      },
+      {
+        "case_id": "mock-006-boundary",
+        "expected": "ERR-02",
+        "predicted": "ERR-02",
+        "support": 0.8,
+        "schema_valid": true,
+        "grounding_errors": [],
+        "output": {
+          "case_id": "mock-006-boundary",
+          "category": "ERR-02",
+          "confidence": 0.8,
+          "score_semantics": {
+            "scale": "0.0_to_1.0_ordinal_support",
+            "calibrated": false,
+            "is_violation_probability": false,
+            "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+          },
+          "evidence": [
+            {
+              "source": "telemetry_points",
+              "value": 25,
+              "description": "Observed input field: telemetry_points."
+            },
+            {
+              "source": "platform_outage",
+              "value": false,
+              "description": "Observed input field: platform_outage."
+            },
+            {
+              "source": "gps_degraded",
+              "value": false,
+              "description": "Observed input field: gps_degraded."
+            },
+            {
+              "source": "stationary_duration_s",
+              "value": 180.0,
+              "description": "Observed input field: stationary_duration_s."
+            },
+            {
+              "source": "lifecycle_state",
+              "value": "cancelled",
+              "description": "Observed input field: lifecycle_state."
+            },
+            {
+              "source": "cancellation_actor",
+              "value": "passenger",
+              "description": "Observed input field: cancellation_actor."
+            }
+          ],
+          "summary": "At least 180 seconds stationary precedes passenger cancellation; intent remains unproven.",
+          "policy_version": null,
+          "retrieved_policy_clauses": [],
+          "policy_citations": [],
+          "uncertainty_score": 0.2,
+          "abstention": false,
+          "abstention_rationale": null,
+          "human_confirmation_required": true,
+          "sanctions_prohibited": true
+        }
+      },
+      {
+        "case_id": "mock-007-below-boundary",
+        "expected": "insufficient_evidence",
+        "predicted": "insufficient_evidence",
+        "support": 0.0,
+        "schema_valid": true,
+        "grounding_errors": [],
+        "output": {
+          "case_id": "mock-007-below-boundary",
+          "category": "insufficient_evidence",
+          "confidence": 0.0,
+          "score_semantics": {
+            "scale": "0.0_to_1.0_ordinal_support",
+            "calibrated": false,
+            "is_violation_probability": false,
+            "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+          },
+          "evidence": [
+            {
+              "source": "telemetry_points",
+              "value": 25,
+              "description": "Observed input field: telemetry_points."
+            },
+            {
+              "source": "platform_outage",
+              "value": false,
+              "description": "Observed input field: platform_outage."
+            },
+            {
+              "source": "gps_degraded",
+              "value": false,
+              "description": "Observed input field: gps_degraded."
+            },
+            {
+              "source": "stationary_duration_s",
+              "value": 179.0,
+              "description": "Observed input field: stationary_duration_s."
+            },
+            {
+              "source": "lifecycle_state",
+              "value": "cancelled",
+              "description": "Observed input field: lifecycle_state."
+            },
+            {
+              "source": "cancellation_actor",
+              "value": "passenger",
+              "description": "Observed input field: cancellation_actor."
+            },
+            {
+              "source": "mock_location_reported",
+              "value": false,
+              "description": "Observed input field: mock_location_reported."
+            }
+          ],
+          "summary": "Available evidence does not support a baseline classification; analyst review required.",
+          "policy_version": null,
+          "retrieved_policy_clauses": [],
+          "policy_citations": [],
+          "uncertainty_score": 1.0,
+          "abstention": true,
+          "abstention_rationale": "Inconclusive feature combination.",
+          "human_confirmation_required": true,
+          "sanctions_prohibited": true
+        }
+      },
+      {
+        "case_id": "mock-008-degraded",
+        "expected": "insufficient_evidence",
+        "predicted": "insufficient_evidence",
+        "support": 0.0,
+        "schema_valid": true,
+        "grounding_errors": [],
+        "output": {
+          "case_id": "mock-008-degraded",
+          "category": "insufficient_evidence",
+          "confidence": 0.0,
+          "score_semantics": {
+            "scale": "0.0_to_1.0_ordinal_support",
+            "calibrated": false,
+            "is_violation_probability": false,
+            "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+          },
+          "evidence": [
+            {
+              "source": "telemetry_points",
+              "value": 25,
+              "description": "Observed input field: telemetry_points."
+            },
+            {
+              "source": "platform_outage",
+              "value": false,
+              "description": "Observed input field: platform_outage."
+            },
+            {
+              "source": "gps_degraded",
+              "value": true,
+              "description": "Observed input field: gps_degraded."
+            }
+          ],
+          "summary": "Telemetry is missing or unreliable; hold for analyst review.",
+          "policy_version": null,
+          "retrieved_policy_clauses": [],
+          "policy_citations": [],
+          "uncertainty_score": 1.0,
+          "abstention": true,
+          "abstention_rationale": "Technical failure or degraded telemetry.",
+          "human_confirmation_required": true,
+          "sanctions_prohibited": true
+        }
+      },
+      {
+        "case_id": "mock-009-driver-cancel",
+        "expected": "insufficient_evidence",
+        "predicted": "insufficient_evidence",
+        "support": 0.0,
+        "schema_valid": true,
+        "grounding_errors": [],
+        "output": {
+          "case_id": "mock-009-driver-cancel",
+          "category": "insufficient_evidence",
+          "confidence": 0.0,
+          "score_semantics": {
+            "scale": "0.0_to_1.0_ordinal_support",
+            "calibrated": false,
+            "is_violation_probability": false,
+            "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+          },
+          "evidence": [
+            {
+              "source": "telemetry_points",
+              "value": 25,
+              "description": "Observed input field: telemetry_points."
+            },
+            {
+              "source": "platform_outage",
+              "value": false,
+              "description": "Observed input field: platform_outage."
+            },
+            {
+              "source": "gps_degraded",
+              "value": false,
+              "description": "Observed input field: gps_degraded."
+            },
+            {
+              "source": "stationary_duration_s",
+              "value": 240.0,
+              "description": "Observed input field: stationary_duration_s."
+            },
+            {
+              "source": "lifecycle_state",
+              "value": "cancelled",
+              "description": "Observed input field: lifecycle_state."
+            },
+            {
+              "source": "cancellation_actor",
+              "value": "driver",
+              "description": "Observed input field: cancellation_actor."
+            },
+            {
+              "source": "mock_location_reported",
+              "value": false,
+              "description": "Observed input field: mock_location_reported."
+            }
+          ],
+          "summary": "Available evidence does not support a baseline classification; analyst review required.",
+          "policy_version": null,
+          "retrieved_policy_clauses": [],
+          "policy_citations": [],
+          "uncertainty_score": 1.0,
+          "abstention": true,
+          "abstention_rationale": "Inconclusive feature combination.",
+          "human_confirmation_required": true,
+          "sanctions_prohibited": true
+        }
+      },
+      {
+        "case_id": "mock-010-long-completed",
+        "expected": "no_violation",
+        "predicted": "no_violation",
+        "support": 0.7,
+        "schema_valid": true,
+        "grounding_errors": [],
+        "output": {
+          "case_id": "mock-010-long-completed",
+          "category": "no_violation",
+          "confidence": 0.7,
+          "score_semantics": {
+            "scale": "0.0_to_1.0_ordinal_support",
+            "calibrated": false,
+            "is_violation_probability": false,
+            "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+          },
+          "evidence": [
+            {
+              "source": "telemetry_points",
+              "value": 25,
+              "description": "Observed input field: telemetry_points."
+            },
+            {
+              "source": "platform_outage",
+              "value": false,
+              "description": "Observed input field: platform_outage."
+            },
+            {
+              "source": "gps_degraded",
+              "value": false,
+              "description": "Observed input field: gps_degraded."
+            },
+            {
+              "source": "lifecycle_state",
+              "value": "completed",
+              "description": "Observed input field: lifecycle_state."
+            },
+            {
+              "source": "mock_location_reported",
+              "value": false,
+              "description": "Observed input field: mock_location_reported."
+            }
+          ],
+          "summary": "Completed trip triggers none of the supported rules; this does not establish absence of fraud.",
+          "policy_version": null,
+          "retrieved_policy_clauses": [],
+          "policy_citations": [],
+          "uncertainty_score": 0.3,
+          "abstention": false,
+          "abstention_rationale": null,
+          "human_confirmation_required": true,
+          "sanctions_prohibited": true
+        }
+      }
+    ]
+  },
+  "candidate": {
+    "sample_count": 10,
+    "overall_accuracy": 1.0,
+    "per_class": {
+      "ERR-02": {
+        "support": 2,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "ERR-05": {
+        "support": 1,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "no_violation": {
+        "support": 2,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      },
+      "insufficient_evidence": {
+        "support": 5,
+        "precision": 1.0,
+        "recall": 1.0,
+        "f1": 1.0
+      }
+    },
+    "confusion_matrix": {
+      "ERR-02": {
+        "ERR-02": 2,
+        "ERR-05": 0,
+        "no_violation": 0,
+        "insufficient_evidence": 0
+      },
+      "ERR-05": {
+        "ERR-02": 0,
+        "ERR-05": 1,
+        "no_violation": 0,
+        "insufficient_evidence": 0
+      },
+      "no_violation": {
+        "ERR-02": 0,
+        "ERR-05": 0,
+        "no_violation": 2,
+        "insufficient_evidence": 0
+      },
+      "insufficient_evidence": {
+        "ERR-02": 0,
+        "ERR-05": 0,
+        "no_violation": 0,
+        "insufficient_evidence": 5
+      }
+    },
+    "schema_validity": 1.0,
+    "grounding_error_count": 0,
+    "grounding_claim_count": 63,
+    "grounding_error_rate": 0.0,
+    "automated_sanctions": 0,
+    "calibration": {
+      "ece_diagnostic": 0.6100000000000001,
+      "brier_diagnostic": 0.5269999999999999,
+      "bins": [
+        {
+          "lower": 0.0,
+          "upper": 0.2,
+          "count": 5,
+          "accuracy": 1.0,
+          "mean_support": 0.0
+        },
+        {
+          "lower": 0.6,
+          "upper": 0.8,
+          "count": 2,
+          "accuracy": 1.0,
+          "mean_support": 0.7
+        },
+        {
+          "lower": 0.8,
+          "upper": 1.0,
+          "count": 3,
+          "accuracy": 1.0,
+          "mean_support": 0.8333333333333334
+        }
+      ],
+      "calibrated": false,
+      "semantics": "Ordinal support vs category correctness; not violation probability. Abstention is a category."
+    },
+    "cases": [
+      {
+        "case_id": "mock-001-stall",
+        "expected": "ERR-02",
+        "predicted": "ERR-02",
+        "support": 0.8,
+        "schema_valid": true,
+        "grounding_errors": [],
+        "output": {
+          "case_id": "mock-001-stall",
+          "category": "ERR-02",
+          "confidence": 0.8,
+          "score_semantics": {
+            "scale": "0.0_to_1.0_ordinal_support",
+            "calibrated": false,
+            "is_violation_probability": false,
+            "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+          },
+          "evidence": [
+            {
+              "source": "telemetry_points",
+              "value": 25,
+              "description": "Observed input field: telemetry_points."
+            },
+            {
+              "source": "platform_outage",
+              "value": false,
+              "description": "Observed input field: platform_outage."
+            },
+            {
+              "source": "gps_degraded",
+              "value": false,
+              "description": "Observed input field: gps_degraded."
+            },
+            {
+              "source": "stationary_duration_s",
+              "value": 240.0,
+              "description": "Observed input field: stationary_duration_s."
+            },
+            {
+              "source": "lifecycle_state",
+              "value": "cancelled",
+              "description": "Observed input field: lifecycle_state."
+            },
+            {
+              "source": "cancellation_actor",
+              "value": "passenger",
+              "description": "Observed input field: cancellation_actor."
+            }
+          ],
+          "summary": "At least 180 seconds stationary precedes passenger cancellation; intent remains unproven. Policy citations provide context, not proof of intent.",
+          "policy_version": "PRD-v1.1",
+          "retrieved_policy_clauses": [
+            "| **ERR-02** | **Route Deviation & Induced Cancellation** | Driver stalls, parks, or travels in opposite direction to force passenger cancellation (*Driver-Induced Cancellation - DIC*), avoiding AR/CR penalties. | **High** | **Temporary suspension, bonus clawback & warning** | **PRIMARY PHASE 1 FOCUS** |"
+          ],
+          "policy_citations": [
+            {
+              "id": "requirement-ERR-02",
+              "version": "PRD-v1.1",
+              "source": "docs/ba/PRD.md",
+              "section": "\u00a73/ERR-02",
+              "text": "| **ERR-02** | **Route Deviation & Induced Cancellation** | Driver stalls, parks, or travels in opposite direction to force passenger cancellation (*Driver-Induced Cancellation - DIC*), avoiding AR/CR penalties. | **High** | **Temporary suspension, bonus clawback & warning** | **PRIMARY PHASE 1 FOCUS** |",
+              "is_demo_policy": true
+            }
+          ],
+          "uncertainty_score": 0.2,
+          "abstention": false,
+          "abstention_rationale": null,
+          "human_confirmation_required": true,
+          "sanctions_prohibited": true
+        }
+      },
+      {
+        "case_id": "mock-002-gps",
+        "expected": "ERR-05",
+        "predicted": "ERR-05",
+        "support": 0.9,
+        "schema_valid": true,
+        "grounding_errors": [],
+        "output": {
+          "case_id": "mock-002-gps",
+          "category": "ERR-05",
+          "confidence": 0.9,
+          "score_semantics": {
+            "scale": "0.0_to_1.0_ordinal_support",
+            "calibrated": false,
+            "is_violation_probability": false,
+            "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+          },
+          "evidence": [
+            {
+              "source": "telemetry_points",
+              "value": 25,
+              "description": "Observed input field: telemetry_points."
+            },
+            {
+              "source": "platform_outage",
+              "value": false,
+              "description": "Observed input field: platform_outage."
+            },
+            {
+              "source": "gps_degraded",
+              "value": false,
+              "description": "Observed input field: gps_degraded."
+            },
+            {
+              "source": "mock_location_reported",
+              "value": true,
+              "description": "Observed input field: mock_location_reported."
+            }
+          ],
+          "summary": "Mock location is reported; suspected GPS manipulation requires analyst review. Policy citations provide context, not proof of intent.",
+          "policy_version": "PRD-v1.1",
+          "retrieved_policy_clauses": [
+            "| **ERR-05** | **Technological Manipulation & Fake GPS** | Mock location apps, rooted devices, GPS spoofing, and modified APK clients to fake positions or leapfrog queues. | **Critical** | **Permanent account termination & bonus clawback** | **CORE DETECTION SIGNAL** |"
+          ],
+          "policy_citations": [
+            {
+              "id": "requirement-ERR-05",
+              "version": "PRD-v1.1",
+              "source": "docs/ba/PRD.md",
+              "section": "\u00a73/ERR-05",
+              "text": "| **ERR-05** | **Technological Manipulation & Fake GPS** | Mock location apps, rooted devices, GPS spoofing, and modified APK clients to fake positions or leapfrog queues. | **Critical** | **Permanent account termination & bonus clawback** | **CORE DETECTION SIGNAL** |",
+              "is_demo_policy": true
+            }
+          ],
+          "uncertainty_score": 0.1,
+          "abstention": false,
+          "abstention_rationale": null,
+          "human_confirmation_required": true,
+          "sanctions_prohibited": true
+        }
+      },
+      {
+        "case_id": "mock-003-normal",
+        "expected": "no_violation",
+        "predicted": "no_violation",
+        "support": 0.7,
+        "schema_valid": true,
+        "grounding_errors": [],
+        "output": {
+          "case_id": "mock-003-normal",
+          "category": "no_violation",
+          "confidence": 0.7,
+          "score_semantics": {
+            "scale": "0.0_to_1.0_ordinal_support",
+            "calibrated": false,
+            "is_violation_probability": false,
+            "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+          },
+          "evidence": [
+            {
+              "source": "telemetry_points",
+              "value": 25,
+              "description": "Observed input field: telemetry_points."
+            },
+            {
+              "source": "platform_outage",
+              "value": false,
+              "description": "Observed input field: platform_outage."
+            },
+            {
+              "source": "gps_degraded",
+              "value": false,
+              "description": "Observed input field: gps_degraded."
+            },
+            {
+              "source": "lifecycle_state",
+              "value": "completed",
+              "description": "Observed input field: lifecycle_state."
+            },
+            {
+              "source": "mock_location_reported",
+              "value": false,
+              "description": "Observed input field: mock_location_reported."
+            }
+          ],
+          "summary": "Completed trip triggers none of the supported rules; this does not establish absence of fraud. Policy citations provide context, not proof of intent.",
+          "policy_version": "PRD-v1.1",
+          "retrieved_policy_clauses": [
+            "| **ERR-02** | **Route Deviation & Induced Cancellation** | Driver stalls, parks, or travels in opposite direction to force passenger cancellation (*Driver-Induced Cancellation - DIC*), avoiding AR/CR penalties. | **High** | **Temporary suspension, bonus clawback & warning** | **PRIMARY PHASE 1 FOCUS** |",
+            "| **ERR-05** | **Technological Manipulation & Fake GPS** | Mock location apps, rooted devices, GPS spoofing, and modified APK clients to fake positions or leapfrog queues. | **Critical** | **Permanent account termination & bonus clawback** | **CORE DETECTION SIGNAL** |"
+          ],
+          "policy_citations": [
+            {
+              "id": "requirement-ERR-02",
+              "version": "PRD-v1.1",
+              "source": "docs/ba/PRD.md",
+              "section": "\u00a73/ERR-02",
+              "text": "| **ERR-02** | **Route Deviation & Induced Cancellation** | Driver stalls, parks, or travels in opposite direction to force passenger cancellation (*Driver-Induced Cancellation - DIC*), avoiding AR/CR penalties. | **High** | **Temporary suspension, bonus clawback & warning** | **PRIMARY PHASE 1 FOCUS** |",
+              "is_demo_policy": true
+            },
+            {
+              "id": "requirement-ERR-05",
+              "version": "PRD-v1.1",
+              "source": "docs/ba/PRD.md",
+              "section": "\u00a73/ERR-05",
+              "text": "| **ERR-05** | **Technological Manipulation & Fake GPS** | Mock location apps, rooted devices, GPS spoofing, and modified APK clients to fake positions or leapfrog queues. | **Critical** | **Permanent account termination & bonus clawback** | **CORE DETECTION SIGNAL** |",
+              "is_demo_policy": true
+            }
+          ],
+          "uncertainty_score": 0.3,
+          "abstention": false,
+          "abstention_rationale": null,
+          "human_confirmation_required": true,
+          "sanctions_prohibited": true
+        }
+      },
+      {
+        "case_id": "mock-004-outage",
+        "expected": "insufficient_evidence",
+        "predicted": "insufficient_evidence",
+        "support": 0.0,
+        "schema_valid": true,
+        "grounding_errors": [],
+        "output": {
+          "case_id": "mock-004-outage",
+          "category": "insufficient_evidence",
+          "confidence": 0.0,
+          "score_semantics": {
+            "scale": "0.0_to_1.0_ordinal_support",
+            "calibrated": false,
+            "is_violation_probability": false,
+            "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+          },
+          "evidence": [
+            {
+              "source": "telemetry_points",
+              "value": 25,
+              "description": "Observed input field: telemetry_points."
+            },
+            {
+              "source": "platform_outage",
+              "value": true,
+              "description": "Observed input field: platform_outage."
+            },
+            {
+              "source": "gps_degraded",
+              "value": false,
+              "description": "Observed input field: gps_degraded."
+            }
+          ],
+          "summary": "Advisory assessment abstained; human analyst review required.",
+          "policy_version": null,
+          "retrieved_policy_clauses": [],
+          "policy_citations": [],
+          "uncertainty_score": 1.0,
+          "abstention": true,
+          "abstention_rationale": "Technical failure or degraded telemetry.",
+          "human_confirmation_required": true,
+          "sanctions_prohibited": true
+        }
+      },
+      {
+        "case_id": "mock-005-missing",
+        "expected": "insufficient_evidence",
+        "predicted": "insufficient_evidence",
+        "support": 0.0,
+        "schema_valid": true,
+        "grounding_errors": [],
+        "output": {
+          "case_id": "mock-005-missing",
+          "category": "insufficient_evidence",
+          "confidence": 0.0,
+          "score_semantics": {
+            "scale": "0.0_to_1.0_ordinal_support",
+            "calibrated": false,
+            "is_violation_probability": false,
+            "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+          },
+          "evidence": [
+            {
+              "source": "telemetry_points",
+              "value": 0,
+              "description": "Observed input field: telemetry_points."
+            },
+            {
+              "source": "platform_outage",
+              "value": false,
+              "description": "Observed input field: platform_outage."
+            },
+            {
+              "source": "gps_degraded",
+              "value": false,
+              "description": "Observed input field: gps_degraded."
+            }
+          ],
+          "summary": "Advisory assessment abstained; human analyst review required.",
+          "policy_version": null,
+          "retrieved_policy_clauses": [],
+          "policy_citations": [],
+          "uncertainty_score": 1.0,
+          "abstention": true,
+          "abstention_rationale": "Technical failure or degraded telemetry.",
+          "human_confirmation_required": true,
+          "sanctions_prohibited": true
+        }
+      },
+      {
+        "case_id": "mock-006-boundary",
+        "expected": "ERR-02",
+        "predicted": "ERR-02",
+        "support": 0.8,
+        "schema_valid": true,
+        "grounding_errors": [],
+        "output": {
+          "case_id": "mock-006-boundary",
+          "category": "ERR-02",
+          "confidence": 0.8,
+          "score_semantics": {
+            "scale": "0.0_to_1.0_ordinal_support",
+            "calibrated": false,
+            "is_violation_probability": false,
+            "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+          },
+          "evidence": [
+            {
+              "source": "telemetry_points",
+              "value": 25,
+              "description": "Observed input field: telemetry_points."
+            },
+            {
+              "source": "platform_outage",
+              "value": false,
+              "description": "Observed input field: platform_outage."
+            },
+            {
+              "source": "gps_degraded",
+              "value": false,
+              "description": "Observed input field: gps_degraded."
+            },
+            {
+              "source": "stationary_duration_s",
+              "value": 180.0,
+              "description": "Observed input field: stationary_duration_s."
+            },
+            {
+              "source": "lifecycle_state",
+              "value": "cancelled",
+              "description": "Observed input field: lifecycle_state."
+            },
+            {
+              "source": "cancellation_actor",
+              "value": "passenger",
+              "description": "Observed input field: cancellation_actor."
+            }
+          ],
+          "summary": "At least 180 seconds stationary precedes passenger cancellation; intent remains unproven. Policy citations provide context, not proof of intent.",
+          "policy_version": "PRD-v1.1",
+          "retrieved_policy_clauses": [
+            "| **ERR-02** | **Route Deviation & Induced Cancellation** | Driver stalls, parks, or travels in opposite direction to force passenger cancellation (*Driver-Induced Cancellation - DIC*), avoiding AR/CR penalties. | **High** | **Temporary suspension, bonus clawback & warning** | **PRIMARY PHASE 1 FOCUS** |"
+          ],
+          "policy_citations": [
+            {
+              "id": "requirement-ERR-02",
+              "version": "PRD-v1.1",
+              "source": "docs/ba/PRD.md",
+              "section": "\u00a73/ERR-02",
+              "text": "| **ERR-02** | **Route Deviation & Induced Cancellation** | Driver stalls, parks, or travels in opposite direction to force passenger cancellation (*Driver-Induced Cancellation - DIC*), avoiding AR/CR penalties. | **High** | **Temporary suspension, bonus clawback & warning** | **PRIMARY PHASE 1 FOCUS** |",
+              "is_demo_policy": true
+            }
+          ],
+          "uncertainty_score": 0.2,
+          "abstention": false,
+          "abstention_rationale": null,
+          "human_confirmation_required": true,
+          "sanctions_prohibited": true
+        }
+      },
+      {
+        "case_id": "mock-007-below-boundary",
+        "expected": "insufficient_evidence",
+        "predicted": "insufficient_evidence",
+        "support": 0.0,
+        "schema_valid": true,
+        "grounding_errors": [],
+        "output": {
+          "case_id": "mock-007-below-boundary",
+          "category": "insufficient_evidence",
+          "confidence": 0.0,
+          "score_semantics": {
+            "scale": "0.0_to_1.0_ordinal_support",
+            "calibrated": false,
+            "is_violation_probability": false,
+            "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+          },
+          "evidence": [
+            {
+              "source": "telemetry_points",
+              "value": 25,
+              "description": "Observed input field: telemetry_points."
+            },
+            {
+              "source": "platform_outage",
+              "value": false,
+              "description": "Observed input field: platform_outage."
+            },
+            {
+              "source": "gps_degraded",
+              "value": false,
+              "description": "Observed input field: gps_degraded."
+            },
+            {
+              "source": "stationary_duration_s",
+              "value": 179.0,
+              "description": "Observed input field: stationary_duration_s."
+            },
+            {
+              "source": "lifecycle_state",
+              "value": "cancelled",
+              "description": "Observed input field: lifecycle_state."
+            },
+            {
+              "source": "cancellation_actor",
+              "value": "passenger",
+              "description": "Observed input field: cancellation_actor."
+            },
+            {
+              "source": "mock_location_reported",
+              "value": false,
+              "description": "Observed input field: mock_location_reported."
+            }
+          ],
+          "summary": "Advisory assessment abstained; human analyst review required.",
+          "policy_version": null,
+          "retrieved_policy_clauses": [],
+          "policy_citations": [],
+          "uncertainty_score": 1.0,
+          "abstention": true,
+          "abstention_rationale": "Inconclusive feature combination.",
+          "human_confirmation_required": true,
+          "sanctions_prohibited": true
+        }
+      },
+      {
+        "case_id": "mock-008-degraded",
+        "expected": "insufficient_evidence",
+        "predicted": "insufficient_evidence",
+        "support": 0.0,
+        "schema_valid": true,
+        "grounding_errors": [],
+        "output": {
+          "case_id": "mock-008-degraded",
+          "category": "insufficient_evidence",
+          "confidence": 0.0,
+          "score_semantics": {
+            "scale": "0.0_to_1.0_ordinal_support",
+            "calibrated": false,
+            "is_violation_probability": false,
+            "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+          },
+          "evidence": [
+            {
+              "source": "telemetry_points",
+              "value": 25,
+              "description": "Observed input field: telemetry_points."
+            },
+            {
+              "source": "platform_outage",
+              "value": false,
+              "description": "Observed input field: platform_outage."
+            },
+            {
+              "source": "gps_degraded",
+              "value": true,
+              "description": "Observed input field: gps_degraded."
+            }
+          ],
+          "summary": "Advisory assessment abstained; human analyst review required.",
+          "policy_version": null,
+          "retrieved_policy_clauses": [],
+          "policy_citations": [],
+          "uncertainty_score": 1.0,
+          "abstention": true,
+          "abstention_rationale": "Technical failure or degraded telemetry.",
+          "human_confirmation_required": true,
+          "sanctions_prohibited": true
+        }
+      },
+      {
+        "case_id": "mock-009-driver-cancel",
+        "expected": "insufficient_evidence",
+        "predicted": "insufficient_evidence",
+        "support": 0.0,
+        "schema_valid": true,
+        "grounding_errors": [],
+        "output": {
+          "case_id": "mock-009-driver-cancel",
+          "category": "insufficient_evidence",
+          "confidence": 0.0,
+          "score_semantics": {
+            "scale": "0.0_to_1.0_ordinal_support",
+            "calibrated": false,
+            "is_violation_probability": false,
+            "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+          },
+          "evidence": [
+            {
+              "source": "telemetry_points",
+              "value": 25,
+              "description": "Observed input field: telemetry_points."
+            },
+            {
+              "source": "platform_outage",
+              "value": false,
+              "description": "Observed input field: platform_outage."
+            },
+            {
+              "source": "gps_degraded",
+              "value": false,
+              "description": "Observed input field: gps_degraded."
+            },
+            {
+              "source": "stationary_duration_s",
+              "value": 240.0,
+              "description": "Observed input field: stationary_duration_s."
+            },
+            {
+              "source": "lifecycle_state",
+              "value": "cancelled",
+              "description": "Observed input field: lifecycle_state."
+            },
+            {
+              "source": "cancellation_actor",
+              "value": "driver",
+              "description": "Observed input field: cancellation_actor."
+            },
+            {
+              "source": "mock_location_reported",
+              "value": false,
+              "description": "Observed input field: mock_location_reported."
+            }
+          ],
+          "summary": "Advisory assessment abstained; human analyst review required.",
+          "policy_version": null,
+          "retrieved_policy_clauses": [],
+          "policy_citations": [],
+          "uncertainty_score": 1.0,
+          "abstention": true,
+          "abstention_rationale": "Inconclusive feature combination.",
+          "human_confirmation_required": true,
+          "sanctions_prohibited": true
+        }
+      },
+      {
+        "case_id": "mock-010-long-completed",
+        "expected": "no_violation",
+        "predicted": "no_violation",
+        "support": 0.7,
+        "schema_valid": true,
+        "grounding_errors": [],
+        "output": {
+          "case_id": "mock-010-long-completed",
+          "category": "no_violation",
+          "confidence": 0.7,
+          "score_semantics": {
+            "scale": "0.0_to_1.0_ordinal_support",
+            "calibrated": false,
+            "is_violation_probability": false,
+            "description": "Rule-based heuristic support score only; never a violation probability or sanction basis."
+          },
+          "evidence": [
+            {
+              "source": "telemetry_points",
+              "value": 25,
+              "description": "Observed input field: telemetry_points."
+            },
+            {
+              "source": "platform_outage",
+              "value": false,
+              "description": "Observed input field: platform_outage."
+            },
+            {
+              "source": "gps_degraded",
+              "value": false,
+              "description": "Observed input field: gps_degraded."
+            },
+            {
+              "source": "lifecycle_state",
+              "value": "completed",
+              "description": "Observed input field: lifecycle_state."
+            },
+            {
+              "source": "mock_location_reported",
+              "value": false,
+              "description": "Observed input field: mock_location_reported."
+            }
+          ],
+          "summary": "Completed trip triggers none of the supported rules; this does not establish absence of fraud. Policy citations provide context, not proof of intent.",
+          "policy_version": "PRD-v1.1",
+          "retrieved_policy_clauses": [
+            "| **ERR-02** | **Route Deviation & Induced Cancellation** | Driver stalls, parks, or travels in opposite direction to force passenger cancellation (*Driver-Induced Cancellation - DIC*), avoiding AR/CR penalties. | **High** | **Temporary suspension, bonus clawback & warning** | **PRIMARY PHASE 1 FOCUS** |",
+            "| **ERR-05** | **Technological Manipulation & Fake GPS** | Mock location apps, rooted devices, GPS spoofing, and modified APK clients to fake positions or leapfrog queues. | **Critical** | **Permanent account termination & bonus clawback** | **CORE DETECTION SIGNAL** |"
+          ],
+          "policy_citations": [
+            {
+              "id": "requirement-ERR-02",
+              "version": "PRD-v1.1",
+              "source": "docs/ba/PRD.md",
+              "section": "\u00a73/ERR-02",
+              "text": "| **ERR-02** | **Route Deviation & Induced Cancellation** | Driver stalls, parks, or travels in opposite direction to force passenger cancellation (*Driver-Induced Cancellation - DIC*), avoiding AR/CR penalties. | **High** | **Temporary suspension, bonus clawback & warning** | **PRIMARY PHASE 1 FOCUS** |",
+              "is_demo_policy": true
+            },
+            {
+              "id": "requirement-ERR-05",
+              "version": "PRD-v1.1",
+              "source": "docs/ba/PRD.md",
+              "section": "\u00a73/ERR-05",
+              "text": "| **ERR-05** | **Technological Manipulation & Fake GPS** | Mock location apps, rooted devices, GPS spoofing, and modified APK clients to fake positions or leapfrog queues. | **Critical** | **Permanent account termination & bonus clawback** | **CORE DETECTION SIGNAL** |",
+              "is_demo_policy": true
+            }
+          ],
+          "uncertainty_score": 0.3,
+          "abstention": false,
+          "abstention_rationale": null,
+          "human_confirmation_required": true,
+          "sanctions_prohibited": true
+        }
+      }
+    ]
+  },
+  "held_out": {
+    "total": 37,
+    "executed": 0,
+    "not_run": [
+      {
+        "case_id": "protocol-dic-01",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://intentional_dic/1",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-traffic-01",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://traffic_gridlock/1",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-outage-01",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://technical_dropout/1",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-dic-02",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://intentional_dic/2",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-traffic-02",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://traffic_gridlock/2",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-outage-02",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://technical_dropout/2",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-dic-03",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://intentional_dic/3",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-traffic-03",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://traffic_gridlock/3",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-outage-03",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://technical_dropout/3",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-dic-04",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://intentional_dic/4",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-traffic-04",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://traffic_gridlock/4",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-outage-04",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://technical_dropout/4",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-dic-05",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://intentional_dic/5",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-traffic-05",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://traffic_gridlock/5",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-outage-05",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://technical_dropout/5",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-dic-06",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://intentional_dic/6",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-traffic-06",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://traffic_gridlock/6",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-outage-06",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://technical_dropout/6",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-dic-07",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://intentional_dic/7",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-traffic-07",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://traffic_gridlock/7",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-outage-07",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://technical_dropout/7",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-dic-08",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://intentional_dic/8",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-traffic-08",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://traffic_gridlock/8",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-outage-08",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://technical_dropout/8",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-dic-09",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://intentional_dic/9",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-traffic-09",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://traffic_gridlock/9",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-outage-09",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://technical_dropout/9",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-dic-10",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://intentional_dic/10",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-traffic-10",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://traffic_gridlock/10",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "protocol-outage-10",
+        "adapter": "road_v1_scenario",
+        "fixture_ref": "road-v1://technical_dropout/10",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "taxonomy-err-05",
+        "adapter": "taxonomy_contract",
+        "fixture_ref": "prd://taxonomy/ERR-05",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "rag-policy-029",
+        "adapter": "rag_case",
+        "fixture_ref": "eval/golden_set/rag_testset_30.json#tc-029",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "tool-prompt-injection",
+        "adapter": "agent_conversation",
+        "fixture_ref": "eval/golden_set/agent_conversations_v1.json#prompt-injection",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "brief-cancel",
+        "adapter": "forensic_baseline",
+        "fixture_ref": "eval/golden_set/forensic_mock_cases.json#mock-009-driver-cancel",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "error-stale-version",
+        "adapter": "agent_conversation",
+        "fixture_ref": "eval/golden_set/agent_conversations_v1.json#stale-version",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "role-declined-approval",
+        "adapter": "agent_conversation",
+        "fixture_ref": "eval/golden_set/agent_conversations_v1.json#declined-approval",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      },
+      {
+        "case_id": "driver-a2a-deadline",
+        "adapter": "driver_support_case",
+        "fixture_ref": "tests/eval/driver_support_agent_langsmith_dataset.json#eval-turn-05-policy-and-deadline-inquiry",
+        "reason": "No verified mapping from referenced evidence to ForensicInput; labels never create observations."
+      }
+    ],
+    "paired_case_ids": [],
+    "baseline": null,
+    "candidate": null
+  },
+  "acceptance_thresholds": {
+    "overall_accuracy": {
+      "value": 1.0,
+      "threshold": 0.85,
+      "passed": true
+    },
+    "ERR-02_f1": {
+      "value": 1.0,
+      "threshold": 0.85,
+      "passed": true
+    },
+    "ERR-05_f1": {
+      "value": 1.0,
+      "threshold": 0.8,
+      "passed": true
+    },
+    "no_violation_f1": {
+      "value": 1.0,
+      "threshold": 0.8,
+      "passed": true
+    },
+    "insufficient_evidence_f1": {
+      "value": 1.0,
+      "threshold": 0.85,
+      "passed": true
+    },
+    "grounding_error_count": {
+      "value": 0,
+      "threshold": 0,
+      "passed": true
+    },
+    "schema_validity": {
+      "value": 1.0,
+      "threshold": 1.0,
+      "passed": true
+    },
+    "automated_sanctions": {
+      "value": 0,
+      "threshold": 0,
+      "passed": true
+    }
+  },
+  "release_acceptance": false
+}

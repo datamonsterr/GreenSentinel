@@ -1,0 +1,50 @@
+{
+  "batches": [
+    {
+      "name": "v1",
+      "n": 10000,
+      "seed": 20261011,
+      "trips_sha256": "b6aed4a2a6058c9bd6c4a002493f27254e70fcaba2f3df154b7931ed12a88154",
+      "class_counts": {
+        "ERR-01": 500,
+        "ERR-02": 800,
+        "ERR-03": 500,
+        "ERR-04": 300,
+        "ERR-05": 300,
+        "insufficient_evidence": 600,
+        "no_violation": 7000
+      }
+    },
+    {
+      "name": "v2",
+      "n": 10000,
+      "seed": 20261012,
+      "trips_sha256": "8675f823b27e0b79768e89ea4cc30834f59069ca155f1a891598fef75207c1b0",
+      "class_counts": {
+        "ERR-01": 500,
+        "ERR-02": 800,
+        "ERR-03": 500,
+        "ERR-04": 300,
+        "ERR-05": 300,
+        "insufficient_evidence": 600,
+        "no_violation": 7000
+      }
+    },
+    {
+      "name": "v3",
+      "n": 10000,
+      "seed": 20261013,
+      "trips_sha256": "8ba376474d2af19925eb160303f3cbf79dd370a5ce50089e04b54f1cb273fb1b",
+      "class_counts": {
+        "ERR-01": 500,
+        "ERR-02": 800,
+        "ERR-03": 500,
+        "ERR-04": 300,
+        "ERR-05": 300,
+        "insufficient_evidence": 600,
+        "no_violation": 7000
+      }
+    }
+  ],
+  "total_trips": 30000
+}

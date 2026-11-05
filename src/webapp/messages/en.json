@@ -1,0 +1,476 @@
+{
+  "status": {
+    "dispute": {
+      "not_disputed": {
+        "label": "Not disputed",
+        "explanation": "No dispute submitted for this case."
+      },
+      "in_dispute": {
+        "label": "In dispute",
+        "explanation": "Your explanation is currently being received and audited."
+      },
+      "driver_disputed": {
+        "label": "In dispute",
+        "explanation": "Your explanation is currently being received and audited."
+      },
+      "auto_dismissed": {
+        "label": "Auto dismissed",
+        "explanation": "Violation automatically dismissed due to verified objective conditions."
+      },
+      "escalated": {
+        "label": "Escalated",
+        "explanation": "Case has been escalated to a review specialist for manual verification."
+      },
+      "pending_review": {
+        "label": "Pending review",
+        "explanation": "Awaiting review from a specialist."
+      },
+      "pending_analyst_review": {
+        "label": "Pending review",
+        "explanation": "Awaiting review from a specialist."
+      },
+      "pending_confirmation": {
+        "label": "Pending confirmation",
+        "explanation": "Please review and confirm your statement before submitting."
+      },
+      "pending": {
+        "label": "Pending",
+        "explanation": "Case is in the processing queue."
+      },
+      "resolved": {
+        "label": "Resolved",
+        "explanation": "This case has been fully resolved."
+      },
+      "dismissed": {
+        "label": "Dismissed",
+        "explanation": "Violation was dismissed and penalties cleared."
+      },
+      "upheld": {
+        "label": "Upheld",
+        "explanation": "Violation was confirmed according to operating policies."
+      },
+      "closed": {
+        "label": "Closed",
+        "explanation": "This dispute case has concluded."
+      },
+      "expired": {
+        "label": "Expired",
+        "explanation": "The 48-hour dispute window has expired."
+      }
+    },
+    "case": {
+      "open": {
+        "label": "Open",
+        "explanation": "Case is currently open."
+      },
+      "ready": {
+        "label": "Ready",
+        "explanation": "Case is ready for review."
+      },
+      "investigating": {
+        "label": "Under investigation",
+        "explanation": "Trip data and incident records are currently being investigated."
+      },
+      "in_review": {
+        "label": "In review",
+        "explanation": "Case is under review."
+      },
+      "resolved": {
+        "label": "Resolved",
+        "explanation": "Case has been resolved."
+      },
+      "closed": {
+        "label": "Closed",
+        "explanation": "Case has been closed."
+      }
+    },
+    "violation": {
+      "err_01": {
+        "label": "Pickup delay",
+        "explanation": "Vehicle pickup approach time was significantly longer than estimated."
+      },
+      "err_02": {
+        "label": "Irregular cancellation",
+        "explanation": "Detected irregular cancellation pattern after booking acceptance."
+      },
+      "err_03": {
+        "label": "GPS anomaly",
+        "explanation": "GPS telemetry signal had abrupt jitter, dropouts, or spoofing signatures."
+      },
+      "err_04": {
+        "label": "Telemetry disconnect",
+        "explanation": "Network data loss or device telemetry stream was interrupted."
+      },
+      "err_05": {
+        "label": "Route deviation",
+        "explanation": "Distance or path deviated significantly from optimal routing corridor."
+      },
+      "auto_dismissed": {
+        "label": "Auto dismissed",
+        "explanation": "Exonerated according to operational regulations."
+      },
+      "dic": {
+        "label": "Driver cancellation",
+        "explanation": "Driver initiated cancellation on accepted trip."
+      },
+      "no_violation": {
+        "label": "No violation",
+        "explanation": "Normal trip telemetry with no detected violation."
+      }
+    },
+    "fallback": {
+      "label": "Under review",
+      "explanation": "This case is currently being reviewed and processed."
+    },
+    "trip": {
+      "completed": {
+        "label": "Completed",
+        "explanation": "The trip finished normally."
+      },
+      "cancelled": {
+        "label": "Cancelled",
+        "explanation": "The trip was cancelled before completion."
+      },
+      "flagged": {
+        "label": "Flagged",
+        "explanation": "The trip has a linked case under review."
+      },
+      "in_progress": {
+        "label": "In progress",
+        "explanation": "The trip is currently ongoing."
+      }
+    }
+  },
+  "driver": {
+    "portalTitle": "Dispute Sessions",
+    "casesCount": "{count} cases",
+    "searchPlaceholder": "Search by case ID, violation...",
+    "allCases": "All",
+    "activeCases": "Active",
+    "resolvedCases": "Resolved",
+    "loadingCases": "Loading case list...",
+    "emptyCases": "No matching dispute cases found.",
+    "sentinelAi": "🤖 Sentinel AI",
+    "riderReported": "👤 Rider reported",
+    "recent": "Recent",
+    "autoDismissedBadge": "Auto dismissed",
+    "closedBadge": "Closed",
+    "cases": {
+      "title": "Your cases",
+      "tabOpen": "Open",
+      "tabResolved": "Resolved",
+      "aiNoticeTitle": "AI automated detection",
+      "aiNoticeBadge": "Protected",
+      "aiNoticeDesc": "Driver rights are fully protected. Please respond to cases before the deadline to maintain your trust score and weekly bonuses.",
+      "needActionSection": "Action required",
+      "deadlineDays": "{count} days left to respond",
+      "deadlineHours": "{count} hours left to respond",
+      "deadlinePassed": "Response deadline passed",
+      "deadlineUnderReview": "Response expected within 24h",
+      "emptyOpenTitle": "No open cases",
+      "emptyOpenDesc": "You have no active violations or cases requiring response.",
+      "emptyResolvedTitle": "No resolved cases",
+      "emptyResolvedDesc": "Resolved cases and completed reviews will appear here.",
+      "loadingTitle": "Loading cases...",
+      "errorTitle": "Failed to load cases",
+      "errorDesc": "Please check your network connection and try again.",
+      "retryButton": "Retry",
+      "shortIdAria": "Case code {code}",
+      "caseAria": "Case {code}: {title}",
+      "todayAt": "Today, {time}",
+      "yesterdayAt": "Yesterday, {time}",
+      "daysAgo": "{count} days ago",
+      "hoursAgo": "{count}h ago",
+      "minutesAgo": "{count}m ago"
+    },
+    "gsupport": {
+      "title": "GSupport",
+      "aiCare": "AI Care",
+      "systemName": "GreenSentinel",
+      "driverDefault": "Driver",
+      "backTooltip": "Back to case list",
+      "mapButton": "Map",
+      "mapModalTitle": "GPS Map & Actual Trajectory",
+      "incidentLocation": "Incident location",
+      "expectedPickup": "Scheduled pickup point",
+      "closeMap": "Close map",
+      "badgeAuto": "Exonerated",
+      "badgeExpired": "Expired",
+      "badgeActive": "In progress",
+      "windowNotice": "⏱️ 48h Window",
+      "expiredBanner": "The 48-hour dispute window has expired",
+      "resolvedBanner": "This case has been fully resolved",
+      "dispositionLabel": "Final disposition:",
+      "exonerationSuccess": "Autonomous Exoneration Granted",
+      "zeroFine": "0 VND Fine",
+      "fineLevel": "Sanction: 0 VND",
+      "receiptLabel": "Receipt",
+      "exonerationDefaultSummary": "Traffic flow verified exceeding 3.4x baseline congestion. Violation automatically exonerated.",
+      "analystBadge": "[Review Specialist]",
+      "driverLabel": "You (Driver)",
+      "gsupportLabel": "GSupport",
+      "greeting": "Hello partner {name}, I am GSupport - GreenSM trip audit support assistant. The system recorded warning code {code} ({title}). You can submit an explanation now by selecting a quick reason below or entering trip details for AI telemetry audit and auto-exoneration.",
+      "welcomePolicyArticle": "Article 12.2 GreenSM Regulations",
+      "welcomePolicyTitle": "Force Majeure & Liability Exemption",
+      "welcomePolicyChunk": "Vehicles stopping or moving slowly due to widespread traffic congestion, severe weather, or objective incidents will be automatically exonerated upon telemetry verification.",
+      "trafficPolicyArticle": "Article 12.2 GreenSM Regulations",
+      "trafficPolicyTitle": "Exemption for widespread traffic congestion",
+      "trafficPolicyChunk": "Speed telemetry and trip delay are cross-referenced with live traffic flow to protect partner interests.",
+      "thinkingAnalyzing": "Analyzing GPS telemetry data and cross-referencing real-time traffic conditions...",
+      "thinkingExonerated": "Verification successful: vehicle speed < 5 km/h, congestion factor >= 2.0x, valid GPS, 0 past violations. Eligible for auto-exoneration under Article 12.2.",
+      "thinkingEscalated": "Explanation and verification data aggregated into monitoring dossier for specialist review.",
+      "auditProcess": "Automated Audit Process",
+      "reasoningInProgress": "GSupport is analyzing & verifying...",
+      "reasoningLabel": "Reasoning:",
+      "toolLabel": "Tool:",
+      "processingExplanation": "Processing explanation...",
+      "policyMatch": "Match {score}",
+      "gpsTelemetryTitle": "GPS & Telemetry Data",
+      "openFullMap": "Open full map →",
+      "speedLabel": "Speed:",
+      "congestionFactor": "Congestion:",
+      "connectionError": "GSupport connection temporarily lost: {error}. Please try again.",
+      "retryConnection": "Retry connection",
+      "errorLoadFailed": "Failed to load dispute case details",
+      "errorConnectionDefault": "Connection error with GSupport",
+      "defaultCity": "Hanoi",
+      "inputPlaceholder": "Enter additional dispute details…",
+      "send": "Send",
+      "sending": "Sending…",
+      "loading": "Connecting to GSupport & loading case details…",
+      "error403Title": "You do not have permission to access another driver's case",
+      "error403Desc": "You can only view cases from your own trips.",
+      "error404Title": "Dispute case not found",
+      "error404Desc": "Case ID #{id} was not found in the system.",
+      "backToPortal": "Return to Driver Portal"
+    },
+    "chat": {
+      "greetingTitle": "Hi {name} 👋",
+      "greetingSubtitle": "I'm GSupport. How can I help you today?",
+      "driverDefault": "partner",
+      "suggestion1": "Do I have any open cases?",
+      "suggestion2": "What does Article 12.2 say about traffic gridlock?",
+      "suggestion3": "Show my 90-day scorecard",
+      "suggestion4": "Show my recent trip history",
+      "autoSendPrompt": "Check details of case {code}",
+      "statusIdle": "Ready",
+      "statusStreaming": "Replying…",
+      "statusCompleted": "Replied",
+      "statusError": "Connection error",
+      "errorCaseNotFoundOrForbidden": "This case was not found or you do not have access",
+      "errorSessionExpired": "Session expired, please sign in again",
+      "errorAssistantUnavailable": "Could not reach the assistant, please try again",
+      "retry": "Retry",
+      "toolTraceLabel": "Tools used",
+      "composerPlaceholder": "Type a message…",
+      "send": "Send",
+      "caseStatusUnknown": "Unknown",
+      "acceptViolation": "Accept violation",
+      "rejectExplain": "Reject & explain",
+      "rejectPrompt": "I want to reject and explain this violation",
+      "confirmAcknowledgeTitle": "Confirm accepting this violation?",
+      "confirmAcknowledgeSummary": "Record violation acknowledgment and forward to a review specialist.",
+      "confirmSubmitTitle": "Submit this statement to GreenSM for specialist review?",
+      "confirmSubmitSummary": "Your statement will be forwarded to Operations & Driver Support for review.",
+      "confirmIrreversibleNote": "Note: This action cannot be undone once submitted.",
+      "confirmYes": "Yes, submit",
+      "confirmNo": "No, save draft",
+      "draftSaved": "Statement draft saved. You can resume anytime.",
+      "receiptSubmitted": "Statement submitted successfully. Forwarded to specialist review.",
+      "receiptAcknowledged": "Your acknowledgment has been recorded and forwarded to specialist review.",
+      "resumeDraft": "You have an unsent statement draft",
+      "resumeDraftAction": "Resume draft",
+      "dismissDraft": "Dismiss",
+      "checklistHeader": "Your statement",
+      "checklistValidBadge": "Verified",
+      "checklistIncidentType": "Incident type",
+      "checklistDescription": "Description",
+      "checklistEvidence": "Verified evidence",
+      "checklistAcknowledgeDesc": "Confirm case details"
+    },
+    "quickClaims": {
+      "traffic_gridlock": {
+        "label": "🚦 Heavy Traffic",
+        "prompt": "Severe traffic congestion prevented the vehicle from moving on schedule."
+      },
+      "gps_issue": {
+        "label": "📍 GPS / App Drop",
+        "prompt": "Driver app lost network connectivity and GPS signal suffered sudden jitter/dropout."
+      },
+      "passenger_wait": {
+        "label": "⏱️ Passenger Wait",
+        "prompt": "Arrived at pickup location but passenger requested waiting beyond designated window."
+      },
+      "breakdown": {
+        "label": "⚠️ Vehicle Breakdown",
+        "prompt": "Encountered unexpected mechanical issue requiring immediate stop for safety."
+      }
+    },
+    "authBoundary": {
+      "loadingSession": "Loading session…"
+    },
+    "tabs": {
+      "cases": "Cases",
+      "profile": "Profile",
+      "chat": "GSupport",
+      "history": "History",
+      "settings": "Settings",
+      "navAriaLabel": "Driver bottom navigation"
+    },
+    "settings": {
+      "title": "Settings",
+      "driverPartner": "Driver Partner",
+      "goldPartner": "GreenCar Partner - Gold Tier",
+      "active": "Active",
+      "securityAndLicense": "Security & Driver License",
+      "manageAccount": "Manage account",
+      "vehicleInfo": "VinFast VF 5 Plus • License Plate",
+      "licensePlate": "29E - 584.92",
+      "batteryAvailable": "Battery",
+      "batteryLevel": "82%",
+      "batteryRange": "(246 km)",
+      "sectionExperience": "Interface & Experience",
+      "theme": "Theme",
+      "themeDesc": "Optimized day and night contrast",
+      "themeLight": "Light",
+      "themeDark": "Dark",
+      "language": "Language",
+      "languageDesc": "In-vehicle display language",
+      "langVi": "Tiếng Việt",
+      "langEn": "English",
+      "sectionInfo": "Information & Support",
+      "appVersion": "App version",
+      "versionLatest": "Latest",
+      "termsAndPolicies": "Partner Terms & Policies",
+      "operatingRegulations": "Xanh SM Operating Regulations",
+      "hotline": "24/7 Emergency Support Hotline",
+      "hotlineNumber": "1900 2088 (Press 1 for Drivers)",
+      "signOut": "Sign out",
+      "partnerCode": "Partner ID: GSM-VN-884920",
+      "avatarAlt": "Driver avatar",
+      "noEmail": "No email provided"
+    },
+    "profile": {
+      "title": "Driver Profile",
+      "backAriaLabel": "Back",
+      "unnamedDriver": "Unnamed driver",
+      "memberSince": "Member since: {date}",
+      "noVehicle": "No vehicle assigned",
+      "ratingSectionTitle": "Overall Rating",
+      "ratingSectionSubtitle": "Aggregated across all trips",
+      "latestRatedWeek": "Latest rated week: {score}",
+      "outOfFive": "/5",
+      "reviewCount": "{count} reviews",
+      "noRatingsYet": "No ratings yet",
+      "trendTitle": "Last 8 weeks trend",
+      "dateLocale": "en-US",
+      "performanceTitle": "90-Day Operational Performance",
+      "performanceSubtitle": "Metrics measured directly from the system over the last 90 days",
+      "kpiTotalTrips": "Total Assigned Trips",
+      "kpiTotalTripsUnit": "trips",
+      "kpiTotalTripsTooltip": "Total trips assigned to the driver within the last 90 days.",
+      "kpiViolationRatio": "Case / Trip Ratio",
+      "kpiViolationRatioTooltip": "Ratio of violation cases to total trips within the last 90 days.",
+      "kpiBenchmarkReference": "System benchmark: {value}%",
+      "kpiFinedRatio": "Fined Ratio",
+      "kpiFinedRatioTooltip": "Ratio of cases that resulted in a fine, out of total cases, within the last 90 days.",
+      "kpiCaseCount": "Case Count",
+      "kpiCaseCountUnit": "cases",
+      "kpiCaseCountTooltip": "Number of cases recorded within the last 90 days.",
+      "feedbackTitle": "Customer Feedback",
+      "feedbackSubtitle": "Comments from recent trips",
+      "anonymousCustomer": "Rider",
+      "noComment": "No comment provided",
+      "noRating": "No rating",
+      "loadMore": "Load more reviews",
+      "loadMoreFailed": "Failed to load more reviews",
+      "noFeedbackYet": "No customer feedback yet",
+      "loading": "Loading driver profile…",
+      "errorLoadFailed": "Failed to load driver profile",
+      "errorLoadDesc": "Please check your network connection and try again.",
+      "retry": "Retry"
+    },
+    "placeholders": {
+      "profileTitle": "Driver Profile",
+      "profileDesc": "Driver profile and scorecard feature is coming soon.",
+      "historyTitle": "Trip History",
+      "historyDesc": "Trip history lookup feature is coming soon.",
+      "chatTitle": "GSupport AI Assistant",
+      "chatDesc": "Welcome to GSupport. Please select a case to begin assistance."
+    },
+    "history": {
+      "title": "Activity History",
+      "currencySymbol": "đ",
+      "monthlyEarnings": "Total earnings",
+      "monthFormat": "Month {month}, {year}",
+      "tripCount": "Trips",
+      "distance": "Distance",
+      "rating": "Rating",
+      "notRated": "Not rated",
+      "unratedShort": "None",
+      "tabAll": "All",
+      "tabCompleted": "Completed",
+      "tabFlagged": "Flagged",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "tripsCountUnit": "{count} trips",
+      "kmUnit": "{km} km",
+      "emptyTitle": "No trips found",
+      "emptyDesc": "No trips found for the selected filters.",
+      "flaggedNotice": "Under review — tap to open case",
+      "viewDisputeCase": "View case",
+      "paymentMethods": {
+        "wallet": "VinClub Wallet",
+        "cash": "Cash",
+        "credit_card": "Credit Card"
+      },
+      "loadMore": "Load more",
+      "loading": "Loading data…",
+      "filterMonthAria": "Select month filter",
+      "durationMin": "{min} mins",
+      "syntheticDataLabel": "demo data",
+      "syntheticDataTooltip": "Payment method is synthetic placeholder data, not a real transaction record.",
+      "errorTitle": "Could not load trips",
+      "errorDesc": "Please check your network connection and try again.",
+      "errorRetry": "Retry",
+      "prevMonth": "Previous month",
+      "nextMonth": "Next month",
+      "loadMoreSentinelLabel": "Loading more trips"
+    }
+  },
+  "driverBlocks": {
+    "trip": "Trip",
+    "pickup": "Pickup",
+    "destination": "Destination",
+    "fareRecorded": "Recorded fare",
+    "tripDetails": "Trip details",
+    "casePrefix": "Case",
+    "inAppNavigation": "In-app navigation",
+    "evidenceHeader": "Recorded Evidence & Data",
+    "evidenceKinds": {
+      "weather": "Weather",
+      "traffic": "Traffic",
+      "telemetry": "Telemetry",
+      "policy": "Policy"
+    },
+    "nextStepsHeader": "Next steps:",
+    "status": {
+      "under_investigation": "Under investigation",
+      "pending": "Pending",
+      "resolved": "Resolved",
+      "dismissed": "Dismissed",
+      "auto_dismissed": "Auto-dismissed",
+      "violation": "Confirmed violation",
+      "escalated": "Escalated",
+      "open": "Open",
+      "closed": "Closed",
+      "in_review": "In review",
+      "approved": "Approved",
+      "rejected": "Rejected",
+      "under_review": "Under review",
+      "draft": "Draft",
+      "submitted": "Submitted",
+      "pending_analyst_review": "Pending analyst review"
+    }
+  }
+}

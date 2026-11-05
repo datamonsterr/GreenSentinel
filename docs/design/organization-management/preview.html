@@ -1,0 +1,1611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organization Management Redesign — Preview (P-063)</title>
+  <style>
+    /* Design Tokens */
+    :root {
+      --color-primary: #006948;
+      --color-primary-hover: #00553a;
+      --color-primary-light: #e6f4ef;
+      --color-primary-text: #00402b;
+      --color-canvas: #f6f8f7;
+      --color-surface: #ffffff;
+      --color-surface-hover: #f8f9f8;
+      --color-border: #e0e5e2;
+      --color-border-subtle: #edf0ee;
+      --color-text-primary: #17231d;
+      --color-text-secondary: #49564f;
+      --color-text-muted: #617068;
+      --color-text-subtle: #7b8880;
+      --color-amber-bg: #fffbeb;
+      --color-amber-border: #fcd34d;
+      --color-amber-text: #92400e;
+      --color-emerald-bg: #ecfdf5;
+      --color-emerald-border: #a7f3d0;
+      --color-emerald-text: #065f46;
+      --color-red-bg: #fef2f2;
+      --color-red-border: #fecaca;
+      --color-red-text: #991b1b;
+      --color-slate-bg: #f0f3f1;
+      --color-slate-text: #49564f;
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+      --shadow-xs: 0 1px 2px 0 rgba(11, 28, 48, 0.05);
+      --shadow-sm: 0 1px 3px 0 rgba(11, 28, 48, 0.06), 0 1px 2px -1px rgba(11, 28, 48, 0.04);
+      --shadow-md: 0 4px 6px -1px rgba(11, 28, 48, 0.07), 0 2px 4px -2px rgba(11, 28, 48, 0.05);
+      --shadow-xl: 0 20px 25px -5px rgba(11, 28, 48, 0.12), 0 8px 10px -6px rgba(11, 28, 48, 0.06);
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--color-canvas);
+      color: var(--color-text-primary);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 64px;
+    }
+
+    /* Specimen Switcher Ribbon (Preview Tooling) */
+    .specimen-nav {
+      background: #17231d;
+      color: #e0e5e2;
+      padding: 10px 16px;
+      font-size: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid #25332b;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .specimen-nav .title {
+      font-weight: 600;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .specimen-nav .badge-illustrative {
+      background: #f59e0b;
+      color: #78350f;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: none;
+      letter-spacing: 0.04em;
+    }
+
+    .specimen-btn {
+      background: #25332b;
+      color: #cad3cd;
+      border: 1px solid #37453d;
+      border-radius: var(--radius-sm);
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .specimen-btn:hover {
+      background: #37453d;
+      color: #ffffff;
+    }
+
+    .specimen-btn.active {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+      color: #ffffff;
+    }
+
+    /* Layout Shell */
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    /* Header Bar */
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .page-header-text h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .page-header-text p {
+      color: var(--color-text-secondary);
+      font-size: 13px;
+      margin-top: 2px;
+    }
+
+    .page-header-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .clerk-placeholder-org {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      background: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      font-size: 12px;
+      color: var(--color-text-secondary);
+      box-shadow: var(--shadow-xs);
+    }
+
+    .clerk-avatar-pill {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #e0e5e2;
+      border: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: #37453d;
+    }
+
+    /* Primary Action Button */
+    .btn-invite {
+      background-color: var(--color-primary);
+      color: #ffffff;
+      border: 1px solid transparent;
+      border-radius: var(--radius-sm);
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: background-color 0.15s ease, transform 0.05s ease;
+    }
+
+    .btn-invite:hover {
+      background-color: var(--color-primary-hover);
+    }
+
+    .btn-invite:active {
+      transform: translateY(1px);
+    }
+
+    .btn-invite:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Secondary / Utility Buttons */
+    .btn-secondary {
+      background-color: var(--color-surface);
+      color: var(--color-text-secondary);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      padding: 6px 12px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .btn-secondary:hover:not(:disabled) {
+      background-color: var(--color-surface-hover);
+      color: var(--color-text-primary);
+      border-color: #cad3cd;
+    }
+
+    .btn-secondary:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .btn-danger-text {
+      background: transparent;
+      border: 1px solid var(--color-border);
+      color: var(--color-red-text);
+      border-radius: var(--radius-sm);
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .btn-danger-text:hover {
+      background: var(--color-red-bg);
+      border-color: var(--color-red-border);
+    }
+
+    /* Alerts and Notices */
+    .alert-banner {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: var(--radius-md);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .alert-warning {
+      background-color: var(--color-amber-bg);
+      border: 1px solid var(--color-amber-border);
+      color: var(--color-amber-text);
+    }
+
+    .alert-error {
+      background-color: var(--color-red-bg);
+      border: 1px solid var(--color-red-border);
+      color: var(--color-red-text);
+    }
+
+    .alert-success {
+      background-color: var(--color-emerald-bg);
+      border: 1px solid var(--color-emerald-border);
+      color: var(--color-emerald-text);
+    }
+
+    .alert-icon {
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* Cards & Tables */
+    .card {
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .card-title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+    }
+
+    .badge-count {
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--color-slate-bg);
+      color: var(--color-text-secondary);
+      padding: 2px 8px;
+      border-radius: 9999px;
+      border: 1px solid var(--color-border);
+    }
+
+    /* Toolbar / Filters */
+    .card-toolbar {
+      padding: 12px 20px;
+      background-color: #fafbfa;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .search-input-wrapper {
+      position: relative;
+      flex: 1;
+      max-width: 320px;
+      min-width: 180px;
+    }
+
+    .search-input-wrapper svg {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--color-text-subtle);
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 6px 12px 6px 32px;
+      font-size: 12px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-surface);
+      color: var(--color-text-primary);
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .search-input:focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 2px var(--color-primary-light);
+    }
+
+    .filter-select {
+      padding: 6px 10px;
+      font-size: 12px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background-color: var(--color-surface);
+      color: var(--color-text-secondary);
+      outline: none;
+      cursor: pointer;
+    }
+
+    .filter-select:focus {
+      border-color: var(--color-primary);
+    }
+
+    /* Scope Disclosure Banner */
+    .scope-disclosure {
+      padding: 6px 20px;
+      background: #f0f3f1;
+      border-bottom: 1px solid var(--color-border);
+      font-size: 11px;
+      color: var(--color-text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+
+    /* Table Styles */
+    .table-container {
+      overflow-x: auto;
+      min-height: 120px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    th {
+      background-color: #f8f9f8;
+      color: var(--color-text-secondary);
+      font-weight: 600;
+      font-size: 11px;
+      text-transform: none;
+      letter-spacing: 0.04em;
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--color-border);
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    th.sortable {
+      cursor: pointer;
+    }
+
+    th.sortable:hover {
+      color: var(--color-text-primary);
+      background-color: #f0f3f1;
+    }
+
+    th .th-content {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--color-border-subtle);
+      color: var(--color-text-primary);
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover td {
+      background-color: var(--color-surface-hover);
+    }
+
+    /* Data Elements */
+    .member-name {
+      font-family: var(--font-sans);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+    }
+
+
+    .email-cell {
+      font-weight: 500;
+      color: var(--color-text-primary);
+    }
+
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-transform: capitalize;
+    }
+
+    .role-badge.admin, .role-badge.analyst, .role-badge.driver {
+      background: var(--color-slate-bg);
+      color: var(--color-text-secondary);
+      border: 1px solid var(--color-border);
+    }
+
+
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 500;
+    }
+
+    .status-badge.active {
+      background: var(--color-emerald-bg);
+      color: var(--color-emerald-text);
+      border: 1px solid var(--color-emerald-border);
+    }
+
+    .status-badge.pending {
+      background: var(--color-amber-bg);
+      color: var(--color-amber-text);
+      border: 1px solid var(--color-amber-border);
+    }
+
+    .status-badge.revoked {
+      background: var(--color-slate-bg);
+      color: var(--color-text-muted);
+      border: 1px solid var(--color-border);
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .status-dot.active { background: #10b981; }
+    .status-dot.pending { background: #f59e0b; }
+    .status-dot.revoked { background: #7b8880; }
+
+    /* Role Update Select inside table */
+    .role-select {
+      padding: 4px 8px;
+      font-size: 12px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      background: var(--color-surface);
+      color: var(--color-text-primary);
+      cursor: pointer;
+      outline: none;
+    }
+
+    .role-select:focus {
+      border-color: var(--color-primary);
+    }
+
+    /* Actions Column */
+    .actions-cell {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+    }
+
+    /* Card Footer / Pagination */
+    .card-footer {
+      padding: 12px 20px;
+      background-color: #fafbfa;
+      border-top: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--color-text-secondary);
+    }
+
+    .pagination-buttons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Empty State */
+    .empty-state {
+      padding: 48px 24px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: var(--color-text-muted);
+    }
+
+    .empty-icon {
+      color: var(--color-text-subtle);
+      margin-bottom: 12px;
+    }
+
+    .empty-title {
+      font-weight: 600;
+      color: var(--color-text-primary);
+      margin-bottom: 4px;
+    }
+
+    .empty-description {
+      font-size: 13px;
+      max-width: 380px;
+    }
+
+    /* Loading Skeletons */
+    .skeleton {
+      background: linear-gradient(90deg, #f0f3f1 25%, #e0e5e2 50%, #f0f3f1 75%);
+      background-size: 200% 100%;
+      animation: pulse 1.5s infinite;
+      border-radius: 4px;
+    }
+
+    @keyframes pulse {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .skeleton-text {
+      height: 14px;
+      margin-bottom: 4px;
+    }
+
+    .skeleton-pill {
+      height: 20px;
+      width: 60px;
+      border-radius: 9999px;
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(11, 28, 48, 0.45);
+      backdrop-filter: blur(2px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 200;
+      transition: opacity 0.2s ease;
+    }
+
+    .modal-card {
+      background-color: var(--color-surface);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-xl);
+      width: 100%;
+      max-width: 480px;
+      overflow: hidden;
+      animation: modalEnter 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalEnter {
+      from { opacity: 0; transform: scale(0.97) translateY(8px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .modal-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .modal-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--color-text-primary);
+    }
+
+    .modal-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--color-text-subtle);
+      cursor: pointer;
+      padding: 4px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-close-btn:hover {
+      background-color: var(--color-surface-hover);
+      color: var(--color-text-primary);
+    }
+
+    .modal-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--color-text-primary);
+    }
+
+    .form-input {
+      padding: 8px 12px;
+      font-size: 13px;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-sm);
+      outline: none;
+      transition: all 0.15s ease;
+      background: var(--color-surface);
+      color: var(--color-text-primary);
+    }
+
+    .form-input:focus {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 2px var(--color-primary-light);
+    }
+
+    .form-hint {
+      font-size: 11px;
+      color: var(--color-text-muted);
+      line-height: 1.4;
+    }
+
+    .modal-footer {
+      padding: 14px 24px;
+      background-color: #fafbfa;
+      border-top: 1px solid var(--color-border);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    /* Responsive Rules */
+    @media (max-width: 768px) {
+      .container {
+        padding: 16px 12px;
+        gap: 16px;
+      }
+
+      .page-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .page-header-controls {
+        justify-content: space-between;
+      }
+
+      .btn-invite {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .card-header, .card-toolbar {
+        padding: 12px 14px;
+      }
+
+      .filter-group {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .search-input-wrapper {
+        max-width: 100%;
+      }
+
+      .filter-select {
+        width: 100%;
+      }
+
+    }
+    .sort-button { background: transparent; border: 0; padding: 0; font: inherit; color: inherit; cursor: pointer; }
+    button:focus-visible, input:focus-visible, select:focus-visible, .table-container:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 3px; }
+    .page-header-controls { flex-wrap: wrap; }
+    .card-footer { flex-wrap: wrap; gap: 12px; }
+    .specimen-nav .title { flex-wrap: wrap; }
+    .modal-card { max-height: calc(100dvh - 32px); overflow-y: auto; }
+    .status-badge { text-transform: capitalize; }
+    @media (max-width: 768px) {
+      .page-header-controls { flex-direction: column; align-items: stretch; }
+      .clerk-placeholder-org { justify-content: space-between; }
+      button, input, select { min-height: 44px; }
+      .form-input, .search-input { font-size: 16px; }
+      .table-container table { min-width: 540px; }
+      .specimen-nav { position: static; }
+      .specimen-btn { min-height: 32px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+  </style>
+</head>
+<body>
+
+  <!-- Top Specimen Controller for Reviewers -->
+  <header class="specimen-nav" role="toolbar" aria-label="Review state switcher">
+    <div class="title">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+      Organization Design Review
+      <span class="badge-illustrative">Specimen: Illustrative Data</span>
+    </div>
+    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+      <button class="specimen-btn active" onclick="switchState('default')">1. Standard View</button>
+      <button class="specimen-btn" onclick="switchState('modal')">2. Invite Modal Open</button>
+      <button class="specimen-btn" onclick="switchState('no-analyst')">3. No-Analyst Alert</button>
+      <button class="specimen-btn" onclick="switchState('empty')">4. Empty / Zero Results</button>
+      <button class="specimen-btn" onclick="switchState('loading')">5. Loading Skeleton</button>
+      <button class="specimen-btn" onclick="switchState('error')">6. Error State (403)</button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- Top Organization Header -->
+    <section class="page-header">
+      <div class="page-header-text">
+        <h1>
+          Organization
+        </h1>
+        <p>Manage members, roles, and invitations.</p>
+      </div>
+
+      <div class="page-header-controls">
+        <div class="clerk-placeholder-org">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 21h18"/><path d="M5 21V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16"/><path d="M9 9h1"/><path d="M9 13h1"/><path d="M9 17h1"/><path d="M14 9h1"/><path d="M14 13h1"/><path d="M14 17h1"/>
+          </svg>
+          <span style="font-weight: 500;">VinUni Fleet Operations</span>
+          <div class="clerk-avatar-pill">VF</div>
+        </div>
+
+        <!-- Lucide UserRoundPlus Icon Button -->
+        <button class="btn-invite" id="openInviteBtn" onclick="openModal()" aria-haspopup="dialog">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M2 21a8 8 0 0 1 13.292-6"/>
+            <circle cx="10" cy="8" r="5"/>
+            <path d="M19 16v6"/>
+            <path d="M22 19h-6"/>
+          </svg>
+          <span>Invite user</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Contextual Notice: No Analyst Warning (Conditional State) -->
+    <section class="alert-banner alert-warning" id="noAnalystBanner" role="status" style="display: none;">
+      <svg class="alert-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/>
+        <line x1="12" y1="9" x2="12" y2="13"/>
+        <line x1="12" y1="17" x2="12.01" y2="17"/>
+      </svg>
+      <div>
+        <strong>No analysts yet.</strong> Invite an analyst to help review cases.
+      </div>
+    </section>
+
+    <!-- Contextual Notice: Error Banner (Conditional State) -->
+    <section class="alert-banner alert-error" id="errorBanner" role="alert" style="display: none;">
+      <svg class="alert-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+      <div id="errorBannerText">
+        <strong>Access denied:</strong> Admin role required to manage organization members and invitations.
+      </div>
+    </section>
+
+    <!-- Contextual Notice: Success Feedback -->
+    <section class="alert-banner alert-success" id="successBanner" role="status" style="display: none;">
+      <svg class="alert-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+      <div id="successBannerText">
+        Invitation added.
+      </div>
+    </section>
+
+    <!-- TABLE 1: MEMBERS TABLE -->
+    <section class="card" aria-labelledby="membersHeading">
+      <header class="card-header">
+        <div class="card-title-group">
+          <h2 class="card-title" id="membersHeading">Members</h2>
+          <span class="badge-count" id="memberCountBadge">3 members</span>
+        </div>
+      </header>
+
+      <!-- Search & Filters Toolbar -->
+      <div class="card-toolbar">
+        <div class="filter-group">
+          <div class="search-input-wrapper">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" class="search-input" id="memberSearchInput" aria-label="Search members" placeholder="Search members…" oninput="handleMemberFilter()">
+          </div>
+
+          <select class="filter-select" id="memberRoleFilter" onchange="handleMemberFilter()" aria-label="Filter members by role">
+            <option value="">All roles</option>
+            <option value="admin">Admin</option>
+            <option value="analyst">Analyst</option>
+            <option value="driver">Driver</option>
+          </select>
+
+          <select class="filter-select" id="memberStatusFilter" onchange="handleMemberFilter()" aria-label="Filter members by status">
+            <option value="">All statuses</option>
+            <option value="active">Active</option>
+          </select>
+        </div>
+
+        <button class="btn-secondary" onclick="resetMemberFilters()" title="Reset search and filters">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+            <path d="M3 3v5h5"/>
+          </svg>
+          Reset
+        </button>
+      </div>
+
+      <!-- Scope Disclosure Banner -->
+      <div class="scope-disclosure">Search and filters apply to this page.</div>
+
+      <!-- Table Body -->
+      <div class="table-container" tabindex="0" role="region" aria-label="Table; scroll horizontally for more columns">
+        <table id="membersTable" aria-label="Organization Members">
+          <thead>
+            <tr>
+              <th class="sortable" aria-sort="none"><button class="th-content sort-button" onclick="sortMembers('display_name')">
+                  Member
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/>
+                  </svg>
+                </button></th>
+              <th class="sortable" aria-sort="none"><button class="th-content sort-button" onclick="sortMembers('roles')">
+                  Role
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/>
+                  </svg>
+                </button></th>
+              <th class="sortable" aria-sort="none"><button class="th-content sort-button" onclick="sortMembers('status')">
+                  Status
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/>
+                  </svg>
+                </button></th>
+              <th style="text-align: right;">Change role</th>
+            </tr>
+          </thead>
+          <tbody id="membersTableBody">
+            <!-- Populated via Javascript -->
+          </tbody>
+        </table>
+
+        <!-- Empty State Container -->
+        <div class="empty-state" id="membersEmptyState" style="display: none;">
+          <svg class="empty-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <div class="empty-title">No members match your filter</div>
+          <div class="empty-description">Try a different name, role, or status.</div>
+        </div>
+
+        <!-- Skeleton State Container -->
+        <div id="membersSkeletonState" style="display: none; padding: 16px;">
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div class="skeleton" style="height: 38px; width: 100%;"></div>
+            <div class="skeleton" style="height: 38px; width: 100%;"></div>
+            <div class="skeleton" style="height: 38px; width: 100%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Pagination -->
+      <footer class="card-footer">
+        <div>
+          Showing <span id="membersShowingText">1 to 3</span> members on this page
+        </div>
+        <div class="pagination-buttons">
+          <button class="btn-secondary" disabled title="Previous page">Prev</button>
+          <button class="btn-secondary" disabled title="Next page">Next</button>
+        </div>
+      </footer>
+    </section>
+
+    <!-- TABLE 2: INVITATIONS TABLE -->
+    <section class="card" aria-labelledby="invitesHeading">
+      <header class="card-header">
+        <div class="card-title-group">
+          <h2 class="card-title" id="invitesHeading">Invitations</h2>
+          <span class="badge-count" id="invitesCountBadge">2 invites</span>
+        </div>
+      </header>
+
+      <!-- Invitations Toolbar -->
+      <div class="card-toolbar">
+        <div class="filter-group">
+          <div class="search-input-wrapper">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" class="search-input" id="inviteSearchInput" aria-label="Search invitations" placeholder="Search invitations…" oninput="handleInviteFilter()">
+          </div>
+
+          <select class="filter-select" id="inviteRoleFilter" onchange="handleInviteFilter()" aria-label="Filter invites by role">
+            <option value="">All roles</option>
+            <option value="admin">Admin</option>
+            <option value="analyst">Analyst</option>
+            <option value="driver">Driver</option>
+          </select>
+
+          <select class="filter-select" id="inviteStatusFilter" onchange="handleInviteFilter()" aria-label="Filter invites by status">
+            <option value="">All statuses</option>
+            <option value="pending">Pending</option>
+            <option value="revoked">Revoked</option>
+          </select>
+        </div>
+
+        <button class="btn-secondary" onclick="resetInviteFilters()" title="Reset invite filters">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
+            <path d="M3 3v5h5"/>
+          </svg>
+          Reset
+        </button>
+      </div>
+
+      <!-- Scope Disclosure Banner -->
+      <div class="scope-disclosure">Search and filters apply to this page.</div>
+
+      <!-- Invitations Table Body -->
+      <div class="table-container" tabindex="0" role="region" aria-label="Table; scroll horizontally for more columns">
+        <table id="invitesTable" aria-label="Organization Invitations">
+          <thead>
+            <tr>
+              <th class="sortable" aria-sort="none"><button class="th-content sort-button" onclick="sortInvites('email')">
+                  Email
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/>
+                  </svg>
+                </button></th>
+              <th class="sortable" aria-sort="none"><button class="th-content sort-button" onclick="sortInvites('role')">
+                  Role
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/>
+                  </svg>
+                </button></th>
+              <th class="sortable" aria-sort="none"><button class="th-content sort-button" onclick="sortInvites('status')">
+                  Status
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m7 15 5 5 5-5"/><path d="m7 9 5-5 5 5"/>
+                  </svg>
+                </button></th>
+              <th style="text-align: right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="invitesTableBody">
+            <!-- Populated via Javascript -->
+          </tbody>
+        </table>
+
+        <!-- Empty State Container -->
+        <div class="empty-state" id="invitesEmptyState" style="display: none;">
+          <svg class="empty-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+          </svg>
+          <div class="empty-title">No invitations found</div>
+          <div class="empty-description">Try different filters or use “Invite user” to add an invitation.</div>
+        </div>
+
+        <!-- Skeleton State Container -->
+        <div id="invitesSkeletonState" style="display: none; padding: 16px;">
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div class="skeleton" style="height: 38px; width: 100%;"></div>
+            <div class="skeleton" style="height: 38px; width: 100%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Pagination -->
+      <footer class="card-footer">
+        <div>
+          Showing <span id="invitesShowingText">1 to 2</span> invitations on this page
+        </div>
+        <div class="pagination-buttons">
+          <button class="btn-secondary" disabled>Prev</button>
+          <button class="btn-secondary" disabled>Next</button>
+        </div>
+      </footer>
+    </section>
+
+  </main>
+
+  <!-- MODAL: INVITE USER DIALOG -->
+  <div class="modal-overlay" id="inviteModal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card">
+      <header class="modal-header">
+        <div class="modal-title-wrap">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2 21a8 8 0 0 1 13.292-6"/>
+            <circle cx="10" cy="8" r="5"/>
+            <path d="M19 16v6"/>
+            <path d="M22 19h-6"/>
+          </svg>
+          <h2 class="modal-title" id="modalTitle">Invite user to organization</h2>
+        </div>
+        <button class="modal-close-btn" onclick="closeModal()" aria-label="Close dialog">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"/>
+            <line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </header>
+
+      <form id="inviteForm" onsubmit="submitInvite(event)">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="inviteEmailInput">Email address</label>
+            <input
+              type="email"
+              class="form-input"
+              id="inviteEmailInput"
+              placeholder="name@example.com"
+              required
+              autocomplete="email"
+            >
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="inviteRoleSelect">Role</label>
+            <select class="form-input" id="inviteRoleSelect" aria-describedby="roleDescriptionHint">
+              <option value="admin">Admin</option>
+              <option value="analyst" selected>Analyst</option>
+              <option value="driver">Driver</option>
+            </select>
+            <div class="form-hint" id="roleDescriptionHint">Choose the access this person needs.</div>
+          </div>
+        </div>
+
+        <footer class="modal-footer">
+          <button type="button" class="btn-secondary" onclick="closeModal()">Cancel</button>
+          <button type="submit" class="btn-invite" id="modalSubmitBtn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M2 21a8 8 0 0 1 13.292-6"/>
+              <circle cx="10" cy="8" r="5"/>
+              <path d="M19 16v6"/>
+              <path d="M22 19h-6"/>
+            </svg>
+            <span id="modalSubmitBtnText">Invite user</span>
+          </button>
+        </footer>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Explicitly illustrative baseline dataset using STRICT existing API fields only
+    // Member: id, display_name, roles, status
+    // Invitation: id, email, role, status
+    const BASELINE_MEMBERS = [
+      { id: "usr_01HGBQ87X9", display_name: "Marcus Vance", roles: ["admin"], status: "active" },
+      { id: "usr_01HGBQ94Y2", display_name: "Elena Rostova", roles: ["analyst"], status: "active" },
+      { id: "usr_01HGBQA1Z5", display_name: "Carlos Mendez", roles: ["driver"], status: "active" }
+    ];
+
+    const NO_ANALYST_MEMBERS = [
+      { id: "usr_01HGBQ87X9", display_name: "Marcus Vance", roles: ["admin"], status: "active" },
+      { id: "usr_01HGBQA1Z5", display_name: "Carlos Mendez", roles: ["driver"], status: "active" }
+    ];
+
+    const BASELINE_INVITES = [
+      { id: "inv_01HK789A", email: "sarah.chen@example.com", role: "analyst", status: "pending" },
+      { id: "inv_01HK789B", email: "alex.t@example.com", role: "driver", status: "revoked" }
+    ];
+
+    let currentMembers = structuredClone(BASELINE_MEMBERS);
+    let currentInvites = structuredClone(BASELINE_INVITES);
+    let modalReturnFocus = null;
+    let pendingInviteTimer = null;
+    let memberSortField = "";
+    let memberSortAsc = true;
+    let inviteSortField = "";
+    let inviteSortAsc = true;
+
+    function renderMembers(data) {
+      const tbody = document.getElementById("membersTableBody");
+      const emptyState = document.getElementById("membersEmptyState");
+      const countBadge = document.getElementById("memberCountBadge");
+      const showingText = document.getElementById("membersShowingText");
+
+      tbody.innerHTML = "";
+      countBadge.textContent = `${data.length} member${data.length === 1 ? '' : 's'}`;
+      showingText.textContent = data.length > 0 ? `1 to ${data.length}` : "0";
+
+      if (data.length === 0) {
+        tbody.style.display = "none";
+        emptyState.style.display = "flex";
+        return;
+      }
+
+      tbody.style.display = "";
+      emptyState.style.display = "none";
+
+      data.forEach(m => {
+        const tr = document.createElement("tr");
+
+        // Member Display Name & ID
+        const tdName = document.createElement("td");
+        tdName.innerHTML = `
+          <div class="member-name">${escapeHtml(m.display_name)}</div>
+        `;
+
+        // Roles Badges
+        const tdRole = document.createElement("td");
+        tdRole.innerHTML = m.roles.map(r => `<span class="role-badge ${r}">${r}</span>`).join(" ");
+
+        // Status Badge
+        const tdStatus = document.createElement("td");
+        tdStatus.innerHTML = `
+          <span class="status-badge ${m.status}">
+            <span class="status-dot ${m.status}"></span>
+            ${escapeHtml(m.status)}
+          </span>
+        `;
+
+        // Role update select affordance (replaces raw input)
+        const tdActions = document.createElement("td");
+        tdActions.className = "actions-cell";
+        tdActions.innerHTML = `
+          <select class="role-select" aria-label="Change role for ${escapeHtml(m.display_name)}" onchange="simulateRoleChange('${m.id}', this.value)">
+            <option value="admin" ${m.roles.includes("admin") ? "selected" : ""}>Admin</option>
+            <option value="analyst" ${m.roles.includes("analyst") ? "selected" : ""}>Analyst</option>
+            <option value="driver" ${m.roles.includes("driver") ? "selected" : ""}>Driver</option>
+          </select>
+        `;
+
+        tr.appendChild(tdName);
+        tr.appendChild(tdRole);
+        tr.appendChild(tdStatus);
+        tr.appendChild(tdActions);
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderInvites(data) {
+      const tbody = document.getElementById("invitesTableBody");
+      const emptyState = document.getElementById("invitesEmptyState");
+      const countBadge = document.getElementById("invitesCountBadge");
+      const showingText = document.getElementById("invitesShowingText");
+
+      tbody.innerHTML = "";
+      countBadge.textContent = `${data.length} invite${data.length === 1 ? '' : 's'}`;
+      showingText.textContent = data.length > 0 ? `1 to ${data.length}` : "0";
+
+      if (data.length === 0) {
+        tbody.style.display = "none";
+        emptyState.style.display = "flex";
+        return;
+      }
+
+      tbody.style.display = "";
+      emptyState.style.display = "none";
+
+      data.forEach(i => {
+        const tr = document.createElement("tr");
+
+        const tdEmail = document.createElement("td");
+        tdEmail.innerHTML = `
+          <div class="email-cell">${escapeHtml(i.email)}</div>
+        `;
+
+        const tdRole = document.createElement("td");
+        tdRole.innerHTML = `<span class="role-badge ${i.role}">${i.role}</span>`;
+
+        const tdStatus = document.createElement("td");
+        tdStatus.innerHTML = `
+          <span class="status-badge ${i.status}">
+            <span class="status-dot ${i.status}"></span>
+            ${escapeHtml(i.status)}
+          </span>
+        `;
+
+        const tdActions = document.createElement("td");
+        tdActions.className = "actions-cell";
+        const isPending = i.status === "pending";
+        tdActions.innerHTML = `
+          <button class="btn-secondary" style="padding: 3px 8px; font-size: 11px;" onclick="simulateResend('${i.id}')" ${!isPending ? 'disabled' : ''}>
+            Resend
+          </button>
+          <button class="btn-danger-text" onclick="simulateRevoke('${i.id}')" ${!isPending ? 'disabled style="opacity:0.4; cursor:not-allowed;"' : ''}>
+            Revoke
+          </button>
+        `;
+
+        tr.appendChild(tdEmail);
+        tr.appendChild(tdRole);
+        tr.appendChild(tdStatus);
+        tr.appendChild(tdActions);
+        tbody.appendChild(tr);
+      });
+    }
+
+    function handleMemberFilter() {
+      const q = document.getElementById("memberSearchInput").value.toLowerCase();
+      const role = document.getElementById("memberRoleFilter").value;
+      const status = document.getElementById("memberStatusFilter").value;
+
+      const filtered = currentMembers.filter(m => {
+        const matchesQuery = !q || m.display_name.toLowerCase().includes(q);
+        const matchesRole = !role || m.roles.includes(role);
+        const matchesStatus = !status || m.status === status;
+        return matchesQuery && matchesRole && matchesStatus;
+      });
+
+      renderMembers(filtered);
+    }
+
+    function resetMemberFilters() {
+      document.getElementById("memberSearchInput").value = "";
+      document.getElementById("memberRoleFilter").value = "";
+      document.getElementById("memberStatusFilter").value = "";
+      handleMemberFilter();
+    }
+
+    function sortMembers(field) {
+      if (memberSortField === field) {
+        memberSortAsc = !memberSortAsc;
+      } else {
+        memberSortField = field;
+        memberSortAsc = true;
+      }
+
+      currentMembers.sort((a, b) => {
+        let valA = a[field];
+        let valB = b[field];
+        if (Array.isArray(valA)) valA = valA.join(",");
+        if (Array.isArray(valB)) valB = valB.join(",");
+        const res = String(valA).localeCompare(String(valB));
+        return memberSortAsc ? res : -res;
+      });
+
+      updateSortState("membersTable", field, memberSortAsc);
+      handleMemberFilter();
+    }
+
+    function handleInviteFilter() {
+      const q = document.getElementById("inviteSearchInput").value.toLowerCase();
+      const role = document.getElementById("inviteRoleFilter").value;
+      const status = document.getElementById("inviteStatusFilter").value;
+
+      const filtered = currentInvites.filter(i => {
+        const matchesQuery = !q || i.email.toLowerCase().includes(q);
+        const matchesRole = !role || i.role === role;
+        const matchesStatus = !status || i.status === status;
+        return matchesQuery && matchesRole && matchesStatus;
+      });
+
+      renderInvites(filtered);
+    }
+
+    function resetInviteFilters() {
+      document.getElementById("inviteSearchInput").value = "";
+      document.getElementById("inviteRoleFilter").value = "";
+      document.getElementById("inviteStatusFilter").value = "";
+      handleInviteFilter();
+    }
+
+    function sortInvites(field) {
+      if (inviteSortField === field) {
+        inviteSortAsc = !inviteSortAsc;
+      } else {
+        inviteSortField = field;
+        inviteSortAsc = true;
+      }
+
+      currentInvites.sort((a, b) => {
+        const res = String(a[field]).localeCompare(String(b[field]));
+        return inviteSortAsc ? res : -res;
+      });
+
+      updateSortState("invitesTable", field, inviteSortAsc);
+      handleInviteFilter();
+    }
+
+    function updateSortState(tableId, field, ascending) {
+      document.querySelectorAll(`#${tableId} th.sortable`).forEach(th => {
+        const active = th.querySelector("button").getAttribute("onclick").includes(`'${field}'`);
+        th.setAttribute("aria-sort", active ? (ascending ? "ascending" : "descending") : "none");
+      });
+    }
+
+    // Local preview interaction only; no network requests or email delivery.
+    function openModal() {
+      modalReturnFocus = document.activeElement;
+      document.getElementById("inviteForm").reset();
+      document.getElementById("inviteModal").style.display = "flex";
+      document.querySelector("main").inert = true;
+      document.querySelector(".specimen-nav").inert = true;
+      document.body.style.overflow = "hidden";
+      document.getElementById("inviteEmailInput").focus();
+    }
+
+    function closeModal() {
+      const modal = document.getElementById("inviteModal");
+      const wasOpen = modal.style.display !== "none";
+      clearTimeout(pendingInviteTimer);
+      document.getElementById("modalSubmitBtn").disabled = false;
+      document.getElementById("modalSubmitBtnText").textContent = "Invite user";
+      modal.style.display = "none";
+      document.querySelector("main").inert = false;
+      document.querySelector(".specimen-nav").inert = false;
+      document.body.style.overflow = "";
+      if (wasOpen) (modalReturnFocus && modalReturnFocus !== document.body ? modalReturnFocus : document.getElementById("openInviteBtn")).focus();
+    }
+
+    function submitInvite(e) {
+      e.preventDefault();
+      const email = document.getElementById("inviteEmailInput").value.trim();
+      if (!document.getElementById("inviteForm").reportValidity()) return;
+      const selectedModalRole = document.getElementById("inviteRoleSelect").value;
+
+      const submitBtn = document.getElementById("modalSubmitBtn");
+      const submitBtnText = document.getElementById("modalSubmitBtnText");
+      submitBtn.disabled = true;
+      submitBtnText.textContent = "Inviting...";
+
+      pendingInviteTimer = setTimeout(() => {
+        submitBtn.disabled = false;
+        submitBtnText.textContent = "Invite user";
+
+        currentInvites.unshift({
+          id: `inv_${Math.random().toString(36).substring(2, 9).toUpperCase()}`,
+          email: email,
+          role: selectedModalRole,
+          status: "pending"
+        });
+
+        closeModal();
+        document.getElementById("inviteEmailInput").value = "";
+
+        // Show success banner
+        const sb = document.getElementById("successBanner");
+        const sbt = document.getElementById("successBannerText");
+        sbt.textContent = `Invitation added for ${email}.`;
+        sb.style.display = "flex";
+        setTimeout(() => { sb.style.display = "none"; }, 5000);
+
+        handleInviteFilter();
+      }, 500);
+    }
+
+    function simulateRoleChange(id, newRole) {
+      const m = currentMembers.find(x => x.id === id);
+      if (m) {
+        m.roles = [newRole];
+        handleMemberFilter();
+        const sb = document.getElementById("successBanner");
+        const sbt = document.getElementById("successBannerText");
+        sbt.textContent = `Updated role for ${m.display_name} to ${newRole}.`;
+        sb.style.display = "flex";
+        setTimeout(() => { sb.style.display = "none"; }, 4000);
+      }
+    }
+
+    function simulateResend(id) {
+      const inv = currentInvites.find(x => x.id === id);
+      if (inv) {
+        const sb = document.getElementById("successBanner");
+        const sbt = document.getElementById("successBannerText");
+        sbt.textContent = `Illustrative resend requested for ${inv.email}.`;
+        sb.style.display = "flex";
+        setTimeout(() => { sb.style.display = "none"; }, 4000);
+      }
+    }
+
+    function simulateRevoke(id) {
+      const inv = currentInvites.find(x => x.id === id);
+      if (inv) {
+        inv.status = "revoked";
+        handleInviteFilter();
+        const sb = document.getElementById("successBanner");
+        const sbt = document.getElementById("successBannerText");
+        sbt.textContent = `Revoked invitation for ${inv.email}.`;
+        sb.style.display = "flex";
+        setTimeout(() => { sb.style.display = "none"; }, 4000);
+      }
+    }
+
+    // Specimen / State Switcher for reviewer demonstration
+    function switchState(state) {
+      document.querySelectorAll(".specimen-btn").forEach(b => {
+        b.classList.remove("active");
+        if (b.getAttribute("onclick") && b.getAttribute("onclick").includes("'" + state + "'")) {
+          b.classList.add("active");
+        }
+      });
+
+      memberSortField = "";
+      inviteSortField = "";
+      document.querySelectorAll("th.sortable").forEach(th => th.setAttribute("aria-sort", "none"));
+
+      // Reset base visibility
+      document.getElementById("noAnalystBanner").style.display = "none";
+      document.getElementById("errorBanner").style.display = "none";
+      document.getElementById("successBanner").style.display = "none";
+      document.getElementById("membersTable").style.display = "";
+      document.getElementById("membersSkeletonState").style.display = "none";
+      document.getElementById("invitesTable").style.display = "";
+      document.getElementById("invitesSkeletonState").style.display = "none";
+      closeModal();
+
+      if (state === "default") {
+        currentMembers = structuredClone(BASELINE_MEMBERS);
+        currentInvites = structuredClone(BASELINE_INVITES);
+        resetMemberFilters();
+        resetInviteFilters();
+      } else if (state === "modal") {
+        currentMembers = structuredClone(BASELINE_MEMBERS);
+        currentInvites = structuredClone(BASELINE_INVITES);
+        resetMemberFilters();
+        resetInviteFilters();
+        openModal();
+      } else if (state === "no-analyst") {
+        currentMembers = structuredClone(NO_ANALYST_MEMBERS);
+        currentInvites = structuredClone(BASELINE_INVITES);
+        document.getElementById("noAnalystBanner").style.display = "flex";
+        resetMemberFilters();
+        resetInviteFilters();
+      } else if (state === "empty") {
+        currentMembers = [];
+        currentInvites = [];
+        renderMembers([]);
+        renderInvites([]);
+      } else if (state === "loading") {
+        document.getElementById("membersTable").style.display = "none";
+        document.getElementById("membersEmptyState").style.display = "none";
+        document.getElementById("membersSkeletonState").style.display = "block";
+        document.getElementById("invitesTable").style.display = "none";
+        document.getElementById("invitesEmptyState").style.display = "none";
+        document.getElementById("invitesSkeletonState").style.display = "block";
+      } else if (state === "error") {
+        currentMembers = structuredClone(BASELINE_MEMBERS);
+        currentInvites = structuredClone(BASELINE_INVITES);
+        resetMemberFilters();
+        resetInviteFilters();
+        document.getElementById("errorBanner").style.display = "flex";
+      }
+    }
+
+    // Keyboard navigation: Escape closes modal
+    document.addEventListener("keydown", (e) => {
+      if (document.getElementById("inviteModal").style.display === "none") return;
+      if (e.key === "Escape") closeModal();
+      if (e.key === "Tab") {
+        const controls = [...document.querySelectorAll("#inviteModal button:not(:disabled), #inviteModal input, #inviteModal select")];
+        const first = controls[0], last = controls[controls.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+
+    // Close modal on scrim click
+    document.getElementById("inviteModal").addEventListener("click", (e) => {
+      if (e.target.id === "inviteModal") closeModal();
+    });
+
+    function escapeHtml(str) {
+      if (!str) return "";
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    // Initial render and URL hash support
+    renderMembers(currentMembers);
+    renderInvites(currentInvites);
+
+    const hash = window.location.hash.replace("#", "");
+    if (hash && ["default", "modal", "no-analyst", "empty", "loading", "error"].includes(hash)) {
+      switchState(hash);
+    }
+  </script>
+</body>
+</html>

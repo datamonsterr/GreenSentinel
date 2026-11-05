@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GreenSM Driver - Lịch sử hoạt động</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "secondary-container": "#64f9bc",
+            "tertiary": "#825100",
+            "surface-container": "#eaedff",
+            "on-tertiary": "#ffffff",
+            "primary-fixed-dim": "#68dba9",
+            "primary-container": "#00855d",
+            "on-secondary-fixed-variant": "#005137",
+            "inverse-on-surface": "#eef0ff",
+            "on-primary": "#ffffff",
+            "on-error-container": "#93000a",
+            "primary-fixed": "#85f8c4",
+            "on-error": "#ffffff",
+            "error": "#ba1a1a",
+            "on-background": "#131b2e",
+            "on-secondary-container": "#00714e",
+            "on-secondary-fixed": "#002114",
+            "tertiary-container": "#a36700",
+            "secondary": "#006c4b",
+            "surface-tint": "#006c4a",
+            "surface-container-lowest": "#ffffff",
+            "on-primary-fixed-variant": "#005137",
+            "on-primary-container": "#f5fff7",
+            "on-primary-fixed": "#002114",
+            "surface-bright": "#faf8ff",
+            "tertiary-fixed": "#ffddb8",
+            "primary": "#006948",
+            "inverse-primary": "#68dba9",
+            "outline-variant": "#bccac0",
+            "background": "#faf8ff",
+            "tertiary-fixed-dim": "#ffb95f",
+            "secondary-fixed-dim": "#45dfa4",
+            "on-tertiary-container": "#fffbff",
+            "surface-container-high": "#e2e7ff",
+            "on-surface": "#131b2e",
+            "on-tertiary-fixed-variant": "#653e00",
+            "outline": "#6d7a72",
+            "on-surface-variant": "#3d4a42",
+            "surface-container-low": "#f2f3ff",
+            "error-container": "#ffdad6",
+            "secondary-fixed": "#68fcbf",
+            "on-tertiary-fixed": "#2a1700",
+            "surface-container-highest": "#dae2fd",
+            "inverse-surface": "#283044",
+            "surface-variant": "#dae2fd",
+            "surface-dim": "#d2d9f4",
+            "on-secondary": "#ffffff",
+            "surface": "#faf8ff"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "margin": "1rem",
+            "space-md": "1rem",
+            "space-xs": "0.25rem",
+            "gutter": "1rem",
+            "space-sm": "0.5rem"
+          },
+          "fontFamily": {
+            "headline-md": ["Inter"],
+            "metric-display": ["Inter"],
+            "label-md": ["Inter"],
+            "body-lg": ["Inter"],
+            "headline-sm": ["Inter"],
+            "headline-lg": ["Inter"],
+            "headline-lg-mobile": ["Inter"],
+            "label-sm": ["Inter"],
+            "body-md": ["Inter"],
+            "body-sm": ["Inter"],
+            "label-lg": ["Inter"]
+          },
+          "fontSize": {
+            "headline-md": ["22px", { "lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "metric-display": ["36px", { "lineHeight": "40px", "letterSpacing": "-0.03em", "fontWeight": "700" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "500" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["26px", { "lineHeight": "34px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "label-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .gsupport-halo {
+      box-shadow: 0 10px 25px -4px rgba(0, 105, 72, 0.45);
+    }
+    .subtle-card-shadow {
+      box-shadow: 0 4px 20px -2px rgba(19, 27, 46, 0.05);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body-md antialiased selection:bg-primary-fixed selection:text-on-primary-fixed min-h-screen pb-28">
+<!-- Mobile Simulator Container -->
+<div class="max-w-md mx-auto min-h-screen bg-surface relative flex flex-col">
+<!-- 1. System Status Bar -->
+<header class="w-full bg-surface-container-lowest sticky top-0 z-40">
+<div class="flex justify-between items-center px-6 pt-3 pb-1 text-on-surface">
+<span class="font-label-lg text-label-lg tracking-tight font-bold">09:41</span>
+<div class="flex items-center space-x-2 text-on-surface">
+<span class="material-symbols-outlined text-[17px]">signal_cellular_alt</span>
+<span class="material-symbols-outlined text-[17px]">wifi</span>
+<span class="material-symbols-outlined text-[20px]">battery_full</span>
+</div>
+</div>
+<!-- Shared Component: TopAppBar -->
+<nav class="flex justify-between items-center w-full px-4 h-16 max-w-md mx-auto bg-surface-container-lowest shadow-sm">
+<div class="flex items-center space-x-3">
+<button class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-container active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[24px]">menu</span>
+</button>
+<div>
+<h1 class="font-headline-sm text-headline-sm text-on-surface font-bold tracking-tight">Lịch sử hoạt động</h1>
+<p class="font-label-sm text-label-sm text-outline">Tài xế VinFast VF 8 • 29E-883.21</p>
+</div>
+</div>
+<!-- Month Selector Pill -->
+<button class="flex items-center space-x-1.5 py-1.5 px-3 rounded-full bg-surface-container-low hover:bg-surface-container border border-outline-variant/40 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-primary text-[18px]">calendar_month</span>
+<span class="font-label-md text-label-md text-on-surface font-bold">Tháng 10, 2024</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[16px]">expand_more</span>
+</button>
+</nav>
+<!-- Segmented Filter Tabs -->
+<div class="px-4 py-2.5 bg-surface-container-lowest flex items-center space-x-2 overflow-x-auto no-scrollbar">
+<!-- Tab: Tất cả (Active) -->
+<button class="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-primary text-on-primary font-label-md text-label-md shadow-sm transition-transform active:scale-95">
+<span>Tất cả</span>
+<span class="bg-primary-container text-on-primary-container px-1.5 py-0.2 rounded-full font-label-sm text-[10px]">142</span>
+</button>
+<!-- Tab: Hoàn thành -->
+<button class="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high font-label-md text-label-md transition-all active:scale-95">
+<span>Hoàn thành</span>
+<span class="bg-surface-container-highest text-on-surface-variant px-1.5 py-0.2 rounded-full font-label-sm text-[10px]">140</span>
+</button>
+<!-- Tab: Có vấn đề -->
+<button class="flex items-center space-x-1.5 px-3.5 py-1.5 rounded-full bg-surface-container text-on-surface-variant hover:bg-surface-container-high font-label-md text-label-md transition-all active:scale-95">
+<span>Có vấn đề</span>
+<span class="bg-error text-on-error px-1.5 py-0.2 rounded-full font-label-sm text-[10px] font-bold">2</span>
+</button>
+</div>
+</header>
+<!-- Main Content Stream -->
+<main class="flex-1 px-4 pt-3 space-y-4">
+<!-- 2. Monthly Summary Bento Card -->
+<section class="relative overflow-hidden rounded-2xl bg-gradient-to-br from-surface-container-lowest via-surface-container-lowest to-surface-container border border-outline-variant/30 subtle-card-shadow p-4">
+<!-- Soft EV Ambient Accent -->
+<div class="absolute -right-10 -bottom-10 w-44 h-44 rounded-full bg-primary-fixed/30 blur-2xl pointer-events-none"></div>
+<div class="flex justify-between items-start mb-3">
+<div>
+<span class="font-label-md text-label-md text-on-surface-variant flex items-center space-x-1">
+<span>Tổng thu nhập tháng 10</span>
+<span class="material-symbols-outlined text-[16px] text-primary" data-weight="fill" style="font-variation-settings: 'FILL' 1;">eco</span>
+</span>
+<div class="flex items-baseline space-x-2 mt-1">
+<span class="font-metric-display text-metric-display text-primary tracking-tight">18.450.000<span class="text-headline-md font-semibold text-primary">đ</span></span>
+</div>
+</div>
+<span class="inline-flex items-center space-x-0.5 px-2.5 py-1 rounded-full bg-secondary-container/40 text-on-secondary-container font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-[14px]">trending_up</span>
+<span>+12%</span>
+</span>
+</div>
+<!-- 3 Stats Columns Metric Bar -->
+<div class="grid grid-cols-3 gap-2 pt-3 border-t border-outline-variant/20 bg-surface-container-low/50 rounded-xl p-2.5">
+<!-- Col 1 -->
+<div class="flex flex-col items-center text-center">
+<div class="w-7 h-7 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary mb-1 shadow-sm">
+<span class="material-symbols-outlined text-[16px]">local_taxi</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Số chuyến</span>
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface mt-0.5">142</span>
+</div>
+<!-- Col 2 -->
+<div class="flex flex-col items-center text-center border-x border-outline-variant/25">
+<div class="w-7 h-7 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary mb-1 shadow-sm">
+<span class="material-symbols-outlined text-[16px]">route</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Quãng đường</span>
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface mt-0.5">2.180<span class="font-label-sm font-normal text-on-surface-variant">km</span></span>
+</div>
+<!-- Col 3 -->
+<div class="flex flex-col items-center text-center">
+<div class="w-7 h-7 rounded-full bg-surface-container-lowest flex items-center justify-center text-tertiary mb-1 shadow-sm">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Đánh giá</span>
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface mt-0.5">4.96 <span class="text-tertiary font-body-sm">★</span></span>
+</div>
+</div>
+</section>
+<!-- 3. Trip List Section: Hôm nay -->
+<section class="space-y-3">
+<div class="flex items-center justify-between px-1">
+<div class="flex items-center space-x-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<h2 class="font-label-lg text-label-lg text-on-surface font-bold">Hôm nay, 24/10/2024</h2>
+</div>
+<span class="font-label-sm text-label-sm text-outline">2 chuyến • 427.000đ</span>
+</div>
+<!-- Trip 1: Hoàn thành -->
+<article class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/30 subtle-card-shadow transition-transform active:scale-[0.99]">
+<!-- Card Header -->
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/20">
+<div class="flex items-center space-x-1.5 text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-[17px] text-outline">schedule</span>
+<span class="font-semibold text-on-surface">08:15 – 09:02</span>
+<span>•</span>
+<span>47 phút</span>
+<span>•</span>
+<span>32 km</span>
+</div>
+<span class="font-headline-sm text-headline-sm font-bold text-primary">285.000đ</span>
+</div>
+<!-- Vertical Route Stepper -->
+<div class="py-3 flex space-x-3">
+<!-- Stepper Track -->
+<div class="flex flex-col items-center justify-between py-1">
+<span class="w-2.5 h-2.5 rounded-full bg-primary ring-4 ring-secondary-container/40"></span>
+<div class="w-0.5 h-7 border-l-2 border-dotted border-outline-variant my-1"></div>
+<span class="w-2.5 h-2.5 rounded-sm bg-on-surface"></span>
+</div>
+<!-- Stepper Points -->
+<div class="flex-1 space-y-2.5">
+<div>
+<p class="font-label-lg text-label-lg text-on-surface font-semibold leading-tight">Sảnh R1, Vinhomes Ocean Park 1</p>
+<p class="font-body-sm text-body-sm text-outline">Gia Lâm, Hà Nội</p>
+</div>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface font-semibold leading-tight">Nhà ga T2, Sân bay Quốc tế Nội Bài</p>
+<p class="font-body-sm text-body-sm text-outline">Sóc Sơn, Hà Nội</p>
+</div>
+</div>
+</div>
+<!-- Customer Review Callout -->
+<div class="bg-surface-container-low/70 rounded-xl p-2.5 mb-3 flex items-start space-x-2 border border-outline-variant/15">
+<span class="material-symbols-outlined text-tertiary text-[18px] shrink-0" style="font-variation-settings: 'FILL' 1;">format_quote</span>
+<div class="flex-1">
+<div class="flex items-center space-x-1">
+<span class="font-label-md text-label-md font-bold text-on-surface">5.0</span>
+<span class="text-tertiary text-[13px]">★★★★★</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant italic mt-0.5">"Tài xế lái xe êm, xe VF 8 sạch sẽ, điều hòa mát mẻ."</p>
+</div>
+</div>
+<!-- Meta Information Row -->
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center space-x-2">
+<span class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-md bg-surface-container font-label-sm text-label-sm text-on-surface-variant font-medium">
+<span class="material-symbols-outlined text-[14px] text-primary">account_balance_wallet</span>
+<span>Ví VinClub</span>
+</span>
+</div>
+<span class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-secondary-container/30 text-on-secondary-container font-label-sm text-label-sm font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+<span>Hoàn thành</span>
+</span>
+</div>
+</article>
+<!-- Trip 2: Có vấn đề / Đang xem xét -->
+<article class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/30 subtle-card-shadow transition-transform active:scale-[0.99] relative">
+<!-- Left Alert Accent Line -->
+<div class="absolute left-0 top-3 bottom-3 w-1 bg-tertiary rounded-r"></div>
+<!-- Card Header -->
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/20">
+<div class="flex items-center space-x-1.5 text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-[17px] text-outline">schedule</span>
+<span class="font-semibold text-on-surface">11:30 – 12:05</span>
+<span>•</span>
+<span>35 phút</span>
+<span>•</span>
+<span>14.5 km</span>
+</div>
+<span class="font-headline-sm text-headline-sm font-bold text-on-surface">142.000đ</span>
+</div>
+<!-- Route Stepper -->
+<div class="py-3 flex space-x-3">
+<div class="flex flex-col items-center justify-between py-1">
+<span class="w-2.5 h-2.5 rounded-full bg-primary ring-4 ring-secondary-container/40"></span>
+<div class="w-0.5 h-7 border-l-2 border-dotted border-outline-variant my-1"></div>
+<span class="w-2.5 h-2.5 rounded-sm bg-on-surface"></span>
+</div>
+<div class="flex-1 space-y-2.5">
+<div>
+<p class="font-label-lg text-label-lg text-on-surface font-semibold leading-tight">Tòa Landmark 81, Vinhomes Central Park</p>
+<p class="font-body-sm text-body-sm text-outline">Bình Thạnh, TP.HCM</p>
+</div>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface font-semibold leading-tight">Bitexco Financial Tower, Q.1</p>
+<p class="font-body-sm text-body-sm text-outline">Quận 1, TP.HCM</p>
+</div>
+</div>
+</div>
+<!-- Dispute Banner -->
+<div class="bg-tertiary-fixed/30 rounded-xl p-2.5 mb-3 flex items-center justify-between border border-tertiary-fixed-dim/40">
+<div class="flex items-center space-x-2">
+<span class="material-symbols-outlined text-tertiary text-[18px]">report_problem</span>
+<span class="font-body-sm text-body-sm text-on-surface font-medium">Khách khiếu nại phụ phí cầu đường</span>
+</div>
+<a class="inline-flex items-center space-x-0.5 font-label-sm text-label-sm font-bold text-tertiary hover:underline" href="#">
+<span>#VV-4821</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+<!-- Meta Information Row -->
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center space-x-2">
+<span class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-md bg-surface-container font-label-sm text-label-sm text-on-surface-variant font-medium">
+<span class="material-symbols-outlined text-[14px]">credit_card</span>
+<span>Thẻ tín dụng</span>
+</span>
+<span class="font-label-sm text-label-sm text-outline">Chưa đánh giá</span>
+</div>
+<span class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-sm text-label-sm font-bold">
+<span class="material-symbols-outlined text-[13px]">hourglass_top</span>
+<span>Đang xem xét</span>
+</span>
+</div>
+</article>
+</section>
+<!-- 4. Trip List Section: Hôm qua -->
+<section class="space-y-3 pt-2">
+<div class="flex items-center justify-between px-1">
+<div class="flex items-center space-x-2">
+<span class="w-2 h-2 rounded-full bg-outline-variant"></span>
+<h2 class="font-label-lg text-label-lg text-on-surface font-bold">Hôm qua, 23/10/2024</h2>
+</div>
+<span class="font-label-sm text-label-sm text-outline">2 chuyến • 284.000đ</span>
+</div>
+<!-- Trip 3: Hoàn thành -->
+<article class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/30 subtle-card-shadow transition-transform active:scale-[0.99]">
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/20">
+<div class="flex items-center space-x-1.5 text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-[17px] text-outline">schedule</span>
+<span class="font-semibold text-on-surface">17:45 – 18:30</span>
+<span>•</span>
+<span>45 phút</span>
+<span>•</span>
+<span>18 km</span>
+</div>
+<span class="font-headline-sm text-headline-sm font-bold text-primary">198.000đ</span>
+</div>
+<div class="py-3 flex space-x-3">
+<div class="flex flex-col items-center justify-between py-1">
+<span class="w-2.5 h-2.5 rounded-full bg-primary ring-4 ring-secondary-container/40"></span>
+<div class="w-0.5 h-7 border-l-2 border-dotted border-outline-variant my-1"></div>
+<span class="w-2.5 h-2.5 rounded-sm bg-on-surface"></span>
+</div>
+<div class="flex-1 space-y-2.5">
+<div>
+<p class="font-label-lg text-label-lg text-on-surface font-semibold leading-tight">TTTM Aeon Mall Long Biên</p>
+<p class="font-body-sm text-body-sm text-outline">Long Biên, Hà Nội</p>
+</div>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface font-semibold leading-tight">Phố đi bộ Hoàn Kiếm, Hà Nội</p>
+<p class="font-body-sm text-body-sm text-outline">Hoàn Kiếm, Hà Nội</p>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center space-x-2">
+<span class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-md bg-surface-container font-label-sm text-label-sm text-on-surface-variant font-medium">
+<span class="material-symbols-outlined text-[14px] text-primary">account_balance_wallet</span>
+<span>Ví VinClub</span>
+</span>
+<span class="inline-flex items-center space-x-0.5 font-label-sm text-label-sm text-on-surface font-semibold">
+<span class="text-tertiary">★</span>
+<span>4.9</span>
+</span>
+</div>
+<span class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-secondary-container/30 text-on-secondary-container font-label-sm text-label-sm font-bold">
+<span>Hoàn thành</span>
+</span>
+</div>
+</article>
+<!-- Trip 4: Hoàn thành -->
+<article class="bg-surface-container-lowest rounded-2xl p-4 border border-outline-variant/30 subtle-card-shadow transition-transform active:scale-[0.99]">
+<div class="flex items-center justify-between pb-3 border-b border-outline-variant/20">
+<div class="flex items-center space-x-1.5 text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-[17px] text-outline">schedule</span>
+<span class="font-semibold text-on-surface">14:10 – 14:35</span>
+<span>•</span>
+<span>25 phút</span>
+<span>•</span>
+<span>8.2 km</span>
+</div>
+<span class="font-headline-sm text-headline-sm font-bold text-primary">86.000đ</span>
+</div>
+<div class="py-3 flex space-x-3">
+<div class="flex flex-col items-center justify-between py-1">
+<span class="w-2.5 h-2.5 rounded-full bg-primary ring-4 ring-secondary-container/40"></span>
+<div class="w-0.5 h-7 border-l-2 border-dotted border-outline-variant my-1"></div>
+<span class="w-2.5 h-2.5 rounded-sm bg-on-surface"></span>
+</div>
+<div class="flex-1 space-y-2.5">
+<div>
+<p class="font-label-lg text-label-lg text-on-surface font-semibold leading-tight">Bệnh viện Vinmec Times City</p>
+<p class="font-body-sm text-body-sm text-outline">Hai Bà Trưng, Hà Nội</p>
+</div>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface font-semibold leading-tight">Hồ Trúc Bạch, Ba Đình</p>
+<p class="font-body-sm text-body-sm text-outline">Ba Đình, Hà Nội</p>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center space-x-2">
+<span class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-md bg-surface-container font-label-sm text-label-sm text-on-surface-variant font-medium">
+<span class="material-symbols-outlined text-[14px]">payments</span>
+<span>Tiền mặt</span>
+</span>
+<span class="font-label-sm text-label-sm text-outline">Chưa đánh giá</span>
+</div>
+<span class="inline-flex items-center space-x-1 px-2.5 py-0.5 rounded-full bg-secondary-container/30 text-on-secondary-container font-label-sm text-label-sm font-bold">
+<span>Hoàn thành</span>
+</span>
+</div>
+</article>
+</section>
+<!-- Bottom Spacer for Safe Area -->
+<div class="h-6"></div>
+</main>
+<!-- Shared Component: BottomNavBar with Elevated Center GSupport Action -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 bg-surface-container-lowest/95 backdrop-blur-md shadow-lg border-t border-outline-variant/30">
+<div class="max-w-md mx-auto px-2 py-2 flex justify-around items-end relative">
+<!-- Tab 1: Vụ việc -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant py-1 w-16 hover:text-primary transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[24px]">shield</span>
+<span class="font-label-sm text-label-sm mt-0.5">Vụ việc</span>
+</button>
+<!-- Tab 2: Hồ sơ -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant py-1 w-16 hover:text-primary transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[24px]">person</span>
+<span class="font-label-sm text-label-sm mt-0.5">Hồ sơ</span>
+</button>
+<!-- Tab 3: GSupport (Prominent Center Action with Elevation Bridge) -->
+<div class="flex flex-col items-center justify-center -mt-6 w-16">
+<button class="w-14 h-14 rounded-full bg-gradient-to-tr from-primary to-primary-container text-on-primary flex items-center justify-center gsupport-halo active:scale-95 transition-transform border-4 border-surface-container-lowest">
+<span class="material-symbols-outlined text-[28px]" data-weight="fill" style="font-variation-settings: 'FILL' 1;">arrow_back_ios_new</span>
+</button>
+<span class="font-label-sm text-label-sm font-bold text-primary mt-1">GSupport</span>
+</div>
+<!-- Tab 4: Lịch sử (ACTIVE TAB) -->
+<button class="flex flex-col items-center justify-center text-primary font-bold py-1 w-16 active:scale-95 transition-transform">
+<div class="relative">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">history</span>
+<span class="absolute -top-0.5 -right-0.5 w-2 h-2 rounded-full bg-primary ring-2 ring-surface-container-lowest"></span>
+</div>
+<span class="font-label-sm text-label-sm mt-0.5">Lịch sử</span>
+</button>
+<!-- Tab 5: Cài đặt -->
+<button class="flex flex-col items-center justify-center text-on-surface-variant py-1 w-16 hover:text-primary transition-colors active:scale-95">
+<span class="material-symbols-outlined text-[24px]">settings</span>
+<span class="font-label-sm text-label-sm mt-0.5">Cài đặt</span>
+</button>
+</div>
+<!-- Home Indicator Safe Bar -->
+<div class="w-32 h-1 bg-on-surface-variant/30 rounded-full mx-auto mb-1 mt-0.5"></div>
+</nav>
+</div>
+</body></html>

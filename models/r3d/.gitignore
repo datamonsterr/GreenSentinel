@@ -1,0 +1,6 @@
+*.txt
+*.onnx
+*.pkl
+*.pt
+!manifest.json
+!.gitignore

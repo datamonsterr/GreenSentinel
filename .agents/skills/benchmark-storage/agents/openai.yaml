@@ -1,0 +1,14 @@
+---
+interface:
+  display_name: "Benchmark Storage"
+  short_description: "Fetch/publish the fraud-benchmark corpora on Hugging Face Hub"
+  default_prompt: "Read .agents/commands/benchmark-storage.md and follow it exactly (fetch, publish, or refresh the latest benchmark)."
+policy:
+  allow_implicit_invocation: true
+  invocation_triggers:
+    - "upload the dataset"
+    - "fetch the benchmark"
+    - "where is the dataset stored"
+    - "publish the corpus"
+    - "Hugging Face dataset"
+    - "update the latest benchmark"

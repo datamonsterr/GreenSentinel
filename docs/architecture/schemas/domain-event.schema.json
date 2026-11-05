@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://p063.example/schemas/domain-event.schema.json",
+  "title": "P-063 domain event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "event_id",
+    "event_type",
+    "aggregate_type",
+    "aggregate_id",
+    "aggregate_version",
+    "occurred_at",
+    "correlation_id",
+    "actor",
+    "payload"
+  ],
+  "properties": {
+    "schema_version": { "const": 1 },
+    "event_id": { "type": "string", "format": "uuid" },
+    "event_type": {
+      "enum": [
+        "trip.requested",
+        "assignment.offered",
+        "assignment.accepted",
+        "traffic.observed",
+        "passenger.cancelled",
+        "passenger.feedback_submitted",
+        "driver.explanation_submitted",
+        "case.evidence_updated",
+        "assessment.completed",
+        "case.ready",
+        "case.adjudicated",
+        "sanction.approved",
+        "telemetry.gap_alert"
+      ]
+    },
+    "aggregate_type": {
+      "enum": ["trip", "assignment", "case", "assessment", "sanction"]
+    },
+    "aggregate_id": { "type": "string", "format": "uuid" },
+    "aggregate_version": { "type": "integer", "minimum": 1 },
+    "occurred_at": { "type": "string", "format": "date-time" },
+    "correlation_id": { "type": "string", "format": "uuid" },
+    "causation_id": { "type": ["string", "null"], "format": "uuid" },
+    "actor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "id"],
+      "properties": {
+        "type": { "enum": ["passenger", "driver", "analyst", "service", "simulator"] },
+        "id": { "type": "string", "minLength": 1, "maxLength": 200 }
+      }
+    },
+    "payload": { "type": "object" },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "producer": { "type": "string", "minLength": 1 },
+        "trace_id": { "type": ["string", "null"] },
+        "simulation_run_id": { "type": ["string", "null"], "format": "uuid" }
+      }
+    }
+  }
+}

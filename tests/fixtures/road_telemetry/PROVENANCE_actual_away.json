@@ -1,0 +1,17 @@
+{
+  "captured_at_utc": "2026-09-30T17:28:59.253Z",
+  "provider": "osrm",
+  "base_url": "https://router.project-osrm.org",
+  "api_version": "v1",
+  "profile": "driving",
+  "geometry_format": "geojson",
+  "overview": "full",
+  "query_url": "https://router.project-osrm.org/route/v1/driving/105.853875,21.028501;105.808248,21.224355?overview=full&geometries=geojson&steps=false",
+  "response_file": "osrm_route_actual_away.json",
+  "response_sha256": "f1b0e66d3822eceb9b97a52304161471a429a95bfff9ff4b272e4655dfc24b6",
+  "route_role": "captured directed route from canonical origin away from pickup",
+  "distance_m": 29328.7,
+  "duration_s": 2025.2,
+  "coords_count": 532,
+  "fallback_policy": "NEVER fall back to reversed expected polyline"
+}

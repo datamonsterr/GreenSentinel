@@ -1,0 +1,28 @@
+{
+  "scenario": "err_03_promo_abuse",
+  "raw_answer": "Kết luận: Hồ sơ vụ việc 018f2f4e-b000-7000-8000-000000000003 phát hiện dấu hiệu lạm dụng mã khuyến mại trong chuyến trip_err03_001. Tài xế 018f2f4e-b300-7000-8000-000000000003 cùng một tài khoản hành khách đã lặp lại 4 giao dịch voucher bất thường từ Hồ Gươm đến Time City. Điều 16.1 quy định về gian lận khuyến mại và trục lợi chính sách.",
+  "citations": [
+    {
+      "id": "c1",
+      "source": "Quy chế xử lý vi phạm 2026",
+      "section": "Điều 16.1",
+      "content": "Lạm dụng chương trình khuyến mãi hoặc thông đồng trục lợi voucher là hành vi vi phạm nghiêm trọng.",
+      "score": 0.88
+    }
+  ],
+  "entities": {
+    "case_ids": ["018f2f4e-b000-7000-8000-000000000003"],
+    "driver_ids": ["018f2f4e-b300-7000-8000-000000000003"],
+    "trip_ids": ["trip_err03_001"],
+    "citation_ids": ["c1"]
+  },
+  "mock_formatted_output": {
+    "markdown": "**Phát hiện dấu hiệu thông đồng trục lợi mã ưu đãi 4 lần.**\n\nHồ sơ [Vụ việc](case://018f2f4e-b000-7000-8000-000000000003) ghi nhận hành vi bất thường của [Tài xế Lê Minh Tuấn](driver://018f2f4e-b300-7000-8000-000000000003).\n\nChi tiết vi phạm:\n- Chuyến đi áp dụng voucher: [Hồ Gươm → Time City](trip://trip_err03_001?pickup=H%E1%BB%93+G%C6%B0%C6%A1m&dest=Time+City)\n- Số lần phát sinh bất thường: 4 giao dịch liên tiếp\n\nHành vi vi phạm được quy định rõ tại [1](policy://c1).",
+    "suggestions": [
+      {
+        "label": "Xem lịch sử voucher",
+        "prompt": "Kiểm tra danh sách voucher đã dùng của khách và tài xế"
+      }
+    ]
+  }
+}

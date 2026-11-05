@@ -1,0 +1,33 @@
+{
+  "evidence_scope": "Disposable PostgreSQL 16/PostGIS; all 21 migrations applied; synthetic HTTP test records",
+  "captured_at": "2026-10-13T21:36:49.213725+00:00",
+  "restart_proof": "HTTP detail, history and analyst audit reread through a newly constructed CaseService",
+  "record": {
+    "case_id": "dca19aab-cc87-47e0-86c5-be53f98a90f6",
+    "organization_id": "94a216cf-1251-4424-b082-e0a946d970a2",
+    "case_version": 2,
+    "adjudication_id": "1f6e264f-0d62-48b4-a2ea-d97ca93a9fdc",
+    "analyst_id": "3f1a5bb2-2137-468c-b409-81832c4c5da1",
+    "outcome": "dismiss",
+    "rationale": "1234567890",
+    "explicit_human_approval": true,
+    "approved_at": "2026-10-13 21:34:32.247891+00:00",
+    "staged_context": {
+      "delta": "mismatch",
+      "ai_suggestion": {
+        "category": "ERR-02",
+        "confidence": 0.92,
+        "recommended_action": "APPROVE"
+      },
+      "preliminary_judgment": {
+        "id": "11b6281f-9578-4f5d-93ed-0f9c6e1d5b24",
+        "note": null,
+        "case_id": "dca19aab-cc87-47e0-86c5-be53f98a90f6",
+        "judgment": "Nghi oan-bất khả kháng",
+        "analyst_id": "3f1a5bb2-2137-468c-b409-81832c4c5da1",
+        "created_at": "2026-10-13T21:34:32.186498Z"
+      },
+      "preliminary_judgment_id": "11b6281f-9578-4f5d-93ed-0f9c6e1d5b24"
+    }
+  }
+}

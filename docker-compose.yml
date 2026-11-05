@@ -1,0 +1,109 @@
+services:
+  postgres:
+    image: postgis/postgis:16-3.4-alpine
+    # Per-run isolation: CI exports PG_NAME/POSTGRES_PORT/PGDATA so concurrent
+    # runs never share containers, host ports, or data dirs. Defaults keep
+    # local dev on the classic p063-postgres:5432 with ./data.
+    container_name: ${PG_NAME:-p063-postgres}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgrespassword
+      - POSTGRES_DB=postgres
+    volumes:
+      - ${PGDATA:-./data/postgres_data}:/var/lib/postgresql/data
+      - ./db/migrations:/docker-entrypoint-initdb.d:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d postgres"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: ${REDIS_NAME:-p063-redis}
+    ports:
+      - "${REDIS_PORT:-6379}:6379"
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  qdrant:
+    image: qdrant/qdrant:v1.19.1
+    container_name: ${QDRANT_NAME:-p063-qdrant}
+    ports:
+      - "${QDRANT_PORT:-6333}:6333"
+      - "${QDRANT_GRPC_PORT:-6334}:6334"
+    volumes:
+      - ${QDRANT_DATA:-./data/qdrant_storage}:/qdrant/storage
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/6333' || exit 1"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: p063-backend
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgrespassword@postgres:5432/postgres
+      - REDIS_URL=redis://redis:6379/0
+      - QDRANT_URL=http://qdrant:6333
+      - APP_ENV=production
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request, os; port = os.environ.get('PORT', '8000'); urllib.request.urlopen(f'http://localhost:{port}/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: p063-agent
+    command: ["python", "-m", "src.services.telemetry_queue_worker"]
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgrespassword@postgres:5432/postgres
+      - REDIS_URL=redis://redis:6379/0
+      - QDRANT_URL=http://qdrant:6333
+      - APP_ENV=production
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+    restart: unless-stopped
+
+# Explicit per-project subnet: CI exports P063_NETWORK_SUBNET unique per run so
+# a stale or exhausted default-address-pool (daemon IPAM leak on runners)
+# cannot block `compose up`. Local dev falls back to the default below.
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: ${P063_NETWORK_SUBNET:-172.30.63.0/24}

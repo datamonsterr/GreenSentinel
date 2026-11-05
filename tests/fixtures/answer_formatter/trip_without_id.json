@@ -1,0 +1,20 @@
+{
+  "scenario": "trip_without_id",
+  "raw_answer": "Chuyến đi từ Hồ Gươm đến Cầu Giấy không tìm thấy mã chuyến trên hệ thống do lỗi mất tín hiệu truyền tin.",
+  "citations": [],
+  "entities": {
+    "case_ids": [],
+    "driver_ids": [],
+    "trip_ids": [],
+    "citation_ids": []
+  },
+  "mock_formatted_output": {
+    "markdown": "**Hành trình không xác định được mã định danh chuyến đi.**\n\nChi tiết chuyến đi ghi nhận trên hệ thống:\n- Tuyến đường: **Hồ Gươm → Cầu Giấy**\n- Nguyên nhân: Mất tín hiệu truyền tin\n\nCần liên hệ đội vận hành đối soát thông tin.",
+    "suggestions": [
+      {
+        "label": "Tra cứu theo biển số",
+        "prompt": "Tìm kiếm hành trình theo biển số xe trong khung giờ"
+      }
+    ]
+  }
+}

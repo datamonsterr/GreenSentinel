@@ -1,0 +1,280 @@
+name: CI RAG & Agent Evaluation
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - "src/rag/**"
+      - "eval/**"
+      - "tests/test_rag.py"
+      - "tests/unit/rag/**"
+      - "src/config.py"
+      - "data/processed/**"
+      - ".github/workflows/ci_rag.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "src/rag/**"
+      - "eval/**"
+      - "tests/test_rag.py"
+      - "tests/unit/rag/**"
+      - "src/config.py"
+      - "data/processed/**"
+      - ".github/workflows/ci_rag.yml"
+  workflow_dispatch:
+    inputs:
+      eval_sample_limit:
+        description: "Number of golden test cases to evaluate (default: 10, empty for full set)"
+        required: false
+        default: "10"
+      min_judge_score:
+        description: "Minimum required average LLM-as-a-judge score (1-5)"
+        required: false
+        default: "3.0"
+
+jobs:
+  sprint4-grounding-benchmark:
+    name: Sprint 4 Grounding Benchmark
+    runs-on: self-hosted
+    env:
+      LLM_MODEL: openai
+      RAG_EMBEDDING_PROVIDER: openai
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ensure Python is available
+        run: python3 --version || python --version
+      - name: Run 100-case deterministic benchmark
+        run: python3 eval/grounding_benchmark.py --golden eval/golden_set/rag_testset_100.json --output eval/results/sprint4_accuracy_report.json
+
+  rag-lint-and-unit-tests:
+    name: RAG Unit Tests & Lint
+    runs-on: self-hosted
+    env:
+      LLM_MODEL: openai
+      OPENAI_MODEL: ${{ vars.OPENAI_MODEL || 'gpt-4o-mini' }}
+      RAG_EMBEDDING_PROVIDER: openai
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      LANGCHAIN_TRACING_V2: "false"
+      LANGSMITH_TRACING: "false"
+
+    steps:
+      - name: Clean root-owned Docker volumes from previous runs
+        run: |
+          if [ -d "$GITHUB_WORKSPACE/data" ]; then
+            docker run --rm -v "$GITHUB_WORKSPACE/data:/target" alpine \
+              sh -c "rm -rf /target/*" || true
+            rm -rf "$GITHUB_WORKSPACE/data" || true
+          fi
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Ensure uv is available
+        run: |
+          if ! command -v uv > /dev/null 2>&1; then
+            curl -LsSf https://astral.sh/uv/install.sh | sh
+          fi
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Setup virtual environment & dependencies
+        run: |
+          export PATH="$HOME/.cargo/bin:$HOME/.local/bin:$PATH"
+          if command -v uv >/dev/null 2>&1; then
+            uv venv --python 3.12 .venv
+            uv pip install --python .venv \
+              -r requirements.txt \
+              google-genai \
+              qdrant-client \
+              langsmith \
+              pytest-rerunfailures
+            echo "$PWD/.venv/bin" >> $GITHUB_PATH
+          else
+            python3 -m venv .venv
+            .venv/bin/pip install --upgrade pip
+            .venv/bin/pip install -r requirements.txt google-genai qdrant-client langsmith pytest-rerunfailures
+            echo "$PWD/.venv/bin" >> $GITHUB_PATH
+          fi
+
+      - name: Start Qdrant service (Local Fallback)
+        env:
+          QDRANT_CLUSTER_URL: ${{ secrets.QDRANT_CLUSTER_URL }}
+        run: |
+          if [ -z "$QDRANT_CLUSTER_URL" ]; then
+            if ! curl -s http://localhost:6333/readyz >/dev/null 2>&1; then
+              docker rm -f ci-qdrant 2>/dev/null || true
+              docker run -d --name ci-qdrant -p 6333:6333 qdrant/qdrant:latest
+              for i in {1..30}; do
+                curl -s http://localhost:6333/readyz && break || sleep 1
+              done
+            fi
+            curl -f -s http://localhost:6333/readyz
+          else
+            echo "QDRANT_CLUSTER_URL is configured; using remote Qdrant cluster."
+          fi
+
+      - name: Lint RAG source and eval suites
+        run: |
+          ruff check src/rag/ eval/ tests/test_rag.py tests/unit/rag/
+
+      - name: Run isolated RAG unit tests
+        run: PYTHONPATH=. pytest tests/unit/rag/ -q
+        env:
+          APP_ENV: test
+          OPENAI_API_KEY: test-key
+          GEMINI_API_KEY: test-key
+          LANGCHAIN_TRACING_V2: "false"
+          LANGSMITH_TRACING: "false"
+
+      - name: Verify OpenAI embedding credentials
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          if [ -z "$OPENAI_API_KEY" ]; then
+            echo "::error::Repository secret OPENAI_API_KEY is required for policy indexing."
+            exit 1
+          fi
+
+      - name: Index crawled policies into Qdrant
+        run: |
+          PYTHONPATH=. python src/rag/ingest.py
+        env:
+          APP_ENV: test
+          RAG_EMBEDDING_PROVIDER: openai
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          QDRANT_CLUSTER_URL: ${{ secrets.QDRANT_CLUSTER_URL }}
+          QDRANT_URL: ${{ secrets.QDRANT_CLUSTER_URL || 'http://localhost:6333' }}
+          QDRANT_API_KEY: ${{ secrets.QDRANT_TEST_API_KEY || '' }}
+          QDRANT_TEST_API_KEY: ${{ secrets.QDRANT_TEST_API_KEY || '' }}
+          QDRANT_COLLECTION: test-policies-openai-text-embedding-3-small-1536
+
+      - name: Run RAG integration and guardrail tests
+        run: |
+          PYTHONPATH=. pytest -p no:conftest tests/test_rag.py -v --tb=short
+        env:
+          APP_ENV: test
+          RAG_EMBEDDING_PROVIDER: openai
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          QDRANT_CLUSTER_URL: ${{ secrets.QDRANT_CLUSTER_URL }}
+          QDRANT_URL: ${{ secrets.QDRANT_CLUSTER_URL || 'http://localhost:6333' }}
+          QDRANT_API_KEY: ${{ secrets.QDRANT_TEST_API_KEY || '' }}
+          QDRANT_TEST_API_KEY: ${{ secrets.QDRANT_TEST_API_KEY || '' }}
+          QDRANT_COLLECTION: test-policies-openai-text-embedding-3-small-1536
+
+  rag-langsmith-eval:
+    name: LangSmith Evaluation & Score Gate
+    # Ready-tier only: LLM-as-a-judge costs money and time; drafts
+    # use ci-draft.yml + rag unit tests. Re-runs on ready_for_review.
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
+    needs: rag-lint-and-unit-tests
+    runs-on: self-hosted
+    env:
+      APP_ENV: test
+      LLM_MODEL: openai
+      OPENAI_MODEL: ${{ vars.OPENAI_MODEL || 'gpt-4o-mini' }}
+      EVAL_JUDGE_MODEL: ${{ vars.EVAL_JUDGE_MODEL || 'gpt-4o-mini' }}
+      RAG_EMBEDDING_PROVIDER: openai
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      LANGCHAIN_API_KEY: ${{ secrets.LANGCHAIN_API_KEY }}
+      LANGCHAIN_TRACING_V2: "true"
+      LANGCHAIN_PROJECT: "greensm-cockpit-rag-ci"
+      QDRANT_CLUSTER_URL: ${{ secrets.QDRANT_CLUSTER_URL }}
+      QDRANT_URL: ${{ secrets.QDRANT_CLUSTER_URL || 'http://localhost:6333' }}
+      QDRANT_API_KEY: ${{ secrets.QDRANT_TEST_API_KEY || '' }}
+      QDRANT_TEST_API_KEY: ${{ secrets.QDRANT_TEST_API_KEY || '' }}
+      QDRANT_COLLECTION: test-policies-openai-text-embedding-3-small-1536
+
+    steps:
+      - name: Clean root-owned Docker volumes from previous runs
+        run: |
+          if [ -d "$GITHUB_WORKSPACE/data" ]; then
+            docker run --rm -v "$GITHUB_WORKSPACE/data:/target" alpine \
+              sh -c "rm -rf /target/*" || true
+            rm -rf "$GITHUB_WORKSPACE/data" || true
+          fi
+
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Ensure uv is available
+        run: |
+          if ! command -v uv > /dev/null 2>&1; then
+            curl -LsSf https://astral.sh/uv/install.sh | sh
+          fi
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+      - name: Setup virtual environment & dependencies
+        run: |
+          export PATH="$HOME/.cargo/bin:$HOME/.local/bin:$PATH"
+          if command -v uv >/dev/null 2>&1; then
+            uv venv --python 3.12 .venv
+            uv pip install --python .venv \
+              -r requirements.txt \
+              google-genai \
+              qdrant-client \
+              langsmith
+            echo "$PWD/.venv/bin" >> $GITHUB_PATH
+          else
+            python3 -m venv .venv
+            .venv/bin/pip install --upgrade pip
+            .venv/bin/pip install -r requirements.txt google-genai qdrant-client langsmith
+            echo "$PWD/.venv/bin" >> $GITHUB_PATH
+          fi
+
+      - name: Start Qdrant service (Local Fallback)
+        env:
+          QDRANT_CLUSTER_URL: ${{ secrets.QDRANT_CLUSTER_URL }}
+        run: |
+          if [ -z "$QDRANT_CLUSTER_URL" ]; then
+            if ! curl -s http://localhost:6333/readyz >/dev/null 2>&1; then
+              docker rm -f ci-qdrant 2>/dev/null || true
+              docker run -d --name ci-qdrant -p 6333:6333 qdrant/qdrant:latest
+              for i in {1..30}; do
+                curl -s http://localhost:6333/readyz && break || sleep 1
+              done
+            fi
+            curl -f -s http://localhost:6333/readyz
+          else
+            echo "QDRANT_CLUSTER_URL is configured; using remote Qdrant cluster."
+          fi
+
+      - name: Index crawled policies into Qdrant
+        run: |
+          PYTHONPATH=. python src/rag/ingest.py
+
+      - name: Run Benchmark & LangSmith Judge Gate
+        run: |
+          if [ -z "${OPENAI_API_KEY}" ]; then
+            echo "::error::OPENAI_API_KEY is required for the live LLM judge."
+            exit 1
+          fi
+          LIMIT="${{ inputs.eval_sample_limit || '10' }}"
+          MIN_JUDGE="${{ inputs.min_judge_score || '3.0' }}"
+          echo "Running RAG benchmark with limit: ${LIMIT}, min_judge: ${MIN_JUDGE}"
+          PYTHONPATH=. python eval/bench.py \
+            --golden-set eval/golden_set/rag_testset_100.json \
+            --output-dir eval/results \
+            --limit "${LIMIT}" \
+            --min-tool-acc 80.0 \
+            --min-judge-score "${MIN_JUDGE}"
+
+      - name: Upload Benchmark Results Artifact
+        if: always()
+        uses: ./.github/actions/oci-upload
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.OCI_S3_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.OCI_S3_SECRET_KEY }}
+          AWS_DEFAULT_REGION: ${{ vars.OCI_REGION || secrets.OCI_REGION }}
+          AWS_ENDPOINT_URL: ${{ vars.OCI_S3_ENDPOINT || secrets.OCI_S3_ENDPOINT }}
+          OCI_S3_BUCKET: ${{ vars.OCI_S3_BUCKET }}
+        with:
+          name: rag-benchmark-report
+          path: |
+            eval/results/report.md
+            eval/results/rag_benchmark_results.json
+          if-no-files-found: warn

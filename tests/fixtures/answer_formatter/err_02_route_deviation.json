@@ -1,0 +1,32 @@
+{
+  "scenario": "err_02_route_deviation",
+  "raw_answer": "Kết luận sơ bộ: Vụ việc 018f2f4e-b000-7000-8000-000000000002 có thời gian dừng đỗ stationary_duration_s đạt 210 giây, vượt ngưỡng 180 giây. Tài xế 018f2f4e-b300-7000-8000-000000000002 dừng đỗ kéo dài trong chuyến trip_err02_001 từ Royal City đến Keangnam, dẫn đến việc hành khách buộc phải hủy chuyến. Theo Điều 14.2, hành vi cố ý kéo dài thời gian đón khách cấu thành vi phạm ERR-02.",
+  "citations": [
+    {
+      "id": "c1",
+      "source": "Quy chế xử lý vi phạm 2026",
+      "section": "Điều 14.2",
+      "content": "Cố ý dừng đỗ kéo dài (>= 180s) nhằm ép hành khách hủy cuốc là vi phạm ERR-02.",
+      "score": 0.95
+    }
+  ],
+  "entities": {
+    "case_ids": ["018f2f4e-b000-7000-8000-000000000002"],
+    "driver_ids": ["018f2f4e-b300-7000-8000-000000000002"],
+    "trip_ids": ["trip_err02_001"],
+    "citation_ids": ["c1"]
+  },
+  "mock_formatted_output": {
+    "markdown": "**Cố ý dừng đỗ kéo dài 210 giây nhằm ép khách hủy chuyến.**\n\nHồ sơ [Vụ việc](case://018f2f4e-b000-7000-8000-000000000002) xác nhận thời gian dừng đỗ vượt ngưỡng quy định 180 giây.\n\nThông tin đối chiếu:\n- Tài xế vi phạm: [Tài xế Trần Văn Nam](driver://018f2f4e-b300-7000-8000-000000000002)\n- Chuyến đi: [Royal City → Keangnam](trip://trip_err02_001?pickup=Royal+City&dest=Keangnam)\n- Thời gian dừng: 210 giây\n\nHành vi này vi phạm quy chế tại [1](policy://c1).",
+    "suggestions": [
+      {
+        "label": "Kiểm tra tình trạng giao thông",
+        "prompt": "Kiểm tra dữ liệu giao thông tại thời điểm dừng đỗ"
+      },
+      {
+        "label": "So sánh tiền lệ",
+        "prompt": "Tìm các vụ việc tiền lệ có tình tiết dừng đỗ tương tự"
+      }
+    ]
+  }
+}

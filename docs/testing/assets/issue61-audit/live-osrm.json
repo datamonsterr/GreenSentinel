@@ -1,0 +1,30 @@
+[
+  {
+    "leg": "pickup",
+    "provider": "osrm",
+    "provenance": {
+      "source": "osrm",
+      "status": "ok"
+    },
+    "distance_m": 9472,
+    "duration_s": 794,
+    "coordinates": 394,
+    "elapsed_s": 0.638,
+    "input_class": "labeled synthetic road-v1 coordinates",
+    "endpoint": "https://router.project-osrm.org"
+  },
+  {
+    "leg": "destination",
+    "provider": "osrm",
+    "provenance": {
+      "source": "osrm",
+      "status": "ok"
+    },
+    "distance_m": 27438,
+    "duration_s": 1642,
+    "coordinates": 410,
+    "elapsed_s": 0.626,
+    "input_class": "labeled synthetic road-v1 coordinates",
+    "endpoint": "https://router.project-osrm.org"
+  }
+]

@@ -1,0 +1,22 @@
+Generating static pages using 10 workers (0/6) ...
+  Generating static pages using 10 workers (1/6)
+  Generating static pages using 10 workers (2/6)
+  Generating static pages using 10 workers (4/6)
+✓ Generating static pages using 10 workers (6/6) in 2.1s
+  Finalizing page optimization ...
+  Collecting build traces ...
+
+Route (app)
+┌ ƒ /
+├ ○ /_not-found
+├ ○ /driver
+├ ƒ /driver/dispute/[caseId]
+├ ƒ /sign-in/[[...sign-in]]
+├ ƒ /sign-up/[[...sign-up]]
+└ ○ /workplace
+
+
+ƒ Proxy (Middleware)
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand

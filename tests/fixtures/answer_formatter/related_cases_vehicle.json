@@ -1,0 +1,28 @@
+{
+  "scenario": "related_cases_vehicle",
+  "raw_answer": "Phương tiện biển kiểm soát 29E-111.11 liên quan đến 3 vụ việc gian lận gần đây: vụ việc 018f2f4e-b000-7000-8000-000000000001 (ERR-01 chiếm đoạt cuốc, đã xử phạt 200.000đ), vụ việc 018f2f4e-b000-7000-8000-000000000002 (ERR-02 dừng đỗ ép hủy, đang chờ thẩm định), vụ việc 018f2f4e-b000-7000-8000-000000000005 (ERR-05 giả GPS, tạm khóa tài khoản).",
+  "citations": [],
+  "entities": {
+    "case_ids": [
+      "018f2f4e-b000-7000-8000-000000000001",
+      "018f2f4e-b000-7000-8000-000000000002",
+      "018f2f4e-b000-7000-8000-000000000005"
+    ],
+    "driver_ids": [],
+    "trip_ids": [],
+    "citation_ids": []
+  },
+  "mock_formatted_output": {
+    "markdown": "**Xe 29E-111.11 liên quan đến 3 vụ việc vi phạm liên tiếp.**\n\nDanh sách các vụ việc ghi nhận gắn liền với biển số xe 29E-111.11:\n\n| Hồ sơ vụ việc | Mã vi phạm | Trạng thái xử lý |\n| :--- | :--- | :--- |\n| [Vụ việc](case://018f2f4e-b000-7000-8000-000000000001) | ERR-01 Chiếm đoạt cuốc | Đã xử phạt 200.000đ |\n| [Vụ việc](case://018f2f4e-b000-7000-8000-000000000002) | ERR-02 Dừng đỗ ép hủy | Đang chờ thẩm định |\n| [Vụ việc](case://018f2f4e-b000-7000-8000-000000000005) | ERR-05 Giả lập GPS | Tạm khóa tài khoản |\n\nPhương tiện có tần suất vi phạm cao trong 30 ngày qua.",
+    "suggestions": [
+      {
+        "label": "Xem chi tiết xe 29E-111.11",
+        "prompt": "Kiểm tra chủ sở hữu và hợp đồng thuê xe 29E-111.11"
+      },
+      {
+        "label": "Đề xuất kiểm tra thực địa",
+        "prompt": "Yêu cầu kiểm tra thiết bị định vị trên xe"
+      }
+    ]
+  }
+}

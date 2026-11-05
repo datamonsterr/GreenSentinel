@@ -1,0 +1,105 @@
+{
+  "baseline_version": "forensic-rules-v1",
+  "dataset_sha256": "b1e20fc71c58c46d0b965b0ce602c30773df386af2df464817fc03f61393a2b5",
+  "case_count": 10,
+  "scope": "Synthetic development smoke benchmark; not held-out or production accuracy.",
+  "confidence_semantics": "Fixed uncalibrated rule support; 0 means abstention.",
+  "metrics": {
+    "category_accuracy": 1.0,
+    "schema_validity": 1.0,
+    "evidence_grounding": 1.0,
+    "required_evidence_recall": 1.0
+  },
+  "cases": [
+    {
+      "case_id": "mock-001-stall",
+      "expected_category": "ERR-02",
+      "predicted_category": "ERR-02",
+      "category_accuracy": 1.0,
+      "schema_validity": 1.0,
+      "evidence_grounding": 1.0,
+      "required_evidence_recall": 1.0
+    },
+    {
+      "case_id": "mock-002-gps",
+      "expected_category": "ERR-05",
+      "predicted_category": "ERR-05",
+      "category_accuracy": 1.0,
+      "schema_validity": 1.0,
+      "evidence_grounding": 1.0,
+      "required_evidence_recall": 1.0
+    },
+    {
+      "case_id": "mock-003-normal",
+      "expected_category": "no_violation",
+      "predicted_category": "no_violation",
+      "category_accuracy": 1.0,
+      "schema_validity": 1.0,
+      "evidence_grounding": 1.0,
+      "required_evidence_recall": 1.0
+    },
+    {
+      "case_id": "mock-004-outage",
+      "expected_category": "insufficient_evidence",
+      "predicted_category": "insufficient_evidence",
+      "category_accuracy": 1.0,
+      "schema_validity": 1.0,
+      "evidence_grounding": 1.0,
+      "required_evidence_recall": 1.0
+    },
+    {
+      "case_id": "mock-005-missing",
+      "expected_category": "insufficient_evidence",
+      "predicted_category": "insufficient_evidence",
+      "category_accuracy": 1.0,
+      "schema_validity": 1.0,
+      "evidence_grounding": 1.0,
+      "required_evidence_recall": 1.0
+    },
+    {
+      "case_id": "mock-006-boundary",
+      "expected_category": "ERR-02",
+      "predicted_category": "ERR-02",
+      "category_accuracy": 1.0,
+      "schema_validity": 1.0,
+      "evidence_grounding": 1.0,
+      "required_evidence_recall": 1.0
+    },
+    {
+      "case_id": "mock-007-below-boundary",
+      "expected_category": "insufficient_evidence",
+      "predicted_category": "insufficient_evidence",
+      "category_accuracy": 1.0,
+      "schema_validity": 1.0,
+      "evidence_grounding": 1.0,
+      "required_evidence_recall": 1.0
+    },
+    {
+      "case_id": "mock-008-degraded",
+      "expected_category": "insufficient_evidence",
+      "predicted_category": "insufficient_evidence",
+      "category_accuracy": 1.0,
+      "schema_validity": 1.0,
+      "evidence_grounding": 1.0,
+      "required_evidence_recall": 1.0
+    },
+    {
+      "case_id": "mock-009-driver-cancel",
+      "expected_category": "insufficient_evidence",
+      "predicted_category": "insufficient_evidence",
+      "category_accuracy": 1.0,
+      "schema_validity": 1.0,
+      "evidence_grounding": 1.0,
+      "required_evidence_recall": 1.0
+    },
+    {
+      "case_id": "mock-010-long-completed",
+      "expected_category": "no_violation",
+      "predicted_category": "no_violation",
+      "category_accuracy": 1.0,
+      "schema_validity": 1.0,
+      "evidence_grounding": 1.0,
+      "required_evidence_recall": 1.0
+    }
+  ]
+}

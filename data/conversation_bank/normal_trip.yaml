@@ -1,0 +1,43 @@
+context: normal_trip
+driver:
+  - {text: "Em tới ngay, anh chị đợi em 2 phút nhé", lang: vi}
+  - {text: "Anh đang ở sảnh A, em ra giúp anh nha", lang: vi}
+  - {text: "Xe anh màu xanh, biển số đuôi 86 nha em", lang: vi}
+  - {text: "Anh tới nơi rồi, em xuống giúp anh", lang: vi}
+  - {text: "Đường hơi đông, anh đi từ từ nha", lang: vi}
+  - {text: "Em đứng đúng điểm ghim là anh thấy liền", lang: vi}
+  - {text: "Anh đón em ở cổng chính {pickup} nhé", lang: vi}
+  - {text: "Anh kẹt đèn đỏ xíu, tới liền đây", lang: vi}
+  - {text: "Anh chạy qua cầu rồi, 3 phút nữa tới", lang: vi}
+  - {text: "Xác nhận cuốc đi {dest} giúp anh nha em", lang: vi}
+  - {text: "Anh mở cửa rồi, em lên xe nhé", lang: vi}
+  - {text: "Đi đường này nhanh hơn, em ok không", lang: vi}
+  - {text: "Anh đậu xe ở lề phải, em chú ý giúp anh", lang: vi}
+  - {text: "Mưa to quá, em đứng trong mái che nhé", lang: vi}
+  - {text: "Tới nơi an toàn rồi, cảm ơn em nhiều", lang: vi}
+  - {text: "I'm nearby, arriving in 2 minutes", lang: en}
+  - {text: "I can see you, walking over now", lang: en}
+  - {text: "Traffic is slow but I'm on my way", lang: en}
+  - {text: "My car is the green one at the gate", lang: en}
+  - {text: "Thanks for waiting, let's go to {dest}", lang: en}
+customer:
+  - {text: "Em đang ở sảnh B, anh tới chưa ạ", lang: vi}
+  - {text: "Em mặc áo trắng đứng cổng nè anh", lang: vi}
+  - {text: "Anh ơi bao lâu nữa tới vậy", lang: vi}
+  - {text: "Em đợi ở điểm ghim {pickup} nha anh", lang: vi}
+  - {text: "Anh cứ đi từ từ, em không vội", lang: vi}
+  - {text: "Em có 2 vali to, cốp vừa không anh", lang: vi}
+  - {text: "Cho em đi {dest} nhé, đường nào nhanh cũng được", lang: vi}
+  - {text: "Em xuống thang máy rồi, 1 phút nữa", lang: vi}
+  - {text: "Anh đậu đâu vậy, em không thấy xe", lang: vi}
+  - {text: "Em gửi định vị lại rồi, anh check giúp em", lang: vi}
+  - {text: "Tới nơi rồi, cảm ơn anh nhiều nha", lang: vi}
+  - {text: "Anh cho em xin sạc điện thoại với", lang: vi}
+  - {text: "Em đi cùng bạn, 2 người có sao không anh", lang: vi}
+  - {text: "Em đứng cạnh bốt bảo vệ nè anh", lang: vi}
+  - {text: "Anh ơi em tới cổng rồi, anh đâu rồi", lang: vi}
+  - {text: "Where are you? I'm at the main gate", lang: en}
+  - {text: "I'm wearing a red jacket, easy to spot", lang: en}
+  - {text: "Take your time, I'm waiting inside", lang: en}
+  - {text: "I'm at the pickup point now", lang: en}
+  - {text: "Please come to gate 2, gate 1 is blocked", lang: en}

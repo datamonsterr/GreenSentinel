@@ -1,0 +1,151 @@
+# Telemetry distribution parameters for the DA-06 synthetic generator.
+# Rationale and provenance: docs/data/TELEMETRY_DISTRIBUTION.md
+#
+# Provenance tags used in comments:
+#   measured-mipo   notebooks/mipo/profile.json (MiPo AiSq10D slice, 500 trajectories)
+#   posisi          Grab-Posisi paper/blog (docs/data/RIDE_HAILING_RESEARCH.md)
+#   porto-doc       UCI Porto dataset page (cited in docs/data/MIPO_FRAUD_RESEARCH.md)
+#   derived         arithmetic on the above
+#   assumption      demo choice; replace when Grab-Posisi raw data is available
+#
+# Thresholds these values are aligned with: FEATURE_PARAMS v1.0.0 (PR #43,
+# src/services/feature_engineering.py). Demo configuration, not policy thresholds.
+
+version: "0.2.0"  # 0.2.0: generator keys for DA-06 + noise_modes (happy/stress)
+feature_params_version: "v1.0.0"
+seed: 63  # assumption; same seed as the MiPo slice for reproducibility
+
+sampling:
+  default_profile: porto_15s  # assumption: keeps DB volume small (~86 pings per 21.5 min trip)
+  profiles:
+    porto_15s:
+      cadence_s: 15  # porto-doc: nominal 15 s sampling
+    posisi_1s:
+      cadence_s: 1  # posisi: 1 s sampling, "> 90%" of intervals equal 1 s
+  missed_ping_probability: 0.05  # assumption, chosen so >= 90% of intervals equal the cadence (posisi)
+  # clock jitter per interval moved to noise_modes.<mode>.clock_jitter_s
+  # derived: at 15 s, P(interval > 30 s) = 0.05^2 = 0.0025 per interval
+  outage:
+    trip_probability: 0.02  # assumption; posisi reports breaks (tunnels) but no rate
+    duration_s: {dist: uniform, low: 30, high: 90}  # assumption
+
+position:
+  noise_sd_fraction_of_accuracy: 0.5  # assumption; accuracy is a 68% radius (posisi)
+  unknown_accuracy_noise_m: 14.3  # assumption: lognormal median below, used when accuracy_m is null
+  accuracy_m:
+    dist: lognormal
+    mu: 2.66     # assumption fitted to posisi mode ~10 m: mode = exp(mu - sigma^2) = 10.0
+    sigma: 0.6   # derived: median 14.3 m, p95 ~38 m
+    clip_max: 127  # posisi: Android maximum accuracy 127 m
+    null_rate: 0.03  # assumption (Android 0.0 = unavailable, mapped to null)
+    heavy_tail: {rate: 0.005, dist: uniform, low: 130, high: 1000}  # assumption; posisi iOS tail reaches 149 km
+
+speed:
+  mean_trip_speed_mps: 9.26  # derived: posisi 11.94 km / 21.50 min, includes stops, mixed modes
+  moving_speed_mps:
+    car: {dist: gamma, shape: 2.0, mean: 9.3}        # mean derived (posisi), shape assumption
+    motorbike: {dist: gamma, shape: 2.0, mean: 9.3}  # assumption: no per-mode data published; update from posisi JKT
+  moving_speed_clip_mps: [3.0, 20.0]  # assumption: keeps sampled leg speeds plausible for city traffic
+  reported_speed_null_rate: 0.05  # assumption (Android 0.0 = invalid)
+
+bearing:
+  moving_noise_deg: {dist: normal, sd: 5.0}  # assumption
+  null_when_stationary: true  # posisi: Android 0.0 invalid, iOS reports 180 when not moving
+
+mock_location_reported_null_rate: 0.02  # assumption; unknown is not false
+latency_ms: {dist: lognormal, median: 250, sigma: 0.8}  # assumption, needs verification; payload only
+producer_declared_fields_emit_null: [distance_to_pickup_m, davi_score, data_gap_s]  # computed server-side
+
+route:
+  start_distance_to_pickup_m: {dist: uniform, low: 500, high: 2000}  # assumption
+  tortuosity_quantiles:  # measured-mipo, sample by interpolating between quantiles
+    normal: {p05: 1.2562, p25: 1.2724, p50: 1.2769, p75: 1.3302, p95: 1.4688}
+    detour: {p05: 1.3584, p25: 1.4664, p50: 1.5622, p75: 1.6553, p95: 1.7888}
+  zero_step_share_normal: {mean: 0.0040, p95: 0.0220}  # measured-mipo, sanity check only
+
+# Point rates are shares of points in the trip. All scenario values are assumptions
+# chosen to land on the intended side of FEATURE_PARAMS (see section 4.2 of the doc).
+scenarios:
+  normal_trip:
+    health: {crash: 0.0, offline: 0.005, degraded: 0.02, jitter: 0.03, mock: 0.0}
+    arrival_distance_m: {dist: uniform, low: 0, high: 20}  # < arrival_radius_m 30
+    wait_at_pickup_s: {dist: uniform, low: 30, high: 120}  # counted in total SSD, not approach SSD
+    on_trip_s: {dist: uniform, low: 120, high: 300}  # assumption: observed part of the ride after pickup
+    expect: {davi_min: 0.5, approach_ssd_max_s: 60, guardrail_blocked: false}
+
+  driver_stall_cancel:  # seed name: intentional_dic
+    health: {crash: 0.0, offline: 0.0, degraded: 0.02, jitter: 0.03, mock: 0.0}
+    approach_s: {dist: uniform, low: 60, high: 240}
+    min_start_distance_m: 50  # assumption: start outside arrival 30 m so the approach window is non-empty
+    move_away_first: {probability: 0.5, distance_m: {dist: uniform, low: 100, high: 300}}
+    stall_duration_s: {dist: uniform, low: 230, high: 420}  # 0.2.0: sampling loses up to one cadence at each end; 185 + 2 x 15 + margin
+    stall_distance_to_pickup_m: {dist: uniform, low: 80, high: 400}  # > arrival 30 m and > DAVI min 20 m
+    stall_noise_sd_m: 2.0  # derived: P(offset > 15 m anchor radius) ~ 8e-7 per point; applied via noise_modes.happy.stop_noise_sd_m
+    stall_accuracy_max_m: 15  # keeps anchor radius R = 15
+    arrives: false
+    expect: {approach_ssd_min_s: 185, arrived_at_pickup: false, guardrail_blocked: false}
+
+  traffic_gridlock:
+    health: {crash: 0.0, offline: 0.0, degraded: 0.02, jitter: 0.03, mock: 0.0}
+    traffic_congestion: heavy
+    duration_s: {dist: uniform, low: 300, high: 600}  # assumption: observed gridlock before the passenger cancels
+    stop_duration_s: {dist: uniform, low: 20, high: 90}  # < 180, stops never reach ERR-02
+    crawl_leg_m: {dist: uniform, low: 20, high: 60}  # >= crawl_leg_min_m
+    crawl_speed_mps: {dist: uniform, low: 0.5, high: 2.0}
+    crawl_leg_min_m: 20  # > anchor radius 15 m so stops do not merge
+    direction: toward_pickup
+    # 0.2.0: no SSD expectation. Crawling inside the 15 m anchor radius counts as
+    # stationary, so honest gridlock reaches ERR-02 SSD levels (see doc section 4.3).
+    expect: {davi_min: 0.5, traffic_congestion: heavy, guardrail_blocked: false}
+
+  route_deviation:
+    health: {crash: 0.0, offline: 0.0, degraded: 0.02, jitter: 0.03, mock: 0.0}
+    # 0.2.0: open window (passenger cancels during the detour). A detour that later
+    # returns to pickup ends with DAVI > 0, so it cannot satisfy davi_max 0.0.
+    toward_first_m: {dist: uniform, low: 50, high: 200}  # assumption; < detour so the away leg dominates
+    detour_away_m: {dist: uniform, low: 300, high: 800}
+    away_angle_spread_rad: 0.5  # assumption: away leg within +-29 deg of straight away from pickup
+    expect: {davi_max: 0.0, guardrail_blocked: false}
+
+  gps_spoofing:  # seed name: fake_gps
+    health: {crash: 0.0, offline: 0.0, degraded: 0.0, jitter: 0.0, mock: 1.0}
+    mixed_variant_mock_share: {dist: uniform, low: 0.8, high: 1.0}
+    teleport_jumps: {count: {dist: uniform_int, low: 1, high: 3}, speed_mps: {dist: uniform, low: 60, high: 200}}  # > 50 implausible
+    teleport_jump_m: {dist: uniform, low: 1500, high: 4000}  # assumption: > 50 m/s even across one 15 s ping
+    # mixed_variant_mock_share is documented but not generated in 0.2.0 (seed uses mock 1.0)
+    expect: {mock_ratio_min: 0.8, guardrail_short_circuit: false}
+
+  technical_dropout:
+    health: {crash: 0.0, offline: 0.0, degraded: 0.02, jitter: 0.03, mock: 0.0}
+    dropout_kind: {app_crash: 0.5, network_loss: 0.5}  # last ping before the gap carries crashed / offline
+    gap_s: {dist: uniform, low: 60, high: 300}  # > max_sample_gap_s 30; no pings during the gap
+    resume_after_gap_probability: 0.5  # otherwise one reconnect ping at gap end, no further movement
+    dropout_at_fraction_of_approach: [0.3, 0.7]  # assumption: where in the approach the dropout starts
+    after_gap_s: {dist: uniform, low: 30, high: 120}  # assumption: observed time after a resumed gap
+    platform_incident: true  # app.platform_incidents row at gap start
+    expect: {max_gap_s_min: 31, coverage_max: 0.99, guardrail_blocked: true}
+
+  gps_jitter:
+    health: {crash: 0.0, offline: 0.0, degraded: 0.02, jitter: {dist: uniform, low: 0.3, high: 0.6}, mock: 0.0}
+    jitter_accuracy_m: {dist: uniform, low: 20, high: 50}
+    expect: {davi_min: 0.0, approach_ssd_max_s: 60, guardrail_blocked: false}
+
+# Noise modes (0.2.0). happy = the distributions above, for demo and seed data.
+# stress = assumption: temporally correlated position error for robustness checks.
+noise_modes:
+  happy:
+    # Ideal clock: intervals are exact cadence multiples. With +-0.3 s jitter one missed
+    # 15 s ping gives 30.x s > max_sample_gap_s 30 and splits SSD chains (measured,
+    # 400 trips: DIC detection 77% vs 96.2%). stress keeps the jitter to expose this boundary.
+    clock_jitter_s: 0.0
+    ar1_rho: 0.0  # independent per-ping noise while moving
+    # Consecutive fixes of a stationary receiver are strongly correlated; independent
+    # accuracy/2 noise per ping overstates jumps (measured: gridlock DAVI > 0.5 in 24%).
+    stop_noise_sd_m: 2.0  # every stop leg (stall, gridlock stop, wait at pickup)
+    slow_move_threshold_mps: 1.0  # assumption: legs slower than this (gridlock crawl) also use stop_noise_sd_m
+    clip_stall_accuracy: true  # stall accuracy <= stall_accuracy_max_m
+  stress:
+    clock_jitter_s: {dist: normal, mean: 0.0, sd: 0.3, clip: 1.0}  # assumption
+    ar1_rho: 0.9  # assumption: correlation between consecutive pings (multipath drifts slowly)
+    stop_noise_sd_m: null  # long-run sd = accuracy / 2 while stopped and moving
+    clip_stall_accuracy: false  # accuracy from the shared lognormal, not forced <= 15 m

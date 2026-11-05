@@ -1,0 +1,167 @@
+[
+  {
+    "input": {
+      "telemetry_points": 25,
+      "stationary_duration_s": 240,
+      "lifecycle_state": "cancelled",
+      "cancellation_actor": "passenger",
+      "mock_location_reported": false,
+      "platform_outage": false,
+      "gps_degraded": false,
+      "case_id": "mock-001-stall"
+    },
+    "expected_category": "ERR-02",
+    "required_evidence": [
+      "stationary_duration_s",
+      "lifecycle_state",
+      "cancellation_actor"
+    ]
+  },
+  {
+    "input": {
+      "telemetry_points": 25,
+      "stationary_duration_s": 0,
+      "lifecycle_state": "completed",
+      "cancellation_actor": "none",
+      "mock_location_reported": true,
+      "platform_outage": false,
+      "gps_degraded": false,
+      "case_id": "mock-002-gps"
+    },
+    "expected_category": "ERR-05",
+    "required_evidence": [
+      "mock_location_reported"
+    ]
+  },
+  {
+    "input": {
+      "telemetry_points": 25,
+      "stationary_duration_s": 0,
+      "lifecycle_state": "completed",
+      "cancellation_actor": "none",
+      "mock_location_reported": false,
+      "platform_outage": false,
+      "gps_degraded": false,
+      "case_id": "mock-003-normal"
+    },
+    "expected_category": "no_violation",
+    "required_evidence": [
+      "lifecycle_state",
+      "mock_location_reported"
+    ]
+  },
+  {
+    "input": {
+      "telemetry_points": 25,
+      "stationary_duration_s": 0,
+      "lifecycle_state": "completed",
+      "cancellation_actor": "none",
+      "mock_location_reported": true,
+      "platform_outage": true,
+      "gps_degraded": false,
+      "case_id": "mock-004-outage"
+    },
+    "expected_category": "insufficient_evidence",
+    "required_evidence": [
+      "platform_outage"
+    ]
+  },
+  {
+    "input": {
+      "telemetry_points": 0,
+      "stationary_duration_s": 0,
+      "lifecycle_state": "completed",
+      "cancellation_actor": "none",
+      "mock_location_reported": false,
+      "platform_outage": false,
+      "gps_degraded": false,
+      "case_id": "mock-005-missing"
+    },
+    "expected_category": "insufficient_evidence",
+    "required_evidence": [
+      "telemetry_points"
+    ]
+  },
+  {
+    "input": {
+      "telemetry_points": 25,
+      "stationary_duration_s": 180,
+      "lifecycle_state": "cancelled",
+      "cancellation_actor": "passenger",
+      "mock_location_reported": false,
+      "platform_outage": false,
+      "gps_degraded": false,
+      "case_id": "mock-006-boundary"
+    },
+    "expected_category": "ERR-02",
+    "required_evidence": [
+      "stationary_duration_s",
+      "lifecycle_state",
+      "cancellation_actor"
+    ]
+  },
+  {
+    "input": {
+      "telemetry_points": 25,
+      "stationary_duration_s": 179,
+      "lifecycle_state": "cancelled",
+      "cancellation_actor": "passenger",
+      "mock_location_reported": false,
+      "platform_outage": false,
+      "gps_degraded": false,
+      "case_id": "mock-007-below-boundary"
+    },
+    "expected_category": "insufficient_evidence",
+    "required_evidence": [
+      "stationary_duration_s"
+    ]
+  },
+  {
+    "input": {
+      "telemetry_points": 25,
+      "stationary_duration_s": 0,
+      "lifecycle_state": "completed",
+      "cancellation_actor": "none",
+      "mock_location_reported": true,
+      "platform_outage": false,
+      "gps_degraded": true,
+      "case_id": "mock-008-degraded"
+    },
+    "expected_category": "insufficient_evidence",
+    "required_evidence": [
+      "gps_degraded"
+    ]
+  },
+  {
+    "input": {
+      "telemetry_points": 25,
+      "stationary_duration_s": 240,
+      "lifecycle_state": "cancelled",
+      "cancellation_actor": "driver",
+      "mock_location_reported": false,
+      "platform_outage": false,
+      "gps_degraded": false,
+      "case_id": "mock-009-driver-cancel"
+    },
+    "expected_category": "insufficient_evidence",
+    "required_evidence": [
+      "cancellation_actor"
+    ]
+  },
+  {
+    "input": {
+      "telemetry_points": 25,
+      "stationary_duration_s": 240,
+      "lifecycle_state": "completed",
+      "cancellation_actor": "none",
+      "mock_location_reported": false,
+      "platform_outage": false,
+      "gps_degraded": false,
+      "case_id": "mock-010-long-completed"
+    },
+    "expected_category": "no_violation",
+    "required_evidence": [
+      "lifecycle_state"
+    ]
+  }
+]

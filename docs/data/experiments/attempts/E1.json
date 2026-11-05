@@ -1,0 +1,41 @@
+{
+  "attempt": 1,
+  "exp_id": "E1",
+  "variant": "e1_features_numeric",
+  "issue": "#505",
+  "pr": "#509",
+  "primary": 0.4632,
+  "ci": [
+    0.4277,
+    0.4958
+  ],
+  "guards": {
+    "fpr_ok": false,
+    "cand_fpr": 0.2996,
+    "best_fpr": 0.2511,
+    "recall_at_budget_ok": true,
+    "cand_recall_at_budget": 0.0913,
+    "best_recall_at_budget": 0.083,
+    "pr_auc_ok": false,
+    "pr_auc_drops": {
+      "no_violation": 0.0094,
+      "ERR-01": -0.0573,
+      "ERR-02": 0.0522,
+      "ERR-03": 0.1038,
+      "ERR-04": -0.0266,
+      "ERR-05": 0.0244,
+      "insufficient_evidence": 0.0
+    },
+    "ece_ok": false,
+    "cand_ece": 0.2638,
+    "best_ece": 0.192,
+    "all_passed": false
+  },
+  "decision": "revert",
+  "best_so_far": 0.4737,
+  "date": "2026-10-17",
+  "corpus_trips_sha256": "9986acd1b3cefd118f2696bd4ae3c3b3dd67e0ae210808792eae5e8fd8441d5d",
+  "enum_blind": true,
+  "git_sha": "5fc644262997f5b8559d280ddead6be5bcd21e40",
+  "note": "1,000-trip live enum-blind"
+}

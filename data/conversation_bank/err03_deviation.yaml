@@ -1,0 +1,43 @@
+context: err03_deviation
+driver:
+  - {text: "Anh đi đường này gần hơn, em yên tâm", lang: vi}
+  - {text: "Anh rẽ nhầm, quay lại liền đây", lang: vi}
+  - {text: "Đường kia kẹt nên anh vòng qua đây", lang: vi}
+  - {text: "Anh đi đón khách khác tiện đường luôn", lang: vi}
+  - {text: "Map chỉ vậy đó, anh đi theo map mà", lang: vi}
+  - {text: "Anh chạy thêm vòng cho đủ km nha em", lang: vi}
+  - {text: "Đường này vắng, chạy nhanh hơn nhiều", lang: vi}
+  - {text: "Anh lạc đường, đang tìm chỗ quay đầu", lang: vi}
+  - {text: "Đi xa thêm {dist_km}km cho thoáng, em thông cảm", lang: vi}
+  - {text: "Anh nhớ đường này mà, sắp tới rồi", lang: vi}
+  - {text: "Vòng qua đây tránh công an, em đừng lo", lang: vi}
+  - {text: "Anh chạy theo cảm tính, map sai hoài", lang: vi}
+  - {text: "Đón em xong anh ghé đổ xăng cái đã", lang: vi}
+  - {text: "Anh đi ngược chiều xíu cho nhanh", lang: vi}
+  - {text: "This way is faster, trust me", lang: en}
+  - {text: "GPS is wrong, I know a shortcut", lang: en}
+  - {text: "Wrong turn, turning back now", lang: en}
+  - {text: "Avoiding traffic, taking a longer loop", lang: en}
+  - {text: "Just one quick detour for fuel", lang: en}
+  - {text: "Going the opposite way to skip the jam", lang: en}
+customer:
+  - {text: "Sao anh đi ngược hướng vậy, em ở bên kia mà", lang: vi}
+  - {text: "Map báo anh đi xa điểm đón {dist_km}km rồi", lang: vi}
+  - {text: "Anh ơi anh chạy lố qua {pickup} rồi kìa", lang: vi}
+  - {text: "Sao cuốc xe lòng vòng vậy, tiền ai chịu", lang: vi}
+  - {text: "Anh đi đúng đường ghim giúp em với", lang: vi}
+  - {text: "Tài xế cố tình đi vòng để tính thêm tiền", lang: vi}
+  - {text: "Em thấy xe chạy ra xa chứ không lại gần", lang: vi}
+  - {text: "Anh quay đầu đi, anh đi sai đường rồi", lang: vi}
+  - {text: "Đường thẳng không đi, sao anh vòng vèo vậy", lang: vi}
+  - {text: "Anh chở em đi đâu vậy, sai hướng rồi", lang: vi}
+  - {text: "Map hiện xe chạy ngược chiều kim luôn", lang: vi}
+  - {text: "Em đợi ở {pickup} mà anh chạy tuốt đi đâu", lang: vi}
+  - {text: "Đi lòng vòng thêm mấy cây số, em không đồng ý", lang: vi}
+  - {text: "Anh tắt lòng vòng đi, em đang vội lắm", lang: vi}
+  - {text: "You are going the wrong direction!", lang: en}
+  - {text: "The map shows you moving away from {pickup}", lang: en}
+  - {text: "Stop detouring, go straight to me", lang: en}
+  - {text: "Why is the trip {dist_km}km longer than quoted?", lang: en}
+  - {text: "Turn around, you passed the pickup point", lang: en}
+  - {text: "This detour looks intentional, I will report", lang: en}

@@ -1,0 +1,71 @@
+[tools]
+python = "3.11"
+uv = "latest"
+rtk = "latest"
+
+[tasks.run]
+description = "Run FastAPI development server with auto-reload"
+run = "scripts/run.sh"
+
+[tasks.test]
+description = "Run pytest unit test suite"
+run = "scripts/test.sh"
+
+[tasks."test:integration"]
+description = "Run integration tests with Docker services (Postgres, Redis, Qdrant)"
+run = "scripts/test_integration.sh"
+
+[tasks."test:e2e"]
+description = "Run local Playwright end-to-end tests"
+run = "scripts/test_e2e.sh"
+
+[tasks."test:agent"]
+description = "Run agent LLM and evaluation tests"
+run = "scripts/test_agent.sh"
+
+[tasks."docker:up"]
+description = "Build and start Docker backing services (Postgres, Redis, Qdrant)"
+run = "scripts/docker_up.sh"
+
+[tasks."docker:down"]
+description = "Stop and remove Docker compose backing services"
+run = "scripts/docker_down.sh"
+
+[tasks."db:migrate"]
+description = "Run PostgreSQL database schema migrations and seed data"
+run = "scripts/migrate.sh"
+
+[tasks.lint]
+description = "Run ruff code linter"
+run = "scripts/lint.sh"
+
+[tasks.format]
+description = "Format codebase using ruff"
+run = "scripts/format.sh"
+
+[tasks.typecheck]
+description = "Run mypy type checker"
+run = "scripts/typecheck.sh"
+
+[tasks.check]
+description = "Run lint, format check, typecheck, and unit test suite"
+run = "scripts/check.sh"
+
+[tasks.clean]
+description = "Clean Python bytecode, ruff cache, and pytest cache"
+run = "scripts/clean.sh"
+
+[tasks.setup]
+description = "Setup Python uv environment and install dependencies"
+run = "scripts/setup.sh"
+
+[tasks.sync]
+description = "Synchronize agent harness across Antigravity, OpenCode, Claude, Codex"
+run = "scripts/sync.sh"
+
+[tasks.init-project]
+description = "Run full system diagnostics, tool setup, harness sync, and quality gate"
+run = "scripts/init_project.sh"
+
+[env]
+_.python.venv = ".venv"

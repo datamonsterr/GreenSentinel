@@ -1,0 +1,41 @@
+{
+  "attempt": 4,
+  "exp_id": "E4",
+  "variant": "e4_hybrid_gbm",
+  "issue": "#513",
+  "pr": "#530",
+  "primary": 0.8419,
+  "ci": [
+    0.8108,
+    0.8688
+  ],
+  "guards": {
+    "fpr_ok": true,
+    "cand_fpr": 0.0,
+    "best_fpr": 0.2511,
+    "recall_at_budget_ok": true,
+    "cand_recall_at_budget": 0.2075,
+    "best_recall_at_budget": 0.083,
+    "pr_auc_ok": true,
+    "pr_auc_drops": {
+      "no_violation": -0.1751,
+      "ERR-01": -0.6404,
+      "ERR-02": -0.1022,
+      "ERR-03": -0.6627,
+      "ERR-04": -0.1065,
+      "ERR-05": -0.4285,
+      "insufficient_evidence": 0.0
+    },
+    "ece_ok": true,
+    "cand_ece": 0.0777,
+    "best_ece": 0.192,
+    "all_passed": true
+  },
+  "decision": "keep",
+  "best_so_far": 0.8419,
+  "date": "2026-10-17",
+  "corpus_trips_sha256": "9986acd1b3cefd118f2696bd4ae3c3b3dd67e0ae210808792eae5e8fd8441d5d",
+  "enum_blind": true,
+  "git_sha": "8144d39503289092c30bf72bb0ca23db6e76d36f",
+  "note": "1,000-trip live enum-blind"
+}

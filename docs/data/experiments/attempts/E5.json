@@ -1,0 +1,41 @@
+{
+  "attempt": 5,
+  "exp_id": "E5",
+  "variant": "e5_two_stage",
+  "issue": "#512",
+  "pr": "#528",
+  "primary": 0.4593,
+  "ci": [
+    0.4263,
+    0.4919
+  ],
+  "guards": {
+    "fpr_ok": false,
+    "cand_fpr": 0.2825,
+    "best_fpr": 0.2511,
+    "recall_at_budget_ok": false,
+    "cand_recall_at_budget": 0.0,
+    "best_recall_at_budget": 0.083,
+    "pr_auc_ok": false,
+    "pr_auc_drops": {
+      "no_violation": -0.0112,
+      "ERR-01": 0.0625,
+      "ERR-02": 0.0526,
+      "ERR-03": 0.1083,
+      "ERR-04": -0.0625,
+      "ERR-05": 0.1902,
+      "insufficient_evidence": -0.942
+    },
+    "ece_ok": true,
+    "cand_ece": 0.1766,
+    "best_ece": 0.192,
+    "all_passed": false
+  },
+  "decision": "revert",
+  "best_so_far": 0.8419,
+  "date": "2026-10-17",
+  "corpus_trips_sha256": "9986acd1b3cefd118f2696bd4ae3c3b3dd67e0ae210808792eae5e8fd8441d5d",
+  "enum_blind": true,
+  "git_sha": "8144d39503289092c30bf72bb0ca23db6e76d36f",
+  "note": "1,000-trip live enum-blind"
+}

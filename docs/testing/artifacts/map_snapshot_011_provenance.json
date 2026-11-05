@@ -1,0 +1,51 @@
+{
+  "case_id": "018f2f4e-a000-7000-8000-000000000011",
+  "evidence_snapshot_id": "018f2f4e-0300-7000-8000-000000000011",
+  "snapshot_version": 1,
+  "snapshot_hash": "407054d777031953ab4ca04239ae1661d7cac9f7a45ace220c5e98514c7791d6",
+  "deterministic_key": "3a6d4dc282ef25800197a3e4",
+  "provider": "geoapify",
+  "style": "osm-bright",
+  "rendered_at": "2026-09-22T07:25:00+00:00",
+  "cost_credits": 1,
+  "attribution": "\u00a9 OpenStreetMap contributors (ODbL), \u00a9 Geoapify",
+  "route_refs": [
+    {
+      "leg": "pickup_route",
+      "geometry_type": "LineString",
+      "vertex_count": 386
+    },
+    {
+      "leg": "destination_route",
+      "geometry_type": "LineString",
+      "vertex_count": 397
+    }
+  ],
+  "checkpoint_times": [
+    {
+      "id": "ms-start",
+      "type": "start_match",
+      "occurred_at": "2026-09-22T07:10:00+00:00",
+      "lat": 21.028501,
+      "lon": 105.853875,
+      "sequence": 0
+    },
+    {
+      "id": "ms-stall",
+      "type": "stall_anomaly",
+      "occurred_at": "2026-09-22T07:10:10+00:00",
+      "lat": 21.028501,
+      "lon": 105.853875,
+      "sequence": 1
+    }
+  ],
+  "gap_windows": [
+    {
+      "start_at": "2026-09-22T07:11:50+00:00",
+      "end_at": "2026-09-22T07:24:13.894000+00:00",
+      "gap_seconds": 743.9,
+      "start_lon": 105.853875,
+      "start_lat": 21.028501
+    }
+  ]
+}

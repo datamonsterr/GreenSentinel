@@ -1,0 +1,43 @@
+context: technical_dropout
+driver:
+  - {text: "App anh văng ra, giờ mới vào lại được", lang: vi}
+  - {text: "Mất 4G nên map đứng im, anh vẫn đang chạy", lang: vi}
+  - {text: "Điện thoại anh sập nguồn, vừa mở lại", lang: vi}
+  - {text: "App lỗi không nhận cuốc, anh phải cài lại", lang: vi}
+  - {text: "Mất mạng ở hầm, giờ mới có sóng lại", lang: vi}
+  - {text: "GPS mất tín hiệu, app không cập nhật vị trí", lang: vi}
+  - {text: "Anh gọi tổng đài không được, app treo luôn", lang: vi}
+  - {text: "Pin yếu sập nguồn giữa đường, em thông cảm", lang: vi}
+  - {text: "App báo lỗi hệ thống, anh chụp màn hình rồi", lang: vi}
+  - {text: "Anh đang ở gần {pickup} mà app không hiện", lang: vi}
+  - {text: "Mạng chập chờn quá, tin nhắn em anh mới nhận", lang: vi}
+  - {text: "Anh khởi động lại máy, đợi anh {wait_min} phút", lang: vi}
+  - {text: "Đi qua vùng mất sóng nên định vị đứng yên", lang: vi}
+  - {text: "App tự đăng xuất, anh đăng nhập lại liền", lang: vi}
+  - {text: "App crashed, just got back online", lang: en}
+  - {text: "Lost 4G in the tunnel, still driving", lang: en}
+  - {text: "Phone died, restarted just now", lang: en}
+  - {text: "GPS signal lost, map frozen on your side", lang: en}
+  - {text: "System error on my app, screenshot taken", lang: en}
+  - {text: "No signal near {pickup}, reconnecting now", lang: en}
+customer:
+  - {text: "Map tài xế không cập nhật, gọi không được", lang: vi}
+  - {text: "App báo mất kết nối với tài xế rồi", lang: vi}
+  - {text: "Em gọi thuê bao luôn, ảnh bị gì vậy", lang: vi}
+  - {text: "Định vị ảnh đứng im {wait_min} phút, chắc mất mạng", lang: vi}
+  - {text: "Em hiểu app lỗi, không phải lỗi ảnh đâu", lang: vi}
+  - {text: "Mất sóng ở hầm là bình thường, em đợi", lang: vi}
+  - {text: "Em nhắn tin mà không có dấu đã nhận", lang: vi}
+  - {text: "App em cũng lag, chắc hệ thống đang lỗi", lang: vi}
+  - {text: "Ảnh nói app văng, em tin vì app em cũng đơ", lang: vi}
+  - {text: "Lỗi kỹ thuật thì em không khiếu nại đâu", lang: vi}
+  - {text: "Em đợi ảnh đăng nhập lại, không vội", lang: vi}
+  - {text: "Mưa to mất sóng là bình thường mà", lang: vi}
+  - {text: "Ảnh gửi ảnh chụp màn hình lỗi cho em rồi", lang: vi}
+  - {text: "Đi tới {dest} mà app treo thì kệ, em đợi", lang: vi}
+  - {text: "Driver map frozen, probably a dropout", lang: en}
+  - {text: "Can't reach him, likely lost signal", lang: en}
+  - {text: "App shows connection lost, not his fault", lang: en}
+  - {text: "My app lags too, system-wide issue", lang: en}
+  - {text: "He sent a screenshot of the crash", lang: en}
+  - {text: "Technical glitch, I won't complain", lang: en}

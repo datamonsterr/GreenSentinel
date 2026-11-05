@@ -1,0 +1,41 @@
+{
+  "attempt": 6,
+  "exp_id": "E6",
+  "variant": "e6_compact",
+  "issue": "#517",
+  "pr": "#524",
+  "primary": 0.4789,
+  "ci": [
+    0.4193,
+    0.5374
+  ],
+  "guards": {
+    "fpr_ok": false,
+    "cand_fpr": 0.2304,
+    "best_fpr": 0.201,
+    "recall_at_budget_ok": false,
+    "cand_recall_at_budget": 0.0633,
+    "best_recall_at_budget": 0.1519,
+    "pr_auc_ok": false,
+    "pr_auc_drops": {
+      "no_violation": -0.0217,
+      "ERR-01": 0.0754,
+      "ERR-02": 0.0124,
+      "ERR-03": 0.0893,
+      "ERR-04": 0.0035,
+      "ERR-05": 0.2373,
+      "insufficient_evidence": 0.0
+    },
+    "ece_ok": false,
+    "cand_ece": 0.2578,
+    "best_ece": 0.1888,
+    "all_passed": false
+  },
+  "decision": "revert",
+  "best_so_far": 0.8419,
+  "date": "2026-10-17",
+  "corpus_trips_sha256": "d5b5767adfe133143b47b210905004e6b2f87672d9d2272d08333c64b8b3824f",
+  "enum_blind": true,
+  "git_sha": "8144d39503289092c30bf72bb0ca23db6e76d36f",
+  "note": "dev300 screen only (compact 663 tokens/trip; compact_nl 0.448)"
+}

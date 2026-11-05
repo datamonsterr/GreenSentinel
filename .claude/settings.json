@@ -1,0 +1,32 @@
+{
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash scripts/_pyrun.sh scripts/log_hook.py --tool=claude",
+            "shell": "bash"
+          },
+          {
+            "type": "command",
+            "command": "root=\"$(git rev-parse --show-toplevel)\" && cd \"$root\" && SKILLS_BANK_PATH=\"$root/.agents/jev_skills\" bun run \"$root/scripts/jev_hook.ts\" --tool=claude",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "root=\"$(git rev-parse --show-toplevel)\" && cd \"$root\" && bun run \"$root/scripts/rtk_post_tool_hook.ts\" --tool=claude",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

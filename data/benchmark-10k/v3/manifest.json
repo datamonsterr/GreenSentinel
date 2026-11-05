@@ -1,0 +1,101 @@
+{
+  "builder": "build_10k v2",
+  "class_counts": {
+    "ERR-01": 500,
+    "ERR-02": 800,
+    "ERR-03": 500,
+    "ERR-04": 300,
+    "ERR-05": 300,
+    "insufficient_evidence": 600,
+    "no_violation": 7000
+  },
+  "config_version": "0.4.0-benchmark",
+  "gates": [
+    {
+      "gate": "ERR-02 SSD>=180",
+      "measured": 0.9735,
+      "n": 567,
+      "pass": true,
+      "required": 0.95
+    },
+    {
+      "gate": "slowcrawl DAVI>0.3",
+      "measured": 0.9871,
+      "n": 233,
+      "pass": true,
+      "required": 0.9
+    },
+    {
+      "gate": "slowcrawl SSD<180",
+      "measured": 1.0,
+      "n": 233,
+      "pass": true,
+      "required": 0.95
+    },
+    {
+      "gate": "loop tort>=2.0",
+      "measured": 1.0,
+      "n": 138,
+      "pass": true,
+      "required": 0.95
+    },
+    {
+      "gate": "loop DAVI<0",
+      "measured": 1.0,
+      "n": 138,
+      "pass": true,
+      "required": 0.9
+    },
+    {
+      "gate": "gridlock DAVI>0.5",
+      "measured": 0.9931,
+      "n": 721,
+      "pass": true,
+      "required": 0.9
+    },
+    {
+      "gate": "dropout max_gap>30",
+      "measured": 1.0,
+      "n": 600,
+      "pass": true,
+      "required": 1.0
+    },
+    {
+      "gate": "spoof mock>=0.8",
+      "measured": 1.0,
+      "n": 300,
+      "pass": true,
+      "required": 1.0
+    },
+    {
+      "gate": "normal SSD<60",
+      "measured": 0.9999,
+      "n": 7000,
+      "pass": true,
+      "required": 0.95
+    }
+  ],
+  "generator_git_sha": "58a23051acf596a9c0fb11cfe5913d1b1dbb3ce4",
+  "noise": "happy",
+  "prevalence_note": "Class mix is ENRICHMENT for detection benchmarking, not natural prevalence (PaySim fraud 0.13% reference).",
+  "priors": {
+    "dialogue": "measured-multiwoz 4-12 turns cap, passenger p50 11 words",
+    "duration_distance": "measured-nyc med 703 s / p50 2736 m; Porto path p50 3964 m; normal 300-900 s, 1.5-8 km",
+    "geography": "assumption Hanoi landmarks, pairs 1-8 km",
+    "honest_implausible_jump": "measured-porto 0.151% segments >50 m/s; threshold 50 kept",
+    "loop_share": "assumption 0.30 of ERR-03 (#276)",
+    "population": "assumption (no public honest-vs-fraud driver distributions)",
+    "prevalence": "measured-paysim 0.13% reference; mix is ENRICHMENT, not natural prevalence",
+    "scheduler": "measured-nyc hour anchors h04/h05/h17/h18 + full weekday vector; shape fill assumption",
+    "slowcrawl_share": "assumption 0.30 of ERR-02 (#275); crawl 0.8-2.0 m/s clear traffic",
+    "speed_mean_trip": "measured-porto 7.55 m/s (Porto path/time); NYC 5.4 reference",
+    "speed_moving_gamma": "measured-porto mean 7.0, shape assumption; segment p50 5.84 / p95 23.99",
+    "tortuosity_detour": "measured-mipo AiSq p50 1.5622 (StSt10M diverged, excluded)",
+    "tortuosity_loop": "assumption loop-tail 2.0-3.9 (#276, geometric: one loop adds ~2πr path)",
+    "tortuosity_normal": "measured-porto 1.12-1.45 (WGS84); quantile shape assumption"
+  },
+  "seed": 20261013,
+  "trip_count": 10000,
+  "trips_sha256": "8ba376474d2af19925eb160303f3cbf79dd370a5ce50089e04b54f1cb273fb1b",
+  "version": "v3"
+}

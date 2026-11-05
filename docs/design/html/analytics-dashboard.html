@@ -1,0 +1,454 @@
+<!DOCTYPE html><html class="h-full bg-background" lang="en" style=""><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>GreenSentinel - Operations &amp; Adjudication Analytics</title>
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-error-container": "#93000a",
+            "secondary": "#565e74",
+            "on-secondary": "#ffffff",
+            "on-tertiary-fixed-variant": "#004395",
+            "surface-container-low": "#eff4ff",
+            "tertiary-container": "#2170e4",
+            "outline-variant": "#bccac0",
+            "tertiary-fixed": "#d8e2ff",
+            "secondary-fixed": "#dae2fd",
+            "tertiary": "#0058be",
+            "primary-container": "#00855d",
+            "surface-bright": "#f8f9ff",
+            "on-primary-fixed-variant": "#005137",
+            "surface": "#f8f9ff",
+            "secondary-fixed-dim": "#bec6e0",
+            "on-tertiary-fixed": "#001a42",
+            "primary-fixed": "#85f8c4",
+            "primary": "#006948",
+            "on-tertiary": "#ffffff",
+            "background": "#f8f9ff",
+            "on-secondary-fixed-variant": "#3f465c",
+            "surface-dim": "#cbdbf5",
+            "on-secondary-container": "#5c647a",
+            "error-container": "#ffdad6",
+            "inverse-on-surface": "#eaf1ff",
+            "error": "#ba1a1a",
+            "tertiary-fixed-dim": "#adc6ff",
+            "on-surface": "#0b1c30",
+            "inverse-surface": "#213145",
+            "on-primary": "#ffffff",
+            "primary-fixed-dim": "#68dba9",
+            "on-background": "#0b1c30",
+            "on-surface-variant": "#3d4a42",
+            "surface-container-lowest": "#ffffff",
+            "surface-container": "#e5eeff",
+            "surface-variant": "#d3e4fe",
+            "on-secondary-fixed": "#131b2e",
+            "inverse-primary": "#68dba9",
+            "on-error": "#ffffff",
+            "on-primary-fixed": "#002114",
+            "secondary-container": "#dae2fd",
+            "on-primary-container": "#f5fff7",
+            "on-tertiary-container": "#fefcff",
+            "outline": "#6d7a72",
+            "surface-container-high": "#dce9ff",
+            "surface-container-highest": "#d3e4fe",
+            "surface-tint": "#006c4a"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "margin": "1rem",
+            "space-md": "0.5rem",
+            "space-lg": "0.75rem",
+            "gutter": "0.75rem",
+            "space-xl": "1rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.375rem"
+          },
+          "fontFamily": {
+            "label-md": ["Inter"],
+            "code-sm": ["JetBrains Mono"],
+            "headline-sm": ["Inter"],
+            "body-md": ["Inter"],
+            "headline-md": ["Inter"],
+            "label-lg": ["Inter"],
+            "body-lg": ["Inter"],
+            "code-md": ["JetBrains Mono"],
+            "body-sm": ["Inter"],
+            "headline-lg": ["Inter"],
+            "label-sm": ["Inter"]
+          },
+          "fontSize": {
+            "label-md": ["11px", { "lineHeight": "14px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+            "code-sm": ["10px", { "lineHeight": "12px", "fontWeight": "500" }],
+            "headline-sm": ["14px", { "lineHeight": "18px", "letterSpacing": "-0.005em", "fontWeight": "600" }],
+            "body-md": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "headline-md": ["16px", { "lineHeight": "22px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "label-lg": ["12px", { "lineHeight": "16px", "fontWeight": "600" }],
+            "body-lg": ["13px", { "lineHeight": "18px", "fontWeight": "400" }],
+            "code-md": ["11px", { "lineHeight": "14px", "fontWeight": "500" }],
+            "body-sm": ["11px", { "lineHeight": "14px", "fontWeight": "400" }],
+            "headline-lg": ["20px", { "lineHeight": "28px", "letterSpacing": "-0.015em", "fontWeight": "600" }],
+            "label-sm": ["10px", { "lineHeight": "12px", "letterSpacing": "0.04em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="h-full font-body-md text-on-surface bg-background antialiased flex flex-col overflow-x-hidden selection:bg-primary-fixed-dim selection:text-on-primary-fixed">
+<!-- UNIFIED HEADER SHELL (SCREEN_3 SPECIFICATION) -->
+<header class="sticky top-0 z-40 h-10 w-full bg-surface-container-lowest border-b border-outline-variant/60 flex items-center justify-between px-margin select-none">
+<!-- Left: Shield Emblem & 'LT' Avatar Profile -->
+<div class="flex items-center gap-space-md"><div class="flex items-center gap-space-sm">
+  <button class="flex items-center justify-center p-1 rounded hover:bg-surface-container transition-colors" title="GreenSM Sentinel">
+    <span class="material-symbols-outlined text-primary text-[20px]" data-icon="shield" style="font-variation-settings: 'FILL' 1;">shield</span>
+  </button>
+  <div class="h-6 w-6 rounded bg-primary text-on-primary font-code-sm text-code-sm font-semibold flex items-center justify-center tracking-wider cursor-pointer" title="Lead Fraud Risk Analyst Profile (Lê Tuấn)">
+    LT
+  </div>
+</div></div>
+<!-- Center: Monospace Search Bar with Ctrl+K shortcut -->
+<div class="flex-1 max-w-lg px-space-md hidden md:block">
+<div class="relative flex items-center w-full">
+<span class="material-symbols-outlined absolute left-2 text-secondary text-[16px] pointer-events-none" data-icon="search">search</span>
+<input class="w-full h-7 pl-7 pr-14 text-body-sm font-body-sm bg-surface rounded border border-outline-variant/70 focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none transition-colors" placeholder="Search driver ID, vehicle plate, geohash, rule tag (e.g. usr:8492, #ERR-02)..." type="text">
+<kbd class="absolute right-2 font-code-sm text-code-sm bg-surface-container-lowest text-secondary px-1 py-0.5 rounded border border-outline-variant shadow-none">Ctrl+K</kbd>
+</div>
+</div>
+<!-- Right: Active Telemetry Badge & Quick Actions -->
+<div class="flex items-center gap-space-sm justify-end min-w-[240px]">
+<button class="h-7 px-2.5 rounded bg-error-container text-on-error-container border border-error/20 font-label-md text-label-md flex items-center gap-1.5 font-semibold active:opacity-90 transition-opacity">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-error animate-ping"></span>
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-error -ml-3"></span>
+<span class="">23 cases active</span>
+</button>
+<div class="h-4 w-px bg-outline-variant/60 mx-1"></div>
+<button class="h-7 w-7 rounded flex items-center justify-center text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" title="System Notifications">
+<span class="material-symbols-outlined text-[18px]" data-icon="notifications_active">notifications_active</span>
+</button>
+<button class="h-7 w-7 rounded flex items-center justify-center text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" title="Operational Tune">
+<span class="material-symbols-outlined text-[18px]" data-icon="tune">tune</span>
+</button>
+<button class="h-7 w-7 rounded flex items-center justify-center text-secondary hover:bg-surface-container hover:text-on-surface transition-colors" title="Operations Documentation">
+<span class="material-symbols-outlined text-[18px]" data-icon="help_outline">help_outline</span>
+</button>
+</div>
+</header>
+<!-- SUB-HEADER / FILTER BAR -->
+<div class="bg-surface-container-lowest border-b border-outline-variant/60 px-margin py-1.5 flex flex-wrap items-center justify-between gap-space-md">
+<!-- Left Controls: Range Selector & Telemetry Vitals -->
+<div class="flex items-center flex-wrap gap-space-md">
+<!-- Time Range Segmented Control -->
+<div class="inline-flex rounded border border-outline-variant/70 p-0.5 bg-surface text-secondary">
+<button class="px-2.5 py-1 rounded-sm text-label-sm font-label-sm font-semibold bg-surface-container-lowest text-primary shadow-sm">Today (Live)</button>
+<button class="px-2.5 py-1 rounded-sm text-label-sm font-label-sm hover:text-on-surface transition-colors">Last 7 Days</button>
+<button class="px-2.5 py-1 rounded-sm text-label-sm font-label-sm hover:text-on-surface transition-colors">Custom Range</button>
+</div>
+<div class="h-4 w-px bg-outline-variant/60 hidden lg:block"></div>
+<!-- Telemetry Health Indicator -->
+<div class="flex items-center gap-1.5 text-body-sm font-body-sm text-secondary">
+<span class="material-symbols-outlined text-primary text-[15px]" data-icon="radar" style="font-variation-settings: 'FILL' 1;">radar</span>
+<span class="text-on-surface-variant font-medium">Pipeline Stream:</span>
+<span class="font-code-sm text-code-sm bg-surface-container px-1.5 py-0.5 rounded text-primary font-semibold">Latency: 140ms</span>
+<span class="font-code-sm text-code-sm bg-surface-container px-1.5 py-0.5 rounded text-primary-container font-semibold">99.98% uptime</span>
+</div>
+<!-- Auto-refresh pill -->
+<div class="hidden sm:flex items-center gap-1 text-code-sm font-code-sm text-secondary bg-surface px-2 py-1 rounded border border-outline-variant/60">
+<span class="material-symbols-outlined text-primary text-[14px] animate-spin" data-icon="sync_alt" style="animation-duration: 4s;">sync_alt</span>
+<span class="">Refresh: 30s</span>
+</div>
+</div>
+<!-- Right Controls: Export & Primary Action -->
+<div class="flex items-center gap-space-sm ml-auto">
+<div class="inline-flex rounded border border-outline-variant/70 bg-surface-container-lowest">
+<button class="px-2 py-1 text-label-sm font-label-sm text-secondary hover:text-on-surface hover:bg-surface flex items-center gap-1 border-r border-outline-variant/60 transition-colors">
+<span class="material-symbols-outlined text-[14px]" data-icon="file_download">file_download</span>
+<span class="">CSV</span>
+</button>
+<button class="px-2 py-1 text-label-sm font-label-sm text-secondary hover:text-on-surface hover:bg-surface flex items-center gap-1 transition-colors">
+<span class="">PDF</span>
+</button>
+</div>
+
+</div>
+</div>
+<!-- MAIN VIEW CONTAINER -->
+<main class="flex-1 px-margin py-space-md space-y-space-md overflow-y-auto">
+<!-- TOP KPI SUMMARY BANNER -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter"><div class="bg-surface-container-lowest border border-outline-variant/70 rounded-lg p-space-md flex flex-col justify-between hover:border-outline transition-colors"><div class="flex items-center justify-between text-secondary"><span class="font-label-sm uppercase tracking-wider text-secondary font-semibold">Mean Time to Resolution</span><span class="material-symbols-outlined text-primary text-[16px]" data-icon="timer">timer</span></div><div class="mt-1 flex items-baseline justify-between"><span class="font-headline-lg font-bold text-on-surface tracking-tight">32.4s</span><span class="font-code-sm text-primary font-semibold flex items-center bg-primary-fixed/40 px-1.5 py-0.5 rounded"><span class="material-symbols-outlined text-[12px] mr-0.5" data-icon="trending_down">trending_down</span>-95.7%</span></div><div class="mt-1 text-code-sm text-secondary font-medium">Target: &lt;45s (Compliant)</div></div><div class="bg-surface-container-lowest border border-outline-variant/70 rounded-lg p-space-md flex flex-col justify-between hover:border-outline transition-colors"><div class="flex items-center justify-between text-secondary"><span class="font-label-sm uppercase tracking-wider text-secondary font-semibold">HITL Enforcement Ratio</span><span class="material-symbols-outlined text-primary text-[16px]" data-icon="verified_user">verified_user</span></div><div class="mt-1 flex items-baseline justify-between"><span class="font-headline-lg font-bold text-on-surface tracking-tight">100.0%</span><span class="font-code-sm bg-primary text-on-primary px-1.5 py-0.5 rounded font-semibold">0 Bypass</span></div><div class="mt-1 text-code-sm text-secondary font-medium">1,420 human signs · 0 auto-penalties</div></div><div class="bg-surface-container-lowest border border-outline-variant/70 rounded-lg p-space-md flex flex-col justify-between hover:border-outline transition-colors"><div class="flex items-center justify-between text-secondary"><span class="font-label-sm uppercase tracking-wider text-secondary font-semibold">Active Triage Backlog</span><span class="material-symbols-outlined text-tertiary text-[16px]" data-icon="inbox">inbox</span></div><div class="mt-1 flex items-baseline justify-between"><span class="font-headline-lg font-bold text-on-surface tracking-tight">14 <span class="text-headline-sm font-normal text-secondary">cases</span></span><span class="font-code-sm text-tertiary font-semibold bg-surface-container px-1.5 py-0.5 rounded">SLA 98.6%</span></div><div class="mt-1 text-code-sm text-secondary font-medium">Velocity: 118 cases/hr</div></div><div class="bg-surface-container-lowest border border-outline-variant/70 rounded-lg p-space-md flex flex-col justify-between hover:border-outline transition-colors"><div class="flex items-center justify-between text-secondary"><span class="font-label-sm uppercase tracking-wider text-secondary font-semibold">Daily Ingestion Volume</span><span class="material-symbols-outlined text-primary text-[16px]" data-icon="hub">hub</span></div><div class="mt-1 flex items-baseline justify-between"><span class="font-headline-lg font-bold text-on-surface tracking-tight">2,184 <span class="text-headline-sm font-normal text-secondary">alerts</span></span><span class="font-code-sm bg-surface-container text-secondary px-1.5 py-0.5 rounded font-semibold">121/hr avg</span></div><div class="mt-1 text-code-sm text-secondary font-medium">Fleet coverage: 18,500 units</div></div></div>
+<!-- MAIN BENTO GRID: ANALYTICAL WORKSPACES -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- LEFT COLUMN: Hourly Ingestion vs Clearance Velocity (7 Cols) -->
+<div class="lg:col-span-7 bg-surface-container-lowest border border-outline-variant/70 rounded-lg p-space-md flex flex-col justify-between space-y-space-md"><div class="flex items-center justify-between border-b border-outline-variant/40 pb-2"><div class="flex items-center gap-2"><span class="material-symbols-outlined text-primary text-[18px]" data-icon="query_stats">query_stats</span><h2 class="font-headline-sm font-bold text-on-surface">Hourly Ingestion vs Clearance Velocity</h2></div><div class="flex items-center gap-3 text-label-sm"><div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-secondary/40"></span><span class="text-secondary">Ingestion Volume</span></div><div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-sm bg-primary"></span><span class="text-primary font-semibold">Cleared (98.4%)</span></div></div></div><div class="relative w-full h-44 pt-2"><div class="absolute inset-0 flex flex-col justify-between pointer-events-none text-code-sm font-code-sm text-secondary/60"><div class="border-b border-outline-variant/30 w-full flex justify-between pr-2"><span class="">240</span><span class="">100%</span></div><div class="border-b border-outline-variant/30 w-full flex justify-between pr-2"><span class="">180</span><span class="">75%</span></div><div class="border-b border-outline-variant/30 w-full flex justify-between pr-2"><span class="">120</span><span class="">50%</span></div><div class="border-b border-outline-variant/30 w-full flex justify-between pr-2"><span class="">60</span><span class="">25%</span></div><div class="w-full flex justify-between pr-2"><span class="">0</span><span class="">0%</span></div></div><div class="absolute inset-0 pt-4 pb-2 px-2 flex items-end justify-between gap-1 z-10"><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/20 rounded-t-sm" style="height: 22%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/30 rounded-t-sm" style="height: 48%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center relative"><span class="absolute -top-3 text-[9px] font-code-sm font-bold text-error bg-error-container px-1 rounded shadow-none">218 (Peak)</span><div class="w-full max-w-[14px] bg-error rounded-t-sm" style="height: 92%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/30 rounded-t-sm" style="height: 74%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/20 rounded-t-sm" style="height: 61%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/20 rounded-t-sm" style="height: 52%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/30 rounded-t-sm" style="height: 68%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/20 rounded-t-sm" style="height: 44%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/20 rounded-t-sm" style="height: 38%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/20 rounded-t-sm" style="height: 42%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/30 rounded-t-sm" style="height: 58%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/40 rounded-t-sm" style="height: 79%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/30 rounded-t-sm" style="height: 66%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/20 rounded-t-sm" style="height: 47%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-secondary/20 rounded-t-sm" style="height: 33%;"></div></div><div class="flex-1 h-full flex flex-col justify-end items-center"><div class="w-full max-w-[14px] bg-primary rounded-t-sm" style="height: 25%;"></div></div></div><svg class="absolute inset-0 w-full h-full pointer-events-none z-20 pt-4 pb-2 px-2" preserveAspectRatio="none" viewBox="0 0 100 100"><polyline fill="none" points="3,80 9,56 16,14 22,30 28,42 34,50 40,36 47,58 53,64 59,60 66,45 72,26 78,38 84,55 91,69 97,76" stroke="#006948" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2"></polyline></svg></div><div class="flex justify-between items-center text-code-sm font-code-sm text-secondary pt-1 border-t border-outline-variant/30"><span class="">06:00</span><span class="">08:30 (Peak)</span><span class="">11:00</span><span class="">14:00</span><span class="">17:30</span><span class="text-primary font-bold">21:00 (Live)</span></div></div>
+<!-- RIGHT COLUMN: Anomaly & Violation Breakdown (5 Cols) -->
+<div class="lg:col-span-5 bg-surface-container-lowest border border-outline-variant/70 rounded-lg p-space-md flex flex-col justify-between"><div class="flex items-center justify-between border-b border-outline-variant/40 pb-2">
+  <div class="flex items-center gap-2">
+    <span class="material-symbols-outlined text-primary text-[18px]" data-icon="pie_chart">pie_chart</span>
+    <h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">Violation Breakdown</h2>
+  </div>
+  <span class="font-code-sm text-code-sm text-secondary font-medium">2,184 Total Alerts</span>
+</div>
+<div class="space-y-2.5 py-2">
+  <!-- ERR-02: Stalling DIC -->
+  <div class="space-y-1">
+    <div class="flex justify-between items-center text-body-sm font-body-sm">
+      <span class="font-code-sm text-code-sm font-semibold text-error">ERR-02 Stalling DIC</span>
+      <span class="text-on-surface font-semibold font-code-sm text-code-sm">1,135 cases (52%)</span>
+    </div>
+    <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+      <div class="bg-error h-full rounded-full" style="width: 52%"></div>
+    </div>
+  </div>
+  <!-- ERR-04: Fake GPS / Mock Location -->
+  <div class="space-y-1">
+    <div class="flex justify-between items-center text-body-sm font-body-sm">
+      <span class="font-code-sm text-code-sm font-semibold text-[#D97706]">ERR-05 Fake GPS / Mock</span>
+      <span class="text-on-surface font-semibold font-code-sm text-code-sm">524 cases (24%)</span>
+    </div>
+    <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+      <div class="bg-[#D97706] h-full rounded-full" style="width: 24%"></div>
+    </div>
+  </div>
+  <!-- ERR-01: Route Deviation -->
+  <div class="space-y-1">
+    <div class="flex justify-between items-center text-body-sm font-body-sm">
+      <span class="font-code-sm text-code-sm font-semibold text-tertiary">ERR-02 Route Deviation / DIC</span>
+      <span class="text-on-surface font-semibold font-code-sm text-code-sm">306 cases (14%)</span>
+    </div>
+    <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+      <div class="bg-tertiary h-full rounded-full" style="width: 14%"></div>
+    </div>
+  </div>
+  <!-- ERR-03: Phantom Booking -->
+  <div class="space-y-1">
+    <div class="flex justify-between items-center text-body-sm font-body-sm">
+      <span class="font-code-sm text-code-sm font-semibold text-secondary">ERR-04 Phantom Booking</span>
+      <span class="text-on-surface font-semibold font-code-sm text-code-sm">131 cases (6%)</span>
+    </div>
+    <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+      <div class="bg-secondary h-full rounded-full" style="width: 6%"></div>
+    </div>
+  </div>
+  <!-- ERR-05: 4G Drop Glitch -->
+  <div class="space-y-1">
+    <div class="flex justify-between items-center text-body-sm font-body-sm">
+      <span class="font-code-sm text-code-sm font-semibold text-outline">Technical: 4G Drop</span>
+      <span class="text-on-surface font-semibold font-code-sm text-code-sm">88 cases (4%)</span>
+    </div>
+    <div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+      <div class="bg-outline h-full rounded-full" style="width: 4%"></div>
+    </div>
+  </div>
+</div>
+<div class="pt-2 border-t border-outline-variant/30 flex justify-between items-center text-label-sm font-label-sm text-secondary">
+  <span class="">Primary Threat Vector:</span>
+  <span class="text-error font-semibold flex items-center gap-1">
+    <span class="material-symbols-outlined text-[14px]" data-icon="report_problem">report_problem</span>
+    Driver Incentive Manipulation (DIC)
+  </span>
+</div></div>
+</div>
+<!-- SECOND ROW: Spatial Hotspots & HITL Outcomes & Analyst Leaderboard -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- SPATIAL ANOMALY HOTSPOTS (4 Cols) -->
+<div class="md:col-span-4 bg-surface-container-lowest border border-outline-variant/70 rounded-lg p-space-md flex flex-col justify-between"><div>
+  <div class="flex items-center justify-between border-b border-outline-variant/40 pb-2 mb-2">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-primary text-[18px]" data-icon="pin_drop">pin_drop</span>
+      <h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">Spatial Hotspots</h2>
+    </div>
+    <span class="font-code-sm text-code-sm text-secondary font-medium">Geohash L8</span>
+  </div>
+  <!-- Hotspot Listing -->
+  <div class="grid grid-cols-2 gap-1.5 py-1"><div class="p-1.5 rounded border border-outline-variant/40 bg-surface flex items-center justify-between gap-1 overflow-hidden"><div class="flex items-center gap-1 min-w-0"><span class="font-label-md font-bold text-on-surface truncate">Hoàn Kiếm</span><span class="font-code-sm px-1 py-0.2 bg-error-container text-on-error-container rounded font-bold text-[9px] whitespace-nowrap">P0</span></div><span class="font-code-sm font-bold text-error bg-error-container/40 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap shrink-0">54 alerts</span></div><div class="p-1.5 rounded border border-outline-variant/40 bg-surface flex items-center justify-between gap-1 overflow-hidden"><div class="flex items-center gap-1 min-w-0"><span class="font-label-md font-bold text-on-surface truncate">Cầu Giấy</span><span class="font-code-sm px-1 py-0.2 bg-[#FFFBEB] text-[#D97706] border border-[#FDE68A] rounded font-bold text-[9px] whitespace-nowrap">P1</span></div><span class="font-code-sm font-bold text-[#D97706] bg-[#FFFBEB] px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap shrink-0">47 alerts</span></div><div class="p-1.5 rounded border border-outline-variant/40 bg-surface flex items-center justify-between gap-1 overflow-hidden"><div class="flex items-center gap-1 min-w-0"><span class="font-label-md font-bold text-on-surface truncate">Đống Đa</span><span class="font-code-sm px-1 py-0.2 bg-surface-container text-tertiary rounded font-bold text-[9px] whitespace-nowrap">P2</span></div><span class="font-code-sm font-bold text-tertiary bg-surface-container px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap shrink-0">41 alerts</span></div><div class="p-1.5 rounded border border-outline-variant/40 bg-surface flex items-center justify-between gap-1 overflow-hidden"><div class="flex items-center gap-1 min-w-0"><span class="font-label-md font-bold text-on-surface truncate">Ba Đình</span><span class="font-code-sm px-1 py-0.2 bg-surface text-secondary border border-outline-variant/60 rounded font-medium text-[9px] whitespace-nowrap">Elevated</span></div><span class="font-code-sm font-bold text-secondary bg-surface-container px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap shrink-0">38 alerts</span></div></div>
+</div>
+<button class="mt-2 w-full py-1 text-label-sm font-label-sm text-primary hover:bg-surface-container flex items-center justify-center gap-1 border border-primary/20 rounded transition-colors">
+  <span class="material-symbols-outlined text-[14px]" data-icon="map">map</span>
+  <span class="">Open Spatial Geofence Matrix</span>
+</button></div>
+<!-- HITL SANCTION OUTCOMES BREAKDOWN (3 Cols) -->
+<div class="md:col-span-3 bg-surface-container-lowest border border-outline-variant/70 rounded-lg p-space-md flex flex-col justify-between"><div>
+  <div class="flex items-center justify-between border-b border-outline-variant/40 pb-2 mb-2">
+    <div class="flex items-center gap-2">
+      <span class="material-symbols-outlined text-primary text-[18px]" data-icon="gavel">gavel</span>
+      <h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">Adjudication Sanctions</h2>
+    </div>
+  </div>
+  <div class="space-y-2.5 py-1">
+    <!-- Dismissed False Alarm -->
+    <div>
+      <div class="flex justify-between items-center text-body-sm font-body-sm">
+        <span class="text-on-surface-variant font-medium">Dismissed False Alarm</span>
+        <span class="font-code-sm text-code-sm font-bold text-primary">46%</span>
+      </div>
+      <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden mt-1">
+        <div class="bg-primary h-full rounded-full" style="width: 46%"></div>
+      </div>
+    </div>
+    <!-- Official Warning -->
+    <div>
+      <div class="flex justify-between items-center text-body-sm font-body-sm">
+        <span class="text-on-surface-variant font-medium">Official Warning</span>
+        <span class="font-code-sm text-code-sm font-bold text-tertiary">28%</span>
+      </div>
+      <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden mt-1">
+        <div class="bg-tertiary h-full rounded-full" style="width: 28%"></div>
+      </div>
+    </div>
+    <!-- Fine & Clawback -->
+    <div>
+      <div class="flex justify-between items-center text-body-sm font-body-sm">
+        <span class="text-on-surface-variant font-medium">Fine &amp; Clawback</span>
+        <span class="font-code-sm text-code-sm font-bold text-[#D97706]">18%</span>
+      </div>
+      <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden mt-1">
+        <div class="bg-[#D97706] h-full rounded-full" style="width: 18%"></div>
+      </div>
+    </div>
+    <!-- Account Suspension -->
+    <div>
+      <div class="flex justify-between items-center text-body-sm font-body-sm">
+        <span class="text-on-surface-variant font-medium">Account Suspension</span>
+        <span class="font-code-sm text-code-sm font-bold text-error">8%</span>
+      </div>
+      <div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden mt-1">
+        <div class="bg-error h-full rounded-full" style="width: 8%"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="bg-surface-container p-2 rounded border border-outline-variant/40 mt-2">
+  <div class="flex items-center justify-between text-body-sm font-body-sm">
+    <span class="text-secondary">Adjudication Accuracy:</span>
+    <span class="font-code-sm text-code-sm font-bold text-primary">99.2%</span>
+  </div>
+  <div class="text-[10px] text-secondary mt-0.5">Reversal rate holds at 0.8%</div>
+</div></div>
+<!-- ANALYST THROUGHPUT & SLA LEADERBOARD (5 Cols) -->
+<div class="md:col-span-5 bg-surface-container-lowest border border-outline-variant/70 rounded-lg p-space-md flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between border-b border-outline-variant/40 pb-2 mb-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="leaderboard">leaderboard</span>
+<h2 class="font-headline-sm text-headline-sm font-bold text-on-surface">Analyst Throughput &amp; SLA</h2>
+</div>
+<span class="font-code-sm text-code-sm text-secondary">Active Shift</span>
+</div>
+<!-- Leaderboard Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant/40 text-label-sm font-label-sm text-secondary">
+<th class="py-1 font-semibold">Analyst</th>
+<th class="py-1 font-semibold text-right">Resolved</th>
+<th class="py-1 font-semibold text-right">MTTR</th>
+<th class="py-1 font-semibold text-right">Overturn</th>
+<th class="py-1 font-semibold text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20 font-body-sm text-body-sm">
+<!-- Lê Minh Tuấn -->
+<tr class="hover:bg-surface transition-colors">
+<td class="py-1.5">
+<div class="font-semibold text-on-surface">Lê Minh Tuấn</div>
+<div class="font-code-sm text-code-sm text-secondary">FA-8492</div>
+</td>
+<td class="py-1.5 text-right font-code-sm text-code-sm font-bold text-on-surface">42 cases</td>
+<td class="py-1.5 text-right font-code-sm text-code-sm text-primary font-bold">31.8s</td>
+<td class="py-1.5 text-right font-code-sm text-code-sm text-secondary">0.8%</td>
+<td class="py-1.5 text-right">
+<span class="inline-block w-2 h-2 rounded-full bg-primary" title="Active"></span>
+</td>
+</tr>
+<!-- Trần Thanh Mai -->
+<tr class="hover:bg-surface transition-colors">
+<td class="py-1.5">
+<div class="font-semibold text-on-surface">Trần Thanh Mai</div>
+<div class="font-code-sm text-code-sm text-secondary">FA-7310</div>
+</td>
+<td class="py-1.5 text-right font-code-sm text-code-sm font-bold text-on-surface">39 cases</td>
+<td class="py-1.5 text-right font-code-sm text-code-sm text-primary font-bold">33.2s</td>
+<td class="py-1.5 text-right font-code-sm text-code-sm text-secondary">0.5%</td>
+<td class="py-1.5 text-right">
+<span class="inline-block w-2 h-2 rounded-full bg-primary" title="Active"></span>
+</td>
+</tr>
+<!-- Hoàng Đức Anh -->
+<tr class="hover:bg-surface transition-colors">
+<td class="py-1.5">
+<div class="font-semibold text-on-surface">Hoàng Đức Anh</div>
+<div class="font-code-sm text-code-sm text-secondary">FA-6504</div>
+</td>
+<td class="py-1.5 text-right font-code-sm text-code-sm font-bold text-on-surface">35 cases</td>
+<td class="py-1.5 text-right font-code-sm text-code-sm text-primary font-bold">34.6s</td>
+<td class="py-1.5 text-right font-code-sm text-code-sm text-secondary">1.1%</td>
+<td class="py-1.5 text-right">
+<span class="inline-block w-2 h-2 rounded-full bg-primary" title="Active"></span>
+</td>
+</tr>
+<!-- Nguyễn Thảo Vy -->
+<tr class="hover:bg-surface transition-colors">
+<td class="py-1.5">
+<div class="font-semibold text-on-surface">Nguyễn Thảo Vy</div>
+<div class="font-code-sm text-code-sm text-secondary">FA-9122</div>
+</td>
+<td class="py-1.5 text-right font-code-sm text-code-sm font-bold text-on-surface">31 cases</td>
+<td class="py-1.5 text-right font-code-sm text-code-sm text-primary font-bold">32.9s</td>
+<td class="py-1.5 text-right font-code-sm text-code-sm text-secondary">0.0%</td>
+<td class="py-1.5 text-right">
+<span class="inline-block w-2 h-2 rounded-full bg-tertiary" title="Shift Handover"></span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="pt-2 border-t border-outline-variant/30 flex items-center justify-between text-label-sm font-label-sm text-secondary">
+<span class="">Active Squad SLA Adherence:</span>
+<span class="font-code-sm text-code-sm text-primary font-bold">99.7%</span>
+</div>
+</div>
+</div>
+</main>
+<!-- BOTTOM CRYPTOGRAPHIC AUDIT FOOTER -->
+<footer class="h-8 bg-surface-container-lowest border-t border-outline-variant/60 px-margin flex items-center justify-between text-code-sm font-code-sm text-secondary select-none"><div class="flex items-center gap-space-md overflow-hidden whitespace-nowrap">
+  <div class="flex items-center gap-1.5">
+    <span class="material-symbols-outlined text-primary text-[14px]" data-icon="lock" style="font-variation-settings: 'FILL' 1;">lock</span>
+    <span class="font-semibold text-on-surface">Audit Chain:</span>
+    <span class="text-primary font-medium">Active Verified</span>
+  </div>
+  <span class="text-outline-variant">|</span>
+  <div class="flex items-center gap-1">
+    <span class="">Block:</span>
+    <span class="text-on-surface font-semibold">#1,402,891</span>
+  </div>
+</div>
+<div class="flex items-center gap-space-md whitespace-nowrap">
+  <span class="hidden md:inline-block text-secondary">Sentinel Node 04-HN</span>
+  <span class="inline-flex items-center gap-1 text-primary">
+    <span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+    <span class="font-semibold">Zero Bypass Active</span>
+  </span>
+</div></footer>
+
+
+
+
+
+
+
+
+</body></html>

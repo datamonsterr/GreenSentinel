@@ -1,0 +1,217 @@
+name: CI Draft (Fast Tier)
+
+# Fast feedback for draft PRs and agent implementation loops.
+# Runs lint + unit + vitest only. No Docker services, no Playwright,
+# no builds, no preview deploys. Target <12 min, minimal runner RAM.
+#
+# Tier 2 (ci.yml heavy jobs + preview deploys + hard E2E) is gated to
+# ready PRs via `ready_for_review`. Agent flow:
+#   implement on draft -> push -> this workflow green -> `gh pr ready`
+#   -> full CI + preview + hard E2E -> merge -> dev auto.
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-draft-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  format-and-lint:
+    name: Draft Lint (Ruff)
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == true
+    runs-on: self-hosted
+    timeout-minutes: 10
+    steps:
+      - name: Clean root-owned Docker volumes from previous runs
+        run: |
+          if [ -d "$GITHUB_WORKSPACE/data" ]; then
+            docker run --rm -v "$GITHUB_WORKSPACE/data:/target" alpine \
+              sh -c "rm -rf /target/*" || true
+            rm -rf "$GITHUB_WORKSPACE/data" || true
+          fi
+      - uses: actions/checkout@v7
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: false
+
+      - name: Configure uv cache
+        run: |
+          set -euo pipefail
+          export UV_CACHE_DIR="${RUNNER_TEMP}/p063-uv-cache"
+          mkdir -p "$UV_CACHE_DIR"
+          echo "UV_CACHE_DIR=$UV_CACHE_DIR" >> "$GITHUB_ENV"
+
+          command -v uv
+          uv --version
+
+      - name: Cache uv packages
+        uses: actions/cache@v6
+        with:
+          path: ${{ runner.temp }}/p063-uv-cache
+          key: uv-${{ runner.os }}-${{ hashFiles('requirements.txt', 'uv.lock', 'pyproject.toml') }}
+          restore-keys: uv-${{ runner.os }}-
+
+      - name: Setup virtual environment
+        run: |
+          set -euo pipefail
+          rm -rf .venv
+          uv venv --python 3.12 .venv
+          uv pip install --python .venv -r requirements.txt
+          echo "$PWD/.venv/bin" >> $GITHUB_PATH
+
+      - name: Lint with ruff
+        run: ruff check src/ tests/
+
+      - name: Format check with ruff
+        run: ruff format --check src/ tests/
+
+  unit-tests:
+    name: Draft Unit Tests
+    needs: [format-and-lint]
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == true
+    runs-on: self-hosted
+    timeout-minutes: 40
+    steps:
+      - name: Clean root-owned Docker volumes from previous runs
+        run: |
+          if [ -d "$GITHUB_WORKSPACE/data" ]; then
+            docker run --rm -v "$GITHUB_WORKSPACE/data:/target" alpine \
+              sh -c "rm -rf /target/*" || true
+            rm -rf "$GITHUB_WORKSPACE/data" || true
+          fi
+      - uses: actions/checkout@v7
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: false
+
+      - name: Configure uv cache
+        run: |
+          set -euo pipefail
+          export UV_CACHE_DIR="${RUNNER_TEMP}/p063-uv-cache"
+          mkdir -p "$UV_CACHE_DIR"
+          echo "UV_CACHE_DIR=$UV_CACHE_DIR" >> "$GITHUB_ENV"
+
+          command -v uv
+          uv --version
+
+      - name: Cache uv packages
+        uses: actions/cache@v6
+        with:
+          path: ${{ runner.temp }}/p063-uv-cache
+          key: uv-${{ runner.os }}-${{ hashFiles('requirements.txt', 'uv.lock', 'pyproject.toml') }}
+          restore-keys: uv-${{ runner.os }}-
+
+      - name: Setup virtual environment
+        run: |
+          set -euxo pipefail
+          rm -rf .venv
+          uv venv --python 3.12 .venv
+          uv pip install --python .venv -r requirements.txt
+
+          test -x .venv/bin/python
+          .venv/bin/python --version
+          .venv/bin/python -m pytest --version
+
+          echo "$PWD/.venv/bin" >> "$GITHUB_PATH"
+
+      - name: Generate synthetic dataset for test fixtures
+        run: python scripts/generate_synthetic_data.py
+
+      - name: Isolate pytest temporary files
+        run: mkdir -p "$RUNNER_TEMP/pytest-$GITHUB_RUN_ID"
+        env:
+          TMPDIR: ${{ runner.temp }}/pytest-${{ github.run_id }}
+          TMP: ${{ runner.temp }}/pytest-${{ github.run_id }}
+          TEMP: ${{ runner.temp }}/pytest-${{ github.run_id }}
+
+      - name: Run Pytest Unit Tests (Parallel)
+        # Unit scope only: tests/integration and tests/e2e need live
+        # Postgres/Redis/Qdrant, which this job does not start.
+        # Bound workers on self-hosted machines: visible host CPUs can exceed
+        # the ephemeral runner's available CPU/memory budget.
+        run: |
+          set -euxo pipefail
+          bash scripts/ci_runner_diagnostics.sh || true
+
+          uv run --python .venv python -X importtime -m pytest \
+            tests/unit/ -v -n 2 --tb=short \
+            2> "$RUNNER_TEMP/pytest-startup.log"
+        env:
+          TMPDIR: ${{ runner.temp }}/pytest-${{ github.run_id }}
+          TMP: ${{ runner.temp }}/pytest-${{ github.run_id }}
+          TEMP: ${{ runner.temp }}/pytest-${{ github.run_id }}
+          APP_ENV: test
+          OPENAI_API_KEY: test-key
+          OPENROUTER_API_KEY: test-key
+          QDRANT_URL: http://localhost:6333
+          DATABASE_URL: postgresql://postgres:postgrespassword@localhost:5432/postgres
+          REDIS_URL: redis://localhost:6379/0
+
+      - name: Upload pytest startup diagnostics
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/oci-upload
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.OCI_S3_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.OCI_S3_SECRET_KEY }}
+          AWS_DEFAULT_REGION: ${{ vars.OCI_REGION || secrets.OCI_REGION }}
+          AWS_ENDPOINT_URL: ${{ vars.OCI_S3_ENDPOINT || secrets.OCI_S3_ENDPOINT }}
+          OCI_S3_BUCKET: ${{ vars.OCI_S3_BUCKET }}
+        with:
+          name: pytest-startup-draft-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pytest-startup.log
+          if-no-files-found: warn
+
+  frontend-vitest:
+    name: Draft Frontend Vitest & Typecheck
+    needs: [format-and-lint]
+    if: github.event_name != 'pull_request' || github.event.pull_request.draft == true
+    runs-on: self-hosted
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Node.js and pnpm
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 11
+          dest: ${{ runner.temp }}/pnpm-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}
+          cache: true
+          cache_dependency_path: src/webapp/pnpm-lock.yaml
+
+      - name: Install webapp dependencies
+        run: |
+          cd src/webapp
+          pnpm install --frozen-lockfile
+
+      - name: Run full frontend Vitest suite
+        # NOTE: no /usr/bin/time wrapper; the `time` package is not
+        # installed on the self-hosted runner (exit 127).
+        run: |
+          bash scripts/ci_runner_diagnostics.sh
+          export TMPDIR="${RUNNER_TEMP}/p063-vitest-tmp"
+          mkdir -p "$TMPDIR"
+          cd src/webapp
+          pnpm test
+
+      - name: Run frontend test typecheck
+        run: |
+          bash scripts/ci_runner_diagnostics.sh
+          cd src/webapp
+          pnpm test:typecheck

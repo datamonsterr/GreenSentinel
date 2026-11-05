@@ -1,0 +1,35 @@
+{
+  "carrier_sizes": [
+    {
+      "height": 28,
+      "role": "driver-vehicle-marker",
+      "width": 28
+    },
+    {
+      "height": 24,
+      "role": "customer-pickup-marker",
+      "width": 24
+    },
+    {
+      "height": 24,
+      "role": "destination-marker",
+      "width": 24
+    },
+    {
+      "height": 24,
+      "role": "driver-initial-marker",
+      "width": 24
+    }
+  ],
+  "document_width": 375,
+  "group_accessible_name": "2 mốc hành trình",
+  "group_members": [
+    "Điểm bắt đầu · 08:13:00",
+    "!Bất thường dừng đỗ (240s) · 08:13:09"
+  ],
+  "map_scroll_width": 348,
+  "map_width": 348,
+  "panel_in_bounds": true,
+  "vehicle_icon": "motorbike",
+  "viewport": 375
+}

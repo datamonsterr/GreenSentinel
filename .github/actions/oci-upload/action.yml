@@ -1,0 +1,27 @@
+name: Upload OCI artifact
+description: Archive and upload a CI artifact to OCI Object Storage through its S3 API
+inputs:
+  force-install-cli: {description: Install the pinned AWS CLI in temporary storage even when aws is available, required: false, default: "false"}
+  name: {description: Artifact name, required: true}
+  path: {description: Explicit files or directories separated by newlines, required: true}
+  if-no-files-found: {description: Policy when no selected files exist, required: false, default: error}
+  include-hidden-files: {description: Include hidden files in selected paths, required: false, default: "false"}
+  exclude: {description: Relative patterns or path components separated by newlines, required: false, default: ''}
+runs:
+  using: composite
+  steps:
+    - name: Upload artifact to OCI
+      shell: bash
+      env:
+        OCI_ACCESS_KEY: ${{ env.AWS_ACCESS_KEY_ID }}
+        OCI_SECRET_KEY: ${{ env.AWS_SECRET_ACCESS_KEY }}
+        OCI_REGION: ${{ env.AWS_DEFAULT_REGION }}
+        OCI_ENDPOINT: ${{ env.AWS_ENDPOINT_URL }}
+        OCI_BUCKET: ${{ env.OCI_S3_BUCKET }}
+        OCI_FORCE_INSTALL: ${{ inputs.force-install-cli }}
+        OCI_NAME: ${{ inputs.name }}
+        OCI_PATH: ${{ inputs.path }}
+        OCI_MISSING: ${{ inputs.if-no-files-found }}
+        OCI_INCLUDE_HIDDEN: ${{ inputs.include-hidden-files }}
+        OCI_EXCLUDE: ${{ inputs.exclude }}
+      run: bash "${{ github.action_path }}/upload.sh"

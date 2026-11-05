@@ -1,0 +1,219 @@
+{
+  "provenance": {
+    "multiwoz": "data/raw/multiwoz (MIT), MultiWOZ 2.2 JSON, services incl taxi",
+    "sgd": "data/raw/sgd_dialogue (CC BY-SA 4.0, EDA-ONLY: stats only, no quotes)",
+    "multiwoz_dialogues_total": 10437
+  },
+  "multiwoz_taxi": {
+    "n_dialogues": 1872,
+    "taxi_only_dialogues": 430,
+    "turns_total": {
+      "count": 1872,
+      "min": 4.0,
+      "p05": 6.0,
+      "p25": 12.0,
+      "p50": 16.0,
+      "p75": 20.0,
+      "p95": 26.0,
+      "max": 42.0,
+      "mean": 16.375,
+      "std": 6.134
+    },
+    "user_turns_per_dialogue": {
+      "count": 1872,
+      "min": 2.0,
+      "p05": 3.0,
+      "p25": 6.0,
+      "p50": 8.0,
+      "p75": 10.0,
+      "p95": 13.0,
+      "max": 21.0,
+      "mean": 8.188,
+      "std": 3.067
+    },
+    "user_utt_chars": {
+      "count": 15327,
+      "min": 9.0,
+      "p05": 24.0,
+      "p25": 38.0,
+      "p50": 56.0,
+      "p75": 79.0,
+      "p95": 122.0,
+      "max": 195.0,
+      "mean": 61.729,
+      "std": 30.258
+    },
+    "user_utt_words": {
+      "count": 15327,
+      "min": 2.0,
+      "p05": 5.0,
+      "p25": 8.0,
+      "p50": 11.0,
+      "p75": 16.0,
+      "p95": 24.0,
+      "max": 34.0,
+      "mean": 12.266,
+      "std": 6.0
+    },
+    "system_utt_chars": {
+      "count": 15327,
+      "min": 10.0,
+      "p05": 28.0,
+      "p25": 49.0,
+      "p50": 78.0,
+      "p75": 109.0,
+      "p95": 151.0,
+      "max": 256.0,
+      "mean": 81.694,
+      "std": 38.681
+    },
+    "system_utt_words": {
+      "count": 15327,
+      "min": 2.0,
+      "p05": 5.0,
+      "p25": 10.0,
+      "p50": 15.0,
+      "p75": 20.0,
+      "p95": 28.0,
+      "max": 45.0,
+      "mean": 15.233,
+      "std": 7.062
+    },
+    "taxi_slot_mentions": {
+      "taxi-destination": 5224,
+      "taxi-departure": 5211,
+      "taxi-leaveat": 2836,
+      "taxi-arriveby": 2267
+    }
+  },
+  "complaint_cancellation_snippets_mw_taxi_mit_only": [
+    {
+      "dialogue_id": "PMUL3189.json",
+      "utterance": "I was never given the car type and contact number for my taxi, could you please provide them?"
+    },
+    {
+      "dialogue_id": "PMUL0463.json",
+      "utterance": "You know what I change my mind. I'll book later. I still need a taxi from University Arms Hotel leaving at 14:15 to the Ugly Duckling."
+    },
+    {
+      "dialogue_id": "SNG1387.json",
+      "utterance": "I'm sorry. I gave you the wrong information. I need to leave from the Fitzwilliam Museum and arrive at Royal Standard by 07:45."
+    },
+    {
+      "dialogue_id": "PMUL2739.json",
+      "utterance": "I'm not quite ready to make a reservation, but can you tell me their postcode and phone number so I can ring them later if I change my mind?"
+    },
+    {
+      "dialogue_id": "MUL0874.json",
+      "utterance": "I'm sorry, let's back up. We'll worry about the taxi later. First, can you help me find a college on the west side of town?"
+    },
+    {
+      "dialogue_id": "PMUL3856.json",
+      "utterance": "I want to leave the college by 24:00, and can I get the contact number and car type please so I don't get in the wrong car?"
+    },
+    {
+      "dialogue_id": "PMUL2130.json",
+      "utterance": "That's because you never got back to me, you forgot first. I want to go somewhere in the south but I'm not familiar with the town, what do you recommend?"
+    },
+    {
+      "dialogue_id": "MUL1072.json",
+      "utterance": "I'm looking for a proper hotel, please. If it had free wifi, well, I wouldn't complain about that either."
+    }
+  ],
+  "sgd": {
+    "n_dialogues": 22825,
+    "turns_total": {
+      "count": 22825,
+      "min": 4.0,
+      "p05": 10.0,
+      "p25": 16.0,
+      "p50": 20.0,
+      "p75": 24.0,
+      "p95": 34.0,
+      "max": 58.0,
+      "mean": 20.297,
+      "std": 7.217
+    },
+    "user_utt_words": {
+      "count": 231642,
+      "min": 1.0,
+      "p05": 3.0,
+      "p25": 5.0,
+      "p50": 7.0,
+      "p75": 11.0,
+      "p95": 19.0,
+      "max": 58.0,
+      "mean": 8.358,
+      "std": 5.203
+    },
+    "ride_subset_dialogues": 7144,
+    "ride_turns_total": {
+      "count": 7144,
+      "min": 6.0,
+      "p05": 12.0,
+      "p25": 18.0,
+      "p50": 22.0,
+      "p75": 28.0,
+      "p95": 36.0,
+      "max": 50.0,
+      "mean": 22.824,
+      "std": 7.206
+    },
+    "ride_user_utt_words": {
+      "count": 81526,
+      "min": 1.0,
+      "p05": 3.0,
+      "p25": 5.0,
+      "p50": 7.0,
+      "p75": 11.0,
+      "p95": 19.0,
+      "max": 55.0,
+      "mean": 8.57,
+      "std": 5.276
+    },
+    "top_services": {
+      "Travel_1": 2808,
+      "Restaurants_1": 2419,
+      "Events_2": 2385,
+      "Flights_1": 2070,
+      "Movies_1": 1926,
+      "Weather_1": 1783,
+      "Calendar_1": 1602,
+      "Events_1": 1542,
+      "Hotels_1": 1461,
+      "Buses_1": 1398,
+      "Hotels_3": 1345,
+      "Hotels_2": 1279,
+      "RideSharing_2": 1265,
+      "RentalCars_1": 1249,
+      "Buses_2": 1211
+    },
+    "top_slots": {
+      "Restaurants_1:city": 7433,
+      "Events_2:event_name": 7253,
+      "Restaurants_1:time": 6698,
+      "Restaurants_1:restaurant_name": 6283,
+      "Flights_1:airlines": 5574,
+      "Flights_1:departure_date": 5490,
+      "Flights_1:origin_city": 5453,
+      "Events_2:city": 5271,
+      "RentalCars_1:pickup_date": 5057,
+      "Flights_1:destination_city": 5011,
+      "Travel_1:category": 4977,
+      "Events_2:date": 4957,
+      "Events_2:number_of_tickets": 4603,
+      "Movies_1:movie_name": 4472,
+      "Events_1:date": 4304,
+      "Flights_1:outbound_departure_time": 4187,
+      "Restaurants_1:party_size": 3954,
+      "Events_1:city_of_event": 3891,
+      "Travel_1:attraction_name": 3871,
+      "Restaurants_1:cuisine": 3790,
+      "Events_2:venue": 3758,
+      "Events_1:event_name": 3753,
+      "RideSharing_2:ride_type": 3746,
+      "Services_1:appointment_time": 3606,
+      "RentalCars_1:type": 3587
+    }
+  }
+}

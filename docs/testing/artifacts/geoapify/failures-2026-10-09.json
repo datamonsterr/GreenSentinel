@@ -1,0 +1,50 @@
+{
+  "evidence_class": "offline_failure_fixture",
+  "source_revision": "2d5d50eacf49703cbf1702dbc27395b2ef5d3708",
+  "environment": "local deterministic transport fixture",
+  "transport": "Python standard-library urllib.request; sequential; timeout 10 seconds; no retries",
+  "limitations": [
+    "Credentials and raw provider responses are omitted.",
+    "Account plan, national coverage, application UI and hosted acceptance are unverified.",
+    "Map-matching timestamps are authored public examples, not measured historical telemetry.",
+    "No live invalid-key or paid route-details requests; failure cases use fixture transport."
+  ],
+  "operations": [
+    "geocode",
+    "reverse_geocode",
+    "routing",
+    "map_matching",
+    "map_style",
+    "mcp_tools"
+  ],
+  "results": [
+    {
+      "operation": "geocode",
+      "failure": "unauthorized",
+      "http_status": 401
+    },
+    {
+      "operation": "reverse_geocode",
+      "failure": "forbidden",
+      "http_status": 403
+    },
+    {
+      "operation": "routing",
+      "failure": "rate_limited",
+      "http_status": 429
+    },
+    {
+      "operation": "map_matching",
+      "failure": "malformed_response"
+    },
+    {
+      "operation": "map_style",
+      "failure": "timeout"
+    },
+    {
+      "operation": "mcp_tools",
+      "failure": "provider_unavailable"
+    }
+  ],
+  "checked_at": "2026-10-09T08:28:15.567029+00:00"
+}

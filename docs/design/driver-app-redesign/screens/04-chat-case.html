@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>GreenSM Driver - Hỗ trợ vụ việc</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Inter Font -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-on-surface": "#eef0ff",
+            "tertiary": "#006947",
+            "surface": "#faf8ff",
+            "tertiary-container": "#00855b",
+            "on-primary": "#ffffff",
+            "primary-fixed": "#85f8c4",
+            "outline": "#6d7a72",
+            "inverse-surface": "#283044",
+            "on-primary-fixed": "#002114",
+            "error": "#ba1a1a",
+            "secondary-container": "#adedd3",
+            "surface-container-high": "#e2e7ff",
+            "on-tertiary-fixed": "#002113",
+            "primary-fixed-dim": "#68dba9",
+            "on-tertiary-container": "#f5fff6",
+            "on-tertiary-fixed-variant": "#005236",
+            "on-error-container": "#93000a",
+            "surface-dim": "#d2d9f4",
+            "on-secondary-fixed": "#002117",
+            "secondary-fixed": "#b0f0d6",
+            "surface-container-low": "#f2f3ff",
+            "surface-container": "#eaedff",
+            "primary": "#006948",
+            "secondary": "#2b6954",
+            "surface-container-lowest": "#ffffff",
+            "outline-variant": "#bccac0",
+            "on-surface": "#131b2e",
+            "on-error": "#ffffff",
+            "background": "#faf8ff",
+            "tertiary-fixed": "#6ffbbe",
+            "error-container": "#ffdad6",
+            "inverse-primary": "#68dba9",
+            "on-secondary": "#ffffff",
+            "on-surface-variant": "#3d4a42",
+            "on-tertiary": "#ffffff",
+            "secondary-fixed-dim": "#95d3ba",
+            "surface-container-highest": "#dae2fd",
+            "on-primary-container": "#f5fff7",
+            "on-primary-fixed-variant": "#005137",
+            "on-secondary-container": "#306d58",
+            "tertiary-fixed-dim": "#4edea3",
+            "surface-bright": "#faf8ff",
+            "primary-container": "#00855d",
+            "surface-variant": "#dae2fd",
+            "on-background": "#131b2e",
+            "on-secondary-fixed-variant": "#0b513d",
+            "surface-tint": "#006c4a"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "2xl": "1rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "space-xl": "2rem",
+            "gutter": "1rem",
+            "margin": "1rem"
+          },
+          "fontFamily": {
+            "display-lg": ["Inter", "sans-serif"],
+            "label-lg": ["Inter", "sans-serif"],
+            "body-md": ["Inter", "sans-serif"],
+            "metric-display": ["Inter", "sans-serif"],
+            "headline-lg": ["Inter", "sans-serif"],
+            "headline-sm": ["Inter", "sans-serif"],
+            "label-md": ["Inter", "sans-serif"],
+            "headline-md": ["Inter", "sans-serif"],
+            "body-sm": ["Inter", "sans-serif"],
+            "body-lg": ["Inter", "sans-serif"],
+            "label-sm": ["Inter", "sans-serif"]
+          },
+          "fontSize": {
+            "display-lg": ["32px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "label-lg": ["14px", { "lineHeight": "18px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "metric-display": ["28px", { "lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+            "headline-lg": ["24px", { "lineHeight": "30px", "letterSpacing": "-0.015em", "fontWeight": "700" }],
+            "headline-sm": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+            "headline-md": ["20px", { "lineHeight": "26px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+            "body-sm": ["12px", { "lineHeight": "16px", "fontWeight": "400" }],
+            "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "500" }],
+            "label-sm": ["10px", { "lineHeight": "14px", "letterSpacing": "0.04em", "fontWeight": "700" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-family: 'Material Symbols Outlined';
+      font-weight: normal;
+      font-style: normal;
+      font-size: 22px;
+      line-height: 1;
+      display: inline-block;
+      text-transform: none;
+      letter-spacing: normal;
+      word-wrap: normal;
+      white-space: nowrap;
+      direction: ltr;
+      -webkit-font-smoothing: antialiased;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col justify-between selection:bg-secondary-container">
+<!-- Top App Bar (Shared Component Anchor) -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin h-14 bg-surface dark:bg-inverse-surface border-b border-outline-variant dark:border-outline shadow-sm">
+<div class="flex items-center gap-space-sm">
+<button aria-label="Quay lại" class="w-10 h-10 rounded-full flex items-center justify-center text-primary dark:text-inverse-primary hover:bg-surface-container active:scale-95 transition-all duration-150" type="button">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+</button>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-headline-sm text-on-surface">Hỗ trợ vụ việc</span>
+<span class="font-label-sm text-label-sm text-primary bg-secondary-container px-2 py-0.5 rounded-full font-bold">#A3F9</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-amber-800">Đang giải quyết</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">• Lệch tuyến đường</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<a class="w-10 h-10 rounded-full flex items-center justify-center text-primary hover:bg-surface-container active:scale-95 transition-all duration-150" href="tel:19002088" title="Tổng đài hỗ trợ">
+<span class="material-symbols-outlined" data-icon="phone_in_talk">phone_in_talk</span>
+</a>
+<button aria-label="Tùy chọn khác" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:bg-surface-container active:scale-95 transition-all duration-150" type="button">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</header>
+<!-- Main Scrollable Chat Area -->
+<main class="flex-1 w-full max-w-md mx-auto pt-16 pb-40 px-margin flex flex-col space-y-4">
+<!-- Timestamp Divider -->
+<div class="flex items-center justify-center my-2">
+<div class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full font-label-md text-label-md">
+        Hôm nay, 14:32
+      </div>
+</div>
+<!-- User Chat Bubble (Driver) -->
+<div class="flex justify-end items-end gap-2 pl-8">
+<div class="bg-primary text-on-primary rounded-2xl rounded-tr-xs px-4 py-3 shadow-sm">
+<p class="font-body-md text-body-md leading-relaxed">Kiểm tra chi tiết vụ việc #A3F9</p>
+<span class="block text-right font-label-sm text-label-sm text-primary-fixed opacity-90 mt-1">14:32</span>
+</div>
+</div>
+<!-- GSupport AI Assistant Message Response -->
+<div class="flex items-start gap-2.5 pr-2">
+<!-- AI Avatar -->
+<div class="w-9 h-9 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center shrink-0 shadow-sm mt-1">
+<span class="material-symbols-outlined text-[20px]" data-icon="smart_toy">smart_toy</span>
+</div>
+<!-- Content Cluster -->
+<div class="flex-1 space-y-3">
+<!-- Assistant Intro -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl rounded-tl-xs p-3.5 shadow-sm">
+<div class="flex items-center justify-between pb-2 border-b border-surface-container">
+<div class="flex items-center gap-1.5">
+<span class="font-headline-sm text-headline-sm text-primary font-bold">GSupport</span>
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="bolt">bolt</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Trợ lý AI vận hành</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface mt-2">
+            Chào đối tác! Tôi đã tổng hợp và đối chiếu toàn bộ dữ liệu viễn thông, thời tiết và định vị GPS của chuyến xe vừa ghi nhận cảnh báo lệch tuyến.
+          </p>
+</div>
+<!-- Collapsible Analysis Tool Trace -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl overflow-hidden shadow-sm">
+<button class="w-full px-3.5 py-2.5 bg-surface-container-low flex items-center justify-between text-left active:bg-surface-container transition-colors" id="toggle-trace-btn" type="button">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-label-lg text-label-lg text-primary">Đã hoàn tất 3 bước phân tích</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant transition-transform duration-200" data-icon="expand_more" id="trace-chevron">expand_more</span>
+</button>
+<div class="p-3.5 space-y-2.5 bg-surface-container-lowest border-t border-outline-variant" id="trace-content">
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5" data-icon="check_circle">check_circle</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+<span class="font-medium text-on-surface">Đã kiểm tra thời tiết:</span> Mưa rào diện rộng lúc 14:10
+              </p>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5" data-icon="check_circle">check_circle</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+<span class="font-medium text-on-surface">Đã kiểm tra giao thông khu vực:</span> Ùn tắc cục bộ đường Nguyễn Huệ
+              </p>
+</div>
+<div class="flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5" data-icon="check_circle">check_circle</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+<span class="font-medium text-on-surface">Đã đối chiếu dữ liệu chuyến đi:</span> Lộ trình thực tế so với đề xuất
+              </p>
+</div>
+</div>
+</div>
+<!-- Rich Case Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-4 shadow-sm space-y-3.5">
+<!-- Card Header -->
+<div class="flex items-center justify-between pb-2.5 border-b border-outline-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="receipt_long">receipt_long</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Mã cuốc xe #GS-88219</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">13:45 - 14:20</span>
+</div>
+<!-- Route Flow -->
+<div class="relative pl-6 space-y-3">
+<!-- Connecting Line -->
+<div class="absolute left-2 top-2.5 bottom-2.5 w-0.5 border-l-2 border-dashed border-outline-variant"></div>
+<!-- Pickup -->
+<div class="relative flex items-start">
+<div class="absolute -left-6 top-1 w-4 h-4 rounded-full bg-primary flex items-center justify-center">
+<div class="w-1.5 h-1.5 rounded-full bg-on-primary"></div>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">Điểm đón</span>
+<p class="font-body-md text-body-md font-medium text-on-surface">45 Lê Duẩn, P. Bến Nghé, Q.1</p>
+</div>
+</div>
+<!-- Destination -->
+<div class="relative flex items-start">
+<div class="absolute -left-6 top-1 w-4 h-4 rounded bg-secondary flex items-center justify-center">
+<div class="w-1.5 h-1.5 rounded-sm bg-on-secondary"></div>
+</div>
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">Điểm đến</span>
+<p class="font-body-md text-body-md font-medium text-on-surface">120 Trần Não, TP. Thủ Đức</p>
+</div>
+</div>
+</div>
+<!-- Vehicle and Fare Info Grid -->
+<div class="grid grid-cols-2 gap-2 pt-2 border-t border-outline-variant">
+<div class="bg-surface-container-low p-2.5 rounded-xl">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">Phương tiện điện</span>
+<span class="font-label-lg text-label-lg text-on-surface flex items-center gap-1 mt-0.5">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="electric_car">electric_car</span>
+                VinFast VF e34
+              </span>
+</div>
+<div class="bg-surface-container-low p-2.5 rounded-xl">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">Cước phí ghi nhận</span>
+<span class="font-headline-sm text-headline-sm text-primary font-bold mt-0.5">85.000 đ</span>
+</div>
+</div>
+<!-- Route Variance Notice -->
+<div class="bg-secondary-container/40 border border-secondary-container p-3 rounded-xl flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[20px] shrink-0 mt-0.5" data-icon="alt_route">alt_route</span>
+<div>
+<span class="font-label-md text-label-md text-primary font-bold block">Chênh lệch lộ trình: +2.4 km</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Lệch tuyến do tránh điểm ngập &amp; đường gom kẹt xe giờ cao điểm.</p>
+</div>
+</div>
+</div>
+<!-- Evidence & Recorded Data Table -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-2xl p-3.5 shadow-sm space-y-2.5">
+<div class="flex items-center gap-2 pb-2 border-b border-outline-variant">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="fact_check">fact_check</span>
+<span class="font-label-lg text-label-lg text-on-surface">Bằng chứng &amp; Dữ liệu ghi nhận</span>
+</div>
+<div class="divide-y divide-surface-container">
+<!-- Row 1: Weather -->
+<div class="py-2 flex items-center justify-between text-left">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]" data-icon="rainy">rainy</span>
+<span class="font-body-md text-body-md text-on-surface">Thời tiết</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Mưa lớn (giảm tầm nhìn)</span>
+</div>
+<!-- Row 2: Traffic -->
+<div class="py-2 flex items-center justify-between text-left">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]" data-icon="traffic">traffic</span>
+<span class="font-body-md text-body-md text-on-surface">Giao thông</span>
+</div>
+<span class="font-label-md text-label-md text-on-surface-variant">Ùn tắc nặng (tốc độ TB 8 km/h)</span>
+</div>
+<!-- Row 3: GPS Status -->
+<div class="py-2 flex items-center justify-between text-left">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="share_location">share_location</span>
+<span class="font-body-md text-body-md text-on-surface">Định vị GPS</span>
+</div>
+<span class="font-label-md text-label-md text-primary font-bold">100% khớp dữ liệu xe</span>
+</div>
+</div>
+</div>
+<!-- Clickable Policy Link Card -->
+<div class="bg-surface-container-lowest border border-outline-variant hover:border-primary active:scale-[0.98] transition-all rounded-2xl p-3.5 shadow-sm cursor-pointer flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl bg-surface-container flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+</div>
+<div>
+<p class="font-label-lg text-label-lg text-on-surface">Điều 12.2 – Miễn trừ bất khả kháng</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Quy chế tài xế Xanh SM (Thời tiết cực đoan &amp; phân luồng)</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="arrow_forward">arrow_forward</span>
+</div>
+<!-- Suggestion Note / Advisory Box -->
+<div class="bg-secondary-container/50 border border-secondary-container rounded-2xl p-3.5 flex items-start gap-2.5">
+<span class="material-symbols-outlined text-primary text-[22px] shrink-0 mt-0.5" data-icon="lightbulb">lightbulb</span>
+<div class="space-y-1">
+<span class="font-label-md text-label-md text-primary font-bold uppercase tracking-wider block">Gợi ý tham khảo</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              Dữ liệu cho thấy bạn có cơ sở khiếu nại hợp lệ do yếu tố bất khả kháng. Quyết định cuối cùng thuộc chuyên viên thẩm định.
+            </p>
+</div>
+</div>
+<!-- Quick Action Suggestion Chips -->
+<div class="space-y-1.5 pt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant block">Bước tiếp theo:</span>
+<div class="flex flex-wrap gap-2">
+<button class="bg-surface-container-lowest border border-outline-variant text-on-surface font-label-md text-label-md px-3 py-2 rounded-xl flex items-center gap-1.5 hover:bg-surface-container active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="add_a_photo">add_a_photo</span>
+              Gửi thêm hình ảnh camera hành trình
+            </button>
+<button class="bg-surface-container-lowest border border-outline-variant text-on-surface font-label-md text-label-md px-3 py-2 rounded-xl flex items-center gap-1.5 hover:bg-surface-container active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="map">map</span>
+              Xem lại lộ trình GPS
+            </button>
+<a class="bg-surface-container-lowest border border-outline-variant text-on-surface font-label-md text-label-md px-3 py-2 rounded-xl flex items-center gap-1.5 hover:bg-surface-container active:scale-95 transition-all" href="tel:19002088">
+<span class="material-symbols-outlined text-[16px] text-primary" data-icon="support_agent">support_agent</span>
+              Liên hệ tổng đài 1900 2088
+            </a>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Sticky Driver Action Bar (Docked above Bottom Navigation) -->
+<div class="fixed bottom-16 left-0 w-full z-40 bg-surface border-t border-outline-variant shadow-lg px-margin py-2.5">
+<div class="max-w-md mx-auto grid grid-cols-2 gap-3">
+<!-- Action 1: Dismiss / Accept Infraction -->
+<button class="h-12 border border-outline-variant bg-surface-container-lowest text-on-surface hover:bg-surface-container font-label-lg text-label-lg rounded-xl flex items-center justify-center active:scale-95 transition-all" type="button">
+        Chấp thuận vi phạm
+      </button>
+<!-- Action 2: Dispute & Explain (Primary Driver CTA) -->
+<button class="h-12 bg-primary text-on-primary hover:bg-primary-container font-label-lg text-label-lg rounded-xl flex items-center justify-center gap-1.5 shadow-sm active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[18px]" data-icon="check_circle">check_circle</span>
+        Từ chối &amp; giải trình
+      </button>
+</div>
+</div>
+<!-- Persistent Bottom Navigation Bar (Shared Component Anchor) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter py-space-xs bg-surface dark:bg-inverse-surface border-t border-outline-variant dark:border-outline shadow-md">
+<!-- Tab 1: Vụ việc -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-3 py-1.5 hover:bg-surface-container-high active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="shield">shield</span>
+<span class="font-label-sm text-label-sm mt-0.5">Vụ việc</span>
+</a>
+<!-- Tab 2: Hồ sơ -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-3 py-1.5 hover:bg-surface-container-high active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm mt-0.5">Hồ sơ</span>
+</a>
+<!-- Tab 3: GSupport (Active Destination in Shared JSON) -->
+<a class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary-container text-on-secondary-container dark:text-on-secondary-container rounded-xl px-3 py-1.5 shadow-sm active:scale-95 transition-transform duration-150 relative" href="#">
+<span class="material-symbols-outlined text-[24px] text-primary" data-icon="smart_toy" data-weight="fill" style="font-variation-settings: 'FILL' 1;">smart_toy</span>
+<span class="font-label-sm text-label-sm font-bold text-primary mt-0.5">GSupport</span>
+<span class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-primary rounded-full ring-2 ring-surface"></span>
+</a>
+<!-- Tab 4: Lịch sử -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-3 py-1.5 hover:bg-surface-container-high active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="history">history</span>
+<span class="font-label-sm text-label-sm mt-0.5">Lịch sử</span>
+</a>
+<!-- Tab 5: Cài đặt -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-3 py-1.5 hover:bg-surface-container-high active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="settings">settings</span>
+<span class="font-label-sm text-label-sm mt-0.5">Cài đặt</span>
+</a>
+</nav>
+<!-- Interactive Logic for Collapsible Trace & Polish -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggleBtn = document.getElementById('toggle-trace-btn');
+      const traceContent = document.getElementById('trace-content');
+      const traceChevron = document.getElementById('trace-chevron');
+
+      if (toggleBtn && traceContent && traceChevron) {
+        toggleBtn.addEventListener('click', () => {
+          const isHidden = traceContent.classList.contains('hidden');
+          if (isHidden) {
+            traceContent.classList.remove('hidden');
+            traceChevron.style.transform = 'rotate(0deg)';
+          } else {
+            traceContent.classList.add('hidden');
+            traceChevron.style.transform = 'rotate(-90deg)';
+          }
+        });
+      }
+    });
+  </script>
+</body></html>

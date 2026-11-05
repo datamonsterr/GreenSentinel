@@ -1,0 +1,35 @@
+{
+  "scenario": "policy_query",
+  "raw_answer": "Theo Quy chế GreenSM 2026, Điều 12.2 quy định về trường hợp miễn trừ trách nhiệm do bất khả kháng như thời tiết bão lũ hoặc sự cố ùn tắc giao thông diện rộng có xác nhận của camera và dữ liệu lịch sử. Điều 14.2 quy định ngưỡng dừng đỗ trên 180 giây khi đón khách sẽ bị coi là ép khách hủy chuyến trừ khi có căn cứ theo Điều 12.2.",
+  "citations": [
+    {
+      "id": "c1",
+      "source": "Quy chế xử lý vi phạm 2026",
+      "section": "Điều 12.2",
+      "content": "Miễn trừ trách nhiệm khi xảy ra sự kiện bất khả kháng gồm thời tiết xấu và tắc đường nghiêm trọng có dữ liệu đối chiếu.",
+      "score": 0.91
+    },
+    {
+      "id": "c2",
+      "source": "Quy chế xử lý vi phạm 2026",
+      "section": "Điều 14.2",
+      "content": "Ngưỡng dừng đỗ vượt quá 180s không di chuyển tới điểm đón cấu thành hành vi ép khách hủy chuyến.",
+      "score": 0.89
+    }
+  ],
+  "entities": {
+    "case_ids": [],
+    "driver_ids": [],
+    "trip_ids": [],
+    "citation_ids": ["c1", "c2"]
+  },
+  "mock_formatted_output": {
+    "markdown": "**Quy định về thời gian dừng đỗ và các điều kiện miễn trừ bất khả kháng.**\n\nHệ thống đối chiếu hai điều khoản quan trọng trong Quy chế GreenSM 2026:\n\n- Trường hợp miễn trừ trách nhiệm do thời tiết bão lũ hoặc kẹt xe được quy định chi tiết tại [1](policy://c1).\n- Ngưỡng vi phạm dừng đỗ đón khách quá 180 giây được quy định tại [2](policy://c2).\n\nThẩm định viên cần kiểm tra kỹ dữ liệu camera và cảm biến trước khi ra quyết định.",
+    "suggestions": [
+      {
+        "label": "Tra cứu án lệ Điều 12.2",
+        "prompt": "Tìm các tiền lệ đã áp dụng miễn trừ theo Điều 12.2"
+      }
+    ]
+  }
+}
