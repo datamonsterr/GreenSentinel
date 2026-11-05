@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://p063.example/schemas/telemetry-event.schema.json",
-  "title": "P-063 telemetry event",
+  "$id": "https://greensentinel.example/schemas/telemetry-event.schema.json",
+  "title": "GreenSentinel telemetry event",
   "type": "object",
   "additionalProperties": false,
   "required": [

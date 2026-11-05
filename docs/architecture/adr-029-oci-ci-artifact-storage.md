@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for implementation; [issue #492](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/492).
+Accepted for implementation; [issue #492](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/492).
 
 ## Context
 

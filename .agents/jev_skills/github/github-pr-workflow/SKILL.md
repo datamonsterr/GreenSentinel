@@ -1,6 +1,6 @@
 ---
 name: github-pr-workflow
-description: Manage issue-linked PRs and CI using the P-063 canonical contributor workflow.
+description: Manage issue-linked PRs and CI using the GreenSentinel canonical contributor workflow.
 version: 1.2.0
 ---
 

@@ -27,7 +27,7 @@ Per [PROD_DESIGN.md](../../../research_v2/briefs/PROD_DESIGN.md) §6 and §8, th
    .venv/bin/python --version  # Python 3.11+
    ```
 2. **Benchmark Corpus (`dev300.jsonl`):**
-   The load-test CLI defaults to downloading and caching `releases_v2.1/dev300.jsonl` from Hugging Face (`datamonsterr/p-063-synthesized-trips`) with SHA256 verification (`cd008ee10b22520fbd71598d1718d06cf9ba9a9f3af38ca8736a11019a9a9ed9`).
+   The load-test CLI defaults to downloading and caching `releases_v2.1/dev300.jsonl` from Hugging Face (`datamonsterr/green-sentinel-synthesized-trips`) with SHA256 verification (`cd008ee10b22520fbd71598d1718d06cf9ba9a9f3af38ca8736a11019a9a9ed9`).
    If offline, specify `--trips <path-to-jsonl>`.
 3. **Authentication:**
    Protected endpoints require analyst credentials (`Authorization: Bearer <token>`). Never pass secrets via CLI arguments that could be exposed in `ps` or shell history. Use environment variables.
@@ -38,7 +38,7 @@ Per [PROD_DESIGN.md](../../../research_v2/briefs/PROD_DESIGN.md) §6 and §8, th
 
 ### 3.1 Resolving the Railway Backend Preview URL
 - On Pull Requests, the Railway bot comments the scoped backend preview URL:
-  `https://p063-backend-pr-<N>.up.railway.app`
+  `https://greensentinel-backend-pr-<N>.up.railway.app`
 - Alternatively, retrieve it via Railway CLI:
   ```bash
   railway environment
@@ -92,7 +92,7 @@ Run the full 300-request suite against the deployed Railway PR environment:
 export AUTH_TOKEN="<analyst-clerk-jwt>"
 
 .venv/bin/python scripts/loadtest/classifier_load_test.py \
-  --base-url https://p063-backend-pr-566.up.railway.app \
+  --base-url https://greensentinel-backend-pr-566.up.railway.app \
   --concurrency 1,4,8,16 \
   --requests 300 \
   --warmup 20 \
@@ -106,7 +106,7 @@ Test batch throughput with batch size 8 (up to 64 items per request):
 export AUTH_TOKEN="<analyst-clerk-jwt>"
 
 .venv/bin/python scripts/loadtest/classifier_load_test.py \
-  --base-url https://p063-backend-pr-566.up.railway.app \
+  --base-url https://greensentinel-backend-pr-566.up.railway.app \
   --batch-size 8 \
   --concurrency 1,4,8 \
   --requests 100 \
@@ -119,7 +119,7 @@ When testing the optional Mercury advisory LLM layer:
 export AUTH_TOKEN="<analyst-clerk-jwt>"
 
 .venv/bin/python scripts/loadtest/classifier_load_test.py \
-  --base-url https://p063-backend-pr-566.up.railway.app \
+  --base-url https://greensentinel-backend-pr-566.up.railway.app \
   --advisory \
   --concurrency 1,4 \
   --requests 50 \
@@ -136,7 +136,7 @@ The CLI emits a Markdown report and structured JSON summary:
 # Classifier Load Test Report
 
 **Status:** `PASS`
-- **Base URL:** `https://p063-backend-pr-566.up.railway.app`
+- **Base URL:** `https://greensentinel-backend-pr-566.up.railway.app`
 - **Endpoint:** `/api/v1/classifier/assess`
 - **Batch Size:** `1`
 - **Advisory Enabled:** `False`

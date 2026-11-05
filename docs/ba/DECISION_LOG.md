@@ -13,13 +13,13 @@ The strict [PRD release scope](PRD.md#1-document-control) was adopted by **@data
 | DEC-P1-05 | Top-k route alternatives are optional pending a scoped product decision; they are not a Must feature, detector, or score metric. | @datamonsterr / 2026-10-02 | `AC-P1-08` |
 | DEC-P1-06 | Scope amendment: the system only predicts violations and flags system errors. Analyst outcomes are limited to `Agree`, `Disagree`, and `Request More Evidence`, each `Agree`/`Disagree` with confirmation and rationale. The product applies no warning, fine, clawback, suspension, termination, or escalation. Supersedes the sanction clause of `DEC-P1-01` and the Suspend/Escalate outcomes of `FR-04`. | Team decision requested by @datamonsterr / 2026-10-16 | `AC-P1-02/03/04` |
 
-See the [acceptance and test matrix](PRD.md#101-phase-1-acceptance-and-test-traceability). [PR #40](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/40) is MERGED historical runtime divergence at `586caec05ddb7626a1f47066b55154e74d245cc0`, not release authorization. Runtime reconciliation stays with [#73](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/73), owned by [#86](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/86) / [#60](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/60).
+See the [acceptance and test matrix](PRD.md#101-phase-1-acceptance-and-test-traceability). [PR #40](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/40) is MERGED historical runtime divergence at `586caec05ddb7626a1f47066b55154e74d245cc0`, not release authorization. Runtime reconciliation stays with [#73](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/73), owned by [#86](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/86) / [#60](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/60).
 
 The remaining L06 register preserves discovery history and future policy options. Its live recovery, appeal, and release-gate assumptions are not current Phase 1 requirements; stakeholder validations remain unresolved as recorded.
 
 ## Scheduled extension decisions — 2026-10-05
 
-Authority: Pham Thanh Dat (@datamonsterr), saved-session lifecycle and defaults approvals, recorded in [#147](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/147). See the complete [requirements](DRIVER_FIRST_REQUIREMENTS.md), including the remaining reasonableness criterion, and [glossary](DRIVER_FIRST_GLOSSARY.md). No runtime conformance is inferred.
+Authority: Pham Thanh Dat (@datamonsterr), saved-session lifecycle and defaults approvals, recorded in [#147](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/147). See the complete [requirements](DRIVER_FIRST_REQUIREMENTS.md), including the remaining reasonableness criterion, and [glossary](DRIVER_FIRST_GLOSSARY.md). No runtime conformance is inferred.
 
 | Decision | Approved rule | Supersession boundary |
 |---|---|---|

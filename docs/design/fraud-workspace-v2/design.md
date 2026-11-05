@@ -100,4 +100,4 @@ Fresh browser run: 39 checks passed; zero browser runtime errors. `validation.js
 node docs/design/fraud-workspace-v2/verify-preview.cjs
 ```
 
-The script automatically detects installed Playwright packages (including `@playwright/test` and cached Playwright installations) and Chromium binaries, while honoring `PLAYWRIGHT_MODULE` and `CHROMIUM_EXECUTABLE` overrides when provided. If running in environments requiring an isolated cache directory, set `TMPDIR=/home/dat/.cache/p063-design-browser-tmp`. No unrelated processes or temporary files were removed. This environment workaround is separate from application behavior.
+The script automatically detects installed Playwright packages (including `@playwright/test` and cached Playwright installations) and Chromium binaries, while honoring `PLAYWRIGHT_MODULE` and `CHROMIUM_EXECUTABLE` overrides when provided. If running in environments requiring an isolated cache directory, set `TMPDIR=/home/dat/.cache/greensentinel-design-browser-tmp`. No unrelated processes or temporary files were removed. This environment workaround is separate from application behavior.

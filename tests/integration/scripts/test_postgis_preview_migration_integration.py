@@ -65,7 +65,7 @@ def _create_disposable_postgis_db(layout_schema: str):
     _assert_loopback_target(base_dsn)
 
     stamp = int(time.time() * 1000)
-    dbname = f"test_p063_spatial_{layout_schema}_{stamp}"
+    dbname = f"test_greensentinel_spatial_{layout_schema}_{stamp}"
 
     parsed = urlparse(base_dsn)
     user = parsed.username or "postgres"

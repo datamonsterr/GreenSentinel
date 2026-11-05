@@ -283,7 +283,7 @@ All dismissals and analyst Agree/Disagree outcomes require authorized analyst co
 
 **Metadata:** Epic: Driver Dispute & Handoff; Priority: Deferred (Phase 2+); Estimate: TBD; Dependencies: separate product approval.
 
-**Release status:** Deferred reference to the [existing implementation in MERGED PR #40](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/40); not Phase 1 acceptance. Autonomous exoneration expectations are obsolete under [#73](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/73). The scenarios below specify a future intake flow, not evidence of delivery.
+**Release status:** Deferred reference to the [existing implementation in MERGED PR #40](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/40); not Phase 1 acceptance. Autonomous exoneration expectations are obsolete under [#73](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/73). The scenarios below specify a future intake flow, not evidence of delivery.
 
 ### Acceptance Criteria
 
@@ -314,7 +314,7 @@ All dismissals and analyst Agree/Disagree outcomes require authorized analyst co
 
 **Metadata:** Epic: Analyst-Agent Collaboration; Priority: Deferred (Phase 2+); Estimate: TBD; Dependencies: separate product approval.
 
-**Release status:** Deferred reference to the [existing implementation in MERGED PR #40](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/40); not Phase 1 acceptance. The scenarios below specify future driver-agent collaboration, not evidence of delivery.
+**Release status:** Deferred reference to the [existing implementation in MERGED PR #40](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/40); not Phase 1 acceptance. The scenarios below specify future driver-agent collaboration, not evidence of delivery.
 
 ### Acceptance Criteria
 

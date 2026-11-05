@@ -5,7 +5,7 @@
 **Parent Issue:** #394  
 **Child Issue:** #399  
 **Target Environments Audited:** Railway `dev`, `staging`, `production` (Project `c49458fb-d741-468f-a3ed-d35b96788f68`, Service `9710a2f5-ed77-472e-8e79-3b748bb73df2`)  
-**Disposable Benchmark DB:** PostgreSQL 16.4 container on `localhost:5432/test_p063_bench`  
+**Disposable Benchmark DB:** PostgreSQL 16.4 container on `localhost:5432/test_greensentinel_bench`  
 **Retained Machine Artifact:** [`artifacts/db_bench_evidence_394.json`](artifacts/db_bench_evidence_394.json)  
 
 ---
@@ -48,7 +48,7 @@ Audited via `scripts/db_profile.py --env <env> --audit-all` across all three env
 
 ## 3. Empirical Controlled Benchmark (BEFORE vs AFTER on Disposable DB)
 
-Benchmarking executed on disposable local PostgreSQL 16 container (`localhost:5432/test_p063_bench`) with realistic cardinality fixture:
+Benchmarking executed on disposable local PostgreSQL 16 container (`localhost:5432/test_greensentinel_bench`) with realistic cardinality fixture:
 - Trips: 100
 - Trip assignments: 3,100
 - Fraud cases: 100
@@ -99,7 +99,7 @@ python3 scripts/apply_workload_indexes.py --env staging --confirm-apply --expect
 python3 scripts/apply_workload_indexes.py --env production --confirm-apply --expected-plan-hash <HASH_PROD>
 
 # 3. Post-apply audit and verification:
-python3 scripts/db_profile.py --env dev --audit-all --output-json /tmp/p063-indexes-after-dev.json
-python3 scripts/db_profile.py --env staging --audit-all --output-json /tmp/p063-indexes-after-staging.json
-python3 scripts/db_profile.py --env production --audit-all --output-json /tmp/p063-indexes-after-prod.json
+python3 scripts/db_profile.py --env dev --audit-all --output-json /tmp/greensentinel-indexes-after-dev.json
+python3 scripts/db_profile.py --env staging --audit-all --output-json /tmp/greensentinel-indexes-after-staging.json
+python3 scripts/db_profile.py --env production --audit-all --output-json /tmp/greensentinel-indexes-after-prod.json
 ```

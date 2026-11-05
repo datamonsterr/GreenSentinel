@@ -31,7 +31,7 @@ class _BoundedResponse:
 
 @contextmanager
 def safe_urlopen(url: Any, *, timeout: float) -> Iterator[_BoundedResponse]:
-    req = Request(url, headers={"User-Agent": "AI20K-P063-Simulation/1.0"}) if isinstance(url, str) else url
+    req = Request(url, headers={"User-Agent": "AI20K-GreenSentinel-Simulation/1.0"}) if isinstance(url, str) else url
     with build_opener(_NoRedirect()).open(req, timeout=timeout) as response:
         yield _BoundedResponse(response)
 

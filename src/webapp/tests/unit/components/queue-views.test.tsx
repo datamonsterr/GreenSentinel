@@ -73,7 +73,7 @@ it('derives queue priorities from persisted cases', async () => {
     },
     tracing: {
       provider: 'LangSmith',
-      project: 'p063-agent-runtime',
+      project: 'greensentinel-agent-runtime',
       project_url: 'https://smith.langchain.com',
       enabled: true,
       environment: 'test',

@@ -7,7 +7,7 @@ When real users or newly registered accounts authenticated on the Dev or Preview
 
 ```
 Browser (User Login) 
-  → Clerk Session Token Issued (sub="user_3JeWYPiqOUbtpsf...", azp="https://p-063-*.vercel.app")
+  → Clerk Session Token Issued (sub="user_3JeWYPiqOUbtpsf...", azp="https://green-sentinel-*.vercel.app")
     → Next.js Middleware (/workplace)
       → Backend Request: GET /api/v1/account/settings
         → Backend load_principal(external_subject=sub)
@@ -21,7 +21,7 @@ Browser (User Login)
 ### 1.2 Root Causes Identified
 1. **Unseeded Real Clerk Accounts**: Commit `00c5049` (PR #165) enforced strict database role lookups via `load_principal`, matching only pre-seeded mock users (`user_clerk_analyst_001`..`_010`). Real Clerk users (e.g., `user_3JeWYPiqOUbtpsfCT8tKgIlPAsN`) and new registrations do not exist in `app.principals` initially.
 2. **Missing Token Role Claims on New Signups**: Newly registered Clerk users have empty `public_metadata = {}` and no active organization memberships unless explicitly invited or created. Without a fallback role, they were instantly rejected.
-3. **Mismatched Edge Backend Resolution**: In preview environments, `route-authorization.ts` fell back to `p063-backend-production.up.railway.app`, which rejected preview origins via strict `CLERK_AUTHORIZED_PARTIES` allow-lists.
+3. **Mismatched Edge Backend Resolution**: In preview environments, `route-authorization.ts` fell back to `greensentinel-backend-production.up.railway.app`, which rejected preview origins via strict `CLERK_AUTHORIZED_PARTIES` allow-lists.
 
 ---
 
@@ -53,7 +53,7 @@ Implemented in `src/services/access_control.py`:
 
 ### 2.3 Host-Aware Backend Resolution
 Implemented in `src/webapp/lib/route-authorization.ts`:
-- Requests originating from `*.vercel.app`, `p-063-dev.vercel.app`, or `localhost` dynamically route authorization checks to `https://p063-backend-dev.up.railway.app` (or the PR's scoped ephemeral Railway backend via `API_BASE_URL`), preventing fallback to the isolated production backend.
+- Requests originating from `*.vercel.app`, `green-sentinel-dev.vercel.app`, or `localhost` dynamically route authorization checks to `https://greensentinel-backend-dev.up.railway.app` (or the PR's scoped ephemeral Railway backend via `API_BASE_URL`), preventing fallback to the isolated production backend.
 
 ---
 
@@ -67,7 +67,7 @@ Clerk provides two distinct instance types:
 │                   CLERK APPLICATION                    │
 ├───────────────────────────┬────────────────────────────┤
 │   DEVELOPMENT INSTANCE    │    PRODUCTION INSTANCE     │
-│   (clever-turtle-156.dev) │    (e.g., p-063.vercel.app)│
+│   (clever-turtle-156.dev) │    (e.g., green-sentinel.vercel.app)│
 ├───────────────────────────┼────────────────────────────┤
 │ • Keys: pk_test_*, sk_test│ • Keys: pk_live_*, sk_live │
 │ • Cross-domain auth with  │ • Strict single-domain     │
@@ -84,12 +84,12 @@ Clerk provides two distinct instance types:
 > 
 > Preview environments must use **Development API keys** (`pk_test_...` and `sk_test_...`).
 > 
-> Because each Vercel preview receives a unique sub-origin (e.g. `p-063-xyz.vercel.app`), only Clerk Development instances permit cross-origin session synchronization via `<slug>.accounts.dev`.
+> Because each Vercel preview receives a unique sub-origin (e.g. `green-sentinel-xyz.vercel.app`), only Clerk Development instances permit cross-origin session synchronization via `<slug>.accounts.dev`.
 
 ### 3.3 Dynamic Preview Authorization on Railway
 In `.github/workflows/deploy-vercel.yml` and `scripts/authorize_preview.sh`:
 - Every PR preview automatically deploys an ephemeral or scoped Railway backend.
-- The step `Authorize exact Vercel preview origin` invokes `scripts/authorize_preview.sh`, dynamically appending the generated Vercel preview URL (`https://p-063-*.vercel.app`) to `CLERK_AUTHORIZED_PARTIES` on Railway.
+- The step `Authorize exact Vercel preview origin` invokes `scripts/authorize_preview.sh`, dynamically appending the generated Vercel preview URL (`https://green-sentinel-*.vercel.app`) to `CLERK_AUTHORIZED_PARTIES` on Railway.
 
 ---
 
@@ -105,7 +105,7 @@ The four core RBAC roles are provisioned on Clerk instance `clever-turtle-156`:
 ### 4.2 How to Onboard & Invite Team Members (Email & OTP)
 
 #### Method A: Via In-App Organization Switcher (Recommended)
-1. Log in to the application at `https://p-063-dev.vercel.app` (or local/preview).
+1. Log in to the application at `https://green-sentinel-dev.vercel.app` (or local/preview).
 2. Look at the top-right header: you will see Clerk's `<OrganizationSwitcher />` next to `<UserButton />`.
 3. Click the Organization Switcher -> click **"Manage organization"** (or gear icon).
 4. Click **Members** -> click **"Invite"**.
@@ -121,7 +121,7 @@ The four core RBAC roles are provisioned on Clerk instance `clever-turtle-156`:
 1. Open the [Clerk Dashboard](https://dashboard.clerk.com).
 2. Select your application instance (`clever-turtle-156`).
 3. In the sidebar, navigate to **Organizations**.
-4. Select the target organization (e.g., `Hihi`, `P-063 Operations`).
+4. Select the target organization (e.g., `Hihi`, `GreenSentinel Operations`).
 5. Click the **Members** tab.
 6. Click **"Invite member"** (top right).
 7. Enter email address, choose the Role (`Admin`, `Manager`, `Driver`, or `Member`), and submit.
@@ -145,9 +145,9 @@ If a user signs in without creating or joining an organization:
 
 | Step | Action | Expected Output | Status |
 | :--- | :--- | :--- | :--- |
-| 1 | Canonical dev domain updated | `https://p-063-dev.vercel.app` configured in Vercel & Railway | Verified (PR #183 merged) |
-| 2 | Railway dev backend | `https://p063-backend-dev.up.railway.app/health` returns `status: ok` | Verified |
-| 3 | Scoped PR preview backend | `https://p063-backend-pr-184.up.railway.app/health` returns `status: ok` | Verified |
+| 1 | Canonical dev domain updated | `https://green-sentinel-dev.vercel.app` configured in Vercel & Railway | Verified (PR #183 merged) |
+| 2 | Railway dev backend | `https://greensentinel-backend-dev.up.railway.app/health` returns `status: ok` | Verified |
+| 3 | Scoped PR preview backend | `https://greensentinel-backend-pr-184.up.railway.app/health` returns `status: ok` | Verified |
 | 4 | Atomic JIT Sync | Non-seeded Clerk accounts auto-create in `app.principals` on login | Implemented (PR #184) |
 | 5 | RBAC Roles on Clerk | `org:admin`, `org:manager`, `org:driver`, `org:member` exist | Verified in Clerk API |
 | 6 | In-App Org Switcher | Header provides `<OrganizationSwitcher />` without manual role dropdown | Implemented (PR #184) |

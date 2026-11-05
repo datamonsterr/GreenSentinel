@@ -1,6 +1,6 @@
 # Restricted Vercel Token Deployment Tests
 
-Scope: [issue #115](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/115). Use the existing restricted team/project token; do not replace it with a personal token or print credentials.
+Scope: [issue #115](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/115). Use the existing restricted team/project token; do not replace it with a personal token or print credentials.
 
 ## Local regression proof
 
@@ -22,6 +22,6 @@ Expected: submission transport errors retry finitely; authentication errors do n
 
 ## Environment aliases
 
-After an authorized environment rollout, verify `p-063-dev.vercel.app`, `p-063-staging.vercel.app`, or `p-063.vercel.app` resolves to the newly verified deployment. An alias permission error must fail the required alias step. Dotted Dev/Staging compatibility aliases may report a warning while the canonical alias remains available. Staging and Production approval gates still apply.
+After an authorized environment rollout, verify `green-sentinel-dev.vercel.app`, `green-sentinel-staging.vercel.app`, or `green-sentinel.vercel.app` resolves to the newly verified deployment. An alias permission error must fail the required alias step. Dotted Dev/Staging compatibility aliases may report a warning while the canonical alias remains available. Staging and Production approval gates still apply.
 
 The fix PR exercises Preview automatically. Dev, Staging, and Production alias changes require their normal authorized rollout; do not report those environments as tested based on Preview success alone.

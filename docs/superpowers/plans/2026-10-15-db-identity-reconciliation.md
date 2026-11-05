@@ -2,20 +2,20 @@
 
 - Date: 2026-10-16
 - Author: AGY-only Sync Worker
-- Parent Issues: [#402](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/402), [#394](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/394)
-- Child Task Issue: [#410](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/410)
+- Parent Issues: [#402](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/402), [#394](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/394)
+- Child Task Issue: [#410](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/410)
 - Branch: `jev-587cd00e04964446`
 - Slice: `sync` (bounded)
 
 ## 1. Scope & Non-Overlap Contract
 
 ### Owned Files
-- [`src/services/identity_reconciliation.py`](file:///home/dat/dev/vinuni_aia/P-063/src/services/identity_reconciliation.py) (NEW reconciliation service)
-- [`scripts/reconcile_identity.py`](file:///home/dat/dev/vinuni_aia/P-063/scripts/reconcile_identity.py) (NEW audited dry-run/apply CLI)
-- [`tests/unit/test_identity_reconciliation.py`](file:///home/dat/dev/vinuni_aia/P-063/tests/unit/test_identity_reconciliation.py) (NEW focused unit suite)
-- [`tests/integration/test_identity_reconciliation_integration.py`](file:///home/dat/dev/vinuni_aia/P-063/tests/integration/test_identity_reconciliation_integration.py) (NEW disposable DB suite)
-- [`docs/testing/DB_IDENTITY_RECONCILIATION_394.md`](file:///home/dat/dev/vinuni_aia/P-063/docs/testing/DB_IDENTITY_RECONCILIATION_394.md) (Reconciliation audit report)
-- [`docs/superpowers/plans/2026-10-15-db-identity-reconciliation.md`](file:///home/dat/dev/vinuni_aia/P-063/docs/superpowers/plans/2026-10-15-db-identity-reconciliation.md) (This plan)
+- [`src/services/identity_reconciliation.py`](file:///home/dat/dev/vinuni_aia/GreenSentinel/src/services/identity_reconciliation.py) (NEW reconciliation service)
+- [`scripts/reconcile_identity.py`](file:///home/dat/dev/vinuni_aia/GreenSentinel/scripts/reconcile_identity.py) (NEW audited dry-run/apply CLI)
+- [`tests/unit/test_identity_reconciliation.py`](file:///home/dat/dev/vinuni_aia/GreenSentinel/tests/unit/test_identity_reconciliation.py) (NEW focused unit suite)
+- [`tests/integration/test_identity_reconciliation_integration.py`](file:///home/dat/dev/vinuni_aia/GreenSentinel/tests/integration/test_identity_reconciliation_integration.py) (NEW disposable DB suite)
+- [`docs/testing/DB_IDENTITY_RECONCILIATION_394.md`](file:///home/dat/dev/vinuni_aia/GreenSentinel/docs/testing/DB_IDENTITY_RECONCILIATION_394.md) (Reconciliation audit report)
+- [`docs/superpowers/plans/2026-10-15-db-identity-reconciliation.md`](file:///home/dat/dev/vinuni_aia/GreenSentinel/docs/superpowers/plans/2026-10-15-db-identity-reconciliation.md) (This plan)
 
 ### Excluded Files (Owned by Sibling Workers)
 - `src/services/access_control.py` (sibling binding worker owns driver JIT)
@@ -59,7 +59,7 @@
 
 ### Invariant Rules
 1. **Zero Fabricated Accounts**: No synthetic Clerk users or replacement applications.
-2. **Deterministic UUID5 Idempotence**: Existing seed org `org_3JeWZxDcpdvFmff2fW1nXP7tjm6` maps to `018f2f4e-0000-7000-8000-000000000001`; new orgs map deterministically via `uuid5(NAMESPACE_URL, f"https://p063.internal/org/{clerk_org_id}")`. Conflicting or colliding mappings immediately abort.
+2. **Deterministic UUID5 Idempotence**: Existing seed org `org_3JeWZxDcpdvFmff2fW1nXP7tjm6` maps to `018f2f4e-0000-7000-8000-000000000001`; new orgs map deterministically via `uuid5(NAMESPACE_URL, f"https://greensentinel.internal/org/{clerk_org_id}")`. Conflicting or colliding mappings immediately abort.
 3. **Safe Role Synchronization**:
    - `org:admin` -> `admin`
    - `org:member` / `member` / `analyst` -> `fraud_analyst` (internal canonical)

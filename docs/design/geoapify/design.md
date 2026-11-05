@@ -16,7 +16,7 @@ The Tester should compose a basic trip, inspect its geography and timing, then r
 
 The prior Tester design is the starting point. The Geoapify addition is address search, provider route choices and inspection of original versus matched coordinates. It does not imply a change of map renderer. Candidate provider capability, an authored plan and consumed system evidence must remain visually distinguishable.
 
-The `ui-ux-pro-max` design-system search for “operations map console” returned a generic marketing hero and a new palette/typeface. Those suggestions do not fit the existing operations workspace. This proposal retains P-063 tokens and uses the skill's keyboard focus, touch size, contrast and dense-layout guidance. The `frontend-design` direction is a spatial workbench: geography carries the composition, while the two actor windows and tools form stable edges. Decorative KPI cards and a marketing header would compete with the task and are omitted.
+The `ui-ux-pro-max` design-system search for “operations map console” returned a generic marketing hero and a new palette/typeface. Those suggestions do not fit the existing operations workspace. This proposal retains GreenSentinel tokens and uses the skill's keyboard focus, touch size, contrast and dense-layout guidance. The `frontend-design` direction is a spatial workbench: geography carries the composition, while the two actor windows and tools form stable edges. Decorative KPI cards and a marketing header would compete with the task and are omitted.
 
 ## Desktop composition
 

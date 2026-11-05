@@ -73,9 +73,9 @@ Default URL map (overrides win):
 | Env | Frontend | Backend |
 |---|---|---|
 | preview | PR Vercel URL (`AUTH_E2E_FRONTEND_URL` required) | PR Railway URL (`AUTH_E2E_BACKEND_URL` required) |
-| dev | `https://p-063-dev.vercel.app` | `https://p063-backend-dev.up.railway.app` |
-| staging | `https://p-063-staging.vercel.app` | `https://p063-backend-staging.up.railway.app` |
-| prod | `https://p-063.vercel.app` | `https://p063-backend-production.up.railway.app` |
+| dev | `https://green-sentinel-dev.vercel.app` | `https://greensentinel-backend-dev.up.railway.app` |
+| staging | `https://green-sentinel-staging.vercel.app` | `https://greensentinel-backend-staging.up.railway.app` |
+| prod | `https://green-sentinel.vercel.app` | `https://greensentinel-backend-production.up.railway.app` |
 
 Traces, screenshots, and video stay off in
 `tests/e2e/browser/auth/playwright.config.ts` so credentials never persist

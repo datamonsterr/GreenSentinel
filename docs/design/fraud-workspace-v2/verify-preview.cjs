@@ -3,7 +3,7 @@ for (const mod of [
   process.env.PLAYWRIGHT_MODULE,
   '@playwright/test',
   'playwright',
-  '/home/dat/dev/vinuni_aia/P-063/src/webapp/node_modules/@playwright/test',
+  '/home/dat/dev/vinuni_aia/GreenSentinel/src/webapp/node_modules/@playwright/test',
   '/home/dat/.npm/_npx/e41f203b7505f1fb/node_modules/playwright'
 ]) {
   if (!mod) continue;

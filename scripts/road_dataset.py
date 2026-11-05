@@ -19,7 +19,7 @@ DATASET_VERSION = "road-v1"
 
 
 def stable_id(name: str) -> str:
-    return str(uuid5(NAMESPACE_URL, f"p063:{DATASET_VERSION}:{name}"))
+    return str(uuid5(NAMESPACE_URL, f"greensentinel:{DATASET_VERSION}:{name}"))
 
 
 def timestamp(value: str, offset: timedelta) -> str:

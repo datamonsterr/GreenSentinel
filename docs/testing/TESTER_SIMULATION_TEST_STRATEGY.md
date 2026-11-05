@@ -1,6 +1,6 @@
 # Tester trip simulation: test strategy
 
-Status: design contract for Epic [#130](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/130). This document defines proof required for implementation; it does not claim that the simulator exists or that any gate has passed.
+Status: design contract for Epic [#130](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/130). This document defines proof required for implementation; it does not claim that the simulator exists or that any gate has passed.
 
 ## Scope and test environment
 

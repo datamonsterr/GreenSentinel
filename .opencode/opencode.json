@@ -62,9 +62,9 @@
     "data-scout": {
       "description": "Corpus fetch subagent. Pulls the frozen 40k trips via hf-cli and stages small slices in isolated Git worktrees.",
       "mode": "subagent",
-      "system": "Caveman ultra mode on. Zero fluff. Fetch the frozen 40k corpus via hf-cli (`hf download datamonsterr/p-063-synthesized-trips`) or `python scripts/benchmark/fetch_dataset.py --profile releases_v1`. Stage small slices (< 5MB) in isolated worktrees via using-git-worktrees. Produce DATA_CARD.md and draft Research PR.",
+      "system": "Caveman ultra mode on. Zero fluff. Fetch the frozen 40k corpus via hf-cli (`hf download datamonsterr/green-sentinel-synthesized-trips`) or `python scripts/benchmark/fetch_dataset.py --profile releases_v1`. Stage small slices (< 5MB) in isolated worktrees via using-git-worktrees. Produce DATA_CARD.md and draft Research PR.",
       "model": "opencode-go/deepseek-v4.1-flash",
-      "prompt": "Caveman ultra mode on. Zero fluff. Fetch the frozen 40k corpus via hf-cli (`hf download datamonsterr/p-063-synthesized-trips`) or `python scripts/benchmark/fetch_dataset.py --profile releases_v1`. Stage small slices (< 5MB) in isolated worktrees via using-git-worktrees. Produce DATA_CARD.md and draft Research PR."
+      "prompt": "Caveman ultra mode on. Zero fluff. Fetch the frozen 40k corpus via hf-cli (`hf download datamonsterr/green-sentinel-synthesized-trips`) or `python scripts/benchmark/fetch_dataset.py --profile releases_v1`. Stage small slices (< 5MB) in isolated worktrees via using-git-worktrees. Produce DATA_CARD.md and draft Research PR."
     },
     "data-eda": {
       "description": "Frozen-corpus EDA and schema profiler against MVP.md and ADR-0002.",
@@ -90,9 +90,9 @@
     "data-analyst": {
       "description": "Dataset fetch + EDA specialist. Uses hf-cli to pull the frozen 40k corpus, profiles schema, runs data-eda-notebook.",
       "mode": "subagent",
-      "system": "Caveman ultra mode on. Zero fluff. Dataset fetch, schema profiling, EDA on the frozen 40k corpus.\n\nWorkflow:\n1. Fetch via hf-cli (`hf download datamonsterr/p-063-synthesized-trips`) or `python scripts/benchmark/fetch_dataset.py --profile releases_v1` (verifies trips_sha256, aborts on mismatch). Never rebuild bytes to reproduce a run.\n2. Stage small slices (< 5MB, max 500 rows) in isolated git worktrees via using-git-worktrees.\n3. Profile schema against MVP.md and ADR-0002 using data-eda-notebook; generate reproducible .ipynb with Folium/MapLibre maps.\n4. Produce DATA_CARD.md and draft Research PR.",
+      "system": "Caveman ultra mode on. Zero fluff. Dataset fetch, schema profiling, EDA on the frozen 40k corpus.\n\nWorkflow:\n1. Fetch via hf-cli (`hf download datamonsterr/green-sentinel-synthesized-trips`) or `python scripts/benchmark/fetch_dataset.py --profile releases_v1` (verifies trips_sha256, aborts on mismatch). Never rebuild bytes to reproduce a run.\n2. Stage small slices (< 5MB, max 500 rows) in isolated git worktrees via using-git-worktrees.\n3. Profile schema against MVP.md and ADR-0002 using data-eda-notebook; generate reproducible .ipynb with Folium/MapLibre maps.\n4. Produce DATA_CARD.md and draft Research PR.",
       "model": "opencode-go/gemini-4-argon-contributor",
-      "prompt": "Caveman ultra mode on. Zero fluff. Dataset fetch, schema profiling, EDA on the frozen 40k corpus.\n\nWorkflow:\n1. Fetch via hf-cli (`hf download datamonsterr/p-063-synthesized-trips`) or `python scripts/benchmark/fetch_dataset.py --profile releases_v1` (verifies trips_sha256, aborts on mismatch). Never rebuild bytes to reproduce a run.\n2. Stage small slices (< 5MB, max 500 rows) in isolated git worktrees via using-git-worktrees.\n3. Profile schema against MVP.md and ADR-0002 using data-eda-notebook; generate reproducible .ipynb with Folium/MapLibre maps.\n4. Produce DATA_CARD.md and draft Research PR."
+      "prompt": "Caveman ultra mode on. Zero fluff. Dataset fetch, schema profiling, EDA on the frozen 40k corpus.\n\nWorkflow:\n1. Fetch via hf-cli (`hf download datamonsterr/green-sentinel-synthesized-trips`) or `python scripts/benchmark/fetch_dataset.py --profile releases_v1` (verifies trips_sha256, aborts on mismatch). Never rebuild bytes to reproduce a run.\n2. Stage small slices (< 5MB, max 500 rows) in isolated git worktrees via using-git-worktrees.\n3. Profile schema against MVP.md and ADR-0002 using data-eda-notebook; generate reproducible .ipynb with Folium/MapLibre maps.\n4. Produce DATA_CARD.md and draft Research PR."
     },
     "ui-designer": {
       "description": "Frontend UI/UX designer. Generates screens via Stitch CLI, applies ui-ux-pro-max, frontend-design, scrollytelling, gsap, lenis, react-bits skills, and updates Next.js React components and docs.",
@@ -159,7 +159,7 @@
     "data-scout": {
       "description": "Corpus fetch subagent. Pulls the frozen 40k trips via hf-cli and stages small slices in isolated Git worktrees.",
       "mode": "subagent",
-      "system": "Caveman ultra mode on. Zero fluff. Fetch the frozen 40k corpus via hf-cli (`hf download datamonsterr/p-063-synthesized-trips`) or `python scripts/benchmark/fetch_dataset.py --profile releases_v1`. Stage small slices (< 5MB) in isolated worktrees via using-git-worktrees. Produce DATA_CARD.md and draft Research PR.",
+      "system": "Caveman ultra mode on. Zero fluff. Fetch the frozen 40k corpus via hf-cli (`hf download datamonsterr/green-sentinel-synthesized-trips`) or `python scripts/benchmark/fetch_dataset.py --profile releases_v1`. Stage small slices (< 5MB) in isolated worktrees via using-git-worktrees. Produce DATA_CARD.md and draft Research PR.",
       "model": "opencode-go/deepseek-v4.1-flash"
     },
     "data-eda": {
@@ -183,7 +183,7 @@
     "data-analyst": {
       "description": "Dataset fetch + EDA specialist. Uses hf-cli to pull the frozen 40k corpus, profiles schema, runs data-eda-notebook.",
       "mode": "subagent",
-      "system": "Caveman ultra mode on. Zero fluff. Dataset fetch, schema profiling, EDA on the frozen 40k corpus.\n\nWorkflow:\n1. Fetch via hf-cli (`hf download datamonsterr/p-063-synthesized-trips`) or `python scripts/benchmark/fetch_dataset.py --profile releases_v1` (verifies trips_sha256, aborts on mismatch). Never rebuild bytes to reproduce a run.\n2. Stage small slices (< 5MB, max 500 rows) in isolated git worktrees via using-git-worktrees.\n3. Profile schema against MVP.md and ADR-0002 using data-eda-notebook; generate reproducible .ipynb with Folium/MapLibre maps.\n4. Produce DATA_CARD.md and draft Research PR.",
+      "system": "Caveman ultra mode on. Zero fluff. Dataset fetch, schema profiling, EDA on the frozen 40k corpus.\n\nWorkflow:\n1. Fetch via hf-cli (`hf download datamonsterr/green-sentinel-synthesized-trips`) or `python scripts/benchmark/fetch_dataset.py --profile releases_v1` (verifies trips_sha256, aborts on mismatch). Never rebuild bytes to reproduce a run.\n2. Stage small slices (< 5MB, max 500 rows) in isolated git worktrees via using-git-worktrees.\n3. Profile schema against MVP.md and ADR-0002 using data-eda-notebook; generate reproducible .ipynb with Folium/MapLibre maps.\n4. Produce DATA_CARD.md and draft Research PR.",
       "model": "opencode-go/gemini-4-argon-contributor"
     },
     "ui-designer": {

@@ -103,7 +103,7 @@ logger = logging.getLogger(__name__)
 # tests/ and eval/ golden sets are out of scope and preserved):
 # | # | Location | Retired mock | Replacement / explicit unavailable |
 # |---|---|---|---|
-# | 1 | scripts/seed_database.py main() | default data/synthetic/seed_data.json (legacy, no manifest) | P063_SEED_PATH explicit versioned road-v1 dataset (scripts/road_dataset.py, ADR-011); unversioned refused unless P063_ALLOW_LEGACY_SEED=1 |
+# | 1 | scripts/seed_database.py main() | default data/synthetic/seed_data.json (legacy, no manifest) | GREENSENTINEL_SEED_PATH explicit versioned road-v1 dataset (scripts/road_dataset.py, ADR-011); unversioned refused unless GREENSENTINEL_ALLOW_LEGACY_SEED=1 |
 # | 2 | CaseService._load_seed_data/_find_seed_file | legacy seed_data defaults auto-loaded | only manifest.dataset_version==road-v1 loads; else accurate empty state |
 # | 3 | CaseService aliases | hardcoded legacy aliases retired (see git history) | removed; unknown ids are 404 | # S4-RETIRE-allow: inventory names retired mocks
 # | 4 | CaseService.get_principal_role/list_principals | fallback actors (name-matched fraud_analyst, 3 hardcoded principals) | unauthorized / [] on unavailable DB; explicit in-memory test principals only |
@@ -702,11 +702,11 @@ class CaseService:
     ACCEPTED_DATASET_VERSION = "road-v1"
 
     def _find_seed_file(self) -> Path | None:
-        # S4-RETIRE #303: accepted dataset/import path first (P063_SEED_PATH);
+        # S4-RETIRE #303: accepted dataset/import path first (GREENSENTINEL_SEED_PATH);
         # legacy data/synthetic/seed_data.json is last and still requires a
         # road-v1 manifest to load (see _load_seed_data).
         candidates = [
-            os.getenv("P063_SEED_PATH"),
+            os.getenv("GREENSENTINEL_SEED_PATH"),
             os.getenv("SEED_DATA_PATH"),
             "data/road-v1/seed_data.json",
             "data/synthetic/seed_data.json",
@@ -726,12 +726,12 @@ class CaseService:
                     loaded = json.load(f)
                 manifest = loaded.get("manifest", {}) if isinstance(loaded, dict) else {}
                 if manifest.get("dataset_version") != self.ACCEPTED_DATASET_VERSION:
-                    if os.getenv("P063_ALLOW_LEGACY_SEED") != "1":
+                    if os.getenv("GREENSENTINEL_ALLOW_LEGACY_SEED") != "1":
                         print(
                             f"Warning: Refusing legacy seed without manifest.dataset_version="
                             f"{self.ACCEPTED_DATASET_VERSION}: {seed_file}. "
-                            "Set P063_SEED_PATH to a road-v1 dataset or "
-                            "P063_ALLOW_LEGACY_SEED=1 for explicit legacy import. "
+                            "Set GREENSENTINEL_SEED_PATH to a road-v1 dataset or "
+                            "GREENSENTINEL_ALLOW_LEGACY_SEED=1 for explicit legacy import. "
                             "Starting from accurate empty state."
                         )
                         self._raw_seed = {}

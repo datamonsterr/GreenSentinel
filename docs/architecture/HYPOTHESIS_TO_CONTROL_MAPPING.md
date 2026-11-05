@@ -1,7 +1,7 @@
 # Analyst Hypothesis-to-Control Mapping Specification
 
 ## 1. Design Reference & Stitch Baseline
-* **Stitch Design Project:** [Stitch Analyst Cockpit Workspace (P-063)](https://stitch.withgoogle.com/projects/p-063-analyst-cockpit)
+* **Stitch Design Project:** [Stitch Analyst Cockpit Workspace (GreenSentinel)](https://stitch.withgoogle.com/projects/green-sentinel-analyst-cockpit)
 * **Functional Scope:** Sprint 2 Feature `[S2-F02] Compact analyst cockpit decision workspace` (Issue #59).
 * **Core Standard:** Strict HITL decisioning per [`PRD.md`](../ba/PRD.md) and [`US-L06-04`](../ba/USER_STORIES.md#us-l06-04--decide-an-initial-enforcement-case-phase-1-mvp-core). Every dismissal and adverse sanction requires authorized human sign-off with mandatory written rationale ($\ge 10$ characters). No fabricated evidence; missing sources display as `N/A / Unavailable`.
 

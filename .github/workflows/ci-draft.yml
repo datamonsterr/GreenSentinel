@@ -46,7 +46,7 @@ jobs:
       - name: Configure uv cache
         run: |
           set -euo pipefail
-          export UV_CACHE_DIR="${RUNNER_TEMP}/p063-uv-cache"
+          export UV_CACHE_DIR="${RUNNER_TEMP}/greensentinel-uv-cache"
           mkdir -p "$UV_CACHE_DIR"
           echo "UV_CACHE_DIR=$UV_CACHE_DIR" >> "$GITHUB_ENV"
 
@@ -56,7 +56,7 @@ jobs:
       - name: Cache uv packages
         uses: actions/cache@v6
         with:
-          path: ${{ runner.temp }}/p063-uv-cache
+          path: ${{ runner.temp }}/greensentinel-uv-cache
           key: uv-${{ runner.os }}-${{ hashFiles('requirements.txt', 'uv.lock', 'pyproject.toml') }}
           restore-keys: uv-${{ runner.os }}-
 
@@ -98,7 +98,7 @@ jobs:
       - name: Configure uv cache
         run: |
           set -euo pipefail
-          export UV_CACHE_DIR="${RUNNER_TEMP}/p063-uv-cache"
+          export UV_CACHE_DIR="${RUNNER_TEMP}/greensentinel-uv-cache"
           mkdir -p "$UV_CACHE_DIR"
           echo "UV_CACHE_DIR=$UV_CACHE_DIR" >> "$GITHUB_ENV"
 
@@ -108,7 +108,7 @@ jobs:
       - name: Cache uv packages
         uses: actions/cache@v6
         with:
-          path: ${{ runner.temp }}/p063-uv-cache
+          path: ${{ runner.temp }}/greensentinel-uv-cache
           key: uv-${{ runner.os }}-${{ hashFiles('requirements.txt', 'uv.lock', 'pyproject.toml') }}
           restore-keys: uv-${{ runner.os }}-
 
@@ -205,7 +205,7 @@ jobs:
         # installed on the self-hosted runner (exit 127).
         run: |
           bash scripts/ci_runner_diagnostics.sh
-          export TMPDIR="${RUNNER_TEMP}/p063-vitest-tmp"
+          export TMPDIR="${RUNNER_TEMP}/greensentinel-vitest-tmp"
           mkdir -p "$TMPDIR"
           cd src/webapp
           pnpm test

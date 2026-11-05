@@ -4,7 +4,7 @@
 > **Superseded by [BENCHMARK.md](../../BENCHMARK.md)**.
 > This document is retained for historical audit provenance (2026-10-12 heuristic frozen vs candidate comparison on issue #259).
 
-Evidence recorded on 2026-10-12 for [issue #259](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/259). The original [benchmark report](2026-10-12-heuristic-30k.md) and v1 artifacts remain frozen. This report distinguishes a detector change on unchanged inputs from a separately generated v2 corpus. The source PR head reviewed is `45c1fc1fa77f3bbfbbfa5f8ff79f353bd80802f0`; the frozen detector is `e329dccbd2bb6526509f62b9dec28cd9de3bdadf`.
+Evidence recorded on 2026-10-12 for [issue #259](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/259). The original [benchmark report](2026-10-12-heuristic-30k.md) and v1 artifacts remain frozen. This report distinguishes a detector change on unchanged inputs from a separately generated v2 corpus. The source PR head reviewed is `45c1fc1fa77f3bbfbbfa5f8ff79f353bd80802f0`; the frozen detector is `e329dccbd2bb6526509f62b9dec28cd9de3bdadf`.
 
 During delivery, upstream PR #258 advanced to `58a23051acf596a9c0fb11cfe5913d1b1dbb3ce4`, changing default dialogue generation and adding a different batch under the same `v2/` path. The follow-up integrates those additions as explicit `--profile feedback`, keeps default v1 generation frozen, and moves the evidence corpus to `profiles/evidence-v2`. The upstream `v2` feedback artifacts and their tests are retained. The detector comparisons below remain anchored to the frozen source revision; they do not claim acceptance of the new feedback batch.
 
@@ -75,7 +75,7 @@ The required full `scripts/check.sh` reaches a pre-existing type error in unchan
 
 The first full CI unit run reported 1,054 passes and one GPS-jitter expectation failure. All 40 failing synthetic trips had valid jitter ratios and measured 45-second gaps; the new guardrail correctly blocked them. The corrected test retains its 95% gate and passes its complete 31-test suite. The next CI run passed units but exposed four integration fixtures that lacked measured stall coverage, lifecycle actors or continuous normal telemetry. The bounded repair adds those operational facts and a missing-evidence control; its 15-test suite passes on the reconciled checkout. Final remote CI is recorded separately and remains required for acceptance.
 
-The Railway `p063-benchmark-db` service exists in `caring-renewal/dev` and its TCP proxy list is empty. Live table and recorded-run row counts remain unverified because SSH reports `No registered SSH keys found.` No proxy or key was created. Historical credential revocation also remains unverified; current source removal is not revocation proof. Hosted authentication and live-model quality are not established by these local results. Therefore issue #259 is not reported as fully VALIDATED.
+The Railway `greensentinel-benchmark-db` service exists in `caring-renewal/dev` and its TCP proxy list is empty. Live table and recorded-run row counts remain unverified because SSH reports `No registered SSH keys found.` No proxy or key was created. Historical credential revocation also remains unverified; current source removal is not revocation proof. Hosted authentication and live-model quality are not established by these local results. Therefore issue #259 is not reported as fully VALIDATED.
 
 ## Issue #281 — hardened evidence-v4 corpus and reliability gates
 

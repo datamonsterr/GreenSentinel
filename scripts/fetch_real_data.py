@@ -143,7 +143,7 @@ def fetch_osrm_route(start_lon: float, start_lat: float, end_lon: float, end_lat
     ctx = ssl.create_default_context()
     ctx.check_hostname = False
     ctx.verify_mode = ssl.CERT_NONE
-    req = urllib.request.Request(url, headers={"User-Agent": "P063-GIS-Data-Fetcher/1.0"})
+    req = urllib.request.Request(url, headers={"User-Agent": "GreenSentinel-GIS-Data-Fetcher/1.0"})
     try:
         with urllib.request.urlopen(req, context=ctx, timeout=10) as resp:
             data = json.loads(resp.read().decode())

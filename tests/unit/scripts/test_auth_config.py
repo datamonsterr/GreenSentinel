@@ -8,21 +8,21 @@ from scripts.auth_config import authorized_parties_for, validate_authorized_part
 
 
 def test_authorized_parties_are_explicit_per_environment():
-    assert authorized_parties_for("production") == ("https://p-063.vercel.app,https://p063.vercel.app")
+    assert authorized_parties_for("production") == ("https://green-sentinel.vercel.app,https://greensentinel.vercel.app")
     assert authorized_parties_for("dev") == (
-        "https://p-063-dev.vercel.app,https://dev.p-063.vercel.app,https://dev-p-063.vercel.app,http://localhost:3000,http://127.0.0.1:3000,http://localhost:3100,http://127.0.0.1:3100"
+        "https://green-sentinel-dev.vercel.app,https://dev.green-sentinel.vercel.app,https://dev-green-sentinel.vercel.app,http://localhost:3000,http://127.0.0.1:3000,http://localhost:3100,http://127.0.0.1:3100"
     )
     assert authorized_parties_for("staging") == (
-        "https://p-063-staging.vercel.app,https://staging.p-063.vercel.app,https://staging-p-063.vercel.app"
+        "https://green-sentinel-staging.vercel.app,https://staging.green-sentinel.vercel.app,https://staging-green-sentinel.vercel.app"
     )
 
 
 def test_explicit_override_is_trimmed_and_validated():
     assert (
         authorized_parties_for(
-            "production", " https://p-063.vercel.app,https://p063.vercel.app,https://custom.example "
+            "production", " https://green-sentinel.vercel.app,https://greensentinel.vercel.app,https://custom.example "
         )
-        == "https://p-063.vercel.app,https://p063.vercel.app,https://custom.example"
+        == "https://green-sentinel.vercel.app,https://greensentinel.vercel.app,https://custom.example"
     )
     validate_authorized_parties("https://custom.example")
 
@@ -38,8 +38,8 @@ def test_preview_uses_known_dev_origins_and_never_dynamic_vercel_domain():
 
 
 def test_preview_can_add_one_exact_deployed_vercel_origin():
-    value = authorized_parties_for("pr-105", extra_origins=("https://p-063-git-fix-auth.vercel.app",))
-    assert value.endswith("https://p-063-git-fix-auth.vercel.app")
+    value = authorized_parties_for("pr-105", extra_origins=("https://green-sentinel-git-fix-auth.vercel.app",))
+    assert value.endswith("https://green-sentinel-git-fix-auth.vercel.app")
 
 
 def test_direct_railway_pr_cli_has_no_package_path_requirement():
@@ -56,4 +56,4 @@ def test_direct_railway_pr_cli_has_no_package_path_requirement():
 
 def test_override_must_keep_both_production_aliases():
     with pytest.raises(ValueError):
-        authorized_parties_for("production", "https://p063.vercel.app")
+        authorized_parties_for("production", "https://greensentinel.vercel.app")

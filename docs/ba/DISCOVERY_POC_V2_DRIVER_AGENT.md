@@ -2,17 +2,17 @@
 
 > **Methodology:** BA Zone Senior BA Elicitation Protocol (`ask-why-ba`)  
 > **Session Date:** 2026-09-26  
-> **Author:** Team P-063  
+> **Author:** Team GreenSentinel  
 > **Status:** Historical discovery — **Superseded for Phase 1**
-> **Target Scope:** Deferred POC v2 extension; reference to [existing implementation](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/40), not release acceptance
+> **Target Scope:** Deferred POC v2 extension; reference to [existing implementation](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/40), not release acceptance
 
 ## Current Release Authority
 
 **@datamonsterr adopted the strict Phase 1 [PRD](PRD.md#1-document-control) on 2026-09-30.** All dismissals and adverse sanctions, including warnings, require authorized analyst confirmation plus written rationale. Former autonomous exoneration is superseded; telemetry corroboration can only support a recommendation. Driver mobile/dispute expansion (`US-L06-09/10`, `UC-L06-08/09`) and appeals are deferred, requiring separate scope approval.
 
-Metric, score, and optional top-k elaboration was approved on **2026-10-02** in the [decision baseline](DECISION_LOG.md#approved-phase-1-decision-baseline). CV-01 and operator UAT remain pending. [PR #40](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/40) is **MERGED** at `586caec05ddb7626a1f47066b55154e74d245cc0`; its runtime divergence is tracked by [#73](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/73), owned by [#86](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/86) / [#60](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/60). This historical record does not establish runtime conformance.
+Metric, score, and optional top-k elaboration was approved on **2026-10-02** in the [decision baseline](DECISION_LOG.md#approved-phase-1-decision-baseline). CV-01 and operator UAT remain pending. [PR #40](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/40) is **MERGED** at `586caec05ddb7626a1f47066b55154e74d245cc0`; its runtime divergence is tracked by [#73](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/73), owned by [#86](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/86) / [#60](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/60). This historical record does not establish runtime conformance.
 
-As of upstream PR #93, the corroborated-traffic path no longer introduces the new autonomous-dismissal behavior: it remains pending analyst review. This document records the upstream correction only; issue #73 remains open, and this reconciliation does not accept or close it or claim full runtime DoD. The former PR40 implementation remains historical evidence in the immutable [PR40 source snapshot](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/blob/586caec05ddb7626a1f47066b55154e74d245cc0/src/services/driver_dispute_service.py).
+As of upstream PR #93, the corroborated-traffic path no longer introduces the new autonomous-dismissal behavior: it remains pending analyst review. This document records the upstream correction only; issue #73 remains open, and this reconciliation does not accept or close it or claim full runtime DoD. The former PR40 implementation remains historical evidence in the immutable [PR40 source snapshot](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/blob/586caec05ddb7626a1f47066b55154e74d245cc0/src/services/driver_dispute_service.py).
 
 ---
 
@@ -110,4 +110,4 @@ These stories are historical references to existing implementation, not Phase 1 
 1. **ADR Codification:** Published [`ADR-008: POC v2 Async Driver Dispute Agent, A2A Collaboration, and Autonomous Exoneration Protocol`](../architecture/adr-008-poc-v2-async-driver-agent-and-a2a-collaboration.md).
 2. **System Design:** Widened technical scope in [`docs/architecture/POC_DESIGN.md`](../architecture/POC_DESIGN.md) covering topology, the historical deterministic auto-dismissal proposal, partitioned tool contracts, and API routes.
 3. **Traceability:** Integrated `US-L06-09`, `US-L06-10` into [`docs/ba/USER_STORIES.md`](USER_STORIES.md) and `UC-L06-08`, `UC-L06-09` into [`docs/ba/USE_CASES.md`](USE_CASES.md).
-4. **Historical PR record:** [#35](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/35). Current release authority is stated above; this reference does not assert current PR state.
+4. **Historical PR record:** [#35](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/35). Current release authority is stated above; this reference does not assert current PR state.

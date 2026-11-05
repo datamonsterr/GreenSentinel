@@ -2,8 +2,8 @@
 
 Date: 2026-10-16  
 Author: AGY Implementation Worker  
-Parent Map: [#394](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/394)  
-Child Task: [#423](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/423)  
+Parent Map: [#394](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/394)  
+Child Task: [#423](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/423)  
 Bounded Ownership: `db/migrations/20261016000000_test_store_schema_parity.sql`, `db/rollbacks/20261016000000_test_store_schema_parity.down.sql`, `scripts/rollback_schema_parity_394.py`, `tests/unit/test_db_schema_parity.py`, `tests/integration/test_db_schema_parity_integration.py`, and this document.
 
 ---
@@ -13,13 +13,13 @@ Bounded Ownership: `db/migrations/20261016000000_test_store_schema_parity.sql`, 
 This verification establishes additive schema parity across Railway `dev`, `staging`, and `production` database clones without mutating shared environments or root worker clones.
 
 > [!IMPORTANT]
-> **Isolated Validation Proof Only**: All verification was executed on dedicated, disposable local clones (`test_p063_schema_parity_dev`, `test_p063_schema_parity_staging`, `test_p063_schema_parity_prod`) hosted within local Docker container `p063-postgres` at `127.0.0.1:5432`. No shared database writes, live Railway applies, PR merges, or deployments were performed. Final live application remains blocked until accepted review under coordinator issue [#397](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/397).
+> **Isolated Validation Proof Only**: All verification was executed on dedicated, disposable local clones (`test_greensentinel_schema_parity_dev`, `test_greensentinel_schema_parity_staging`, `test_greensentinel_schema_parity_prod`) hosted within local Docker container `greensentinel-postgres` at `127.0.0.1:5432`. No shared database writes, live Railway applies, PR merges, or deployments were performed. Final live application remains blocked until accepted review under coordinator issue [#397](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/397).
 
 ---
 
 ## 2. Root Cause Analysis of Schema Drift
 
-Original catalog audits (`/tmp/p063-schema-audit.json`, `/tmp/p063-schema-parity-diff.json`) revealed discrepancies across environments:
+Original catalog audits (`/tmp/greensentinel-schema-audit.json`, `/tmp/greensentinel-schema-parity-diff.json`) revealed discrepancies across environments:
 
 1. **Historical Migration In-Place Mutation**:
    - In commit `3277f576896f91e481628cf09efd19699dd4c4f6`, `db/migrations/20261014090000_tester_org_ownership.sql` originally added nullable `organization_id uuid` columns to 8 test-store child tables (`app.test_controls`, `app.test_definition_revisions`, `app.test_events`, `app.test_idempotency_keys`, `app.test_notifications`, `app.test_outbox`, `app.test_runs`, `app.test_samples`).
@@ -37,7 +37,7 @@ Original catalog audits (`/tmp/p063-schema-audit.json`, `/tmp/p063-schema-parity
 
 ## 3. Implementation: Additive Migration 20261016000000
 
-The migration [`db/migrations/20261016000000_test_store_schema_parity.sql`](file:///home/dat/dev/vinuni_aia/P-063-worktrees/worktrees/jev-9e132981a0fe4dd4/db/migrations/20261016000000_test_store_schema_parity.sql) reconciles all differences:
+The migration [`db/migrations/20261016000000_test_store_schema_parity.sql`](file:///home/dat/dev/vinuni_aia/GreenSentinel-worktrees/worktrees/jev-9e132981a0fe4dd4/db/migrations/20261016000000_test_store_schema_parity.sql) reconciles all differences:
 
 1. **Explicit Schema Qualification**: All table, column, and index declarations explicitly use `app.` prefixes with zero reliance on session `search_path`.
 2. **Strictly Additive**:
@@ -62,7 +62,7 @@ The migration [`db/migrations/20261016000000_test_store_schema_parity.sql`](file
 
 Catalog definitions were extracted using `SET LOCAL search_path=pg_catalog` and compared across all three restored disposable clones:
 
-| Metric | `test_p063_schema_parity_dev` | `test_p063_schema_parity_staging` | `test_p063_schema_parity_prod` | Parity Status |
+| Metric | `test_greensentinel_schema_parity_dev` | `test_greensentinel_schema_parity_staging` | `test_greensentinel_schema_parity_prod` | Parity Status |
 |---|---|---|---|---|
 | Total Tables (`app` + `public`) | **71** (70 `app`, 1 `public`) | **71** (70 `app`, 1 `public`) | **71** (70 `app`, 1 `public`) | **100% Match** |
 | Total Columns (`app` + `public`) | **671** (669 `app`, 2 `public`) | **671** (669 `app`, 2 `public`) | **671** (669 `app`, 2 `public`) | **100% Match** |
@@ -104,14 +104,14 @@ Catalog definitions were extracted using `SET LOCAL search_path=pg_catalog` and 
    - **Staging**: SHA256 `71133c4f5020bcbd2066708a4dd4d761607a54ce9311c4d280cc9410670b82f2` (`staging.dump`)
    - **Production**: SHA256 `f72331f9085c5f87ce0d91ebeb018228dfcc84f4205833ca02690fc62a8cc321` (`production.dump`)
 
-Tool script [`scripts/rollback_schema_parity_394.py`](file:///home/dat/dev/vinuni_aia/P-063-worktrees/worktrees/jev-9e132981a0fe4dd4/scripts/rollback_schema_parity_394.py) verifies backup archive availability on disk via `--check-backups`.
+Tool script [`scripts/rollback_schema_parity_394.py`](file:///home/dat/dev/vinuni_aia/GreenSentinel-worktrees/worktrees/jev-9e132981a0fe4dd4/scripts/rollback_schema_parity_394.py) verifies backup archive availability on disk via `--check-backups`.
 
 ---
 
 ## 7. Test Suite Summary
 
-- **Unit Tests**: [`tests/unit/test_db_schema_parity.py`](file:///home/dat/dev/vinuni_aia/P-063-worktrees/worktrees/jev-9e132981a0fe4dd4/tests/unit/test_db_schema_parity.py)
+- **Unit Tests**: [`tests/unit/test_db_schema_parity.py`](file:///home/dat/dev/vinuni_aia/GreenSentinel-worktrees/worktrees/jev-9e132981a0fe4dd4/tests/unit/test_db_schema_parity.py)
   - 10 passed (syntax validation, schema qualification, non-destructive constraints, FK index coverage, quarantine reason registry, rollback script invariants).
-- **Integration Tests**: [`tests/integration/test_db_schema_parity_integration.py`](file:///home/dat/dev/vinuni_aia/P-063-worktrees/worktrees/jev-9e132981a0fe4dd4/tests/integration/test_db_schema_parity_integration.py)
+- **Integration Tests**: [`tests/integration/test_db_schema_parity_integration.py`](file:///home/dat/dev/vinuni_aia/GreenSentinel-worktrees/worktrees/jev-9e132981a0fe4dd4/tests/integration/test_db_schema_parity_integration.py)
   - 5 passed (full backup restore, missing 10 precondition, catalog parity across dev/staging/prod, data hash preservation, idempotency, unambiguous backfill, unknown owner quarantine, conflicting owner preservation).
 - **Total Test Execution**: 15 passed, 0 failed, 0 skipped.

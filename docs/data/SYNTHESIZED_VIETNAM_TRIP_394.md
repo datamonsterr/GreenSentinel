@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-This report documents the creation, empirical profiling, schema reconciliation, benchmarking, and staging of the `synthesized_vietnam_trip` benchmark release (1,000 trips) under P-063 database finalization issue #394 (child task #400).
+This report documents the creation, empirical profiling, schema reconciliation, benchmarking, and staging of the `synthesized_vietnam_trip` benchmark release (1,000 trips) under GreenSentinel database finalization issue #394 (child task #400).
 
 Key achievements:
 1. Reconciled published 40k preset metadata against the pinned Hugging Face manifest (revision `914a36560727f5892a24fba3a4173cb245c963da`), correcting previous inconsistent claims.
@@ -198,7 +198,7 @@ Git hygiene is maintained: `.gitignore` ignores `trips.jsonl` and full predictio
 ### 6.2 Publication Verification & Immutable Commit
 
 The `synthesized_vietnam_trip` profile has been published to the Hugging Face Hub using authorized write credentials, preserving `releases_v1` immutably:
-- **Hub Repository:** `https://huggingface.co/datasets/datamonsterr/p-063-synthesized-trips`
+- **Hub Repository:** `https://huggingface.co/datasets/datamonsterr/green-sentinel-synthesized-trips`
 - **Immutable Commit SHA:** `a914d500b1c536f1dbfb59f8ea4c961bd38b5c7e`
 - **Verified Checksum (`trips_sha256`):** `c4c80903a998420b3a5d68ced5ffb5bb06709fc9ef12817651ab8b89baa628a2`
 - **Verification:** All 1,000 rows were fetched back at revision `a914d500b1c536f1dbfb59f8ea4c961bd38b5c7e` and confirmed bit-for-bit identical with local checksums.

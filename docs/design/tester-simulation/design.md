@@ -185,7 +185,7 @@ Visual sign-off must cover desktop 1440×1000, tablet 1024×900 and mobile 390×
 
 ## Preview verification evidence
 
-On 2026-10-04 the self-contained HTML was opened with the repository Playwright/Chromium dependency. Desktop (1440px), tablet (1024px) and mobile (390px) checks found no document horizontal overflow. Click and arrow-key tool tabs, focus-triggered help, Escape dismissal and the explicit no-request action guard passed; external request count was zero. Desktop and mobile screenshots were captured in `/tmp/p063-tester-desktop.png` and `/tmp/p063-tester-mobile.png`. This is static-preview interaction evidence, not application or hosted UAT. The committed SVG is an authored snapshot, not a browser screenshot.
+On 2026-10-04 the self-contained HTML was opened with the repository Playwright/Chromium dependency. Desktop (1440px), tablet (1024px) and mobile (390px) checks found no document horizontal overflow. Click and arrow-key tool tabs, focus-triggered help, Escape dismissal and the explicit no-request action guard passed; external request count was zero. Desktop and mobile screenshots were captured in `/tmp/greensentinel-tester-desktop.png` and `/tmp/greensentinel-tester-mobile.png`. This is static-preview interaction evidence, not application or hosted UAT. The committed SVG is an authored snapshot, not a browser screenshot.
 
 ## Captured draft browser evidence
 

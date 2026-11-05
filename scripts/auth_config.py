@@ -13,16 +13,16 @@ import subprocess
 from urllib.parse import urlsplit
 
 FIRST_PARTY_ORIGINS = {
-    "production": ("https://p-063.vercel.app", "https://p063.vercel.app"),
+    "production": ("https://green-sentinel.vercel.app", "https://greensentinel.vercel.app"),
     "staging": (
-        "https://p-063-staging.vercel.app",
-        "https://staging.p-063.vercel.app",
-        "https://staging-p-063.vercel.app",
+        "https://green-sentinel-staging.vercel.app",
+        "https://staging.green-sentinel.vercel.app",
+        "https://staging-green-sentinel.vercel.app",
     ),
     "dev": (
-        "https://p-063-dev.vercel.app",
-        "https://dev.p-063.vercel.app",
-        "https://dev-p-063.vercel.app",
+        "https://green-sentinel-dev.vercel.app",
+        "https://dev.green-sentinel.vercel.app",
+        "https://dev-green-sentinel.vercel.app",
     ),
 }
 LOCAL_ORIGINS = ("http://localhost:3000", "http://127.0.0.1:3000")

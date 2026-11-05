@@ -129,7 +129,7 @@ def extract_safe_target_summary(conn_params: dict[str, Any], env_label: str | No
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="P-063 Database Performance Profiler & Index Auditor")
+    parser = argparse.ArgumentParser(description="GreenSentinel Database Performance Profiler & Index Auditor")
     parser.add_argument("--env", choices=["dev", "staging", "production"], help="Railway environment to profile")
     parser.add_argument("--project", default="c49458fb-d741-468f-a3ed-d35b96788f68", help="Railway Project ID")
     parser.add_argument("--service", default="9710a2f5-ed77-472e-8e79-3b748bb73df2", help="Railway Postgres Service ID")

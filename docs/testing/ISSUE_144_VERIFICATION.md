@@ -43,6 +43,6 @@ tests/test_api/test_queue_lease_sync.py::test_foreign_analyst_cannot_release_lea
 
 ### 4. Code Quality & Standards
 ```
-/home/dat/dev/vinuni_aia/P-063/.venv/bin/ruff check src/ tests/
+/home/dat/dev/vinuni_aia/GreenSentinel/.venv/bin/ruff check src/ tests/
 All checks passed!
 ```

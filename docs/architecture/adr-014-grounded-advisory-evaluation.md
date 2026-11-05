@@ -6,7 +6,7 @@ Accepted for implementation and local fixture evaluation on 2026-10-03. Release 
 
 ## Context
 
-[Issue #62](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/62) extends the existing offline forensic reasoning baseline and versioned policy lookup. PRD FR-06 and the Phase 1 ERR-02/ERR-05 scope govern the implementation. The user explicitly authorized bypassing the #64 dependency gate and subsequently authorized reuse of its branch artifacts. Neither instruction accepts #64's DoD or closes that issue.
+[Issue #62](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/62) extends the existing offline forensic reasoning baseline and versioned policy lookup. PRD FR-06 and the Phase 1 ERR-02/ERR-05 scope govern the implementation. The user explicitly authorized bypassing the #64 dependency gate and subsequently authorized reuse of its branch artifacts. Neither instruction accepts #64's DoD or closes that issue.
 
 The previous local draft cited hard-coded clause names, declared heuristic scores calibrated, and constructed benchmark inputs from suite names. Those claims cannot support grounded advisory reasoning.
 

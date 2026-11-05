@@ -1,7 +1,7 @@
 # Issue 153 Verification Report: Analyst Single-Message Context Reset
 
 ## Scope and Context
-- **Issue**: [#153](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/153)
+- **Issue**: [#153](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/153)
 - **Branch**: `feat/153-analyst-context-reset`
 - **Base commit**: `4e23250`
 - **Specification**: Governed by [`FR-WS-01`](../ba/DRIVER_FIRST_REQUIREMENTS.md#remaining-workspace-defaults), [`AC-WS-01`](../ba/DRIVER_FIRST_REQUIREMENTS.md#acceptance-scenarios-and-proof), and [`ADR-021`](../architecture/adr-021-analyst-context-reset.md).
@@ -9,12 +9,12 @@
 
 ## Verification Evidence
 
-All verification commands executed within isolated worktree `/home/dat/dev/vinuni_aia/P-063/.worktrees/delivery-153-20261005`:
+All verification commands executed within isolated worktree `/home/dat/dev/vinuni_aia/GreenSentinel/.worktrees/delivery-153-20261005`:
 
 ### 1. Backend Schema & Model Input Tests
 Executed:
 ```bash
-/home/dat/dev/vinuni_aia/P-063/.venv/bin/pytest tests/test_api/test_analyst_context_reset.py -v
+/home/dat/dev/vinuni_aia/GreenSentinel/.venv/bin/pytest tests/test_api/test_analyst_context_reset.py -v
 ```
 Result:
 ```text
@@ -61,17 +61,17 @@ Result:
 ### 3. Code Quality & Type Safety
 - **Ruff linter**:
   ```bash
-  /home/dat/dev/vinuni_aia/P-063/.venv/bin/ruff check src/ tests/
+  /home/dat/dev/vinuni_aia/GreenSentinel/.venv/bin/ruff check src/ tests/
   ```
   Result: `All checks passed!`
 - **Ruff formatter**:
   ```bash
-  /home/dat/dev/vinuni_aia/P-063/.venv/bin/ruff format --check src/ tests/
+  /home/dat/dev/vinuni_aia/GreenSentinel/.venv/bin/ruff format --check src/ tests/
   ```
   Result: `162 files already formatted`
 - **Mypy type checker**:
   ```bash
-  /home/dat/dev/vinuni_aia/P-063/.venv/bin/mypy src/
+  /home/dat/dev/vinuni_aia/GreenSentinel/.venv/bin/mypy src/
   ```
   Result: `Success: no issues found in 62 source files`
 - **TypeScript compilation**:

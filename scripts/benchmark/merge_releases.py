@@ -23,7 +23,7 @@ import sys
 import uuid
 from pathlib import Path
 
-RELEASE_NS = uuid.uuid5(uuid.NAMESPACE_URL, "p063-benchmark-releases-v1")
+RELEASE_NS = uuid.uuid5(uuid.NAMESPACE_URL, "greensentinel-benchmark-releases-v1")
 PREFIX_RELEASE = {"bm_v1_": "v1", "bm_v2_": "feedback-v2", "bm_v3_": "g1g2-v3"}
 ID_FIELDS = ("trip_id", "assignment_id", "driver_id", "passenger_id", "vehicle_id")
 

@@ -1,13 +1,13 @@
 > Historical POC v2 document. This is not an active Sprint 2 acceptance runbook. Its autonomous-dismissal and driver-expansion scenarios conflict with the current PRD boundary; analyst confirmation remains required. Use the active [manual guide](../manual/README.md) and [contributor rules](../../../CONTRIBUTING.md). Product reconciliation remains tracked separately in #72/#73.
 
-# GreenSentinel (P-063) - POC v2 Manual Test Runbook (Happy & Error Paths)
+# GreenSentinel - POC v2 Manual Test Runbook (Happy & Error Paths)
 
 **Target Audience:** QA Engineers, Product Managers, Fraud Analysts, Technical Presenters (Demo Day)
 **System Architecture:** 3-Tier Layered Architecture (`src/api`, `src/services`, `src/agents`, `src/webapp`)
 **Safety Invariants:** Zero Automated Sanctions (NFR-L06-02); Autonomous Exoneration only with deterministic telemetry proof.
 **Production URLs:**
-- Driver Mobile Portal: `https://p-063-driver.vercel.app/driver`
-- Fraud Analyst Cockpit: `https://p-063.vercel.app/workplace`
+- Driver Mobile Portal: `https://green-sentinel-driver.vercel.app/driver`
+- Fraud Analyst Cockpit: `https://green-sentinel.vercel.app/workplace`
 - Local Backend API: `http://localhost:8000`
 
 ---
@@ -261,7 +261,7 @@ Demonstrate multi-agent collaboration (A2A handoff) when a driver's claim cannot
 ## 6. Mobile Driver Care Portal Walkthrough (`/driver`)
 
 The Driver Care Portal provides an accessible entry point for taxi drivers:
-1. Navigate to `https://p-063-driver.vercel.app/driver` (or `http://localhost:3000/driver`).
+1. Navigate to `https://green-sentinel-driver.vercel.app/driver` (or `http://localhost:3000/driver`).
 2. **Branding & Header:**
    - GreenSM badge and emerald theme matching VinFast EV fleet styling.
    - Title: **Cổng Thông Tin Đối Tác GreenSM (Driver Care Portal)**.
@@ -309,9 +309,9 @@ psql -h localhost -p 54322 -U postgres -d postgres -c "
 ### 8.2 Live Cloud Deployment Status
 | Service | Environment URL | Status | Verified Functionality |
 |---|---|---|---|
-| **Analyst Cockpit** | `https://p-063-dev.vercel.app` | ✅ Active | Clerk sign-in gate, triage queue, rich XML widgets, attachment button |
-| **Driver Care Portal** | `https://p-063-dev.vercel.app/driver` | ✅ Active | Case lists, active sessions, quick-chips, interactive map trigger |
-| **Railway Backend** | `https://p063-backend-dev.up.railway.app` | ✅ Active | Fast redeploy, PostgreSQL connected, 100 cases seeded |
+| **Analyst Cockpit** | `https://green-sentinel-dev.vercel.app` | ✅ Active | Clerk sign-in gate, triage queue, rich XML widgets, attachment button |
+| **Driver Care Portal** | `https://green-sentinel-dev.vercel.app/driver` | ✅ Active | Case lists, active sessions, quick-chips, interactive map trigger |
+| **Railway Backend** | `https://greensentinel-backend-dev.up.railway.app` | ✅ Active | Fast redeploy, PostgreSQL connected, 100 cases seeded |
 
 ### 8.3 Live `agent-browser` Verification Evidence
 1. **Autonomous Exoneration (HP-01):**

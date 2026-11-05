@@ -1,7 +1,7 @@
 [project]
-name = "p-063-agent"
+name = "green-sentinel-agent"
 version = "0.1.0"
-description = "VinUni AI20K Build Phase - Team P-063 Production AI Agent"
+description = "VinUni AI20K Build Phase - Team GreenSentinel Production AI Agent"
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [

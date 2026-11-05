@@ -1,6 +1,6 @@
 # Issue #152 Verification: System Operations Analytics Dashboard
 
-**Issue Reference:** [#152](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/152)  
+**Issue Reference:** [#152](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/152)  
 **Task Type:** Feature (Backend & Frontend)  
 **Date:** 2026-10-05  
 **Author:** Dat Nguyen (@DatTienNguyenn), assisted by Antigravity  
@@ -51,7 +51,7 @@ Deliver an authoritative, organization-wide Operations Analytics Dashboard in th
 ```json
 {
   "scope": "organization",
-  "organization_id": "org-p063",
+  "organization_id": "org-greensentinel",
   "window_days": 30,
   "generated_at": "2026-10-05T08:00:00Z",
   "queue": {

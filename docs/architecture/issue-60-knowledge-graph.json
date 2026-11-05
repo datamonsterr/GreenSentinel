@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "project": {
-    "name": "P-063 issue-60 scoped agent architecture",
+    "name": "GreenSentinel issue-60 scoped agent architecture",
     "languages": [
       "python",
       "typescript",

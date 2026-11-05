@@ -1,6 +1,6 @@
 # Data EDA Notebook Reference Guide
 
-This reference documents the mathematical formulas, visualization patterns, and automated notebook generation structures for P-063 GreenSM fraud adjudication datasets.
+This reference documents the mathematical formulas, visualization patterns, and automated notebook generation structures for GreenSentinel GreenSM fraud adjudication datasets.
 
 ---
 

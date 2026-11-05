@@ -11,19 +11,19 @@ tags:
 - lightgbm
 - onnx
 - gps-telemetry
-- p-063
+- green-sentinel
 metrics:
 - f1
 - accuracy
 model-index:
-- name: p-063-r3d-classifier
+- name: green-sentinel-r3d-classifier
   results:
   - task:
       type: tabular-classification
       name: Ride-Hailing Telemetry Fraud Classification
     dataset:
       type: releases_v2.1
-      name: P-063 Benchmark 10k Releases v2.1
+      name: GreenSentinel Benchmark 10k Releases v2.1
       revision: d52e52ff7dd2cc7b6d23631191d1cdbf32d9f1b636f43117ad496809ac0d3fdf
     metrics:
     - name: Macro-F1 (Held-out Test 6k)
@@ -45,7 +45,7 @@ model-index:
 
 # R3D Stacked Fraud Classifier (Production Bundle)
 
-Production release `r3d-2026.10.18` for Team P-063 (VinUni AI20K Build Phase).
+Production release `r3d-2026.10.18` for Team GreenSentinel (VinUni AI20K Build Phase).
 
 ## Architecture Overview
 

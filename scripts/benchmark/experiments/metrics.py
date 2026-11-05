@@ -1,4 +1,4 @@
-"""Pure evaluation metrics for the P-063 trip-fraud classifier benchmark suite.
+"""Pure evaluation metrics for the GreenSentinel trip-fraud classifier benchmark suite.
 
 Covers all metrics from Epic #494 / Issue #497:
 - Primary: Macro-F1 over 7 classes with 95% bootstrap CI

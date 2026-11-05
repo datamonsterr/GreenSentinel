@@ -2002,9 +2002,9 @@ async def get_test_case_detail(
         "summary": (
             assessment_res.get("forensic_brief")
             or (
-                f"Hồ sơ giám sát P-063: Phát hiện bất thường {anomaly_names[0]}."
+                f"Hồ sơ giám sát GreenSentinel: Phát hiện bất thường {anomaly_names[0]}."
                 if has_anomaly
-                else "Hồ sơ giám sát P-063: Chuyến đi vận hành bình thường."
+                else "Hồ sơ giám sát GreenSentinel: Chuyến đi vận hành bình thường."
             )
         ),
         "abnormalities": [
@@ -2087,7 +2087,7 @@ async def get_test_case_detail(
             "confidence": detected_conf,
             "reason_codes": assessment_res.get("reason_codes", [f"FAULT_{f}" for f in anomaly_names]),
             "forensic_brief": assessment_res.get("forensic_brief")
-            or f"Chuyến đi thử nghiệm giả lập P-063. Phát hiện lỗi: {', '.join(anomaly_names)}.",
+            or f"Chuyến đi thử nghiệm giả lập GreenSentinel. Phát hiện lỗi: {', '.join(anomaly_names)}.",
         },
         "destination": {
             "latitude": dropoff_coords[1],

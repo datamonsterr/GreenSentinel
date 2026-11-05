@@ -3,8 +3,8 @@ services:
     image: postgis/postgis:16-3.4-alpine
     # Per-run isolation: CI exports PG_NAME/POSTGRES_PORT/PGDATA so concurrent
     # runs never share containers, host ports, or data dirs. Defaults keep
-    # local dev on the classic p063-postgres:5432 with ./data.
-    container_name: ${PG_NAME:-p063-postgres}
+    # local dev on the classic greensentinel-postgres:5432 with ./data.
+    container_name: ${PG_NAME:-greensentinel-postgres}
     ports:
       - "${POSTGRES_PORT:-5432}:5432"
     environment:
@@ -23,7 +23,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: ${REDIS_NAME:-p063-redis}
+    container_name: ${REDIS_NAME:-greensentinel-redis}
     ports:
       - "${REDIS_PORT:-6379}:6379"
     restart: unless-stopped
@@ -36,7 +36,7 @@ services:
 
   qdrant:
     image: qdrant/qdrant:v1.19.1
-    container_name: ${QDRANT_NAME:-p063-qdrant}
+    container_name: ${QDRANT_NAME:-greensentinel-qdrant}
     ports:
       - "${QDRANT_PORT:-6333}:6333"
       - "${QDRANT_GRPC_PORT:-6334}:6334"
@@ -53,7 +53,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: p063-backend
+    container_name: greensentinel-backend
     ports:
       - "8000:8000"
     environment:
@@ -81,7 +81,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: p063-agent
+    container_name: greensentinel-agent
     command: ["python", "-m", "src.services.telemetry_queue_worker"]
     environment:
       - DATABASE_URL=postgresql://postgres:postgrespassword@postgres:5432/postgres
@@ -99,11 +99,11 @@ services:
         condition: service_healthy
     restart: unless-stopped
 
-# Explicit per-project subnet: CI exports P063_NETWORK_SUBNET unique per run so
+# Explicit per-project subnet: CI exports GREENSENTINEL_NETWORK_SUBNET unique per run so
 # a stale or exhausted default-address-pool (daemon IPAM leak on runners)
 # cannot block `compose up`. Local dev falls back to the default below.
 networks:
   default:
     ipam:
       config:
-        - subnet: ${P063_NETWORK_SUBNET:-172.30.63.0/24}
+        - subnet: ${GREENSENTINEL_NETWORK_SUBNET:-172.30.63.0/24}

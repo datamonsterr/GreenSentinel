@@ -21,7 +21,7 @@ Index for the single-trip ride-hailing fraud benchmark datasets, generator pipel
 
 ## Datasets and Storage
 
-- **Current Corpus (`releases_v2.1`)**: 40,000 trips, generated via `scripts/benchmark/build_v2/` ([PR #544](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/544)) and published on Hugging Face Hub: <https://huggingface.co/datasets/datamonsterr/p-063-synthesized-trips> (`trips_sha256` `d52e52ff...`, revision `abb8cc8b...`). Bulk data is git-ignored.
+- **Current Corpus (`releases_v2.1`)**: 40,000 trips, generated via `scripts/benchmark/build_v2/` ([PR #544](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/544)) and published on Hugging Face Hub: <https://huggingface.co/datasets/datamonsterr/green-sentinel-synthesized-trips> (`trips_sha256` `d52e52ff...`, revision `abb8cc8b...`). Bulk data is git-ignored.
 - **Historical Realistic Corpus (`releases_v2`)**: 40,000 trips, published on Hugging Face Hub (`trips_sha256` `9986acd1...`, revision `cc8023b7...`).
 - **Historical Merged Corpus (`releases_v1`)**: 40,000 trips (v1 + feedback-v2 + g1g2-v3 + evidence-v4) hosted on Hugging Face Hub (`trips_sha256` `1a0f05b3...`, revision `914a3656...`).
 - **Vietnam Corridor Pilot (`synthesized_vietnam_trip`)**: 1,000 trips grounded in OSM/OSRM road networks ([SYNTHESIZED_VIETNAM_TRIP_394.md](SYNTHESIZED_VIETNAM_TRIP_394.md)), hosted on Hugging Face Hub (`trips_sha256` `c4c80903...`, revision `a914d500...`).

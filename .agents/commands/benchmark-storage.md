@@ -1,4 +1,4 @@
-# benchmark-storage — host, fetch and grow the P-063 benchmark corpora
+# benchmark-storage — host, fetch and grow the GreenSentinel benchmark corpora
 
 Canonical command for the object-storage side of the fraud benchmark: where the
 bulk corpora live, how to pull them, how to publish a new generation, and how a
@@ -13,7 +13,7 @@ grown batch becomes the "latest benchmark". Load `benchmark-ai-agent` and
 ## 0. Backend and credentials
 
 - Backend: **Hugging Face Hub** (public dataset repo). Default id
-  `datamonsterr/p-063-synthesized-trips`; override with `P063_BENCHMARK_HF_REPO`.
+  `datamonsterr/green-sentinel-synthesized-trips`; override with `GREENSENTINEL_BENCHMARK_HF_REPO`.
 - One-time auth (never commit a token):
   ```bash
   mkdir -p ~/.cache/huggingface
@@ -42,7 +42,7 @@ aborts on mismatch. Then benchmark normally:
 python scripts/benchmark/merge_releases.py --combined <build>/data/benchmark-10k/combined_trips.jsonl \
   --v4 <worktree>/data/benchmark-10k/profiles/evidence-v4/trips.jsonl --out /tmp/releases_v1
 python scripts/benchmark/publish_dataset.py \
-  --repo datamonsterr/p-063-synthesized-trips \
+  --repo datamonsterr/green-sentinel-synthesized-trips \
   --release-dir /tmp/releases_v1 --release-name releases_v1
 ```
 

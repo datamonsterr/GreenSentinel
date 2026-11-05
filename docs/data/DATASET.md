@@ -1,9 +1,9 @@
-# P-063 Ride-Hailing Fraud & Violation Benchmark — Dataset Card
+# GreenSentinel Ride-Hailing Fraud & Violation Benchmark — Dataset Card
 
 A synthetic, deterministic benchmark for detecting **fraud and violations in a single ride-hailing trip**. Every row represents one trip (*bundle*). This document defines the **current synthetic research corpus (`releases_v2.1`)**, its generation methodology, distribution priors, input boundaries, known leaks, and release history.
 
-**Repository:** [AI20K-Build-Phase-Cohort-4/P-063](https://github.com/AI20K-Build-Phase-Cohort-4/P-063)  
-**Historical Releases (HF Hub):** [datamonsterr/p-063-synthesized-trips](https://huggingface.co/datasets/datamonsterr/p-063-synthesized-trips)  
+**Repository:** [AI20K-Build-Phase-Cohort-4/GreenSentinel](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel)  
+**Historical Releases (HF Hub):** [datamonsterr/green-sentinel-synthesized-trips](https://huggingface.co/datasets/datamonsterr/green-sentinel-synthesized-trips)  
 **Detailed Source Cards:** [DATASET_CARDS.md](DATASET_CARDS.md)  
 **Benchmark Suite & Evaluation Results:** [BENCHMARK.md](BENCHMARK.md)  
 **AutoResearch Loop & Experiments:** [AUTORESEARCH.md](AUTORESEARCH.md)  
@@ -12,7 +12,7 @@ A synthetic, deterministic benchmark for detecting **fraud and violations in a s
 
 ## 1. Problem Framing and Violation Classes
 
-P-063 detects ride-hailing violations from operational trip evidence. Predictions are strictly **advisory** to assist human analysts; models never execute automated sanctions ([ADR-013](../architecture/adr-013-jev-advisory-anomaly-scoring-and-single-trip-fraud.md), [ADR-025](../architecture/adr-025-benchmark-evidence-boundaries.md)).
+GreenSentinel detects ride-hailing violations from operational trip evidence. Predictions are strictly **advisory** to assist human analysts; models never execute automated sanctions ([ADR-013](../architecture/adr-013-jev-advisory-anomaly-scoring-and-single-trip-fraud.md), [ADR-025](../architecture/adr-025-benchmark-evidence-boundaries.md)).
 
 The benchmark evaluates 7 mutually exclusive target categories:
 
@@ -30,7 +30,7 @@ The benchmark evaluates 7 mutually exclusive target categories:
 
 ## 2. Current Corpus Card: `releases_v2.1`
 
-The active benchmark corpus is **`releases_v2.1`**, generated locally via `scripts/benchmark/build_v2/` ([PR #544](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/544), [Issue #539](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/539)).
+The active benchmark corpus is **`releases_v2.1`**, generated locally via `scripts/benchmark/build_v2/` ([PR #544](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/544), [Issue #539](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/539)).
 
 ### 2.1 Corpus Specifications
 
@@ -45,7 +45,7 @@ The active benchmark corpus is **`releases_v2.1`**, generated locally via `scrip
 | **`trips.jsonl` SHA-256** | `d52e52ff7dd2cc7b6d23631191d1cdbf32d9f1b636f43117ad496809ac0d3fdf` |
 | **Driver Split Ratio** | 70% Train (28,000 trips) / 15% Validation (6,000 trips) / 15% Test (6,000 trips) |
 | **Split Partition Method** | Hash-grouped by `driver_id` (zero driver overlap across train/val/test) |
-| **Storage Status** | Published on Hugging Face Hub (`datamonsterr/p-063-synthesized-trips`, revision `abb8cc8b2464aacdcbec0aab039ef4e066f71f8e`); originally built locally via `build_v2` |
+| **Storage Status** | Published on Hugging Face Hub (`datamonsterr/green-sentinel-synthesized-trips`, revision `abb8cc8b2464aacdcbec0aab039ef4e066f71f8e`); originally built locally via `build_v2` |
 
 ### 2.2 Class Balance and Enrichment
 
@@ -87,11 +87,11 @@ Parameters in `scripts/benchmark/build_v2/config.py` enforce empirical kinematic
 
 ### 3.1 Fetch Current Synthetic Research Corpus (`releases_v2.1`) from Hugging Face Hub
 
-`releases_v2.1` is hosted on Hugging Face Hub under [`datamonsterr/p-063-synthesized-trips`](https://huggingface.co/datasets/datamonsterr/p-063-synthesized-trips) (prior local-only status without write tokens is historical). Fetch the corpus pinned to its immutable commit:
+`releases_v2.1` is hosted on Hugging Face Hub under [`datamonsterr/green-sentinel-synthesized-trips`](https://huggingface.co/datasets/datamonsterr/green-sentinel-synthesized-trips) (prior local-only status without write tokens is historical). Fetch the corpus pinned to its immutable commit:
 
 ```bash
 # Fetch current 40k synthetic research corpus (releases_v2.1)
-hf download datamonsterr/p-063-synthesized-trips \
+hf download datamonsterr/green-sentinel-synthesized-trips \
   --repo-type dataset \
   --include "releases_v2.1/*" \
   --revision abb8cc8b2464aacdcbec0aab039ef4e066f71f8e \
@@ -118,7 +118,7 @@ sha256sum data/benchmark-10k/releases_v2.1/trips.jsonl
 
 - **Historical `releases_v2` (40k)**:
   ```bash
-  hf download datamonsterr/p-063-synthesized-trips \
+  hf download datamonsterr/green-sentinel-synthesized-trips \
     --repo-type dataset \
     --include "releases_v2/*" \
     --revision cc8023b7022fdd5392a5655135712cc748967814 \
@@ -176,7 +176,7 @@ _SCRUB_PREFIXES = ("expected_", "simulation_", "anomaly_")
 
 ## 5. Known Dataset Leakage and Limits
 
-An exhaustive audit of `releases_v2.1` ([R3C_LEAK_AUDIT.md](experiments/R3C_LEAK_AUDIT.md), [PR #546](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/546)) identified three structural properties:
+An exhaustive audit of `releases_v2.1` ([R3C_LEAK_AUDIT.md](experiments/R3C_LEAK_AUDIT.md), [PR #546](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/546)) identified three structural properties:
 
 1. **`platform_incident` Generator Leak**:
    `platform_incident.kind == TELEMETRY_ANOMALY` occurred on 12/12 `ERR-05` dev300 trips and zero other classes; `NETWORK_OUTAGE` occurred on 17/17 `insufficient_evidence` trips. This generator artifact is excluded from leak-audited models (R3C, R3D).
@@ -194,8 +194,8 @@ An exhaustive audit of `releases_v2.1` ([R3C_LEAK_AUDIT.md](experiments/R3C_LEAK
 | `evidence-v4` | 2026-10-12 | 10,000 | 20261011 | `8379d090a55650c5d476b0ad7edbe5668c276591ed4688c75f05ce6626923071` | Hardened v1 profile ([ADR-025](../architecture/adr-025-benchmark-evidence-boundaries.md)); decoupled cancellation enums |
 | `releases_v1` | 2026-10-12..16 | 40,000 | — | `1a0f05b3e1276a0844f27f8d380e0fa35bf259bf896e053f36a4450702d759a2` | Merged v1 + feedback-v2 + g1g2-v3 + evidence-v4; HF revision `914a3656...` |
 | `synthesized_vietnam_trip` | 2026-10-16 | 1,000 | 20261015 | `c4c8090333d45543666b6c8ba8735df68b55d28b3a58e65860d5bfa780d6b412` | 1,000-trip OSM/OSRM Vietnam road corridors; HF revision `a914d500...` |
-| `releases_v2` | 2026-10-17 | 40,000 | 20261017 | `9986acd1b3cefd118f2696bd4ae3c3b3dd67e0ae210808792eae5e8fd8441d5d` | First `build_v2` realistic release ([PR #501](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/501)); 28k/6k/6k driver split |
-| **`releases_v2.1`** | **2026-10-18** | **40,000** | **20261017** | `d52e52ff7dd2cc7b6d23631191d1cdbf32d9f1b636f43117ad496809ac0d3fdf` | **Current synthetic research corpus** ([PR #544](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/544)); driver objection shortcut removed |
+| `releases_v2` | 2026-10-17 | 40,000 | 20261017 | `9986acd1b3cefd118f2696bd4ae3c3b3dd67e0ae210808792eae5e8fd8441d5d` | First `build_v2` realistic release ([PR #501](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/501)); 28k/6k/6k driver split |
+| **`releases_v2.1`** | **2026-10-18** | **40,000** | **20261017** | `d52e52ff7dd2cc7b6d23631191d1cdbf32d9f1b636f43117ad496809ac0d3fdf` | **Current synthetic research corpus** ([PR #544](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/544)); driver objection shortcut removed |
 | `dev300` | 2026-10-18 | 300 | 20261017 | `cd008ee10b22520fbd71598d1718d06cf9ba9a9f3af38ca8736a11019a9a9ed9` | Stratified 300-trip screening subset of `releases_v2.1` validation split |
 
 ---

@@ -207,14 +207,14 @@ Send only tokenized case identifiers and minimum feature/evidence summary. Revie
 ## 5. Configure LangSmith
 
 1. Create LangSmith workspace.
-2. Create environment projects: `p063-development`, `p063-staging`, `p063-production`.
+2. Create environment projects: `greensentinel-development`, `greensentinel-staging`, `greensentinel-production`.
 3. Create project-scoped API key.
 4. Set on Railway API and worker:
 
 ```dotenv
 LANGSMITH_API_KEY=your-langsmith-key
 LANGSMITH_TRACING=true
-LANGSMITH_PROJECT=p063-production
+LANGSMITH_PROJECT=greensentinel-production
 LANGSMITH_ENDPOINT=https://api.smith.langchain.com
 ```
 
@@ -236,7 +236,7 @@ Create one Railway project with development/staging and production environments.
 
 ### API service
 
-- Name: `p063-api`
+- Name: `greensentinel-api`
 - Root directory: repository root
 - Builder: Dockerfile
 - Start command:
@@ -252,7 +252,7 @@ Railway injects `PORT`; application must bind it. Railway healthchecks gate depl
 
 ### Worker service
 
-- Name: `p063-worker`
+- Name: `greensentinel-worker`
 - Root directory: repository root
 - Builder: same Dockerfile/image
 - Start command:
@@ -264,7 +264,7 @@ python -m src.worker
 - Public domain: disabled
 - Health: use worker heartbeat/job-lease monitoring, not API `/health`
 
-Use Railway shared variables for database, OpenRouter, and LangSmith settings, then reference them from both services. Keep API-only Clerk/CORS variables on `p063-api`. Seal secrets after configuration if workflow does not require copying them to preview environments.
+Use Railway shared variables for database, OpenRouter, and LangSmith settings, then reference them from both services. Keep API-only Clerk/CORS variables on `greensentinel-api`. Seal secrets after configuration if workflow does not require copying them to preview environments.
 
 Do not run same migration as pre-deploy command on API and worker: services can deploy concurrently and race. Run one explicit migration job before application services. Railway legacy `railway.toml`/`railway.json` Config as Code is deprecated and scheduled to stop for legacy services on 2026-12-01; use Railway Infrastructure as Code or dashboard settings for new setup.
 
@@ -328,13 +328,13 @@ The CI/CD pipeline deploys Dev on `main` pushes and supports gated manual enviro
 
 | Trigger | Target Environment | Frontend Domain (Vercel) | Backend API Target (Railway) | Database Migrations (PostgreSQL) |
 |---|---|---|---|---|
-| Gated Staging dispatch | Staging | `https://p-063-staging.vercel.app` (optional `https://staging.p-063.vercel.app`) | `RAILWAY_STAGING_SERVICE_ID` / `RAILWAY_STAGING_ENVIRONMENT_ID` (`https://p063-backend-staging.up.railway.app`) | `STAGING_DATABASE_URL` |
-| Gated Production dispatch from `main` | Production | `https://p-063.vercel.app` | `RAILWAY_SERVICE_ID` / `RAILWAY_ENVIRONMENT_ID` (`https://p063-backend-production.up.railway.app`) | `DATABASE_URL` |
-| `main` push or Dev dispatch | Development | `https://p-063-dev.vercel.app` (canonical) | `RAILWAY_DEV_SERVICE_ID` / `RAILWAY_DEV_ENVIRONMENT_ID` (`https://p063-backend-dev.up.railway.app`) | `DEV_DATABASE_URL` |
+| Gated Staging dispatch | Staging | `https://green-sentinel-staging.vercel.app` (optional `https://staging.green-sentinel.vercel.app`) | `RAILWAY_STAGING_SERVICE_ID` / `RAILWAY_STAGING_ENVIRONMENT_ID` (`https://greensentinel-backend-staging.up.railway.app`) | `STAGING_DATABASE_URL` |
+| Gated Production dispatch from `main` | Production | `https://green-sentinel.vercel.app` | `RAILWAY_SERVICE_ID` / `RAILWAY_ENVIRONMENT_ID` (`https://greensentinel-backend-production.up.railway.app`) | `DATABASE_URL` |
+| `main` push or Dev dispatch | Development | `https://green-sentinel-dev.vercel.app` (canonical) | `RAILWAY_DEV_SERVICE_ID` / `RAILWAY_DEV_ENVIRONMENT_ID` (`https://greensentinel-backend-dev.up.railway.app`) | `DEV_DATABASE_URL` |
 
 Key mechanics:
-1. **Vercel deployment and aliasing**: Builds the prebuilt bundle from the repository root, waits for project-scoped API readiness, then assigns the environment alias through `scripts/vercel_project.py`. The canonical development URL is `https://p-063-dev.vercel.app` (nested subdomains like `dev.p-063.vercel.app` fail wildcard SSL/DNS verification on Vercel).
-2. **Railway Dynamic Scoping**: `deploy-railway.yml` checks `$GITHUB_REF_NAME` to route deployments to dedicated service/environment IDs, falling back gracefully to primary project defaults. The development backend is deployed to `https://p063-backend-dev.up.railway.app`.
+1. **Vercel deployment and aliasing**: Builds the prebuilt bundle from the repository root, waits for project-scoped API readiness, then assigns the environment alias through `scripts/vercel_project.py`. The canonical development URL is `https://green-sentinel-dev.vercel.app` (nested subdomains like `dev.green-sentinel.vercel.app` fail wildcard SSL/DNS verification on Vercel).
+2. **Railway Dynamic Scoping**: `deploy-railway.yml` checks `$GITHUB_REF_NAME` to route deployments to dedicated service/environment IDs, falling back gracefully to primary project defaults. The development backend is deployed to `https://greensentinel-backend-dev.up.railway.app`.
 3. **PostgreSQL Migration Targeting**: `scripts/migrate_postgres.py` applies migrations and seeds to the matching environment database URL, configuring PostGIS in schema `extensions`.
 4. **CORS & Clerk Invariants**: `src/config.py` allows all target domains in `cors_origins` and `clerk_authorized_parties`, while `src/main.py` provides dynamic redirects via `VERCEL_APP_URL`.
 
@@ -345,7 +345,7 @@ After Vercel production URL exists:
 1. Add exact Vercel/custom origin to Railway API `CORS_ORIGINS`.
 2. Add same origin to `CLERK_AUTHORIZED_PARTIES`.
 3. Configure production domain in Clerk.
-4. Confirm Vercel `NEXT_PUBLIC_API_BASE_URL` points to Railway API (`https://p063-backend-dev.up.railway.app` for dev, `https://p063-backend-production.up.railway.app` for production).
+4. Confirm Vercel `NEXT_PUBLIC_API_BASE_URL` points to Railway API (`https://greensentinel-backend-dev.up.railway.app` for dev, `https://greensentinel-backend-production.up.railway.app` for production).
 5. Redeploy Railway API via the IaC saved plan (`railway config plan --out railway-plan.json`, then `railway config apply --plan railway-plan.json --yes` per `deploy-railway.yml`), then Vercel web. Project resources are owned by `.railway/railway.ts` (see `railway config plan` for drift); persistent envs refuse `APP_ENV=test`/`TEST_AUTH_ENABLED`.
 
 Code-deploys need per-environment project tokens (`railway link` rejects API
@@ -368,7 +368,7 @@ workflow change.
 
 [`scripts/auth_config.py`](../scripts/auth_config.py) declares the frontend
 origins for each deployment. The canonical dev frontend is
-`https://p-063-dev.vercel.app` (paired with Railway dev backend `https://p063-backend-dev.up.railway.app`); older dotted/dash aliases are retained for backwards compatibility.
+`https://green-sentinel-dev.vercel.app` (paired with Railway dev backend `https://greensentinel-backend-dev.up.railway.app`); older dotted/dash aliases are retained for backwards compatibility.
 Railway deployments write the generated `CLERK_AUTHORIZED_PARTIES` before
 starting the deployment, so an obsolete explicit Railway value cannot silently
 override corrected application defaults. An optional GitHub environment variable

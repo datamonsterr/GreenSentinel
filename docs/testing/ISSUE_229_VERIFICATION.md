@@ -59,10 +59,10 @@ Provenance block for case `…038` v1: provider `geoapify`, style `osm-bright`,
 
 ## Hosted preview validation (PR #316)
 
-- Railway preview backend deployed from this branch: `https://p063-backend-pr-316.up.railway.app`
+- Railway preview backend deployed from this branch: `https://greensentinel-backend-pr-316.up.railway.app`
   (`/health` ⇒ `{"status":"ok","env":"development","database":"connected"}`; service,
   Postgres, Redis, Qdrant all `SUCCESS` in the `pr-316` environment).
-- Vercel webapp preview deployed: `https://p-063-c1xkl8t9x-datpt226024-husteduvns-projects.vercel.app`
+- Vercel webapp preview deployed: `https://green-sentinel-c1xkl8t9x-datpt226024-husteduvns-projects.vercel.app`
   (responds; Clerk-origin authorization set by `authorize_preview.sh`).
 - CI gates attributable to this branch all green: Code Quality & Linting, Unit Tests,
   Frontend Vitest & Typecheck, and the full Local Docker integration/agent/E2E suite

@@ -2,7 +2,7 @@
 
 ## Presentation Structure (10 Slides)
 
-1. **Title**: Team P-063, GreenSentinel, team members, VinUni AI20K.
+1. **Title**: Team GreenSentinel, team members, VinUni AI20K.
 2. **Problem Statement**: Concrete user pain point, market data, inefficiencies.
 3. **Solution**: AI Agent system overview and unique value proposition.
 4. **Live Product Demo**: Video recording or live interaction walkthrough.

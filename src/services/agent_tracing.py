@@ -43,15 +43,15 @@ def make_trace_identity(
     prompt_version: str,
     span_role: str = "agent",
 ) -> dict[str, str]:
-    trace_id = uuid5(NAMESPACE_URL, f"p063:{case_id}:{run_id}").hex
-    root_span_id = uuid5(NAMESPACE_URL, f"p063:{trace_id}:agent").hex[:16]
-    span_id = root_span_id if span_role == "agent" else uuid5(NAMESPACE_URL, f"p063:{trace_id}:{span_role}").hex[:16]
+    trace_id = uuid5(NAMESPACE_URL, f"greensentinel:{case_id}:{run_id}").hex
+    root_span_id = uuid5(NAMESPACE_URL, f"greensentinel:{trace_id}:agent").hex[:16]
+    span_id = root_span_id if span_role == "agent" else uuid5(NAMESPACE_URL, f"greensentinel:{trace_id}:{span_role}").hex[:16]
     identity = {
         "request_id": request_id,
         "run_id": run_id,
         "trace_id": trace_id,
         "span_id": span_id,
-        "service.name": "p063-backend",
+        "service.name": "greensentinel-backend",
         "deployment.environment": environment,
         "gen_ai.request.model": model,
         "gen_ai.prompt.version": prompt_version,
@@ -83,7 +83,7 @@ def _trace_scope(identity: dict[str, Any], *, name: str, run_type: Literal["chai
             tracing_context(
                 enabled=True,
                 client=client,
-                project_name=os.getenv("LANGSMITH_PROJECT", os.getenv("LANGCHAIN_PROJECT", "p063-agent-runtime")),
+                project_name=os.getenv("LANGSMITH_PROJECT", os.getenv("LANGCHAIN_PROJECT", "greensentinel-agent-runtime")),
             )
         )
         run = stack.enter_context(

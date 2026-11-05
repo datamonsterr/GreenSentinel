@@ -36,7 +36,7 @@ CUSTOMER_COUNT = 1000
 BATCH_SIZE = 100
 
 DEFAULT_TEMPLATE_VERSION = "v1"
-DEFAULT_SEED = "p063-s4-actors"
+DEFAULT_SEED = "greensentinel-s4-actors"
 
 _LABEL_RE = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$")
 

@@ -32,7 +32,7 @@ except ModuleNotFoundError:  # pragma: no cover - exercised by direct CLI invoca
 DEFAULT_PROJECT_ID = "c49458fb-d741-468f-a3ed-d35b96788f68"
 DEFAULT_SERVICE_ID = "d83b1b1b-ffb9-4565-ad7f-8284bb2403a9"
 DEFAULT_DEV_ENV_ID = "e0d4551b-ff56-4f0f-9dd0-ef3c74af31cb"
-DEFAULT_DEV_URL = "https://p063-backend-dev.up.railway.app"
+DEFAULT_DEV_URL = "https://greensentinel-backend-dev.up.railway.app"
 RAILWAY_WORKFLOW = "deploy-railway.yml"
 DEFAULT_PROVISIONING_TIMEOUT = 15 * 60
 DEFAULT_PROVISIONING_POLL = 10
@@ -170,7 +170,7 @@ def prepare_preview_schema(service_id: str, project_id: str, env_name: str, pr_n
         head_sha,
     ]
     try:
-        with tempfile.TemporaryDirectory(prefix="p063-railway-ssh-") as temp_home:
+        with tempfile.TemporaryDirectory(prefix="greensentinel-railway-ssh-") as temp_home:
             ssh_dir = os.path.join(temp_home, ".ssh")
             os.makedirs(ssh_dir, mode=0o700)
             key_path = os.path.join(ssh_dir, "id_ed25519")
@@ -207,7 +207,7 @@ def prepare_preview_schema(service_id: str, project_id: str, env_name: str, pr_n
                 timeout=30,
             )
             fingerprint = (fingerprint_result.stdout or "").split()[1]
-            key_name = f"p063-pr-{pr_number}-{os.path.basename(temp_home)[-12:]}"
+            key_name = f"greensentinel-pr-{pr_number}-{os.path.basename(temp_home)[-12:]}"
             subprocess.run(
                 ["railway", "ssh", "keys", "add", "--key", f"{key_path}.pub", "--name", key_name],
                 check=True,
@@ -607,7 +607,7 @@ def wait_for_health(url: str, timeout_seconds: int = 60) -> bool:
 def get_railway_workflow_runs(pr_number: int, head_sha: str) -> list[dict[str, Any]]:
     """Read workflow metadata with authenticated CLI or runner-token REST."""
     endpoint = (
-        f"repos/AI20K-Build-Phase-Cohort-4/P-063/actions/workflows/{RAILWAY_WORKFLOW}"
+        f"repos/AI20K-Build-Phase-Cohort-4/GreenSentinel/actions/workflows/{RAILWAY_WORKFLOW}"
         f"/runs?event=pull_request&head_sha={head_sha}&per_page=20"
     )
     try:
@@ -621,7 +621,7 @@ def get_railway_workflow_runs(pr_number: int, head_sha: str) -> list[dict[str, A
             headers={
                 "Authorization": f"Bearer {token}",
                 "Accept": "application/vnd.github+json",
-                "User-Agent": "P-063-preview-ci",
+                "User-Agent": "GreenSentinel-preview-ci",
             },
         )
         with urllib.request.urlopen(request, timeout=30) as response:
@@ -723,7 +723,7 @@ def setup_pr(
                     break
 
     if not domain:
-        domain = f"p063-backend-{env_name}.up.railway.app"
+        domain = f"greensentinel-backend-{env_name}.up.railway.app"
 
     # Preview environments must resolve their own Postgres service reference.
     # Never copy DEV_DATABASE_URL: that silently points previews at shared dev data.
@@ -738,7 +738,7 @@ def setup_pr(
     if not set_service_variable(service_id, project_id, env_name, "CLERK_AUTHORIZED_PARTIES", authorized_parties):
         raise RuntimeError("failed to configure Clerk authorized parties for preview")
 
-    if head_sha and not set_service_variable(service_id, project_id, env_name, "P063_PREVIEW_HEAD_SHA", head_sha):
+    if head_sha and not set_service_variable(service_id, project_id, env_name, "GREENSENTINEL_PREVIEW_HEAD_SHA", head_sha):
         raise RuntimeError("failed to record preview head SHA")
     preview_url = f"https://{domain}"
     print(f"[*] Deploying backend service to '{env_name}'...")
@@ -813,7 +813,7 @@ def get_url(
             check=True,
             timeout=15,
         )
-        if json.loads(result.stdout).get("P063_PREVIEW_HEAD_SHA") != head_sha:
+        if json.loads(result.stdout).get("GREENSENTINEL_PREVIEW_HEAD_SHA") != head_sha:
             raise RuntimeError("Railway preview head does not match requested head")
     domain = get_service_domain(service_id, env_name)
     if domain:

@@ -1,7 +1,7 @@
 # ADR-025: Organization Contracts and Tenant Isolation (S4-CONTRACT #291 / S4-TENANT #294)
 
 ## Status
-Accepted, 2026-10-12. Issues [#291](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/291) (contract), [#294](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/294) (implementation).
+Accepted, 2026-10-12. Issues [#291](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/291) (contract), [#294](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/294) (implementation).
 
 ## Context
 Clerk provides browser identity, but authorization and tenancy live in Postgres

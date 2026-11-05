@@ -1,6 +1,6 @@
-# Contributing to P-063
+# Contributing to GreenSentinel
 
-Use [GitHub Issues](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues) for features, user stories, tasks, bugs, ownership, priorities, dependencies and progress. Keep acceptance criteria and Definition of Done (DoD) in the issue. Do not copy the backlog or issue bodies into Markdown files. Repository docs hold product specifications, design decisions and historical evidence; link them from issues.
+Use [GitHub Issues](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues) for features, user stories, tasks, bugs, ownership, priorities, dependencies and progress. Keep acceptance criteria and Definition of Done (DoD) in the issue. Do not copy the backlog or issue bodies into Markdown files. Repository docs hold product specifications, design decisions and historical evidence; link them from issues.
 
 ## Choose the smallest useful issue
 
@@ -12,7 +12,7 @@ Use [GitHub Issues](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues) 
 | Bug | Bug | A reproducible failure or confirmed specification mismatch |
 | Documentation | Task + `documentation` label | A specification, decision or contributor-documentation change |
 
-Start with the [issue chooser](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/new/choose). Search open and closed issues first. Use a clear outcome-based title, context/specification links, scope, acceptance/DoD checklist and validation plan. Add one accountable assignee, a priority (`priority:P0`, `priority:P1`, `priority:P2`) and a milestone when scheduled. Existing source IDs belong in issue context, not in a parallel task register.
+Start with the [issue chooser](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/new/choose). Search open and closed issues first. Use a clear outcome-based title, context/specification links, scope, acceptance/DoD checklist and validation plan. Add one accountable assignee, a priority (`priority:P0`, `priority:P1`, `priority:P2`) and a milestone when scheduled. Existing source IDs belong in issue context, not in a parallel task register.
 
 A feature may stand alone. Add a User Story or Task as a native sub-issue only when it has a separately assignable and verifiable outcome. Do not create all three levels by default; keep mechanical implementation steps in the issue checklist. A parent is complete only when its own acceptance criteria and all required sub-issues are accepted. Existing `feature` and `bug` labels are compatibility tags; native issue type is authoritative.
 
@@ -81,6 +81,6 @@ GitHub creation using `--body-file` should receive a filled body without templat
 
 [PRD](docs/ba/PRD.md) and [MVP](docs/ba/MVP.md) govern Phase 1. The user confirmed strict PRD scope: analyst confirmation is required for dismissal and sanctions; driver mobile expansion remains deferred. PR #40 is existing implementation to review, not approval to change those rules. Keep task-specific reconciliation in the relevant GitHub issue.
 
-This repository is public. Keep real credentials in ignored local `.env` files; use only placeholders in `.env.example`. Never extract or print token/credential files during GitHub operations. Rotate exposed keys and follow the security runbook. Report vulnerabilities through [private reporting](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/security/advisories/new).
+This repository is public. Keep real credentials in ignored local `.env` files; use only placeholders in `.env.example`. Never extract or print token/credential files during GitHub operations. Rotate exposed keys and follow the security runbook. Report vulnerabilities through [private reporting](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/security/advisories/new).
 
 Follow the [Code of Conduct](CODE_OF_CONDUCT.md).

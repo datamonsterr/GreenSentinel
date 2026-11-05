@@ -19,7 +19,7 @@ def test_docker_integration_queue_does_not_replace_pending_ci():
     wf = _read(".github/workflows/ci.yml")
     docker_job = wf.split("  integration-tests:", 1)[1].split("\n  browser-e2e:", 1)[0]
     concurrency = docker_job.split("\n    concurrency:", 1)[1].split("\n    env:", 1)[0]
-    assert "group: p063-docker-services" in concurrency
+    assert "group: greensentinel-docker-services" in concurrency
     assert "queue: max" in concurrency, (
         "required integration runs must queue instead of replacing an existing pending Docker job"
     )
@@ -141,7 +141,7 @@ def test_ci_caches_playwright_browsers():
 def test_ci_caches_uv_packages():
     wf = _read(".github/workflows/ci.yml")
     assert "astral-sh/setup-uv" in wf, "uv must come from setup-uv (guaranteed on PATH)"
-    assert "UV_CACHE_DIR" in wf and "p063-uv-cache" in wf, (
+    assert "UV_CACHE_DIR" in wf and "greensentinel-uv-cache" in wf, (
         "uv cache must live in an isolated per-run dir, not shared ~/.cache/uv"
     )
 

@@ -16,7 +16,7 @@ Keep three inventories distinct:
 |---|---|---|
 | Porto source trips | Movement geometry, nominal sampling, source metadata | Geographic and kinematic profiling, subject to missingness |
 | MiPo benchmark variants | Geometry plus organic/injected outlier labels | Detection of the supplied outlier definitions |
-| P-063 augmented replay | Source geometry plus explicitly generated operational context | Software behavior on a simulation with declared assumptions |
+| GreenSentinel augmented replay | Source geometry plus explicitly generated operational context | Software behavior on a simulation with declared assumptions |
 
 ## 2. What GPS evidence can establish
 
@@ -24,7 +24,7 @@ An unusual route is an observation. A violation is a conclusion requiring a poli
 
 This distinction follows established trajectory research: iBAT groups routes by origin/destination and detects rare paths, while discussing both taxi detours and road network changes as applications. Therefore its anomaly score alone does not resolve the cause. [iBAT author paper](https://www-public.imtbs-tsp.eu/~zhang_da/pub/ibat-ubicomp11.pdf).
 
-The following matrix is **P-063's proposed evidence model**, derived from the PRD and the available data; it is not a claim that MiPo contains these violations.
+The following matrix is **GreenSentinel's proposed evidence model**, derived from the PRD and the available data; it is not a claim that MiPo contains these violations.
 
 | PRD class | Signal we can investigate | Additional evidence needed | What MiPo can support | Main alternative explanation |
 |---|---|---|---|---|

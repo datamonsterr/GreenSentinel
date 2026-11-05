@@ -93,7 +93,7 @@
 - [ ] Check HF write credentials (`HF_TOKEN` / `~/.cache/huggingface/token`). Since absent, construct exact `python scripts/benchmark/publish_dataset.py` command and report blocker to conductor.
 - [ ] Create `docs/data/SYNTHESIZED_VIETNAM_TRIP_394.md` detailing EDA, generation, validation, benchmark, and schema comparison.
 - [ ] Update `data/benchmark-10k/STORAGE.md`, `docs/data/DATASET_CARDS.md`, and `docs/data/README.md`.
-- [ ] Emit conductor release artifact `/tmp/p063-vietnam-release.json`.
+- [ ] Emit conductor release artifact `/tmp/greensentinel-vietnam-release.json`.
 
 ### Task 7: Verification & Final Checks
 - [ ] Run focused test suites: `pytest tests/unit/test_presets_reconciliation.py tests/unit/test_vietnam_generator.py tests/unit/test_vietnam_preset.py`.

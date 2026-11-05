@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted, 2026-10-05. [Issue #149](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/149).
+Accepted, 2026-10-05. [Issue #149](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/149).
 
 ## Context
 

@@ -18,7 +18,7 @@ Add tests at the correct boundary. Directory discovery includes new files; do no
 
 Use `.venv/bin/python`, not an unrelated system interpreter. Install dependencies through existing project setup. Python fixtures live in `tests/fixtures/`; test support owns repository-root resolution. Use `pnpm --dir src/webapp test:typecheck` for unit and browser test TypeScript validation. Frontend setup/support remains beside its test configuration; the central browser specs use the installed webapp Playwright package through a thin support export.
 
-For integration, use disposable backing services. The wrapper can provision local Docker services; set `P063_EXTERNAL_SERVICES=1` only with explicit `DATABASE_URL`, `REDIS_URL` and `QDRANT_URL` to use an existing isolated environment. Never redirect tests to production. Required integration prerequisites must fail clearly; optional provider/live checks remain explicit opt-ins.
+For integration, use disposable backing services. The wrapper can provision local Docker services; set `GREENSENTINEL_EXTERNAL_SERVICES=1` only with explicit `DATABASE_URL`, `REDIS_URL` and `QDRANT_URL` to use an existing isolated environment. Never redirect tests to production. Required integration prerequisites must fail clearly; optional provider/live checks remain explicit opt-ins.
 
 Real-account browser suites log in through the real Clerk UI with real
 clicks and real data; they never install `page.route` fixtures. Setup,
@@ -45,8 +45,8 @@ The main continuous integration workflow ([`.github/workflows/ci.yml`](../../.gi
 - `unit-tests`: Backend unit tests (`tests/unit/`, including agent and RAG suites in `tests/unit/agents/` and `tests/unit/rag/`) run via `uv run` in parallel with uv cache.
 - `frontend-vitest`: Webapp unit tests and TypeScript typechecking.
 - `webapp-build`: Webapp production build (`pnpm build` with Next.js build cache `nextjs-build-` and 3GB Node memory limit), uploading the prebuilt Next.js bundle for browser E2E.
-- `integration-tests`: Docker backing services (Postgres, Redis, Qdrant) with container memory limits (`P063_PG_MEMORY: 768m`, `P063_REDIS_MEMORY: 256m`, `P063_QDRANT_MEMORY: 768m`), serialized under concurrency group `p063-docker-services`, running migrations, seeds, and the integration suite via [`scripts/test_integration.sh`](../../scripts/test_integration.sh). Integration tests are dynamically discovered via the `docker` pytest marker (`-m docker`). To add a new integration test requiring Docker services, add `pytestmark = pytest.mark.docker` to the test file.
-- `browser-e2e`: Playwright E2E browser tests (runs `next start` on isolated test bundle) with downloaded build bundle and retries capped at 1, configurable via `PLAYWRIGHT_SERVER_MODE`, bounded by concurrency group `p063-browser-e2e`.
+- `integration-tests`: Docker backing services (Postgres, Redis, Qdrant) with container memory limits (`GREENSENTINEL_PG_MEMORY: 768m`, `GREENSENTINEL_REDIS_MEMORY: 256m`, `GREENSENTINEL_QDRANT_MEMORY: 768m`), serialized under concurrency group `greensentinel-docker-services`, running migrations, seeds, and the integration suite via [`scripts/test_integration.sh`](../../scripts/test_integration.sh). Integration tests are dynamically discovered via the `docker` pytest marker (`-m docker`). To add a new integration test requiring Docker services, add `pytestmark = pytest.mark.docker` to the test file.
+- `browser-e2e`: Playwright E2E browser tests (runs `next start` on isolated test bundle) with downloaded build bundle and retries capped at 1, configurable via `PLAYWRIGHT_SERVER_MODE`, bounded by concurrency group `greensentinel-browser-e2e`.
 - `build-and-cache`: Docker Compose configuration validation and backend image build verification after test and build jobs pass.
 
 The isolated persisted GIS gate has been removed from automated CI and is run manually when needed via [`scripts/test_gis_persisted.sh`](../../scripts/test_gis_persisted.sh).

@@ -1,6 +1,6 @@
 -- Rollback: 20261015150000_workload_performance_indexes.down.sql
 -- Description: Rollback additive workload-supported indexes cleanly and idempotently.
--- Target: P-063 Database Performance Optimization (Parent #394, Child #399)
+-- Target: GreenSentinel Database Performance Optimization (Parent #394, Child #399)
 
 DROP INDEX IF EXISTS app.idx_trip_assignments_trip_id;
 DROP INDEX IF EXISTS app.idx_fraud_cases_org_lower_status_queue;

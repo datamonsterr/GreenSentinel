@@ -45,7 +45,7 @@ def _token(private_key, **claims):
     now = datetime.now(UTC)
     payload = {
         "sub": "user_clerk_contract",
-        "azp": "https://p-063.vercel.app",
+        "azp": "https://green-sentinel.vercel.app",
         "iss": "https://clerk.example.test",
         "iat": int(now.timestamp()),
         "nbf": int(now.timestamp()),
@@ -60,21 +60,21 @@ def test_default_verification_accepts_current_dev_frontend(rsa_keys, monkeypatch
     private_key, public_key = rsa_keys
     monkeypatch.delenv("CLERK_AUTHORIZED_PARTIES", raising=False)
     monkeypatch.delenv("clerk_authorized_parties", raising=False)
-    token = _token(private_key, azp="https://p-063-dev.vercel.app")
+    token = _token(private_key, azp="https://green-sentinel-dev.vercel.app")
     settings = Settings(_env_file=None, clerk_issuer="https://clerk.example.test")
     with patch("src.api.auth._get_jwk_client", return_value=_JwkClient(public_key)):
         payload = _verify_jwt_with_jwks(token, settings.clerk_jwks_url, settings)
-    assert payload["azp"] == "https://p-063-dev.vercel.app"
+    assert payload["azp"] == "https://green-sentinel-dev.vercel.app"
 
 
 @pytest.mark.parametrize(
     ("environment", "browser_origin"),
     [
-        ("production", "https://p-063.vercel.app"),
-        ("dev", "https://p-063-dev.vercel.app"),
-        ("dev", "https://dev.p-063.vercel.app"),
-        ("staging", "https://p-063-staging.vercel.app"),
-        ("staging", "https://staging.p-063.vercel.app"),
+        ("production", "https://green-sentinel.vercel.app"),
+        ("dev", "https://green-sentinel-dev.vercel.app"),
+        ("dev", "https://dev.green-sentinel.vercel.app"),
+        ("staging", "https://green-sentinel-staging.vercel.app"),
+        ("staging", "https://staging.green-sentinel.vercel.app"),
     ],
 )
 def test_real_rs256_clerk_token_accepts_each_deployed_browser_origin(rsa_keys, environment, browser_origin):
@@ -100,7 +100,7 @@ def test_real_rs256_clerk_token_accepts_each_deployed_browser_origin(rsa_keys, e
 @pytest.mark.parametrize(
     "untrusted_origin",
     [
-        "https://p-063.vercel.app.attacker.example",
+        "https://green-sentinel.vercel.app.attacker.example",
         "https://attacker.vercel.app",
     ],
 )

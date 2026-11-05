@@ -2,7 +2,7 @@
 
 > Historical implementation record. The [2026-10-02 verification audit](ISSUE_61_AUDIT.md) supersedes the earlier performance, idempotency, lifecycle and CI completion claims below. Use the audit for current evidence and remaining limitations.
 
-This record covers the GIS evidence outcome (S2-F04) in an isolated `feat/61-t3-integration` worktree. [Issue #61](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/61) owns acceptance criteria. The delivery renders driver origin, pickup and destination, the planned legal OSRM route, and the actual telemetry trajectory from backend responses. Labeled synthetic data is allowed through ingestion; route durations are never asserted as observed congestion.
+This record covers the GIS evidence outcome (S2-F04) in an isolated `feat/61-t3-integration` worktree. [Issue #61](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/61) owns acceptance criteria. The delivery renders driver origin, pickup and destination, the planned legal OSRM route, and the actual telemetry trajectory from backend responses. Labeled synthetic data is allowed through ingestion; route durations are never asserted as observed congestion.
 
 ## Environment and reproducibility
 

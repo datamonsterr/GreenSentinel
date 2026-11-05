@@ -1,21 +1,21 @@
 # Authentication hotfix verification — issue #104
 
 Date: 2026-10-02. Owner: Pham Thanh Dat (`datamonsterr`), assisted by Codex.
-Source baseline: `05c685e`. [Incident](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/104).
+Source baseline: `05c685e`. [Incident](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/104).
 
 ## Reproduction and introducing commits
 
-A real Clerk browser login on both `https://p-063.vercel.app/workplace` and
-`https://p-063-dev.vercel.app/workplace` succeeded. Their automatic `/api/v1/me`
+A real Clerk browser login on both `https://green-sentinel.vercel.app/workplace` and
+`https://green-sentinel-dev.vercel.app/workplace` succeeded. Their automatic `/api/v1/me`
 and `/api/v1/cases?availability=available` requests carried Bearer tokens but
 returned `401 {"detail":"Unauthorized browser origin"}`.
 
 Production's deployed `CLERK_AUTHORIZED_PARTIES` still contained the two old
-`p063-sentinel-cockpit` origins. The dev backend used defaults that omitted the
-actual `p-063-dev.vercel.app` hostname. The configured Clerk issuer and JWKS
+`greensentinel-sentinel-cockpit` origins. The dev backend used defaults that omitted the
+actual `green-sentinel-dev.vercel.app` hostname. The configured Clerk issuer and JWKS
 matched the browser tokens; refreshing a token did not resolve the rejection.
 
-- `97fa024` introduced the Vercel dev fallback alias `p-063-dev.vercel.app`
+- `97fa024` introduced the Vercel dev fallback alias `green-sentinel-dev.vercel.app`
   without adding that exact hostname to the backend origin defaults.
 - `16c1ad6` removed permissive Vercel/localhost matching and propagated origin
   rejection in dev/staging as well as production. This exposed the stale

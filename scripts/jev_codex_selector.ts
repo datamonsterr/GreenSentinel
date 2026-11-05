@@ -1,7 +1,7 @@
 #!/usr/bin/env bun
 
 /**
- * Codex integration for the Jev skill selector (P-063).
+ * Codex integration for the Jev skill selector (GreenSentinel).
  * Extracts user prompt, runs Jev decision routing, and includes the user
  * prompt explicitly in the returned hook output.
  */

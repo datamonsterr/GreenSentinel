@@ -1,4 +1,4 @@
-# AI20K Agent Project — Team P-063 · GreenSentinel
+# AI20K Agent Project — GreenSentinel
 
 **GreenSentinel** is a system that helps ride-hailing platforms detect fraud earlier, process it more efficiently, and improve over time — via the Workplace (fraud analyst cockpit), the Driver Support Agent, and automatic post-trip fraud detection.
 

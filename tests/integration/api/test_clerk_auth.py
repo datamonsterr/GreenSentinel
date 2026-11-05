@@ -153,7 +153,7 @@ async def test_cases_with_jwks_when_secret_key_absent():
 
     with patch(
         "src.api.auth._verify_jwt_with_jwks",
-        return_value={"sub": "user_clerk_123", "azp": "https://p-063.vercel.app"},
+        return_value={"sub": "user_clerk_123", "azp": "https://green-sentinel.vercel.app"},
     ):
         async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as client:
             response = await client.get("/api/v1/cases", headers={"Authorization": "Bearer jwks_valid_token"})

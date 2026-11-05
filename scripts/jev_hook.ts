@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 /**
- * Unified Jev Skill Selector Hook for Project P-063.
+ * Unified Jev Skill Selector Hook for Project GreenSentinel.
  * Supports: OpenAI Codex, Claude Code, and Antigravity (agy).
  *
  * Ensures the user prompt is explicitly extracted, evaluated, and included

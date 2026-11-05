@@ -9,7 +9,7 @@ from pathlib import Path
 import pytest
 
 ROOT = Path(__file__).resolve().parents[3]
-URL = "https://p063-contract.vercel.app"
+URL = "https://greensentinel-contract.vercel.app"
 
 VERCEL_STUB = """#!/usr/bin/env python3
 import json, os, pathlib, sys
@@ -25,7 +25,7 @@ if mode == 'auth':
 if mode == 'network' or (mode == 'recover' and attempt == 1):
     print('Error: fetch failed', file=sys.stderr)
     sys.exit(1)
-print('invalid-url' if mode == 'invalid' else 'https://p063-contract.vercel.app')
+print('invalid-url' if mode == 'invalid' else 'https://greensentinel-contract.vercel.app')
 """
 
 PYTHON_STUB = """#!/usr/bin/env python3

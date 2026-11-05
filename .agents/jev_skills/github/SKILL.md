@@ -1,6 +1,6 @@
 ---
 name: github
-description: Work with GitHub issues, pull requests and CI through the P-063 contributor workflow.
+description: Work with GitHub issues, pull requests and CI through the GreenSentinel contributor workflow.
 ---
 
 # GitHub

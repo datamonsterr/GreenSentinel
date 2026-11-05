@@ -8,7 +8,7 @@ This directory contains evidence-backed business analysis for GreenSentinel frau
 
 **@datamonsterr adopted the strict [PRD release scope](PRD.md#1-document-control) on 2026-09-30** and approved metric, score, and optional top-k elaboration on 2026-10-02. Initial analyst adjudication is the core release flow. **CV-01 operational baseline confirmation and operator UAT remain pending.** Approval of scope does not complete operational validation.
 
-Start with [PRD acceptance and test traceability](PRD.md#101-phase-1-acceptance-and-test-traceability), then [MVP completion criteria](MVP.md#7-acceptance-criteria-for-mvp-completion). Broader L06 discovery preserves future policy options. [V2 driver-agent discovery](DISCOVERY_POC_V2_DRIVER_AGENT.md#current-release-authority) is superseded/deferred; MERGED [PR #40](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/40) is historical runtime divergence, not scope approval. Runtime correction belongs to [#73](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/73), owned by [#86](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/86) / [#60](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/60).
+Start with [PRD acceptance and test traceability](PRD.md#101-phase-1-acceptance-and-test-traceability), then [MVP completion criteria](MVP.md#7-acceptance-criteria-for-mvp-completion). Broader L06 discovery preserves future policy options. [V2 driver-agent discovery](DISCOVERY_POC_V2_DRIVER_AGENT.md#current-release-authority) is superseded/deferred; MERGED [PR #40](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/40) is historical runtime divergence, not scope approval. Runtime correction belongs to [#73](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/73), owned by [#86](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/86) / [#60](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/60).
 
 ---
 
@@ -45,7 +45,7 @@ The [2026-10-05 Driver-first and workspace requirements](DRIVER_FIRST_REQUIREMEN
 
 ## Task tracking
 
-Manage features, user stories, tasks, dependencies and acceptance in [GitHub Issues](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues). Follow [CONTRIBUTING.md](../../CONTRIBUTING.md); do not maintain a Markdown backlog. Product specifications stay in this folder and are linked from issues.
+Manage features, user stories, tasks, dependencies and acceptance in [GitHub Issues](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues). Follow [CONTRIBUTING.md](../../CONTRIBUTING.md); do not maintain a Markdown backlog. Product specifications stay in this folder and are linked from issues.
 
 ## Tester technical design
 

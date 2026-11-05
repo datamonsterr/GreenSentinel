@@ -31,10 +31,10 @@ def _run(tmp_path: Path, *, curl_ok: bool = True, extra_env: dict[str, str] | No
         {
             "PATH": f"{bindir}{os.pathsep}{env['PATH']}{os.pathsep}/usr/bin:/bin",
             "CALL_LOG": str(log),
-            "P063_DOCKER_NETWORK_MODE": "bridge",
-            "PG_NAME": "p063-pg-test",
-            "REDIS_NAME": "p063-redis-test",
-            "QDRANT_NAME": "p063-qdrant-test",
+            "GREENSENTINEL_DOCKER_NETWORK_MODE": "bridge",
+            "PG_NAME": "greensentinel-pg-test",
+            "REDIS_NAME": "greensentinel-redis-test",
+            "QDRANT_NAME": "greensentinel-qdrant-test",
             "POSTGRES_PORT": "15432",
             "REDIS_PORT": "16379",
             "QDRANT_PORT": "16333",
@@ -65,16 +65,16 @@ def test_bridge_mode_uses_builtin_network_and_scoped_containers(tmp_path):
     assert result.returncode == 0, result.stderr
     assert "docker network create" not in calls
     assert "docker compose" not in calls
-    assert "docker:rm -f p063-pg-test p063-redis-test p063-qdrant-test" in calls
+    assert "docker:rm -f greensentinel-pg-test greensentinel-redis-test greensentinel-qdrant-test" in calls
     assert "docker:ps" not in calls
     assert "docker:network" not in calls
     runs = [line for line in calls.splitlines() if line.startswith("docker:run ")]
     assert len(runs) == 3
     assert all("--network bridge" in line for line in runs)
     assert "/db/migrations:/docker-entrypoint-initdb.d:ro" in calls
-    assert "--name p063-pg-test" in runs[0]
-    assert "--name p063-redis-test" in runs[1]
-    assert "--name p063-qdrant-test" in runs[2]
+    assert "--name greensentinel-pg-test" in runs[0]
+    assert "--name greensentinel-redis-test" in runs[1]
+    assert "--name greensentinel-qdrant-test" in runs[2]
     assert "-p 127.0.0.1:15432:5432" in calls
     assert "-p 127.0.0.1:16379:6379" in calls
     assert "-p 127.0.0.1:16333:6333" in calls
@@ -85,9 +85,9 @@ def test_bridge_mode_applies_memory_caps(tmp_path):
     result, calls = _run(
         tmp_path,
         extra_env={
-            "P063_PG_MEMORY": "768m",
-            "P063_REDIS_MEMORY": "256m",
-            "P063_QDRANT_MEMORY": "768m",
+            "GREENSENTINEL_PG_MEMORY": "768m",
+            "GREENSENTINEL_REDIS_MEMORY": "256m",
+            "GREENSENTINEL_QDRANT_MEMORY": "768m",
         },
     )
 

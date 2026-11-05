@@ -1,6 +1,6 @@
 # Desktop manual console verification — PR #345
 
-Date: 2026-10-15. Owner: Pham Thanh Dat (@datamonsterr), assisted by Codex and bounded implementation/review agents. Scope is [#370](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/370), [#346](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/346), and [#348](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/348). The stakeholder confirmed the desktop manual-console scope and removed mobile support. Broader generator and launch issues retain their prerequisites.
+Date: 2026-10-15. Owner: Pham Thanh Dat (@datamonsterr), assisted by Codex and bounded implementation/review agents. Scope is [#370](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/370), [#346](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/346), and [#348](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/348). The stakeholder confirmed the desktop manual-console scope and removed mobile support. Broader generator and launch issues retain their prerequisites.
 
 ## Environment and evidence
 
@@ -19,10 +19,10 @@ Frontend discovery passed 442 tests before the final replay regression; all 18 a
 
 ## Commands
 
-Use [the test guide](README.md). `TMPDIR=/var/tmp/p063-pr345-temp` avoids the host's exhausted per-user `/tmp` quota; placing temporary logs inside the repository also changes the logger scope test's meaning.
+Use [the test guide](README.md). `TMPDIR=/var/tmp/greensentinel-pr345-temp` avoids the host's exhausted per-user `/tmp` quota; placing temporary logs inside the repository also changes the logger scope test's meaning.
 
 ```bash
-APP_ENV=test TMPDIR=/var/tmp/p063-pr345-temp .venv/bin/python -m pytest tests/unit/ -q -n 2 --tb=short
+APP_ENV=test TMPDIR=/var/tmp/greensentinel-pr345-temp .venv/bin/python -m pytest tests/unit/ -q -n 2 --tb=short
 .venv/bin/ruff check src/ tests/
 .venv/bin/ruff format --check src/ tests/
 .venv/bin/mypy src/

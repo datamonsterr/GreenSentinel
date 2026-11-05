@@ -339,7 +339,7 @@ class RoadTripManifest:
             Deterministic seed — controls point sampling and UUID generation.
         """
         # Stable IDs derived from seed
-        ns = f"p063:road-t1:seed{seed}"
+        ns = f"greensentinel:road-t1:seed{seed}"
         trip_id = _stable_uuid(ns, "trip")
         assignment_id = _stable_uuid(ns, "assignment")
         case_id = _stable_uuid(ns, "case")

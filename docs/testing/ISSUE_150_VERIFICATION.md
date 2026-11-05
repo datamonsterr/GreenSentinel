@@ -1,7 +1,7 @@
 # Issue 150 Verification Report: Processed Case History Search and Retained Evidence Archive
 
 ## Scope and Context
-- **Issue**: [#150](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/150)
+- **Issue**: [#150](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/150)
 - **Branch**: `feat/150-case-history`
 - **Base commit**: `feat/149-search-driver-plate` / `4e23250` (origin/main)
 - **Target**: Allow fraud analysts and permitted drivers to browse and search all processed cases (`resolved`, `dismissed`, `auto_dismissed`) with retained evidence, driver conversation, executed actions, and immutable audit logs. Guarantee read-only access without claiming leases or triggering sanctions.

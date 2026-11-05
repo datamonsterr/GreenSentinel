@@ -1,7 +1,7 @@
 {
   "model_version": "r3d-2026.10.18",
   "corpus_sha256": "d52e52ff7dd2cc7b6d23631191d1cdbf32d9f1b636f43117ad496809ac0d3fdf",
-  "hf_repo_id": "datamonsterr/p-063-r3d-classifier",
+  "hf_repo_id": "datamonsterr/green-sentinel-r3d-classifier",
   "hf_revision": "268003f795b2950893e9ef6a54b250dec13eeee6",
   "source_runs": {
     "r3c": {

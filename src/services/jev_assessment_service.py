@@ -455,8 +455,8 @@ class JevAssessmentService:
         headers = {
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
-            "HTTP-Referer": "https://github.com/AI20K-Build-Phase-Cohort-4/P-063",
-            "X-Title": "P-063 Jev Anomaly Scoring Engine",
+            "HTTP-Referer": "https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel",
+            "X-Title": "GreenSentinel Jev Anomaly Scoring Engine",
         }
 
         attempts: list[dict[str, Any]] = []

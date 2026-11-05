@@ -2,7 +2,7 @@
 
 > **Design System:** Emerald Sentinel v2.0 · **Architecture Standard:** Compact Technical Modernism  
 > **Target Applications:** Workplace Cockpit (`/workplace`), Driver Care Portal (`/driver`), Tester Trip Studio (`/test`)  
-> **Source Repository:** P-063 (VinUni AI20K Build Phase) · **Last Updated:** 2026-10-05  
+> **Source Repository:** GreenSentinel (VinUni AI20K Build Phase) · **Last Updated:** 2026-10-05  
 > **Stitch MCP Projects:**  
 > • Cockpit & Fleet Workstation: [`projects/12095025610159108305`](https://stitchdesign.google.com/project/12095025610159108305)  
 > • Tester Simulation Studio: [`projects/7541683500450336068`](https://stitchdesign.google.com/project/7541683500450336068)  
@@ -12,7 +12,7 @@
 
 ## 1. Master Design Principles
 
-This design system governs all user interfaces across Project P-063. The interface serves fraud analysts, operations supervisors, partner drivers, and automated test engineers who require high-frequency decision making, rapid telemetry inspection, and zero cognitive clutter.
+This design system governs all user interfaces across Project GreenSentinel. The interface serves fraud analysts, operations supervisors, partner drivers, and automated test engineers who require high-frequency decision making, rapid telemetry inspection, and zero cognitive clutter.
 
 ### Rule 1: Visual Icon & Layout Primacy (Zero Verbose Text Explanations)
 - **Eliminate conversational text explanations** from operational views. Analysts use this system continuously during full shifts; wordy explanations increase cognitive load and latency.
@@ -52,7 +52,7 @@ This design system governs all user interfaces across Project P-063. The interfa
   - Distinct visual separation between AI advice, policy excerpts, and automated confirmation receipts.
 
 ### Console Architecture Standard (Strictly Desktop Console — Zero Mobile App Target)
-- All user interfaces across Project P-063 are **desktop workstation consoles** exclusively (designed for 1280px to 1920px+ monitors).
+- All user interfaces across Project GreenSentinel are **desktop workstation consoles** exclusively (designed for 1280px to 1920px+ monitors).
 - There is **no mobile application** and no mobile phone layout target.
 - Mobile-first stacking, collapsible drawer workarounds for phone screens, and small-touch compromises are strictly prohibited. Multi-pane simultaneous visibility (actor rail, map stage, tools panel) is required at all times.
 
@@ -281,7 +281,7 @@ Every view strictly enforces 5 distinct operational states:
 
 ## 7. Driver-First Lifecycle Reconciliation (#147 & ADR-018)
 
-Per stakeholder approval by Pham Thanh Dat (@datamonsterr) in [#147](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/147) and [ADR-018](../architecture/adr-018-driver-first-resolution.md):
+Per stakeholder approval by Pham Thanh Dat (@datamonsterr) in [#147](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/147) and [ADR-018](../architecture/adr-018-driver-first-resolution.md):
 
 1. **Intake Sequence:** A detected case enters Driver assistance BEFORE active Analyst triage (`FR-DF-01`).
 2. **Confidence Semantics:**

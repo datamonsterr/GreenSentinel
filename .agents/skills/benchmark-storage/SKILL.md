@@ -1,6 +1,6 @@
 ---
 name: benchmark-storage
-description: Host, fetch and publish the P-063 fraud-benchmark corpora on Hugging Face Hub; reproduce a run from object storage, publish a new generation, and refresh the latest benchmark. Use for "upload dataset", "fetch benchmark", "where is the dataset", "publish corpus", "object storage", "Hugging Face dataset", "update latest benchmark".
+description: Host, fetch and publish the GreenSentinel fraud-benchmark corpora on Hugging Face Hub; reproduce a run from object storage, publish a new generation, and refresh the latest benchmark. Use for "upload dataset", "fetch benchmark", "where is the dataset", "publish corpus", "object storage", "Hugging Face dataset", "update latest benchmark".
 ---
 
 # Benchmark storage

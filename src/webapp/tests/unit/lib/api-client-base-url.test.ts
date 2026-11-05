@@ -34,19 +34,19 @@ describe("getApiBaseUrl — host matrix (BUG 2b)", () => {
     expect(getApiBaseUrl()).toBe("");
   });
 
-  it("returns dev backend for p-063-dev.vercel.app", () => {
-    setWindowHostname("p-063-dev.vercel.app");
-    expect(getApiBaseUrl()).toBe("https://p063-backend-dev.up.railway.app");
+  it("returns dev backend for green-sentinel-dev.vercel.app", () => {
+    setWindowHostname("green-sentinel-dev.vercel.app");
+    expect(getApiBaseUrl()).toBe("https://greensentinel-backend-dev.up.railway.app");
   });
 
-  it("returns staging backend for p-063-staging", () => {
-    setWindowHostname("p-063-staging.up.railway.app");
-    expect(getApiBaseUrl()).toBe("https://p063-backend-staging.up.railway.app");
+  it("returns staging backend for green-sentinel-staging", () => {
+    setWindowHostname("green-sentinel-staging.up.railway.app");
+    expect(getApiBaseUrl()).toBe("https://greensentinel-backend-staging.up.railway.app");
   });
 
-  it("returns production backend for p-063.vercel.app", () => {
-    setWindowHostname("p-063.vercel.app");
-    expect(getApiBaseUrl()).toBe("https://p063-backend-production.up.railway.app");
+  it("returns production backend for green-sentinel.vercel.app", () => {
+    setWindowHostname("green-sentinel.vercel.app");
+    expect(getApiBaseUrl()).toBe("https://greensentinel-backend-production.up.railway.app");
   });
 });
 

@@ -10,30 +10,30 @@ QDRANT_PORT="${QDRANT_PORT:-6333}"
 QDRANT_GRPC_PORT="${QDRANT_GRPC_PORT:-6334}"
 export POSTGRES_PORT REDIS_PORT QDRANT_PORT QDRANT_GRPC_PORT
 
-PG_NAME="${PG_NAME:-p063-postgres}"
-REDIS_NAME="${REDIS_NAME:-p063-redis}"
-QDRANT_NAME="${QDRANT_NAME:-p063-qdrant}"
+PG_NAME="${PG_NAME:-greensentinel-postgres}"
+REDIS_NAME="${REDIS_NAME:-greensentinel-redis}"
+QDRANT_NAME="${QDRANT_NAME:-greensentinel-qdrant}"
 export PG_NAME REDIS_NAME QDRANT_NAME
 
 # Unique compose project per run: same dir basename means same default project,
 # so a second `up` with different container_name would RECREATE (kill) the
 # first run's containers. CI exports COMPOSE_PROJECT_NAME per run.
-COMPOSE_PROJECT_NAME="${COMPOSE_PROJECT_NAME:-p063-local}"
+COMPOSE_PROJECT_NAME="${COMPOSE_PROJECT_NAME:-greensentinel-local}"
 export COMPOSE_PROJECT_NAME
 
-P063_PG_MEMORY="${P063_PG_MEMORY:-}"
-P063_REDIS_MEMORY="${P063_REDIS_MEMORY:-}"
-P063_QDRANT_MEMORY="${P063_QDRANT_MEMORY:-}"
-P063_QDRANT_IMAGE="${P063_QDRANT_IMAGE:-qdrant/qdrant:v1.19.1}"
-export P063_PG_MEMORY P063_REDIS_MEMORY P063_QDRANT_MEMORY P063_QDRANT_IMAGE
+GREENSENTINEL_PG_MEMORY="${GREENSENTINEL_PG_MEMORY:-}"
+GREENSENTINEL_REDIS_MEMORY="${GREENSENTINEL_REDIS_MEMORY:-}"
+GREENSENTINEL_QDRANT_MEMORY="${GREENSENTINEL_QDRANT_MEMORY:-}"
+GREENSENTINEL_QDRANT_IMAGE="${GREENSENTINEL_QDRANT_IMAGE:-qdrant/qdrant:v1.19.1}"
+export GREENSENTINEL_PG_MEMORY GREENSENTINEL_REDIS_MEMORY GREENSENTINEL_QDRANT_MEMORY GREENSENTINEL_QDRANT_IMAGE
 
-DOCKER_NETWORK_MODE="${P063_DOCKER_NETWORK_MODE:-compose}"
+DOCKER_NETWORK_MODE="${GREENSENTINEL_DOCKER_NETWORK_MODE:-compose}"
 
-echo "=== [Docker] Starting ${PG_NAME} (${POSTGRES_PORT}), ${REDIS_NAME} (${REDIS_PORT}), ${QDRANT_NAME} (${QDRANT_PORT}) (net ${P063_NETWORK_SUBNET:-auto}) ==="
+echo "=== [Docker] Starting ${PG_NAME} (${POSTGRES_PORT}), ${REDIS_NAME} (${REDIS_PORT}), ${QDRANT_NAME} (${QDRANT_PORT}) (net ${GREENSENTINEL_NETWORK_SUBNET:-auto}) ==="
 
 # Runner hardening: default-address-pool IPAM leaks surface as
 # "all predefined address pools have been fully subnetted"; an explicit
-# P063_NETWORK_SUBNET (set per-run in CI) bypasses pool allocation. Stale
+# GREENSENTINEL_NETWORK_SUBNET (set per-run in CI) bypasses pool allocation. Stale
 # per-run default networks from crashed runs are pruned before they can
 # overlap a fresh subnet.
 compose_up() {
@@ -43,7 +43,7 @@ compose_up() {
     fi
     echo "[Docker] compose up failed; pruning unused networks and stale run bridges, retrying once"
     docker network prune -f >/dev/null 2>&1 || true
-    for n in $(docker network ls --filter 'name=p063-' --format '{{.ID}}' 2>/dev/null); do
+    for n in $(docker network ls --filter 'name=greensentinel-' --format '{{.ID}}' 2>/dev/null); do
         docker network rm "$n" >/dev/null 2>&1 || true
     done
     docker compose up -d "$@"
@@ -75,15 +75,15 @@ else
 
     docker rm -f "${PG_NAME}" "${REDIS_NAME}" "${QDRANT_NAME}" 2>/dev/null || true
     if [ "$DOCKER_NETWORK_MODE" = "bridge" ]; then
-        docker run -d --name "${PG_NAME}" --network bridge ${P063_PG_MEMORY:+--memory="${P063_PG_MEMORY}"} -p "127.0.0.1:${POSTGRES_PORT}:5432" \
+        docker run -d --name "${PG_NAME}" --network bridge ${GREENSENTINEL_PG_MEMORY:+--memory="${GREENSENTINEL_PG_MEMORY}"} -p "127.0.0.1:${POSTGRES_PORT}:5432" \
             -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=postgrespassword -e POSTGRES_DB=postgres \
             -v "${PGDATA:-./data/postgres_data}:/var/lib/postgresql/data" \
             -v "${ROOT_DIR}/db/migrations:/docker-entrypoint-initdb.d:ro" postgis/postgis:16-3.4-alpine
-        docker run -d --name "${REDIS_NAME}" --network bridge ${P063_REDIS_MEMORY:+--memory="${P063_REDIS_MEMORY}"} -p "127.0.0.1:${REDIS_PORT}:6379" \
+        docker run -d --name "${REDIS_NAME}" --network bridge ${GREENSENTINEL_REDIS_MEMORY:+--memory="${GREENSENTINEL_REDIS_MEMORY}"} -p "127.0.0.1:${REDIS_PORT}:6379" \
             redis:7-alpine redis-server --appendonly yes
-        docker run -d --name "${QDRANT_NAME}" --network bridge ${P063_QDRANT_MEMORY:+--memory="${P063_QDRANT_MEMORY}"} \
+        docker run -d --name "${QDRANT_NAME}" --network bridge ${GREENSENTINEL_QDRANT_MEMORY:+--memory="${GREENSENTINEL_QDRANT_MEMORY}"} \
             -p "127.0.0.1:${QDRANT_PORT}:6333" -p "127.0.0.1:${QDRANT_GRPC_PORT}:6334" \
-            -v "${QDRANT_DATA:-./data/qdrant_storage}:/qdrant/storage" "${P063_QDRANT_IMAGE:-qdrant/qdrant:v1.19.1}"
+            -v "${QDRANT_DATA:-./data/qdrant_storage}:/qdrant/storage" "${GREENSENTINEL_QDRANT_IMAGE:-qdrant/qdrant:v1.19.1}"
     else
         bash "${ROOT_DIR}/scripts/docker_cleanup_stale_networks.sh"
         compose_up redis postgres qdrant
@@ -93,9 +93,9 @@ fi
 # Qdrant may already run under our name from the compose call above.
 if ! docker exec "${QDRANT_NAME}" true >/dev/null 2>&1; then
     if [ "$DOCKER_NETWORK_MODE" = "bridge" ]; then
-        docker run -d --name "${QDRANT_NAME}" --network bridge ${P063_QDRANT_MEMORY:+--memory="${P063_QDRANT_MEMORY}"} \
+        docker run -d --name "${QDRANT_NAME}" --network bridge ${GREENSENTINEL_QDRANT_MEMORY:+--memory="${GREENSENTINEL_QDRANT_MEMORY}"} \
             -p "127.0.0.1:${QDRANT_PORT}:6333" -p "127.0.0.1:${QDRANT_GRPC_PORT}:6334" \
-            -v "${QDRANT_DATA:-./data/qdrant_storage}:/qdrant/storage" "${P063_QDRANT_IMAGE:-qdrant/qdrant:v1.19.1}"
+            -v "${QDRANT_DATA:-./data/qdrant_storage}:/qdrant/storage" "${GREENSENTINEL_QDRANT_IMAGE:-qdrant/qdrant:v1.19.1}"
     else
         compose_up qdrant
     fi

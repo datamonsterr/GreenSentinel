@@ -1,6 +1,6 @@
 # Classifier Research Registry & Staircase
 
-Tracking the keep-or-revert research loop for the trip-fraud classifier per [Epic #494](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/494).
+Tracking the keep-or-revert research loop for the trip-fraud classifier per [Epic #494](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/494).
 
 ## Staircase Progress
 

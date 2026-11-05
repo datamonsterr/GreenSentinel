@@ -2,8 +2,8 @@
 
 - Status: Accepted
 - Date: 2026-10-15
-- Scope: [Workspace #368](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/368), [repair #379](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/379)
-- Related: [approved design documentation #371](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/371)
+- Scope: [Workspace #368](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/368), [repair #379](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/379)
+- Related: [approved design documentation #371](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/371)
 
 ## Context
 

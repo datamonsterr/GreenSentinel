@@ -7,7 +7,7 @@ import psycopg
 
 DATABASE_URL = os.environ.get(
     "DATABASE_URL",
-    "postgresql://postgres.ptikthkarnimijeorwsa:P063_GsmFraud_2026_SecureDb!@aws-0-ap-northeast-2.pooler.supabase.com:5432/postgres",
+    "postgresql://postgres.ptikthkarnimijeorwsa:GreenSentinel_GsmFraud_2026_SecureDb!@aws-0-ap-northeast-2.pooler.supabase.com:5432/postgres",
 )
 
 

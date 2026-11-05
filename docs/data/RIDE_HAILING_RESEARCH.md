@@ -1,6 +1,6 @@
 # Ride-hailing fraud and GPS research (S1-DA-04)
 
-**Research date:** 2026-09-27. **Scope:** what public Grab and Uber engineering material tells P-063 about telemetry quality and fraud signals, and which signals the current feature pipeline already computes. Only statements found in the cited pages are reported; anything else is marked **needs verification**.
+**Research date:** 2026-09-27. **Scope:** what public Grab and Uber engineering material tells GreenSentinel about telemetry quality and fraud signals, and which signals the current feature pipeline already computes. Only statements found in the cited pages are reported; anything else is marked **needs verification**.
 
 Related: [telemetry distribution proposal](TELEMETRY_DISTRIBUTION.md), [MiPo fraud research](MIPO_FRAUD_RESEARCH.md), [MiPo EDA](MIPO_EDA.md). Feature names refer to `FeatureWindow` in `src/services/feature_engineering.py`, introduced by PR #43 (`son/da02-features`, not yet merged at the time of writing).
 
@@ -8,7 +8,7 @@ Related: [telemetry distribution proposal](TELEMETRY_DISTRIBUTION.md), [MiPo fra
 
 ### Grab
 
-| Source | What it says | What P-063 takes from it |
+| Source | What it says | What GreenSentinel takes from it |
 |---|---|---|
 | [Grab-Posisi blog](https://engineering.grab.com/grab-posisi) and [paper PDF](https://engineering.grab.com/files/Grab-Posisi_An_Extensive_Real-Life_GPS_Trajectory_Dataset_in_Southeast_Asia.pdf) (Huang et al., PredictGIS'19) | Singapore and Jakarta, 2019-04-08 to 2019-04-21. Six categories of 14,000 trajectories each (SIN car iOS/Android, JKT car iOS/Android, JKT motorcycle iOS/Android). 84K trajectories, **88,847,080 pings** (paper; the blog says "more than 80 million"), 1,003,510 km, 30,104 h. **1 s sampling; "> 90%" of consecutive-ping intervals are 1 s**; breaks occur, for example in tunnels. Average length 11.94 km (abstract; §3.2 says 11.90 km) and duration 21.50 min. Each ping has latitude, longitude, UTC timestamp, accuracy (m), bearing (degrees from true north), speed (m/s). | The only public Southeast-Asian dataset with the fields our `TelemetryPayload` needs, including a motorcycle label. It is the calibration target for every assumed parameter in the distribution proposal. Access requires email to Grab; **commercial use is prohibited**. |
 | Same paper, §3.4 accuracy | Android accuracy is a 68% radius; **0.0 means unavailable**. Android bearing is (0, 360] and **0.0 means invalid**; Android speed **0.0 means invalid**. iOS reports bearing 180 when two consecutive pings share a location. Android accuracy maxes at **127 m**; iOS reaches **149 km** with a long tail. Ping counts peak around **10 m** accuracy and change trend near **50 m**. The authors warn to be cautious when using accuracy. | Our schema accepts `0` as a valid accuracy, speed, and bearing. A Posisi importer must map Android `0.0` to `null`. Accuracy semantics differ by OS, so a device-platform field is needed before accuracy thresholds become trustworthy. |
@@ -17,10 +17,10 @@ Related: [telemetry distribution proposal](TELEMETRY_DISTRIBUTION.md), [MiPo fra
 
 ### Uber
 
-| Source | What it says | What P-063 takes from it |
+| Source | What it says | What GreenSentinel takes from it |
 |---|---|---|
-| [Mastermind](https://www.uber.com/us/en/blog/mastermind/) | Rules engine for payment fraud, account takeover, driver–rider collusion, and promotion abuse. Graduated actions: moderate risk slows ride requests; high risk may reject and ban. 300 complex rules run in about 30 ms. Analysts write rules in a Python-AST DSL. The article does not mention GPS spoofing. | Supports versioned deterministic rules for triage. P-063 differs by design: the output is a ranked case for a human, never an automatic ban. |
-| [Project RADAR](https://www.uber.com/us/en/blog/project-radar-intelligent-early-fraud-detection/) | Anomaly detection on payment time series (unpaid orders, chargebacks) with the Orbit KTR Bayesian model; FP-Growth mines rule candidates that require high precision; analysts review via Jira before rules go live. | Human-in-the-loop review before enforcement matches P-063's HITL rule. The payment signals themselves are out of scope. |
+| [Mastermind](https://www.uber.com/us/en/blog/mastermind/) | Rules engine for payment fraud, account takeover, driver–rider collusion, and promotion abuse. Graduated actions: moderate risk slows ride requests; high risk may reject and ban. 300 complex rules run in about 30 ms. Analysts write rules in a Python-AST DSL. The article does not mention GPS spoofing. | Supports versioned deterministic rules for triage. GreenSentinel differs by design: the output is a ranked case for a human, never an automatic ban. |
+| [Project RADAR](https://www.uber.com/us/en/blog/project-radar-intelligent-early-fraud-detection/) | Anomaly detection on payment time series (unpaid orders, chargebacks) with the Orbit KTR Bayesian model; FP-Growth mines rule candidates that require high precision; analysts review via Jira before rules go live. | Human-in-the-loop review before enforcement matches GreenSentinel's HITL rule. The payment signals themselves are out of scope. |
 | [Risk Entity Watch](https://www.uber.com/us/en/blog/risk-entity-watch/) | Entity-level anomaly detection over riders, drivers, payment methods, emails, cities, devices. Features over **6 h, 7 d, 30 d** windows, for example `number_of_trips`. Time-series normalisation per entity; HAIFA histogram explanations for reviewers. Lists GPS spoofing and driver–rider collusion among fraud types. Model families are "tree-based to neural net-based"; specific models are not named. | Compare a driver with their own history, not only with fixed thresholds. Explanations must name the deviating feature. That fits our `reason_codes` and analyst brief. |
 | [Rethinking GPS](https://www.uber.com/us/en/blog/rethinking-gps/) | In dense cities GPS error can be "50 meters or more" (urban canyons, reflections). Uses per-satellite SNR from Android plus 3D maps to infer the side of the street. No quantitative improvement figures are published in the post. | A 50 m error is ordinary in cities, so it must not be read as fraud. It supports capping the SSD anchor radius at 50 m and treating large accuracy values as quality evidence. |
 | [Beacon: improving pickups with better location accuracy](https://www.uber.com/us/en/blog/beacon-improving-pickups-with-better-location-accuracy/) | Dashboard hardware with GNSS, IMU (accelerometer, gyroscope), and barometer for sensor fusion. In urban canyons GNSS error can exceed **100 m**. About 95% of US driver phones have a gyroscope; about 60% have a barometer. | Pickup geometry is the noisiest moment of a trip. An arrival radius of 30 m can be missed by an honest driver in a canyon; distance-to-pickup evidence needs the accuracy context. |
@@ -44,7 +44,7 @@ Related: [telemetry distribution proposal](TELEMETRY_DISTRIBUTION.md), [MiPo fra
 
 ## 3. What the sources do not establish
 
-- No source publishes stall-duration, DAVI, or cancellation-rate distributions for honest versus fraudulent drivers. Every scenario threshold in P-063 remains demo configuration.
+- No source publishes stall-duration, DAVI, or cancellation-rate distributions for honest versus fraudulent drivers. Every scenario threshold in GreenSentinel remains demo configuration.
 - The Posisi paper shows interval and accuracy histograms as figures only. Exact percentiles (for example, the share of intervals above 30 s) **need verification** against the raw dataset.
 - Neither Posisi nor Porto includes device health (`app_state`, `network_state`), mock-provider flags, or pickup coordinates.
 - Uber's posts do not state which detectors catch GPS spoofing.
@@ -56,4 +56,4 @@ Related: [telemetry distribution proposal](TELEMETRY_DISTRIBUTION.md), [MiPo fra
 - Promotion abuse and rider–driver self-dealing counters that need a transaction ledger (Trust Counter, Mastermind).
 - Account takeover and risk challenges.
 - Sensor fusion (IMU, barometer), SNR/3D-map positioning, and dedicated hardware (Beacon, Rethinking GPS).
-- Production rules-engine infrastructure and real-time actioning; P-063 never auto-sanctions.
+- Production rules-engine infrastructure and real-time actioning; GreenSentinel never auto-sanctions.

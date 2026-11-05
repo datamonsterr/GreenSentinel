@@ -53,7 +53,7 @@ Caveman (ultra):
 
 ## Project Development Guidance (Caveman Register)
 
-Quick reference for developing P-063 in caveman mode:
+Quick reference for developing GreenSentinel in caveman mode:
 
 - **Setup env**: `mise run init-project` (auto-checks git, python, uv, rtk, hooks).
 - **Run dev server**: `mise run run` -> port 8000.

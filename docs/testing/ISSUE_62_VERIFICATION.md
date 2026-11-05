@@ -4,7 +4,7 @@
 
 Owner: Trân (@trantran2929), assisted by Codex and bounded implementation workers. The user's chat on 2026-10-03 explicitly authorizes bypassing #64's gate, using that branch's evaluation artifacts, and the local acceptance thresholds recorded in [ADR-014](../architecture/adr-014-grounded-advisory-evaluation.md). This does not accept or close #64.
 
-Baseline inspected: [PR #40](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/40), merge `586caec05ddb7626a1f47066b55154e74d245cc0`, and the existing standalone `forensic-rules-v1` baseline. PRD FR-06 and the ERR-02/ERR-05 Phase 1 scope remain controlling. Automatic dismissal, sanctions, and deferred ERR-03/04 product flows are excluded.
+Baseline inspected: [PR #40](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/40), merge `586caec05ddb7626a1f47066b55154e74d245cc0`, and the existing standalone `forensic-rules-v1` baseline. PRD FR-06 and the ERR-02/ERR-05 Phase 1 scope remain controlling. Automatic dismissal, sanctions, and deferred ERR-03/04 product flows are excluded.
 
 The existing draft contained unsupported clause names and calibration claims. Its benchmark manufactured runtime observations from evaluation suite names. Those are replaced by source-backed versioned citations and explicit executable-input boundaries.
 

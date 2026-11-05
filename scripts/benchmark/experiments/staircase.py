@@ -178,7 +178,7 @@ def render_markdown_table(rows: list[dict[str, Any]], out_md: Path) -> None:
     lines: list[str] = [
         "# Classifier Research Registry & Staircase",
         "",
-        "Tracking the keep-or-revert research loop for the trip-fraud classifier per [Epic #494](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/494).",
+        "Tracking the keep-or-revert research loop for the trip-fraud classifier per [Epic #494](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/494).",
         "",
         "## Staircase Progress",
         "",
@@ -230,7 +230,7 @@ def build_staircase(
 
 
 def main():
-    parser = argparse.ArgumentParser(description="P-063 Staircase Generator")
+    parser = argparse.ArgumentParser(description="GreenSentinel Staircase Generator")
     parser.add_argument(
         "--attempts-dir",
         type=Path,

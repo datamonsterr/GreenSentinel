@@ -2,11 +2,11 @@
 
 ## Status
 
-Accepted, 2026-10-05. [Issue #150](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/150).
+Accepted, 2026-10-05. [Issue #150](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/150).
 
 ## Context
 
-In [Issue #143](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/143), finalized cases (`resolved`, `dismissed`, `auto_dismissed`) were removed from the active triage queue to prevent queue bloat and conflicting analyst leases. However, fraud analysts and compliance auditors require the ability to browse, search, and inspect all processed cases with complete retained evidence, driver dispute conversations, executed tool actions, and immutable audit logs.
+In [Issue #143](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/143), finalized cases (`resolved`, `dismissed`, `auto_dismissed`) were removed from the active triage queue to prevent queue bloat and conflicting analyst leases. However, fraud analysts and compliance auditors require the ability to browse, search, and inspect all processed cases with complete retained evidence, driver dispute conversations, executed tool actions, and immutable audit logs.
 
 Furthermore:
 - Opening a historical case must be strictly read-only: it must **not** trigger a new review lease (`app.review_leases`), overwrite the assigned analyst, or trigger automated sanctions.

@@ -1,7 +1,7 @@
 # ADR-016: Enforce Strict Role and Case-Owned Access Across Webapp, API, and SSE
 
 ## Status
-Accepted, 2026-10-05. [Issue #145](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/145).
+Accepted, 2026-10-05. [Issue #145](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/145).
 
 ## Context
 The application serves two distinct user personas: Fraud Analysts operating in `/workplace` and Driver Partners responding to inquiries in `/driver`. Prior implementation relied primarily on client-side route checks and permissive middleware. In particular, `/driver` was excluded from middleware role checks, and backend chat endpoints did not verify driver case assignment before streaming SSE events or emitting chat history. Furthermore, privileged roles could potentially be self-asserted through client metadata rather than verified from the database.

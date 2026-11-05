@@ -1,7 +1,7 @@
 # Issue 161 Verification Report: Deterministic Offline Backend Quality Baseline
 
 ## Scope and Context
-- **Issue**: [#161](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/161)
+- **Issue**: [#161](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/161)
 - **Branch**: `fix/161-baseline-offline-quality`
 - **Base commit**: `15b1b68`
 - **Target**: Restore deterministic offline backend verification without ambient network calls, eliminate 58+ mypy type errors across application code under active interpreter stubs, repair case coordinate GeoJSON handling in agent tools, and ensure `bash scripts/check.sh` passes completely.

@@ -36,7 +36,7 @@ def download_and_verify(manifest_path: Path, out_dir: Path) -> None:
     with manifest_path.open() as f:
         manifest = json.load(f)
 
-    repo_id = manifest.get("hf_repo_id", "datamonsterr/p-063-r3d-classifier")
+    repo_id = manifest.get("hf_repo_id", "datamonsterr/green-sentinel-r3d-classifier")
     revision = manifest.get("hf_revision")
     artifacts = manifest.get("artifacts", {})
 

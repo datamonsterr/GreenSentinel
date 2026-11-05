@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://p063.example/schemas/domain-event.schema.json",
-  "title": "P-063 domain event",
+  "$id": "https://greensentinel.example/schemas/domain-event.schema.json",
+  "title": "GreenSentinel domain event",
   "type": "object",
   "additionalProperties": false,
   "required": [

@@ -7,7 +7,7 @@ Accepted for synthetic test/dev scenarios; production mapping remains pending po
 An explicit authenticated Driver admission may authorize autonomous handling. Exoneration evidence and generic confirmation do not. Production sanction amounts and durations must come from a published policy source.
 
 ## Decision
-Persist an immutable `app.driver_admission_sanctions` outcome keyed by case, admission hash and policy version. The `p063-demo-admission-v1` mapping is explicitly demo-only and maps ERR-02 to WARN without an invented amount. Unmapped or non-demo cases remain `pending_policy` and require analyst review.
+Persist an immutable `app.driver_admission_sanctions` outcome keyed by case, admission hash and policy version. The `greensentinel-demo-admission-v1` mapping is explicitly demo-only and maps ERR-02 to WARN without an invented amount. Unmapped or non-demo cases remain `pending_policy` and require analyst review.
 
 ## Rationale & Alternatives Considered
 | Option | Pros | Cons | Decision |

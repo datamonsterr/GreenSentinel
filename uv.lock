@@ -1650,7 +1650,7 @@ wheels = [
 ]
 
 [[package]]
-name = "p-063-agent"
+name = "green-sentinel-agent"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [

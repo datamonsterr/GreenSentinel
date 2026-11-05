@@ -2,7 +2,7 @@
 
 ## Scope and tested revisions
 
-[Issue 72](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/72) reconciles release documentation. [PR 98](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/98) remains open for @datamonsterr review. Approved scope was adopted on 2026-09-30; the metric/score/route elaboration was approved on 2026-10-02. The [PRD acceptance matrix](../ba/PRD.md#101-phase-1-acceptance-and-test-traceability) maps the source requirements and impacted tests.
+[Issue 72](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/72) reconciles release documentation. [PR 98](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/98) remains open for @datamonsterr review. Approved scope was adopted on 2026-09-30; the metric/score/route elaboration was approved on 2026-10-02. The [PRD acceptance matrix](../ba/PRD.md#101-phase-1-acceptance-and-test-traceability) maps the source requirements and impacted tests.
 
 The full-layer checkpoint below tests `51c5a73ca40fd32dd50b7264467722b07646f724`. Later metadata corrections mark every deferred story/use case with its future phase, preserve goals and heading anchors, and extend documentation contracts to 78 checks; subsequent upstream-provenance checks bring the final suite to 83. The final PR check links identify the latest tested head; a checkpoint result is not represented as a later-head result.
 
@@ -22,13 +22,13 @@ The full-layer checkpoint below tests `51c5a73ca40fd32dd50b7264467722b07646f724`
 |---|---|---|
 | Documentation contracts | 60 passed at checkpoint; 78 passed after deferred-metadata correction | `.venv/bin/python -m pytest --noconftest -q tests/unit/docs` |
 | Ruff lint/format | Pass, including the owned Python files | `.venv/bin/ruff check src/ tests/`; `.venv/bin/ruff format --check src/ tests/` |
-| Backend suite in CI | 502 passed, 11 skipped, 14 subtests | [successful unit job](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/actions/runs/36984843041/job/110831888714), head `51c5a73` |
-| Migrated/seeded CI database integration | 72 passed, 7 subtests | [integration job](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/actions/runs/36984843041/job/110831886994) |
+| Backend suite in CI | 502 passed, 11 skipped, 14 subtests | [successful unit job](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/actions/runs/36984843041/job/110831888714), head `51c5a73` |
+| Migrated/seeded CI database integration | 72 passed, 7 subtests | [integration job](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/actions/runs/36984843041/job/110831886994) |
 | Existing agent regressions in CI | 120 passed, 1 skipped, 7 subtests | Same integration job; do not infer live-model quality or PRD runtime conformance |
 | Frontend unit/component suite | 114 passed across 17 files, isolated local worktree | `pnpm --dir src/webapp test` |
 | Frontend TypeScript | Pass, isolated local worktree | `pnpm --dir src/webapp exec tsc --noEmit` |
 | Browser E2E | 7/7 local fixture specs on unique port 34198; 7/7 CI specs after retry | `PORT=34198 pnpm --dir src/webapp test:e2e`; CI integration job above |
-| Docker and Next production build | Pass in CI | [build job](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/actions/runs/36984843041/job/110833240245), including six generated Next pages |
+| Docker and Next production build | Pass in CI | [build job](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/actions/runs/36984843041/job/110833240245), including six generated Next pages |
 | Owned-file Python typing under actual local runtime | Pass for both documentation test modules | `.venv/bin/mypy --python-version 3.13 tests/unit/docs/` |
 | Whitespace and local links | Pass; relative targets/heading contracts checked | `git diff --check`; documentation contract link tests and separate changed-document audit |
 | Runtime/CI preservation | Application source, workflow configuration and dependency settings match main | `git diff --exit-code origin/main...HEAD -- src/ .github/workflows/ pyproject.toml uv.lock` |
@@ -53,6 +53,6 @@ Final DoD review catches unqualified future-priority metadata. Scoped tests repr
 
 ## Accepted upstream integration
 
-While this PR awaited final checks, current main advanced to accepted [PR #93](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/93), commit `16c1ad6bdc910badbe852418bc5de5b456759156`. Both contributors' journal and daily worklog sections are retained through conflict resolution. Active architecture notices now distinguish the old PR #40 automatic-dismissal behavior from PR #93's recommendation-only transition and readable legacy records. Issue #73 remains open and is not closed by inference. New documentation contracts reproduce five stale-notice failures before the correction. Traceability links follow the renamed current tests while obsolete test identities remain immutable historical references.
+While this PR awaited final checks, current main advanced to accepted [PR #93](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/93), commit `16c1ad6bdc910badbe852418bc5de5b456759156`. Both contributors' journal and daily worklog sections are retained through conflict resolution. Active architecture notices now distinguish the old PR #40 automatic-dismissal behavior from PR #93's recommendation-only transition and readable legacy records. Issue #73 remains open and is not closed by inference. New documentation contracts reproduce five stale-notice failures before the correction. Traceability links follow the renamed current tests while obsolete test identities remain immutable historical references.
 
 Earlier full-layer counts above are explicitly the `51c5a73` checkpoint and are not presented as proof of the enlarged upstream runtime. The final PR's exact-head CI separately runs the accepted runtime, updated documentation contracts, migrated database, browser and build layers. This PR adds no application, migration, dependency or CI changes relative to current main.

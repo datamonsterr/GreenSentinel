@@ -39,7 +39,7 @@ def smoke_db():
     assert_loopback_target(base_dsn)
 
     stamp = int(time.time() * 1000)
-    dbname = f"test_p063_smoke_{stamp}"
+    dbname = f"test_greensentinel_smoke_{stamp}"
 
     parsed = urlparse(base_dsn)
     user = parsed.username or "postgres"

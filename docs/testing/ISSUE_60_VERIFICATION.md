@@ -1,6 +1,6 @@
 # Issue #60 Verification Record
 
-This record documents the verification and acceptance proof for [Issue #60](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/60) and its sub-issues [#85](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/85) and [#86](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/86) on branch `issue-60`.
+This record documents the verification and acceptance proof for [Issue #60](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/60) and its sub-issues [#85](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/85) and [#86](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/86) on branch `issue-60`.
 
 ## 1. Scope and Delivered Architecture
 

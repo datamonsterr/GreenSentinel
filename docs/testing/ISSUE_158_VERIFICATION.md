@@ -1,6 +1,6 @@
 # Issue #158 Verification: Real Driver Tools & Seeded Scenario Workflow
 
-**Issue Reference:** [#158](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/158)  
+**Issue Reference:** [#158](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/158)  
 **Task Type:** Feature (Backend, Driver Tools, Seeder & Scenario Workflows)  
 **Date:** 2026-10-05  
 **Author:** Dat Nguyen (@DatTienNguyenn), assisted by Antigravity  
@@ -221,12 +221,12 @@ uv run pytest
 
 ## 4. Key Files Delivered
 
-- [`src/services/scenario_seeder.py`](file:///home/dat/dev/vinuni_aia/P-063/src/services/scenario_seeder.py): Idempotent seeding and reversible cleanup of 3 canonical scenarios for both in-memory test stores and PostgreSQL databases.
-- [`src/services/driver_scenario_runner.py`](file:///home/dat/dev/vinuni_aia/P-063/src/services/driver_scenario_runner.py): End-to-end scenario runner verifying detection, intake, tool execution, branching, and audit persistence.
-- [`src/agents/tools/driver_tools.py`](file:///home/dat/dev/vinuni_aia/P-063/src/agents/tools/driver_tools.py): Real driver tools with cross-driver authorization, structured error handling, and honest telemetry availability.
-- [`src/agents/tools/analyst_tools.py`](file:///home/dat/dev/vinuni_aia/P-063/src/agents/tools/analyst_tools.py): Truthful preview semantics on `write_ticket_for_driver` without unauthorized durable writes.
-- [`scripts/seed_driver_scenarios.py`](file:///home/dat/dev/vinuni_aia/P-063/scripts/seed_driver_scenarios.py): CLI tool for scenario seeding, preview, and reset.
-- [`scripts/run_driver_scenario.py`](file:///home/dat/dev/vinuni_aia/P-063/scripts/run_driver_scenario.py): CLI tool for automated scenario execution and audit verification.
-- [`scripts/smoke_driver_scenarios.py`](file:///home/dat/dev/vinuni_aia/P-063/scripts/smoke_driver_scenarios.py): API smoke test exercising live endpoints.
-- [`tests/test_services/test_driver_tools_authorization.py`](file:///home/dat/dev/vinuni_aia/P-063/tests/test_services/test_driver_tools_authorization.py): Unit tests for tool authorization, error types, idempotency, and ticket preview.
-- [`tests/test_services/test_driver_scenario_workflow.py`](file:///home/dat/dev/vinuni_aia/P-063/tests/test_services/test_driver_scenario_workflow.py): Workflow tests for all 3 scenarios, timeout escalation, and boundary conditions.
+- [`src/services/scenario_seeder.py`](file:///home/dat/dev/vinuni_aia/GreenSentinel/src/services/scenario_seeder.py): Idempotent seeding and reversible cleanup of 3 canonical scenarios for both in-memory test stores and PostgreSQL databases.
+- [`src/services/driver_scenario_runner.py`](file:///home/dat/dev/vinuni_aia/GreenSentinel/src/services/driver_scenario_runner.py): End-to-end scenario runner verifying detection, intake, tool execution, branching, and audit persistence.
+- [`src/agents/tools/driver_tools.py`](file:///home/dat/dev/vinuni_aia/GreenSentinel/src/agents/tools/driver_tools.py): Real driver tools with cross-driver authorization, structured error handling, and honest telemetry availability.
+- [`src/agents/tools/analyst_tools.py`](file:///home/dat/dev/vinuni_aia/GreenSentinel/src/agents/tools/analyst_tools.py): Truthful preview semantics on `write_ticket_for_driver` without unauthorized durable writes.
+- [`scripts/seed_driver_scenarios.py`](file:///home/dat/dev/vinuni_aia/GreenSentinel/scripts/seed_driver_scenarios.py): CLI tool for scenario seeding, preview, and reset.
+- [`scripts/run_driver_scenario.py`](file:///home/dat/dev/vinuni_aia/GreenSentinel/scripts/run_driver_scenario.py): CLI tool for automated scenario execution and audit verification.
+- [`scripts/smoke_driver_scenarios.py`](file:///home/dat/dev/vinuni_aia/GreenSentinel/scripts/smoke_driver_scenarios.py): API smoke test exercising live endpoints.
+- [`tests/test_services/test_driver_tools_authorization.py`](file:///home/dat/dev/vinuni_aia/GreenSentinel/tests/test_services/test_driver_tools_authorization.py): Unit tests for tool authorization, error types, idempotency, and ticket preview.
+- [`tests/test_services/test_driver_scenario_workflow.py`](file:///home/dat/dev/vinuni_aia/GreenSentinel/tests/test_services/test_driver_scenario_workflow.py): Workflow tests for all 3 scenarios, timeout escalation, and boundary conditions.

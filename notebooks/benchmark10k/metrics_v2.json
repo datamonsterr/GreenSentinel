@@ -231,6 +231,6 @@
   "runtime_wall_s": 2.0,
   "sampled": false,
   "sample_seed": null,
-  "input": "/home/dat/dev/vinuni_aia/P-063-worktrees/build-benchmark-dataset/data/benchmark-10k/combined_trips.jsonl",
-  "predictions": "/home/dat/dev/vinuni_aia/P-063-worktrees/build-benchmark-dataset/data/benchmark-10k/combined_predictions.jsonl"
+  "input": "/home/dat/dev/vinuni_aia/GreenSentinel-worktrees/build-benchmark-dataset/data/benchmark-10k/combined_trips.jsonl",
+  "predictions": "/home/dat/dev/vinuni_aia/GreenSentinel-worktrees/build-benchmark-dataset/data/benchmark-10k/combined_predictions.jsonl"
 }

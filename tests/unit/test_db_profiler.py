@@ -161,7 +161,7 @@ def test_disposable_database_validator_rejection_rules(monkeypatch):
     # 1. Reject without opt-in flag
     monkeypatch.delenv("CONFIRM_DISPOSABLE_TEST_DB", raising=False)
     monkeypatch.delenv("ALLOW_DISPOSABLE_DB_MIGRATION", raising=False)
-    valid_url = "postgresql://postgres:postgrespassword@localhost:5432/test_p063_bench"
+    valid_url = "postgresql://postgres:postgrespassword@localhost:5432/test_greensentinel_bench"
     with pytest.raises(ValueError, match="Explicit opt-in required"):
         validate_disposable_database_url(valid_url)
 

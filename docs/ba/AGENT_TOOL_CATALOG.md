@@ -195,7 +195,7 @@ Refresh when case/evidence/policy/decision versions change; preserve durable his
 
 ## Relationship to implementation planning
 
-[Issue #60](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/60) supplies the shared catalog, trusted runtime, error/provenance, idempotency and correlated event foundations. The previous plan hardened existing tools; it did **not** include the new final-minutes delivery workflow. Do not claim that workflow is already covered or delivered by the old eight slices.
+[Issue #60](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/60) supplies the shared catalog, trusted runtime, error/provenance, idempotency and correlated event foundations. The previous plan hardened existing tools; it did **not** include the new final-minutes delivery workflow. Do not claim that workflow is already covered or delivered by the old eight slices.
 
 Context injection and taxonomy reconciliation are required design additions for consistent tool usage. Minutes/approval/notification behavior is a separately demonstrable product outcome using the shared runtime and existing human adjudication/conversation services. Final scope and ticket changes should follow review of this proposed catalog; this document does not silently create dependencies or alter current issue status.
 

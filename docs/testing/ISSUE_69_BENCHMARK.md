@@ -110,7 +110,7 @@ Observed mean for four queries: baseline **93.4748 ms**, candidate **91.8007 ms*
 
 ## PR #114 CI portability correction
 
-The initial hosted [Unit Tests run](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/actions/runs/37087027016/job/111099432136) reports **7 failed, 713 passed, 47 skipped, 14 subtests passed**. All failures are the new policy comparisons trying to read `dede4b0` through Git; `actions/checkout` uses shallow history and that commit object is absent.
+The initial hosted [Unit Tests run](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/actions/runs/37087027016/job/111099432136) reports **7 failed, 713 passed, 47 skipped, 14 subtests passed**. All failures are the new policy comparisons trying to read `dede4b0` through Git; `actions/checkout` uses shallow history and that commit object is absent.
 
 The default policy baseline is now [a frozen original method](../../eval/baselines/policy_fallback_dede4b0.py), with immutable source commit, original method hash, AST integrity hash and the original stopword set. Tests and the default profiler require no historical commit object or network fetch. Custom baseline refs still use Git and fail explicitly when unavailable. No test is skipped, and CI checkout configuration is not expanded.
 

@@ -1,6 +1,6 @@
 # Issue #148 Verification: Confirm Emerald Sentinel Cockpit Vibe and Remaining Screens
 
-**Issue Reference:** [#148](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/148)  
+**Issue Reference:** [#148](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/148)  
 **Task Type:** Task (Design)  
 **Date:** 2026-10-05  
 **Author:** Dat Nguyen (@DatTienNguyenn), assisted by Antigravity  
@@ -16,7 +16,7 @@ Reconcile and confirm the **Emerald Sentinel v2.0** design specification, visual
 4. **Driver Dispute Care Console** (`/driver/dispute/[caseId]`)
 5. **Tester Trip Simulation Studio** (`/test`)
 
-This verification ensures all runtime UI designs satisfy the 10 Master Design Principles, establish bidirectional Stitch MCP links, remove fabricated metrics/guilt semantics, and align with the approved Driver-first lifecycle in [#147](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/147) and [ADR-018](../architecture/adr-018-driver-first-resolution.md).
+This verification ensures all runtime UI designs satisfy the 10 Master Design Principles, establish bidirectional Stitch MCP links, remove fabricated metrics/guilt semantics, and align with the approved Driver-first lifecycle in [#147](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/147) and [ADR-018](../architecture/adr-018-driver-first-resolution.md).
 
 ---
 

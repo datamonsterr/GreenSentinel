@@ -496,7 +496,7 @@ jobs:
 
       - name: Dev E2E API Verification Probe
         env:
-          DEV_API_URL: ${{ vars.RAILWAY_DEV_URL || 'https://p063-backend-dev.up.railway.app' }}
+          DEV_API_URL: ${{ vars.RAILWAY_DEV_URL || 'https://greensentinel-backend-dev.up.railway.app' }}
         run: |
           for i in {1..12}; do
             if curl -s -f "${DEV_API_URL%/}/health" >/dev/null; then
@@ -609,7 +609,7 @@ jobs:
       - name: Read-only Contract Smoke Test Against Staging
         timeout-minutes: 4
         env:
-          STAGING_API_URL: ${{ vars.RAILWAY_STAGING_URL || vars.RAILWAY_V1_URL || 'https://p063-backend-staging.up.railway.app' }}
+          STAGING_API_URL: ${{ vars.RAILWAY_STAGING_URL || vars.RAILWAY_V1_URL || 'https://greensentinel-backend-staging.up.railway.app' }}
         run: |
           python3 scripts/staging_smoke.py --api-url "${STAGING_API_URL}"
 
@@ -712,7 +712,7 @@ jobs:
 
       - name: Non-Destructive Production Health Probe
         env:
-          PROD_API_URL: ${{ vars.RAILWAY_PRODUCTION_URL || 'https://p063-backend-production.up.railway.app' }}
+          PROD_API_URL: ${{ vars.RAILWAY_PRODUCTION_URL || 'https://greensentinel-backend-production.up.railway.app' }}
         run: |
           for i in {1..15}; do
             if curl -s -f "${PROD_API_URL%/}/health" >/dev/null; then

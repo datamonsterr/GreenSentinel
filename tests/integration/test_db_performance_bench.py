@@ -38,7 +38,7 @@ ROLLBACK_FILE = ROOT_DIR / "db" / "rollbacks" / "20261015150000_workload_perform
 BENCHMARK_ARTIFACT_PATH = ROOT_DIR / "docs" / "testing" / "artifacts" / "db_bench_evidence_394.json"
 
 TEST_DB_URL = os.environ.get(
-    "TEST_DATABASE_URL", "postgresql://postgres:postgrespassword@localhost:5432/test_p063_bench"
+    "TEST_DATABASE_URL", "postgresql://postgres:postgrespassword@localhost:5432/test_greensentinel_bench"
 )
 
 
@@ -361,7 +361,7 @@ def test_workload_performance_comparison():
     # 4. Construct retained machine benchmark artifact
     benchmark_artifact = {
         "metadata": {
-            "title": "P-063 Database Performance Benchmark Evidence (#394 / #399)",
+            "title": "GreenSentinel Database Performance Benchmark Evidence (#394 / #399)",
             "environment": "disposable_local_postgresql_16",
             "fixture_cardinality": {
                 "trips": trips_count,

@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for implementation; [issue #569](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/569) (Parent epic #494).
+Accepted for implementation; [issue #569](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/569) (Parent epic #494).
 
 ## Context
 
@@ -26,7 +26,7 @@ A three-stage hybrid machine learning pipeline was researched:
 - **R3F (Sequence 1D-CNN)**: 7-channel 128-step normalized temporal trajectory + 6 static context features. Macro-F1: 0.7711. Captures fine-grained GPS breadcrumb jitter and telemetry freeze signatures.
 - **R3D (Stacked Ensemble)**: LightGBM meta-learner combining calibrated probabilities from R3C and R3F, model cross-entropy, prediction disagreement, and static trip context. Dev300 macro-F1: 0.8688. Test-6000 macro-F1: 0.8680.
 
-To productionise R3D under the system constraints of P-063, we must resolve runtime inference dependencies, serialization safety, model artifact delivery, telemetry normalization, and latency budgets.
+To productionise R3D under the system constraints of GreenSentinel, we must resolve runtime inference dependencies, serialization safety, model artifact delivery, telemetry normalization, and latency budgets.
 
 ## Decision
 
@@ -41,7 +41,7 @@ To productionise R3D under the system constraints of P-063, we must resolve runt
    - Strictly prohibit Python `pickle` and `torch` in runtime dependencies (`requirements.txt`).
 
 3. **Artifact Storage and Supply Chain**:
-   - Public Hugging Face Hub model repository: `datamonsterr/p-063-r3d-classifier`.
+   - Public Hugging Face Hub model repository: `datamonsterr/green-sentinel-r3d-classifier`.
    - Immutable artifact resolution pinned by commit hash revision: `268003f795b2950893e9ef6a54b250dec13eeee6`.
    - Strict SHA256 integrity verification against `models/r3d/manifest.json`. Resolution hierarchy:
      1. `FRAUD_CLASSIFIER_ARTIFACT_DIR` environment override

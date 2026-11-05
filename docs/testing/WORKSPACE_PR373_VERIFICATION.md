@@ -40,7 +40,7 @@ Focused TDD RED confirmed the Vietnamese placeholder was absent with the expecte
 
 `vehicles 12`, `drivers 121`, `trips 104`, `fare_quotes 104`, `driver_submissions 104`, `passenger_feedback 104`, `telemetry events 3439`, `historical trips 1200`, `past adjudications 1`. Re-running is idempotent, with zero duplicate feedback or submissions.
 
-The authenticated hosted audit used an analyst account against preview `p-063-f4j3org6v` (`2690dfd1`) and backend `p063-backend-dev`. At 1440×900 and 390×844, all five tabs had no horizontal overflow, document height equaled viewport height, Material Symbols loaded, the center was white, and data was populated: fare `300,000 ₫`; driver VF 5 Plus, 4.86, 97.2%, 1.7%, 1730; history labels, incidents, and customer feedback. EN→VI preserved the Complete tab, selected case, and original-language evidence. AI reveal appeared only where this analyst had their own preliminary judgment.
+The authenticated hosted audit used an analyst account against preview `green-sentinel-f4j3org6v` (`2690dfd1`) and backend `greensentinel-backend-dev`. At 1440×900 and 390×844, all five tabs had no horizontal overflow, document height equaled viewport height, Material Symbols loaded, the center was white, and data was populated: fare `300,000 ₫`; driver VF 5 Plus, 4.86, 97.2%, 1.7%, 1730; history labels, incidents, and customer feedback. EN→VI preserved the Complete tab, selected case, and original-language evidence. AI reveal appeared only where this analyst had their own preliminary judgment.
 
 ## Limitations and manual runbook
 

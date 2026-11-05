@@ -1,7 +1,7 @@
 # Issue 149 Verification Report: Case Search by Driver Identity and Vehicle Plate
 
 ## Scope and Context
-- **Issue**: [#149](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/149)
+- **Issue**: [#149](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/149)
 - **Branch**: `feat/149-search-driver-plate`
 - **Base commit**: `4e23250` (origin/main)
 - **Target**: Enable fraud analysts to search cases by driver name (accented/unaccented), driver ID, external fleet reference, and vehicle registration plate (biển số xe). Ensure SQL-injection safety via parameterized `EXISTS` subqueries, tenant boundary isolation, and responsive UI integration in the Cockpit Triage Queue.

@@ -20,7 +20,7 @@
 --
 -- - Full Environment Restore:
 --   If a complete return to the exact pre-migration byte snapshot is required, perform a clean restore
---   from the restore-tested full backups verified in /tmp/p063-restore-verification.json:
+--   from the restore-tested full backups verified in /tmp/greensentinel-restore-verification.json:
 --     - Dev: ca1b85fbf900de8c5187e68dfac251ea5cd7ef04fc1096b35b7d85401d34b166 (dev.dump)
 --     - Staging: 71133c4f5020bcbd2066708a4dd4d761607a54ce9311c4d280cc9410670b82f2 (staging.dump)
 --     - Production: f72331f9085c5f87ce0d91ebeb018228dfcc84f4205833ca02690fc62a8cc321 (production.dump)

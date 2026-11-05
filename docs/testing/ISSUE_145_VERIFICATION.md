@@ -1,7 +1,7 @@
 # Issue 145 Verification Report: Role-Owned Access and Separation
 
 ## Scope and Context
-- **Issue**: [#145](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/145)
+- **Issue**: [#145](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/145)
 - **Branch**: `fix/145-role-owned-access`
 - **Target**: Enforce analyst/driver role separation across pages, API, SSE streaming, and case tools.
 

@@ -40,7 +40,7 @@ class Settings(BaseSettings):
     traffic_api_key: str = ""
     traffic_timeout_seconds: float = Field(default=3.0, gt=0, le=8.0)
     cors_origins: str = Field(
-        default="http://localhost:3000,http://127.0.0.1:3000,http://localhost:3100,http://127.0.0.1:3100,https://p-063.vercel.app,https://p063.vercel.app,https://staging.p-063.vercel.app,https://staging-p-063.vercel.app,https://p-063-dev.vercel.app,https://dev.p-063.vercel.app,https://dev-p-063.vercel.app",
+        default="http://localhost:3000,http://127.0.0.1:3000,http://localhost:3100,http://127.0.0.1:3100,https://green-sentinel.vercel.app,https://greensentinel.vercel.app,https://staging.green-sentinel.vercel.app,https://staging-green-sentinel.vercel.app,https://green-sentinel-dev.vercel.app,https://dev.green-sentinel.vercel.app,https://dev-green-sentinel.vercel.app",
         validation_alias=AliasChoices("cors_origins", "CORS_ORIGINS"),
     )
 
@@ -70,7 +70,7 @@ class Settings(BaseSettings):
         ),
     )
     clerk_authorized_parties: str = Field(
-        default="http://localhost:3000,http://127.0.0.1:3000,http://localhost:3100,http://127.0.0.1:3100,https://p-063.vercel.app,https://p063.vercel.app,https://staging.p-063.vercel.app,https://staging-p-063.vercel.app,https://p-063-dev.vercel.app,https://dev.p-063.vercel.app,https://dev-p-063.vercel.app",
+        default="http://localhost:3000,http://127.0.0.1:3000,http://localhost:3100,http://127.0.0.1:3100,https://green-sentinel.vercel.app,https://greensentinel.vercel.app,https://staging.green-sentinel.vercel.app,https://staging-green-sentinel.vercel.app,https://green-sentinel-dev.vercel.app,https://dev.green-sentinel.vercel.app,https://dev-green-sentinel.vercel.app",
         validation_alias=AliasChoices("clerk_authorized_parties", "CLERK_AUTHORIZED_PARTIES"),
     )
     clerk_audience: str = Field(

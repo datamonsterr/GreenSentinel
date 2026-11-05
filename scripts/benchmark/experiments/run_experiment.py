@@ -396,7 +396,7 @@ def run_experiment_pipeline(
 
 
 def main():
-    parser = argparse.ArgumentParser(description="P-063 Experiment Harness Runner")
+    parser = argparse.ArgumentParser(description="GreenSentinel Experiment Harness Runner")
     parser.add_argument("--exp-id", required=True, help="Experiment identifier (e.g. E1)")
     parser.add_argument("--variant", required=True, help="Registered variant name")
     parser.add_argument("--in", dest="in_path", required=True, type=Path, help="Input trips.jsonl")

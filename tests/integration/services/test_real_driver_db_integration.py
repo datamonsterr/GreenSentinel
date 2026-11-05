@@ -76,7 +76,7 @@ def disposable_db():
     _assert_loopback_target(base_dsn)
 
     stamp = int(time.time() * 1000)
-    dbname = f"test_p063_driver_bind_{stamp}"
+    dbname = f"test_greensentinel_driver_bind_{stamp}"
 
     parsed = urlparse(base_dsn)
     user = parsed.username or "postgres"

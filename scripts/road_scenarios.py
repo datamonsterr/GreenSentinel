@@ -111,7 +111,7 @@ def _stall(result: dict[str, Any], seed: int) -> None:
     extra = []
     for index in range(1, 25):
         event = json.loads(json.dumps(first))
-        event["event_id"] = _stable_uuid(f"p063:road-t3:seed{seed}", f"stall:{index}")
+        event["event_id"] = _stable_uuid(f"greensentinel:road-t3:seed{seed}", f"stall:{index}")
         event["sequence"] = index
         event["producer_sequence"] = index
         event["occurred_at"] = _utc_z(BASE_TIME + timedelta(seconds=(index - 1) * 10))

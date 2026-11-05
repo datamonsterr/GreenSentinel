@@ -36,7 +36,7 @@ PRIN_A = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa"
 PRIN_B = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb"
 
 TV = "v1"
-SEED = "p063-s4-actors"
+SEED = "greensentinel-s4-actors"
 
 
 def _production_settings(**kwargs):

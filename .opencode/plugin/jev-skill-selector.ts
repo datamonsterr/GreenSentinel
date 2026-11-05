@@ -38,7 +38,7 @@ export default async function jevSkillSelectorPlugin() {
   return {
     name: "jev-skill-selector",
     version: "1.1.0",
-    description: "Jev dynamic skill router and RTK/Headroom post-tool optimization for P-063",
+    description: "Jev dynamic skill router and RTK/Headroom post-tool optimization for GreenSentinel",
     hooks: {
       "experimental.chat.messages.transform": async (_input: unknown, output: any) => {
         if (!Array.isArray(output?.messages)) return;
@@ -86,7 +86,7 @@ export default async function jevSkillSelectorPlugin() {
     tools: [
       {
         name: "select_skill",
-        description: "Select relevant skills from the P-063 private Jev bank",
+        description: "Select relevant skills from the GreenSentinel private Jev bank",
         parameters: z.object({ task: z.string(), threshold: z.number().optional() }),
         execute: async ({ task, threshold }: { task: string; threshold?: number }) => {
           const result = await selectSkills({

@@ -11,7 +11,7 @@
 
 **Scheduled extension, approved 2026-10-05:** [Driver-first requirements](DRIVER_FIRST_REQUIREMENTS.md) add Driver assistance before Analyst escalation and explicit **Driver confirmed resolution**, plus the accepted search/history, context-reset, metric-window and role defaults. This extension supersedes the historical Driver deferral and Analyst-only closure below only for that distinct disposition. Analyst dismissal/exoneration and all sanctions retain signed Analyst authority and existing guardrails. Pending explanation criteria are explicit; Tester UI implementation stays queued. [ADR-018](../architecture/adr-018-driver-first-resolution.md) is an implementation contract, not shipped behavior.
 
-The retained Analyst baseline scopes project **P-063** down from the full 8-epic surface of Scenario 6 ([`PRD.md`](PRD.md), [`USE_CASES.md`](USE_CASES.md)) to **exactly one core epic and one high-density web dashboard**:
+The retained Analyst baseline scopes project **GreenSentinel** down from the full 8-epic surface of Scenario 6 ([`PRD.md`](PRD.md), [`USE_CASES.md`](USE_CASES.md)) to **exactly one core epic and one high-density web dashboard**:
 
 ```
 +----------------------------------------------------------------------------------------------------+
@@ -177,7 +177,7 @@ All other epics from [`USE_CASES.md`](USE_CASES.md) and [`USER_STORIES.md`](USER
 | **Epic 6: Appeals & Dispute Resolution** | `UC-L06-05`, `US-L06-05` | **Phase 3** | Secondary review queue with field-level blinding. In Phase 1 MVP, adjudication decisions record audit keys for future appeals. |
 | **Epic 7: Quality Governance** | `US-L06-07` | **Phase 3** | Weekly overturned decision review and policy drift tracking. Belongs to post-launch governance. |
 | **Epic 8: Release Governance** | `UC-L06-07`, `US-L06-08` | **Phase 3** | Canary rollout controls and automated gate rollbacks. Belongs to DevOps and operational scaling. |
-| **Driver Agent Expansion** | `UC-L06-08/09`, `US-L06-09/10` | **Deferred (Phase 2+)** | Reference to existing implementation in MERGED [PR #40](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/40); not accepted release scope. Autonomous dismissal conflicts with the PRD and remains tracked under [#73](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/73). |
+| **Driver Agent Expansion** | `UC-L06-08/09`, `US-L06-09/10` | **Deferred (Phase 2+)** | Reference to existing implementation in MERGED [PR #40](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/40); not accepted release scope. Autonomous dismissal conflicts with the PRD and remains tracked under [#73](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/73). |
 
 ---
 
@@ -232,7 +232,7 @@ These unchecked criteria describe required outcomes. [PRD §10.1](PRD.md#101-pha
 **Environment decision — 2026-10-04:** @datamonsterr confirmed isolated test storage and sandbox notification delivery, with the existing Workplace layout reused. The proposed frontend `/test` and backend `/test/api/v1` keep this extension separate; `/test/workplace` reuses the analyst view against the isolated test backend. No required visible `TEST` case badge is added. See [architecture](../architecture/TESTER_SIMULATION_ARCHITECTURE.md), [API contracts](../architecture/TESTER_API_SPECIFICATION.md), [UI design](../design/tester-simulation/design.md), and [test strategy](../testing/TESTER_SIMULATION_TEST_STRATEGY.md). Contract design and visual approval remain separate from runtime acceptance.
 
 
-The extension addresses **PP-TST-01**: the Tester reports approximately one day preparing and checking data across maps, copied GPS, scripts, and AI-assisted database edits. The confirmed target is approximately one minute to visually prepare a new trip for system testing. This specified test capability around the actual Phase 1 pipeline does not claim runtime completion or authorize Passenger or Driver production mobile expansion. [#130](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/130) tracks delivery; [discovery findings](DISCOVERY_TESTER_TRIP_SIMULATION.md) retain confirmed input, assumptions and open questions.
+The extension addresses **PP-TST-01**: the Tester reports approximately one day preparing and checking data across maps, copied GPS, scripts, and AI-assisted database edits. The confirmed target is approximately one minute to visually prepare a new trip for system testing. This specified test capability around the actual Phase 1 pipeline does not claim runtime completion or authorize Passenger or Driver production mobile expansion. [#130](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/130) tracks delivery; [discovery findings](DISCOVERY_TESTER_TRIP_SIMULATION.md) retain confirmed input, assumptions and open questions.
 
 ### 8.1 Scope
 

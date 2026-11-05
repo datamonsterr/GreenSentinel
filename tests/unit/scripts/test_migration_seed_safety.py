@@ -105,7 +105,7 @@ def test_seed_refused_on_shared_or_prod_without_auth_config():
     remote_urls = [
         "postgresql://postgres:secret@railway.app:5432/railway",
         "postgresql://postgres:secret@monorail.proxy.rlwy.net:12345/railway",
-        "postgresql://postgres:secret@p063-prod-db:5432/postgres",
+        "postgresql://postgres:secret@greensentinel-prod-db:5432/postgres",
         "postgresql://postgres:secret@production-db.internal:5432/postgres",
     ]
     for url in remote_urls:

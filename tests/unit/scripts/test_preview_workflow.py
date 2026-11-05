@@ -41,7 +41,7 @@ elif args[:2] == ["deployment", "list"]:
     ]))
 elif args[:2] == ["variable", "list"]:
     origin = "https://preview-contract.vercel.app" if os.environ.get("VARIABLE_READY") == "true" else "https://old-preview.vercel.app"
-    print(json.dumps({"CLERK_AUTHORIZED_PARTIES": "https://p-063-dev.vercel.app," + origin}))
+    print(json.dumps({"CLERK_AUTHORIZED_PARTIES": "https://green-sentinel-dev.vercel.app," + origin}))
 """
 
 

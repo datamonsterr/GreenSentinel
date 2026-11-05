@@ -25,9 +25,9 @@ MIGRATION_SQL = MIGRATION_PATH.read_text(encoding="utf-8")
 MIGRATIONS_DIR = Path("db/migrations")
 
 HISTORICAL_BACKUPS = {
-    "dev": "/home/dat/.local/state/p063-db-finalize-394/backups/20261015T173125Z/dev.dump",
-    "staging": "/home/dat/.local/state/p063-db-finalize-394/backups/20261015T173125Z/staging.dump",
-    "prod": "/home/dat/.local/state/p063-db-finalize-394/backups/20261015T173125Z/production.dump",
+    "dev": "/home/dat/.local/state/greensentinel-db-finalize-394/backups/20261015T173125Z/dev.dump",
+    "staging": "/home/dat/.local/state/greensentinel-db-finalize-394/backups/20261015T173125Z/staging.dump",
+    "prod": "/home/dat/.local/state/greensentinel-db-finalize-394/backups/20261015T173125Z/production.dump",
 }
 
 MISSING_10_PROD = [
@@ -59,9 +59,9 @@ def _get_pg_credentials() -> tuple[str, int, str, str]:
         password = parsed.password or "postgrespassword"
     else:
         host = "127.0.0.1"
-        port = int(os.environ.get("P063_POSTGRES_PORT", "5432"))
-        user = os.environ.get("P063_POSTGRES_USER", "postgres")
-        password = os.environ.get("P063_POSTGRES_PASSWORD", "postgrespassword")
+        port = int(os.environ.get("GREENSENTINEL_POSTGRES_PORT", "5432"))
+        user = os.environ.get("GREENSENTINEL_POSTGRES_USER", "postgres")
+        password = os.environ.get("GREENSENTINEL_POSTGRES_PASSWORD", "postgrespassword")
 
     assert host in ("127.0.0.1", "localhost", "::1"), f"Host must be loopback, got {host}"
     return host, port, user, password
@@ -70,7 +70,7 @@ def _get_pg_credentials() -> tuple[str, int, str, str]:
 def _connect(db_name: str, autocommit: bool = False) -> psycopg.Connection:
     host, port, user, password = _get_pg_credentials()
     assert host in ("127.0.0.1", "localhost", "::1"), f"Host must be loopback, got {host}"
-    assert db_name.startswith("test_p063_schema_parity_") or db_name == "postgres", (
+    assert db_name.startswith("test_greensentinel_schema_parity_") or db_name == "postgres", (
         f"Database name {db_name} does not match required test prefix"
     )
     return psycopg.connect(
@@ -156,7 +156,7 @@ def disposable_parity_clones() -> Generator[tuple[dict[str, str], dict], None, N
     except Exception as exc:
         pytest.skip(f"PostgreSQL maintenance database unavailable: {exc}")
 
-    prefix = f"test_p063_schema_parity_{uuid4().hex[:8]}"
+    prefix = f"test_greensentinel_schema_parity_{uuid4().hex[:8]}"
     db_a = f"{prefix}_dev"
     db_b = f"{prefix}_prod"
     dbs = {"dev": db_a, "prod": db_b}
@@ -463,7 +463,7 @@ def test_historical_private_clone_audit():
 
     # If dumps exist, verify the pre-created test clones
     for env in ["dev", "staging", "prod"]:
-        db_name = f"test_p063_schema_parity_{env}"
+        db_name = f"test_greensentinel_schema_parity_{env}"
         try:
             cat = _audit_catalog(db_name)
             assert cat["total_tables"] == 71

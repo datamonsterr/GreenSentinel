@@ -1,4 +1,4 @@
-# P-063 webapp
+# GreenSentinel webapp
 
 Next.js/React analyst cockpit. Install with `pnpm install --frozen-lockfile`; run `pnpm dev` and point the app at the intended local API through the documented API base URL settings.
 

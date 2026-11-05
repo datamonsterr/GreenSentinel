@@ -23,7 +23,7 @@ def _snapshot_coordinates(snapshot: object, label: str) -> dict[str, list[float]
 
 def _publish_identity(organization_id: str, run_id: UUID, kind: str) -> str:
     """Return a stable identity so a client retry replays the same ingestion."""
-    return str(uuid5(NAMESPACE_URL, f"p063:test-console:publish:{organization_id}:{run_id}:{kind}"))
+    return str(uuid5(NAMESPACE_URL, f"greensentinel:test-console:publish:{organization_id}:{run_id}:{kind}"))
 
 
 async def publish_simulation(

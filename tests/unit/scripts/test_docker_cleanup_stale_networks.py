@@ -45,15 +45,15 @@ elif [[ $1 == network && $2 == inspect ]]; then
   [[ $5 != *'\\t'* ]]
   [[ $5 == *$'\t'*$'\t'*$'\t'*$'\t'*$'\t'* ]]
   case $3 in
-    stale) printf 'p063-100_1_default\\t2026-10-12T00:00:00Z\\t0\\tbridge\\tp063-100_1\\tdefault\\n' ;;
-    current) printf 'p063-999_1_default\\t2026-10-13T00:59:30Z\\t0\\tbridge\\tp063-999_1\\tdefault\\n' ;;
-    attached) printf 'p063-300_1_default\\t2026-10-12T00:00:00Z\\t1\\tbridge\\tp063-300_1\\tdefault\\n' ;;
-    fresh) printf 'p063-400_1_default\\t2026-10-13T00:59:30Z\\t0\\tbridge\\tp063-400_1\\tdefault\\n' ;;
-    local) printf 'p063-local_default\\t2026-10-12T00:00:00Z\\t0\\tbridge\\tp063-local\\tdefault\\n' ;;
+    stale) printf 'greensentinel-100_1_default\\t2026-10-12T00:00:00Z\\t0\\tbridge\\tgreensentinel-100_1\\tdefault\\n' ;;
+    current) printf 'greensentinel-999_1_default\\t2026-10-13T00:59:30Z\\t0\\tbridge\\tgreensentinel-999_1\\tdefault\\n' ;;
+    attached) printf 'greensentinel-300_1_default\\t2026-10-12T00:00:00Z\\t1\\tbridge\\tgreensentinel-300_1\\tdefault\\n' ;;
+    fresh) printf 'greensentinel-400_1_default\\t2026-10-13T00:59:30Z\\t0\\tbridge\\tgreensentinel-400_1\\tdefault\\n' ;;
+    local) printf 'greensentinel-local_default\\t2026-10-12T00:00:00Z\\t0\\tbridge\\tgreensentinel-local\\tdefault\\n' ;;
     foreign) printf 'other-500_1_default\\t2026-10-12T00:00:00Z\\t0\\tbridge\\tother-500_1\\tdefault\\n' ;;
-    custom) printf 'p063-500_1_custom\\t2026-10-12T00:00:00Z\\t0\\tbridge\\tp063-500_1\\tcustom\\n' ;;
-    overlay) printf 'p063-600_1_default\\t2026-10-12T00:00:00Z\\t0\\toverlay\\tp063-600_1\\tdefault\\n' ;;
-    mislabeled) printf 'p063-700_1_default\\t2026-10-12T00:00:00Z\\t0\\tbridge\\tp063-800_1\\tdefault\\n' ;;
+    custom) printf 'greensentinel-500_1_custom\\t2026-10-12T00:00:00Z\\t0\\tbridge\\tgreensentinel-500_1\\tcustom\\n' ;;
+    overlay) printf 'greensentinel-600_1_default\\t2026-10-12T00:00:00Z\\t0\\toverlay\\tgreensentinel-600_1\\tdefault\\n' ;;
+    mislabeled) printf 'greensentinel-700_1_default\\t2026-10-12T00:00:00Z\\t0\\tbridge\\tgreensentinel-800_1\\tdefault\\n' ;;
     missing) exit 1 ;;
   esac
 elif [[ $1 == network && $2 == rm ]]; then
@@ -67,9 +67,9 @@ fi
     env = {
         **os.environ,
         "PATH": f"{fake_bin}{os.pathsep}{os.environ['PATH']}",
-        "COMPOSE_PROJECT_NAME": "p063-999_1",
-        "P063_DOCKER_NETWORK_NOW_EPOCH": "1791853200",
-        "P063_DOCKER_NETWORK_STALE_AFTER_SECONDS": "3600",
+        "COMPOSE_PROJECT_NAME": "greensentinel-999_1",
+        "GREENSENTINEL_DOCKER_NETWORK_NOW_EPOCH": "1791853200",
+        "GREENSENTINEL_DOCKER_NETWORK_STALE_AFTER_SECONDS": "3600",
         "FAKE_DOCKER_REMOVED": str(removed),
     }
     result = _run_script(env, fake_bin)

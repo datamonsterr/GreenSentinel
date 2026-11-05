@@ -76,13 +76,13 @@ def test_delete_environment_by_id():
 
 
 def test_get_service_domain():
-    fake_cli_out = json.dumps({"domains": [{"domain": "p063-preview-pr-10.up.railway.app"}]})
+    fake_cli_out = json.dumps({"domains": [{"domain": "greensentinel-preview-pr-10.up.railway.app"}]})
     mock_run = MagicMock()
     mock_run.returncode = 0
     mock_run.stdout = fake_cli_out
     with patch("subprocess.run", return_value=mock_run):
         domain = get_service_domain("service-1", "pr-10")
-        assert domain == "p063-preview-pr-10.up.railway.app"
+        assert domain == "greensentinel-preview-pr-10.up.railway.app"
 
 
 def test_create_service_domain():
@@ -90,13 +90,13 @@ def test_create_service_domain():
         "data": {
             "serviceDomainCreate": {
                 "id": "dom-1",
-                "domain": "p063-backend-pr-77.up.railway.app",
+                "domain": "greensentinel-backend-pr-77.up.railway.app",
             }
         }
     }
     with patch("scripts.railway_pr.run_railway_api", return_value=fake_response):
         domain = create_service_domain("service-1", "env-77")
-        assert domain == "p063-backend-pr-77.up.railway.app"
+        assert domain == "greensentinel-backend-pr-77.up.railway.app"
 
 
 def test_get_url_fallback(capsys):
@@ -277,7 +277,7 @@ def test_workflow_metadata_uses_authenticated_rest_when_cli_is_unavailable(monke
         assert get_railway_workflow_runs(108, "commit-contract") == runs
     request = opener.call_args.args[0]
     assert request.full_url == (
-        "https://api.github.com/repos/AI20K-Build-Phase-Cohort-4/P-063/actions/workflows/"
+        "https://api.github.com/repos/AI20K-Build-Phase-Cohort-4/GreenSentinel/actions/workflows/"
         "deploy-railway.yml/runs?event=pull_request&head_sha=commit-contract&per_page=20"
     )
     assert request.get_header("Authorization") == "Bearer workflow-contract-token"

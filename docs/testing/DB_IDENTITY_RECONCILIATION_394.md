@@ -2,16 +2,16 @@
 
 - **Date**: 2026-10-16
 - **Slice**: `sync` (Bounded database identity reconciliation and mock cleanup)
-- **Parent Issues**: [#394](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/394) (Master Data Finalization), [#402](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/402) (Aggregate Identity)
-- **Child Task**: [#410](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/410)
+- **Parent Issues**: [#394](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/394) (Master Data Finalization), [#402](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/402) (Aggregate Identity)
+- **Child Task**: [#410](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/410)
 - **Implementation Branch**: `jev-587cd00e04964446`
 - **Deliverables**:
-  - Service: [`identity_reconciliation.py`](file:///home/dat/dev/vinuni_aia/P-063-worktrees/worktrees/jev-587cd00e04964446/src/services/identity_reconciliation.py)
-  - CLI: [`reconcile_identity.py`](file:///home/dat/dev/vinuni_aia/P-063-worktrees/worktrees/jev-587cd00e04964446/scripts/reconcile_identity.py)
-  - Unit Tests: [`test_identity_reconciliation.py`](file:///home/dat/dev/vinuni_aia/P-063-worktrees/worktrees/jev-587cd00e04964446/tests/unit/test_identity_reconciliation.py)
-  - CLI Tests: [`test_reconcile_identity_cli.py`](file:///home/dat/dev/vinuni_aia/P-063-worktrees/worktrees/jev-587cd00e04964446/tests/unit/test_reconcile_identity_cli.py)
-  - Integration Tests: [`test_identity_reconciliation_integration.py`](file:///home/dat/dev/vinuni_aia/P-063-worktrees/worktrees/jev-587cd00e04964446/tests/integration/test_identity_reconciliation_integration.py)
-  - Implementation Design: [`docs/superpowers/plans/2026-10-15-db-identity-reconciliation.md`](file:///home/dat/dev/vinuni_aia/P-063-worktrees/worktrees/jev-587cd00e04964446/docs/superpowers/plans/2026-10-15-db-identity-reconciliation.md)
+  - Service: [`identity_reconciliation.py`](file:///home/dat/dev/vinuni_aia/GreenSentinel-worktrees/worktrees/jev-587cd00e04964446/src/services/identity_reconciliation.py)
+  - CLI: [`reconcile_identity.py`](file:///home/dat/dev/vinuni_aia/GreenSentinel-worktrees/worktrees/jev-587cd00e04964446/scripts/reconcile_identity.py)
+  - Unit Tests: [`test_identity_reconciliation.py`](file:///home/dat/dev/vinuni_aia/GreenSentinel-worktrees/worktrees/jev-587cd00e04964446/tests/unit/test_identity_reconciliation.py)
+  - CLI Tests: [`test_reconcile_identity_cli.py`](file:///home/dat/dev/vinuni_aia/GreenSentinel-worktrees/worktrees/jev-587cd00e04964446/tests/unit/test_reconcile_identity_cli.py)
+  - Integration Tests: [`test_identity_reconciliation_integration.py`](file:///home/dat/dev/vinuni_aia/GreenSentinel-worktrees/worktrees/jev-587cd00e04964446/tests/integration/test_identity_reconciliation_integration.py)
+  - Implementation Design: [`docs/superpowers/plans/2026-10-15-db-identity-reconciliation.md`](file:///home/dat/dev/vinuni_aia/GreenSentinel-worktrees/worktrees/jev-587cd00e04964446/docs/superpowers/plans/2026-10-15-db-identity-reconciliation.md)
 
 ---
 
@@ -30,7 +30,7 @@ This slice delivers repository-owned, audited dry-run and transactional apply to
   - Deactivation of orphaned real principals (`status='disabled'`, satisfying `principals_status_check` constraint; preserving historical FK records).
   - Display name synchronization from trusted Clerk profile names (zero invented `User xxxx` fake aliases).
   - Proven mock lineage deletion with audited 24-table child-first topological FK closure.
-  - Fail-closed isolation: raises [`MockPrincipalReferenceError`](file:///home/dat/dev/vinuni_aia/P-063-worktrees/worktrees/jev-587cd00e04964446/src/services/identity_reconciliation.py) if any mock principal has references outside approved fixture cases; real cases and audit events are NEVER deleted via mock actor FKs.
+  - Fail-closed isolation: raises [`MockPrincipalReferenceError`](file:///home/dat/dev/vinuni_aia/GreenSentinel-worktrees/worktrees/jev-587cd00e04964446/src/services/identity_reconciliation.py) if any mock principal has references outside approved fixture cases; real cases and audit events are NEVER deleted via mock actor FKs.
   - Transactional append-only trigger maintenance (`app.reject_mutation()`, SQLSTATE 55000): temporary scoped disable/re-enable under lock with restoration proof.
   - Real restorable recovery export dumping actual row data with strict `mode 0600`.
   - Disposable DB guard with mandatory loopback, disposable prefix, and explicit opt-in.
@@ -48,7 +48,7 @@ This slice delivers repository-owned, audited dry-run and transactional apply to
 - **Total Clerk Organizations**: 10
 - **Total Clerk Memberships**: 12 (10 `org:admin`, 1 `org:member`, 1 `org:driver`)
 - **Established Seed Organization**: Discovered dynamically from database (`app.organizations.clerk_organization_id`).
-- **New Organizations**: 9 organizations mapped deterministically via UUID5 (`https://p063.internal/org/{clerk_org_id}`).
+- **New Organizations**: 9 organizations mapped deterministically via UUID5 (`https://greensentinel.internal/org/{clerk_org_id}`).
 
 ---
 
@@ -116,11 +116,11 @@ All emails, personal names, and database connection strings are masked via 12-ch
    - Unknown roles are rejected. Demotions cleanly replace stale roles; no silent retention of admin privileges.
 3. **Zero Destruction on Incomplete Data**:
    - Paginated Clerk fetch validates that received counts equal total counts.
-   - Partial API failures or HTTP 429 rate limits raise [`ClerkAPIError`](file:///home/dat/dev/vinuni_aia/P-063-worktrees/worktrees/jev-587cd00e04964446/src/services/identity_reconciliation.py) and refuse plan generation.
+   - Partial API failures or HTTP 429 rate limits raise [`ClerkAPIError`](file:///home/dat/dev/vinuni_aia/GreenSentinel-worktrees/worktrees/jev-587cd00e04964446/src/services/identity_reconciliation.py) and refuse plan generation.
 4. **Human Record Preservation & Status Check Compliance**:
    - Real principals without active memberships are set to `status = 'disabled'` (eliminating SQLSTATE 23514) and have roles removed, preserving historical references.
 5. **Fail-Closed Real Record Protection**:
-   - `_verify_mock_principals_isolation` raises [`MockPrincipalReferenceError`](file:///home/dat/dev/vinuni_aia/P-063-worktrees/worktrees/jev-587cd00e04964446/src/services/identity_reconciliation.py) if any mock principal has relationships outside approved fixture closure.
+   - `_verify_mock_principals_isolation` raises [`MockPrincipalReferenceError`](file:///home/dat/dev/vinuni_aia/GreenSentinel-worktrees/worktrees/jev-587cd00e04964446/src/services/identity_reconciliation.py) if any mock principal has relationships outside approved fixture closure.
    - Real cases, adjudications, and audit records referencing mock actors are NEVER deleted.
 6. **Append-Only Trigger Maintenance**:
    - 10 tables protected by `EXECUTE FUNCTION app.reject_mutation()` raising SQLSTATE 55000.
@@ -131,7 +131,7 @@ All emails, personal names, and database connection strings are masked via 12-ch
    - `SET LOCAL lock_timeout = '5s'` executed before acquiring `pg_advisory_xact_lock`.
    - Under lock, canonical schema fingerprint (columns, types, CHECK, FKs, triggers) and data identity fingerprints are re-read and validated; any drift fails closed.
 9. **Disposable DB Guard**:
-   - [`assert_disposable_db_guard`](file:///home/dat/dev/vinuni_aia/P-063-worktrees/worktrees/jev-587cd00e04964446/src/services/identity_reconciliation.py) verifies loopback connection (`127.0.0.1` / `localhost`), prefix requirement (`test_p063_finalize_394_` or `test_p063_disposable_`), and opt-in env var (`P063_RECONCILE_DISPOSABLE_DB=1`). No remote bypass.
+   - [`assert_disposable_db_guard`](file:///home/dat/dev/vinuni_aia/GreenSentinel-worktrees/worktrees/jev-587cd00e04964446/src/services/identity_reconciliation.py) verifies loopback connection (`127.0.0.1` / `localhost`), prefix requirement (`test_greensentinel_finalize_394_` or `test_greensentinel_disposable_`), and opt-in env var (`GREENSENTINEL_RECONCILE_DISPOSABLE_DB=1`). No remote bypass.
 
 ---
 
@@ -148,7 +148,7 @@ All emails, personal names, and database connection strings are masked via 12-ch
 ```
 ============================= test session starts ==============================
 platform linux -- Python 3.13.13, pytest-9.1.1, pluggy-1.6.0
-rootdir: /home/dat/dev/vinuni_aia/P-063-worktrees/worktrees/jev-587cd00e04964446
+rootdir: /home/dat/dev/vinuni_aia/GreenSentinel-worktrees/worktrees/jev-587cd00e04964446
 configfile: pyproject.toml
 plugins: asyncio-1.4.0, langsmith-0.12.4, anyio-4.15.1, xdist-3.8.0
 asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
@@ -165,7 +165,7 @@ tests/integration/test_identity_reconciliation_integration.py .........  [100%]
   - Role mapping & unknown role rejection
   - UUID5 determinism & collision detection
   - Pagination completeness & error handling
-  - Conflicting membership role resolution ([`ClerkMembershipConflictError`](file:///home/dat/dev/vinuni_aia/P-063-worktrees/worktrees/jev-587cd00e04964446/src/services/identity_reconciliation.py))
+  - Conflicting membership role resolution ([`ClerkMembershipConflictError`](file:///home/dat/dev/vinuni_aia/GreenSentinel-worktrees/worktrees/jev-587cd00e04964446/src/services/identity_reconciliation.py))
   - Orphaned principal deactivation with `status='disabled'`
   - Display name synchronization without synthetic aliases
   - Mode 0600 file permissions and recovery dump structure
@@ -177,7 +177,7 @@ tests/integration/test_identity_reconciliation_integration.py .........  [100%]
   - JSON plan output formatting
   - Expected plan hash enforcement
   - Live apply protection guards
-- **Integration Suite (9 tests against real PostgreSQL clones in `p063-postgres`)**:
+- **Integration Suite (9 tests against real PostgreSQL clones in `greensentinel-postgres`)**:
   - `test_e2e_reconciliation_full_lifecycle`: Full audit -> plan -> apply -> verify -> repeated no-op lifecycle on real PostGIS clone.
   - `test_rollback_after_mid_delete_error`: Proves 100% transactional rollback when mid-delete execution errors.
   - `test_schema_drift_rejection_under_lock`: Detects table schema alterations and rejects stale plan under advisory lock.
@@ -194,14 +194,14 @@ tests/integration/test_identity_reconciliation_integration.py .........  [100%]
 
 ```bash
 # 1. Read-only Audit (Offline Mode)
-python scripts/reconcile_identity.py --audit --env dev --clerk-snapshot-file /tmp/p063-identity-audit.json --offline
+python scripts/reconcile_identity.py --audit --env dev --clerk-snapshot-file /tmp/greensentinel-identity-audit.json --offline
 
 # 2. Output Plan in JSON format
 python scripts/reconcile_identity.py --plan --json --env staging --offline
 
 # 3. Apply on Disposable Clone (Requires opt-in env var)
-P063_RECONCILE_DISPOSABLE_DB=1 python scripts/reconcile_identity.py --apply --env dev \
-    --database-url "postgresql://postgres:postgrespassword@127.0.0.1:5432/test_p063_finalize_394_dev_20261015t173125z" \
+GREENSENTINEL_RECONCILE_DISPOSABLE_DB=1 python scripts/reconcile_identity.py --apply --env dev \
+    --database-url "postgresql://postgres:postgrespassword@127.0.0.1:5432/test_greensentinel_finalize_394_dev_20261015t173125z" \
     --expected-plan-hash "<computed-hash>" \
     --recovery-dir "$TMPDIR"
 ```

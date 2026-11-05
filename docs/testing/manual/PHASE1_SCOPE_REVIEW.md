@@ -1,6 +1,6 @@
 # Phase 1 Scope Reconciliation Review
 
-This runbook reviews the documentation contract for [issue 72](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/72). It does not establish runtime, database, benchmark, UAT or hosted acceptance. The approved release scope and inherited implementation must remain distinguishable.
+This runbook reviews the documentation contract for [issue 72](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/72). It does not establish runtime, database, benchmark, UAT or hosted acceptance. The approved release scope and inherited implementation must remain distinguishable.
 
 ## Preconditions and commands
 
@@ -28,4 +28,4 @@ The documentation suite imports no application, model provider or database. Ordi
 
 ## Evidence boundary
 
-The [worklog](../../worklog/2026-10-02.md) and [journal](../../journal/JOURNAL.md#week-4-strict-phase-1-scope-reconciliation-2026-10-02) distinguish local documentation/mutation checks, inherited fixture checks and CI evidence. Documentation checks do not validate classifier quality, persistence, browser flows or deployments. Any inherited database/browser suites run by CI are reported separately from documentation proof and do not establish runtime dismissal compliance. Runtime dismissal remediation belongs to [issue 73](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/73) and its existing owner, not this review.
+The [worklog](../../worklog/2026-10-02.md) and [journal](../../journal/JOURNAL.md#week-4-strict-phase-1-scope-reconciliation-2026-10-02) distinguish local documentation/mutation checks, inherited fixture checks and CI evidence. Documentation checks do not validate classifier quality, persistence, browser flows or deployments. Any inherited database/browser suites run by CI are reported separately from documentation proof and do not establish runtime dismissal compliance. Runtime dismissal remediation belongs to [issue 73](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/73) and its existing owner, not this review.

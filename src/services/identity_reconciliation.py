@@ -1,4 +1,4 @@
-"""Identity Reconciliation Service for P-063 (#410 / #402 / #394).
+"""Identity Reconciliation Service for GreenSentinel (#410 / #402 / #394).
 
 Provides audited, repository-owned synchronization between Clerk (identity & org truth)
 and Railway PostgreSQL databases across dev, staging, and production environments.
@@ -171,14 +171,14 @@ def assert_disposable_db_guard(db_url: str) -> None:
             "Remote databases strictly forbidden."
         )
     dbname = (parsed.path or "").lstrip("/")
-    if not (dbname.startswith("test_p063_finalize_394_") or dbname.startswith("test_p063_disposable_")):
+    if not (dbname.startswith("test_greensentinel_finalize_394_") or dbname.startswith("test_greensentinel_disposable_")):
         raise SafetyGuardError(
             f"Safety guard violation: database {dbname!r} does not have disposable prefix. "
-            "Must start with 'test_p063_finalize_394_' or 'test_p063_disposable_'."
+            "Must start with 'test_greensentinel_finalize_394_' or 'test_greensentinel_disposable_'."
         )
-    has_optin = os.environ.get("P063_RECONCILE_DISPOSABLE_DB") == "1"
+    has_optin = os.environ.get("GREENSENTINEL_RECONCILE_DISPOSABLE_DB") == "1"
     if not has_optin:
-        raise SafetyGuardError("Safety guard violation: P063_RECONCILE_DISPOSABLE_DB=1 opt-in required.")
+        raise SafetyGuardError("Safety guard violation: GREENSENTINEL_RECONCILE_DISPOSABLE_DB=1 opt-in required.")
 
 
 def compute_org_uuid(
@@ -196,7 +196,7 @@ def compute_org_uuid(
     if clerk_org_id in existing_map:
         return existing_map[clerk_org_id]
 
-    derived_uuid = str(uuid.uuid5(CLERK_ORG_UUID_NAMESPACE, f"https://p063.internal/org/{clerk_org_id}"))
+    derived_uuid = str(uuid.uuid5(CLERK_ORG_UUID_NAMESPACE, f"https://greensentinel.internal/org/{clerk_org_id}"))
 
     uuids_in_use = existing_uuids or set(existing_map.values())
     if derived_uuid in uuids_in_use:
@@ -1063,7 +1063,7 @@ def generate_sanitized_report(plan: ReconciliationPlan) -> str:
         "## Security & Verification",
         "- PII Sanitization: 100% verified (no plain emails, names or connection strings)",
         "- Mode 0600 Recovery Export: Enforced before apply with complete row dumps",
-        "- Advisory Lock: `pg_advisory_xact_lock(hashtext('p063_identity_reconciliation'))`",
+        "- Advisory Lock: `pg_advisory_xact_lock(hashtext('greensentinel_identity_reconciliation'))`",
         "- Lock Timeout: `5s` (set before lock acquisition)",
         "- Transaction Atomicity: Full rollback on any error",
         "- Append-Only Guard Maintenance: Scoped disable/restore per catalog trigger",
@@ -1351,7 +1351,7 @@ def execute_reconciliation_apply(
             try:
                 cur.execute("SET LOCAL lock_timeout = '5s'")
                 cur.execute("SET LOCAL statement_timeout = '30s'")
-                cur.execute("SELECT pg_advisory_xact_lock(hashtext('p063_identity_reconciliation'))")
+                cur.execute("SELECT pg_advisory_xact_lock(hashtext('greensentinel_identity_reconciliation'))")
             except Exception as lock_exc:
                 logger.warning(f"Advisory lock setup: {lock_exc}")
 

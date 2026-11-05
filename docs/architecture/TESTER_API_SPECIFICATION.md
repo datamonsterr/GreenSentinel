@@ -1,6 +1,6 @@
 # Tester Simulation API Design
 
-**Status:** Proposed contract for [Epic #130](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/130), not implemented endpoints. Frontend `/test` calls canonical backend `/test/api/v1`. Existing `/api/v1` contracts remain in [API_SPECIFICATION.md](API_SPECIFICATION.md). The test router has no root or `/api/v1/test` alias.
+**Status:** Proposed contract for [Epic #130](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/130), not implemented endpoints. Frontend `/test` calls canonical backend `/test/api/v1`. Existing `/api/v1` contracts remain in [API_SPECIFICATION.md](API_SPECIFICATION.md). The test router has no root or `/api/v1/test` alias.
 
 ## Interface and authorization
 

@@ -1,4 +1,4 @@
-"""Fetch the P-063 benchmark corpus from the Hugging Face Hub and verify integrity.
+"""Fetch the GreenSentinel benchmark corpus from the Hugging Face Hub and verify integrity.
 
 The bulk corpus is intentionally out of Git (it is large). It lives in a public
 Hugging Face dataset repo and is pulled on demand, then checked against the
@@ -15,7 +15,7 @@ Usage::
         --out data/benchmark-10k
 
 Environment:
-    P063_BENCHMARK_HF_REPO  override the default dataset repo id
+    GREENSENTINEL_BENCHMARK_HF_REPO  override the default dataset repo id
     HF_TOKEN                token (optional for a public repo)
 """
 
@@ -28,7 +28,7 @@ import os
 import sys
 from pathlib import Path
 
-DEFAULT_REPO = os.environ.get("P063_BENCHMARK_HF_REPO", "datamonsterr/p-063-synthesized-trips")
+DEFAULT_REPO = os.environ.get("GREENSENTINEL_BENCHMARK_HF_REPO", "datamonsterr/green-sentinel-synthesized-trips")
 PROFILES = ("releases_v1", "synthesized_vietnam_trip")
 
 

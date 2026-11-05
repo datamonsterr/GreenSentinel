@@ -281,7 +281,7 @@ def export_all(
     manifest = {
         "model_version": MODEL_VERSION,
         "corpus_sha256": CORPUS_SHA256,
-        "hf_repo_id": "datamonsterr/p-063-r3d-classifier",
+        "hf_repo_id": "datamonsterr/green-sentinel-r3d-classifier",
         "hf_revision": None,
         "source_runs": dict(SOURCE_RUNS),
         "class_order": BENCHMARK_7_CLASSES,

@@ -1,12 +1,12 @@
-# Benchmark & dataset rules (P-063)
+# Benchmark & dataset rules (GreenSentinel)
 
 Applies to every change touching the fraud benchmark corpora, the generator, the
 runner, or object storage. Companion command: `.agents/commands/benchmark-storage.md`.
 
 ## Storage
 
-- Bulk corpus lives on **Hugging Face Hub** (`datamonsterr/p-063-synthesized-trips`,
-  override `P063_BENCHMARK_HF_REPO`) as one merged release `releases_v1/` (40k trips),
+- Bulk corpus lives on **Hugging Face Hub** (`datamonsterr/green-sentinel-synthesized-trips`,
+  override `GREENSENTINEL_BENCHMARK_HF_REPO`) as one merged release `releases_v1/` (40k trips),
   never in Git. Only docs and `STORAGE.md` are committed; bulk is fetched.
 - Fetch with `scripts/benchmark/fetch_dataset.py --profile releases_v1`; it verifies
   `trips.jsonl` against the recorded hash and aborts on mismatch. Build a release

@@ -1,10 +1,10 @@
 # ADR-023: Sequence preview deployments through a reusable workflow
 
 ## Status
-Accepted — 2026-10-06. Relates to [issue #179](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/179).
+Accepted — 2026-10-06. Relates to [issue #179](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/179).
 
 ## Context
-Vercel's cross-workflow wait occupied the sole self-hosted runner while Railway provisioning queued. Moving the wait to a hosted runner failed before execution because GitHub reported account billing/spending limits in [run 37405954899](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/actions/runs/37405954899).
+Vercel's cross-workflow wait occupied the sole self-hosted runner while Railway provisioning queued. Moving the wait to a hosted runner failed before execution because GitHub reported account billing/spending limits in [run 37405954899](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/actions/runs/37405954899).
 
 ## Decision
 Railway calls the reusable Vercel workflow after successful PR provisioning and health checks, through `needs: [deploy-pr-preview]` and `railway_ready: true`. No runner executes a cross-workflow wait. The independent Vercel pull-request path deploys only frontend-only changes. Both paths retain backend health checks; backend changes require the exact PR head and cannot fall back to a shared backend.

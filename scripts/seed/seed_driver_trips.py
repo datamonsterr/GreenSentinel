@@ -2,7 +2,7 @@
 """
 Seed PostgreSQL driver_trips and trip_ratings tables from HF releases_v1 40k corpus.
 
-Issue: #478 (P-063)
+Issue: #478 (GreenSentinel)
 Specification: docs/design/driver-app-redesign/PLAN.md
 Idempotent upsert with deterministic rating generation.
 
@@ -44,7 +44,7 @@ PAYMENT_METHODS = ("wallet", "credit_card", "cash")
 
 PINNED_RELEASES_V1_SHA256 = "1a0f05b3e1276d8cc0f11a1a922efbecbb554c3c50a6458b24137923592031f7"
 PINNED_RELEASES_V1_REVISION = "914a36560727f5892a24fba3a4173cb245c963da"
-DEFAULT_HF_REPO = os.environ.get("P063_BENCHMARK_HF_REPO", "datamonsterr/p-063-synthesized-trips")
+DEFAULT_HF_REPO = os.environ.get("GREENSENTINEL_BENCHMARK_HF_REPO", "datamonsterr/green-sentinel-synthesized-trips")
 
 
 def verify_trips_hash(trips_path: Path, expected_sha256: str = PINNED_RELEASES_V1_SHA256) -> str:
@@ -617,7 +617,7 @@ def main(argv: list[str] | None = None) -> int:
         parser.error("--only-demo requires --demo-driver-id")
 
     jsonl_path = args.jsonl
-    repo = os.environ.get("P063_BENCHMARK_HF_REPO", DEFAULT_HF_REPO)
+    repo = os.environ.get("GREENSENTINEL_BENCHMARK_HF_REPO", DEFAULT_HF_REPO)
     revision = args.revision or (PINNED_RELEASES_V1_REVISION if args.profile == "releases_v1" else None)
 
     if not jsonl_path.exists():

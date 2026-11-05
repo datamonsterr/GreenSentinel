@@ -32,21 +32,21 @@ export function resolveBackendUrl(requestUrlOrHost?: string): string {
       return 'http://localhost:8000';
     }
     if (host.includes('staging')) {
-      return 'https://p063-backend-staging.up.railway.app';
+      return 'https://greensentinel-backend-staging.up.railway.app';
     }
     if (
-      host.includes('p-063-dev')
-      || host.includes('dev.p-063')
-      || host.includes('dev-p-063')
+      host.includes('green-sentinel-dev')
+      || host.includes('dev.green-sentinel')
+      || host.includes('dev-green-sentinel')
       || host.includes('.vercel.app')
     ) {
-      return 'https://p063-backend-dev.up.railway.app';
+      return 'https://greensentinel-backend-dev.up.railway.app';
     }
   }
   if (process.env.VERCEL_ENV === 'production') {
-    return 'https://p063-backend-production.up.railway.app';
+    return 'https://greensentinel-backend-production.up.railway.app';
   }
-  return 'https://p063-backend-dev.up.railway.app';
+  return 'https://greensentinel-backend-dev.up.railway.app';
 }
 
 export async function authorizedDriverCase(token: string, caseId: string, requestUrlOrHost?: string): Promise<boolean> {

@@ -12,7 +12,7 @@ tests/test_skills_security.py::test_design_system_validate_output_dir_sensitive_
 tests/test_skills_security.py::test_design_system_validate_output_dir_unc_and_root_blocked
 tests/test_skills_security.py::test_design_system_validate_output_dir_symlink_escape_blocked
 tests/test_skills_security.py::test_design_system_persist_concurrency_no_partial_pages_dir
-  /home/dat/dev/vinuni_aia/P-063-worktrees/feat-63/.agents/jev_skills/ui-ux-pro-max/scripts/design_system.py:1021: DeprecationWarning: pathlib.PurePath.is_reserved() is deprecated and scheduled for removal in Python 3.15. Use os.path.isreserved() to detect reserved paths on Windows.
+  /home/dat/dev/vinuni_aia/GreenSentinel-worktrees/feat-63/.agents/jev_skills/ui-ux-pro-max/scripts/design_system.py:1021: DeprecationWarning: pathlib.PurePath.is_reserved() is deprecated and scheduled for removal in Python 3.15. Use os.path.isreserved() to detect reserved paths on Windows.
     if candidate.is_reserved():
 
 -- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html

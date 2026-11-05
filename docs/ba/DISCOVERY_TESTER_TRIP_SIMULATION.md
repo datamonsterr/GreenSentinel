@@ -2,7 +2,7 @@
 
 > **Status:** Confirmed discovery draft · 2026-10-03
 > **Method:** `ask-why-ba` elicitation by Phúc NT / BA Zone; analysis by Codex with stakeholder Dat (`@datamonsterr`, acting Tester)
-> **Authority:** Product parent [#130](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/130), documentation child [#131](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/131)
+> **Authority:** Product parent [#130](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/130), documentation child [#131](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/131)
 
 ## 1. Business Problem
 
@@ -16,10 +16,10 @@ The confirmed stakeholder goal is approximately one minute to visually create a 
 
 | Role | Organisation | Interest |
 |---|---|---|
-| Acting Tester (`@datamonsterr`) | P-063 / GreenSM project | Create, run, inspect, and repeat test trips quickly |
+| Acting Tester (`@datamonsterr`) | GreenSentinel / GreenSM project | Create, run, inspect, and repeat test trips quickly |
 | Fraud Analyst | GreenSM operations | Receive assigned cases and review evidence |
-| Product Owner | P-063 | Accept scope and UAT evidence |
-| Engineering / data owners | P-063 | Preserve contracts, provenance, persistence, and operational safety |
+| Product Owner | GreenSentinel | Accept scope and UAT evidence |
+| Engineering / data owners | GreenSentinel | Preserve contracts, provenance, persistence, and operational safety |
 | Passenger and Driver actors | Simulated workspace roles | Provide editable dialogue evidence and receive/respond to notifications |
 
 ## 4. Pain Points

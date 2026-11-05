@@ -106,7 +106,7 @@ function firstCells(table: Locator) {
 }
 
 async function capture(page: Page, testInfo: TestInfo, filename: string) {
-  const directory = process.env.P063_ORGANIZATION_EVIDENCE_DIR;
+  const directory = process.env.GREENSENTINEL_ORGANIZATION_EVIDENCE_DIR;
   if (directory) await mkdir(directory, { recursive: true });
   const target = directory ? path.join(directory, filename) : testInfo.outputPath(filename);
   await page.screenshot({ path: target, fullPage: true });

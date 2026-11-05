@@ -3,7 +3,7 @@
 Guards:
 - Enforces loopback isolation (127.0.0.1, localhost, ::1) AND disposable prefix AND explicit opt-in.
 - No remote bypass by opting in.
-- Executes against real PostgreSQL clones derived from template test_p063_finalize_394_dev_20261015t173125z.
+- Executes against real PostgreSQL clones derived from template test_greensentinel_finalize_394_dev_20261015t173125z.
 - Verifies:
   1. Full positive lifecycle: audit -> plan -> apply -> verify -> repeated no-op.
   2. Transaction rollback after mid-delete error: data and triggers restored.
@@ -44,15 +44,15 @@ from src.services.identity_reconciliation import (
 
 
 def _get_postgres_connection_params() -> tuple[str, int, str, str]:
-    """Inspect local p063-postgres container in-process or read environment."""
+    """Inspect local greensentinel-postgres container in-process or read environment."""
     host = "127.0.0.1"
-    port = int(os.environ.get("P063_POSTGRES_PORT", "5432"))
-    user = os.environ.get("P063_POSTGRES_USER", "postgres")
-    password = os.environ.get("P063_POSTGRES_PASSWORD", "postgrespassword")
+    port = int(os.environ.get("GREENSENTINEL_POSTGRES_PORT", "5432"))
+    user = os.environ.get("GREENSENTINEL_POSTGRES_USER", "postgres")
+    password = os.environ.get("GREENSENTINEL_POSTGRES_PASSWORD", "postgrespassword")
 
     try:
         proc = subprocess.run(
-            ["docker", "inspect", "p063-postgres"],
+            ["docker", "inspect", "greensentinel-postgres"],
             capture_output=True,
             text=True,
             timeout=5,
@@ -75,11 +75,11 @@ def _get_postgres_connection_params() -> tuple[str, int, str, str]:
 @pytest.fixture
 def disposable_dev_db(monkeypatch) -> Generator[str, None, None]:
     """Create an isolated, temporary PostgreSQL database cloned from the restored dev clone."""
-    monkeypatch.setenv("P063_RECONCILE_DISPOSABLE_DB", "1")
+    monkeypatch.setenv("GREENSENTINEL_RECONCILE_DISPOSABLE_DB", "1")
     host, port, user, password = _get_postgres_connection_params()
 
-    disposable_dbname = f"test_p063_finalize_394_int_{uuid.uuid4().hex[:8]}"
-    template_dbname = "test_p063_finalize_394_dev_20261015t173125z"
+    disposable_dbname = f"test_greensentinel_finalize_394_int_{uuid.uuid4().hex[:8]}"
+    template_dbname = "test_greensentinel_finalize_394_dev_20261015t173125z"
 
     # Connect to maintenance db to create clone
     admin_dsn = f"postgresql://{user}:{password}@{host}:{port}/postgres"
@@ -110,15 +110,15 @@ def disposable_dev_db(monkeypatch) -> Generator[str, None, None]:
 
 def test_safety_guard_rejects_remote_even_with_optin(monkeypatch):
     """Safety guard: remote host URLs must raise SafetyGuardError even with opt-in."""
-    monkeypatch.setenv("P063_RECONCILE_DISPOSABLE_DB", "1")
-    remote_url = "postgresql://user:pass@railway.proxy.rlwy.net:1234/test_p063_finalize_394_dev"
+    monkeypatch.setenv("GREENSENTINEL_RECONCILE_DISPOSABLE_DB", "1")
+    remote_url = "postgresql://user:pass@railway.proxy.rlwy.net:1234/test_greensentinel_finalize_394_dev"
     with pytest.raises(SafetyGuardError, match="not loopback"):
         assert_disposable_db_guard(remote_url)
 
 
 def test_safety_guard_rejects_non_disposable_prefix(monkeypatch):
     """Safety guard: non-prefixed databases must be rejected."""
-    monkeypatch.setenv("P063_RECONCILE_DISPOSABLE_DB", "1")
+    monkeypatch.setenv("GREENSENTINEL_RECONCILE_DISPOSABLE_DB", "1")
     with pytest.raises(SafetyGuardError, match="does not have disposable prefix"):
         assert_disposable_db_guard("postgresql://user:pass@127.0.0.1:5432/shared_database")
 
@@ -126,7 +126,7 @@ def test_safety_guard_rejects_non_disposable_prefix(monkeypatch):
 def test_e2e_reconciliation_full_lifecycle(disposable_dev_db, tmp_path):
     """Execute full lifecycle on real PostgreSQL clone: audit -> plan -> apply -> verify -> repeated no-op."""
     conn = psycopg.connect(disposable_dev_db, autocommit=False)
-    audit_snapshot_file = "/tmp/p063-identity-audit.json"
+    audit_snapshot_file = "/tmp/greensentinel-identity-audit.json"
     if not os.path.exists(audit_snapshot_file):
         pytest.skip(f"Required audit snapshot {audit_snapshot_file} missing on host.")
 
@@ -250,7 +250,7 @@ def test_e2e_reconciliation_full_lifecycle(disposable_dev_db, tmp_path):
 def test_rollback_after_mid_delete_error(disposable_dev_db, tmp_path):
     """Verify transaction rolls back completely on error and leaves DB unmodified."""
     conn = psycopg.connect(disposable_dev_db, autocommit=False)
-    audit_snapshot_file = "/tmp/p063-identity-audit.json"
+    audit_snapshot_file = "/tmp/greensentinel-identity-audit.json"
     if not os.path.exists(audit_snapshot_file):
         pytest.skip(f"Required audit snapshot {audit_snapshot_file} missing on host.")
 
@@ -292,7 +292,7 @@ def test_rollback_after_mid_delete_error(disposable_dev_db, tmp_path):
 def test_schema_drift_rejection_under_lock(disposable_dev_db, tmp_path):
     """Verify schema drift under bounded lock raises StalePlanError and aborts."""
     conn = psycopg.connect(disposable_dev_db, autocommit=False)
-    audit_snapshot_file = "/tmp/p063-identity-audit.json"
+    audit_snapshot_file = "/tmp/greensentinel-identity-audit.json"
     if not os.path.exists(audit_snapshot_file):
         pytest.skip("Audit snapshot missing")
 
@@ -321,7 +321,7 @@ def test_schema_drift_rejection_under_lock(disposable_dev_db, tmp_path):
 def test_stale_data_rejection_under_lock(disposable_dev_db, tmp_path):
     """Verify data mutation between plan generation and apply raises StalePlanError."""
     conn = psycopg.connect(disposable_dev_db, autocommit=False)
-    audit_snapshot_file = "/tmp/p063-identity-audit.json"
+    audit_snapshot_file = "/tmp/greensentinel-identity-audit.json"
     if not os.path.exists(audit_snapshot_file):
         pytest.skip("Audit snapshot missing")
 
@@ -355,7 +355,7 @@ def test_stale_data_rejection_under_lock(disposable_dev_db, tmp_path):
 def test_unrelated_real_case_referencing_mock_principal_rejected(disposable_dev_db, tmp_path):
     """Verify that an unrelated real case referencing a mock principal fails closed."""
     conn = psycopg.connect(disposable_dev_db, autocommit=False)
-    audit_snapshot_file = "/tmp/p063-identity-audit.json"
+    audit_snapshot_file = "/tmp/greensentinel-identity-audit.json"
     if not os.path.exists(audit_snapshot_file):
         pytest.skip("Audit snapshot missing")
 
@@ -405,7 +405,7 @@ def test_unrelated_real_case_referencing_mock_principal_rejected(disposable_dev_
 def test_trigger_restoration_and_unrelated_record_protection(disposable_dev_db, tmp_path):
     """Verify that append-only triggers are restored and protect unrelated records after apply."""
     conn = psycopg.connect(disposable_dev_db, autocommit=False)
-    audit_snapshot_file = "/tmp/p063-identity-audit.json"
+    audit_snapshot_file = "/tmp/greensentinel-identity-audit.json"
     if not os.path.exists(audit_snapshot_file):
         pytest.skip("Audit snapshot missing")
 

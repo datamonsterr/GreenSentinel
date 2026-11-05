@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted, 2026-10-05. [Issue #161](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/161).
+Accepted, 2026-10-05. [Issue #161](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/161).
 
 ## Context
 
@@ -24,7 +24,7 @@ The client still calls FastAPI routes, which validate requests and delegate to s
 
 A case-scoped tool obtains `CaseDetail` through `CaseService`, reads GeoJSON, validates coordinate ranges, and calls the existing provider. Tool exception handling and unavailable-coordinate responses remain intact. Native content declarations are validated as SDK models; tool payloads continue through existing schemas and service authorization. API response validation, graph routing, and SSE delivery retain their existing paths.
 
-The legacy ticket helper's `RECORD_FINDING` payload never satisfied `CaseActionRequest`, so its swallowed validation exception always prevented an audit write. Remove that dead attempt rather than inventing a sanction action or hiding the static error. A characterization test proves the same zero-write behavior before and after removal. The inherited `ISSUED` preview remains misleading and is tracked in [issue #158](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/158); it is not durable adjudication evidence. Model declarations still exclude that tool, and a forced model call now returns a schema-valid forbidden response.
+The legacy ticket helper's `RECORD_FINDING` payload never satisfied `CaseActionRequest`, so its swallowed validation exception always prevented an audit write. Remove that dead attempt rather than inventing a sanction action or hiding the static error. A characterization test proves the same zero-write behavior before and after removal. The inherited `ISSUED` preview remains misleading and is tracked in [issue #158](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/158); it is not durable adjudication evidence. Model declarations still exclude that tool, and a forced model call now returns a schema-valid forbidden response.
 
 ## Rationale & Alternatives Considered
 

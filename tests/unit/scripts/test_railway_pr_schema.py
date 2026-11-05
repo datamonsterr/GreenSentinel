@@ -44,7 +44,7 @@ def test_prepare_preview_schema_uses_ephemeral_key_and_scoped_ssh_command(monkey
     assert calls[0][1] == {"check": True, "capture_output": True, "text": True, "timeout": 30}
     assert calls[1][0][:3] == ["ssh-keygen", "-lf", calls[0][0][-1] + ".pub"]
     assert calls[2][0][:-1] == ["railway", "ssh", "keys", "add", "--key", calls[0][0][-1] + ".pub", "--name"]
-    assert calls[2][0][-1].startswith("p063-pr-340-")
+    assert calls[2][0][-1].startswith("greensentinel-pr-340-")
     assert calls[3][0] == [
         "railway",
         "ssh",
@@ -68,7 +68,7 @@ def test_prepare_preview_schema_uses_ephemeral_key_and_scoped_ssh_command(monkey
     assert calls[3][1]["capture_output"] is True
     assert calls[3][1]["text"] is True
     assert calls[3][1]["timeout"] == 180
-    assert os.path.basename(calls[3][1]["env"]["HOME"]).startswith("p063-railway-ssh-")
+    assert os.path.basename(calls[3][1]["env"]["HOME"]).startswith("greensentinel-railway-ssh-")
     assert calls[4][0] == ["railway", "ssh", "keys", "remove", "SHA256:test-fingerprint"]
     assert "schema ready" in capsys.readouterr().out
 

@@ -1,18 +1,18 @@
 ---
 name: research-report
-description: Author concise executive research reports and methodology comparisons. Combines literature survey findings, dataset profile, standardized benchmark results, and production feasibility for project P-063 into a structured technical report with templates. Use when summarizing paper research, presenting benchmark evaluations, proposing architecture decisions (ADR), or finalizing research sprints.
+description: Author concise executive research reports and methodology comparisons. Combines literature survey findings, dataset profile, standardized benchmark results, and production feasibility for project GreenSentinel into a structured technical report with templates. Use when summarizing paper research, presenting benchmark evaluations, proposing architecture decisions (ADR), or finalizing research sprints.
 argument-hint: [topic] [output-file]
 ---
 
 # Research Report Skill
 
-Author concise, evidence-backed research synthesis reports for P-063 (VinUni AI20K Build Phase).
+Author concise, evidence-backed research synthesis reports for GreenSentinel (VinUni AI20K Build Phase).
 
 ## Core Principles
 1. **Executive First**: Begin with the decision, recommended method, and quantified trade-off (F1 vs Latency vs Cost).
 2. **Deterministic Citations**: Every candidate paper must include title, authors, publication venue/year, arXiv/DOI link, and implementation repo link.
 3. **Unified Benchmark Leaderboard**: Must embed the standardized benchmark table comparing all evaluated candidates on the same test split.
-4. **Production Feasibility**: Explicitly score feasibility against P-063 constraints:
+4. **Production Feasibility**: Explicitly score feasibility against GreenSentinel constraints:
    - GreenSM ride-hailing GPS trajectory anomaly detection (DAVI, SSD)
    - FastAPI async service latency SLA (< 50ms p95)
    - Real-time vs batch processing trade-offs.
@@ -40,7 +40,7 @@ Use the following Markdown structure when authoring a report under `docs/researc
 
 ---
 
-## 2. Problem Framing & P-063 Constraints
+## 2. Problem Framing & GreenSentinel Constraints
 - **Use Case:** [e.g., GreenSM customer dispute & abnormal detour detection]
 - **Target Metrics:** F1-score >= 0.85, Inference latency <= 15ms (p95), RAM <= 100MB.
 - **Data Modality:** GPS coordinates, speed, bearing, OSRM distance ratios, customer dispute text.
@@ -69,7 +69,7 @@ Evaluated on: `data/benchmark/test_split.parquet` (N = 10,000 samples, locked se
 
 ---
 
-## 5. Application to P-063 Architecture
+## 5. Application to GreenSentinel Architecture
 - **Inference Integration:** How does this fit into `services/` and `api/`?
 - **FastAPI Endpoint Impact:** Does it meet the async loop requirements?
 - **Data Pipeline Integration:** How are GPS features extracted before model invocation?

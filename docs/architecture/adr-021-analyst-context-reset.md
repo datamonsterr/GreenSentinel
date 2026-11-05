@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted, 2026-10-05. [Issue #153](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/153). Governed by [`FR-WS-01`](../ba/DRIVER_FIRST_REQUIREMENTS.md#remaining-workspace-defaults) and [`AC-WS-01`](../ba/DRIVER_FIRST_REQUIREMENTS.md#acceptance-scenarios-and-proof).
+Accepted, 2026-10-05. [Issue #153](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/153). Governed by [`FR-WS-01`](../ba/DRIVER_FIRST_REQUIREMENTS.md#remaining-workspace-defaults) and [`AC-WS-01`](../ba/DRIVER_FIRST_REQUIREMENTS.md#acceptance-scenarios-and-proof).
 
 ## Context
 

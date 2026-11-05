@@ -1,6 +1,6 @@
 # Issue #260 — derived-speed ERR-05 gate on the current mapper (2026-10-21)
 
-Evidence for [issue #260](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/260)
+Evidence for [issue #260](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/260)
 (PR #333, rebased onto current `main`). The original PR targeted
 `bundle_to_input` in `scripts/benchmark/run_10k.py`; that path no longer exists —
 `bundle_to_input` now delegates to the shared production mapper

@@ -167,25 +167,25 @@ def test_clerk_snapshot_duplicate_and_conflict_detection():
 
 def test_safety_guard_assert_disposable_db_guard(monkeypatch):
     """Verify safety guard requires loopback host, disposable prefix, and explicit opt-in."""
-    monkeypatch.setenv("P063_RECONCILE_DISPOSABLE_DB", "1")
+    monkeypatch.setenv("GREENSENTINEL_RECONCILE_DISPOSABLE_DB", "1")
 
     # 1. Remote host rejected even with opt-in
     with pytest.raises(SafetyGuardError, match="not loopback"):
-        assert_disposable_db_guard("postgresql://user:pass@remote.host.com:5432/test_p063_finalize_394_dev")
+        assert_disposable_db_guard("postgresql://user:pass@remote.host.com:5432/test_greensentinel_finalize_394_dev")
 
     # 2. Loopback with non-disposable prefix rejected
     with pytest.raises(SafetyGuardError, match="does not have disposable prefix"):
         assert_disposable_db_guard("postgresql://user:pass@127.0.0.1:5432/production_shared")
 
     # 3. Missing opt-in rejected
-    monkeypatch.delenv("P063_RECONCILE_DISPOSABLE_DB", raising=False)
+    monkeypatch.delenv("GREENSENTINEL_RECONCILE_DISPOSABLE_DB", raising=False)
     with pytest.raises(SafetyGuardError, match="opt-in required"):
-        assert_disposable_db_guard("postgresql://user:pass@127.0.0.1:5432/test_p063_finalize_394_dev")
+        assert_disposable_db_guard("postgresql://user:pass@127.0.0.1:5432/test_greensentinel_finalize_394_dev")
 
     # 4. Valid loopback + disposable prefix + opt-in accepted
-    monkeypatch.setenv("P063_RECONCILE_DISPOSABLE_DB", "1")
-    assert_disposable_db_guard("postgresql://user:pass@127.0.0.1:5432/test_p063_finalize_394_dev")
-    assert_disposable_db_guard("postgresql://user:pass@localhost:5432/test_p063_disposable_db1")
+    monkeypatch.setenv("GREENSENTINEL_RECONCILE_DISPOSABLE_DB", "1")
+    assert_disposable_db_guard("postgresql://user:pass@127.0.0.1:5432/test_greensentinel_finalize_394_dev")
+    assert_disposable_db_guard("postgresql://user:pass@localhost:5432/test_greensentinel_disposable_db1")
 
 
 def test_export_recovery_snapshot_enforces_0600(tmp_path):

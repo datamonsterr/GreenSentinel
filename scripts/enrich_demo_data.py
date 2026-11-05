@@ -611,7 +611,7 @@ def enrich_telemetry(cur) -> int:
         num_points = 14
         points = []
         for step in range(num_points):
-            pt_id = uuid.uuid5(uuid.NAMESPACE_URL, f"p063:legacy-telemetry:{asgn_id}:{step}")
+            pt_id = uuid.uuid5(uuid.NAMESPACE_URL, f"greensentinel:legacy-telemetry:{asgn_id}:{step}")
             pt_time = base_time + timedelta(seconds=step * 20)
             alpha = step / float(num_points - 1)
 
@@ -712,7 +712,7 @@ def enrich_telemetry(cur) -> int:
                     org_id,
                     pt_time,
                     pt_time + timedelta(milliseconds=200),
-                    uuid.uuid5(uuid.NAMESPACE_URL, f"p063:legacy-correlation:{asgn_id}:{step}"),
+                    uuid.uuid5(uuid.NAMESPACE_URL, f"greensentinel:legacy-correlation:{asgn_id}:{step}"),
                     trip_id,
                     asgn_id,
                     drv_id,

@@ -292,7 +292,7 @@ async def interactive_tui() -> None:
     target = "local"
     while True:
         print("\n" + "=" * 60)
-        print("  AI20K P-063: TELEMETRY QUEUE & FRAUD DETECTION TUI")
+        print("  AI20K GreenSentinel: TELEMETRY QUEUE & FRAUD DETECTION TUI")
         print(f"  Target: [{target.upper()}]  |  {check_railway_status()}")
         print("=" * 60)
         print("  1. Switch Target [local / dev / preview / production]")

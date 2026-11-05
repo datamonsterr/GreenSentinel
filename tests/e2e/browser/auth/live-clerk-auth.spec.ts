@@ -27,7 +27,7 @@ async function createSignInToken(request: APIRequestContext) {
 
 test('real Clerk login keeps workplace API access through detail and refresh', async ({ page, request, baseURL }) => {
   test.skip(process.env.RUN_LIVE_AUTH_E2E !== 'true', 'opt in with RUN_LIVE_AUTH_E2E=true');
-  const backend = process.env.AUTH_E2E_BACKEND_URL || 'https://p063-backend-production.up.railway.app';
+  const backend = process.env.AUTH_E2E_BACKEND_URL || 'https://greensentinel-backend-production.up.railway.app';
   const ticket = await createSignInToken(request);
   let sessionId: string | undefined;
   const automaticResponses: Array<{ path: string; status: number; bearer: boolean }> = [];

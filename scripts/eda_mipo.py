@@ -69,7 +69,7 @@ def download_sources() -> tuple[Path, Path]:
     """Download pinned files and reject changed payloads before sampling."""
     import tempfile
 
-    directory = Path(tempfile.mkdtemp(prefix="p063-mipo-"))
+    directory = Path(tempfile.mkdtemp(prefix="greensentinel-mipo-"))
     expected = {
         "inners.txt": "578ed166d40affa6c7cae819622b967fa2aecacddf7caae8a16dd388f172684d",
         "outliers.txt": "88341797b61d1db8171f6a840e9e72e284c652b8909ccbad30b0fa5a9c1d07a9",

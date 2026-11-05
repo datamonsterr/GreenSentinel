@@ -1,4 +1,4 @@
-# P-063 Ride-Hailing Fraud & Violation Classification Model
+# GreenSentinel Ride-Hailing Fraud & Violation Classification Model
 
 An end-to-end architectural narrative detailing problem framing, data scarcity, evolutionary search loops, teaching principles, and the finalized multi-modal stacked classifier for single-trip ride-hailing dispute adjudication.
 
@@ -14,7 +14,7 @@ An end-to-end architectural narrative detailing problem framing, data scarcity, 
 
 ## 1. Problem Definition, Target Categories, and Guardrail Separation
 
-In single-trip ride-hailing operations, platform operators must adjudicate customer disputes and identify driver misconduct rapidly and consistently. P-063 produces **advisory classifications and raw confidence scores** to assist human analysts; models do not execute automated sanctions ([ADR-013](architecture/adr-013-jev-advisory-anomaly-scoring-and-single-trip-fraud.md)).
+In single-trip ride-hailing operations, platform operators must adjudicate customer disputes and identify driver misconduct rapidly and consistently. GreenSentinel produces **advisory classifications and raw confidence scores** to assist human analysts; models do not execute automated sanctions ([ADR-013](architecture/adr-013-jev-advisory-anomaly-scoring-and-single-trip-fraud.md)).
 
 ### 1.1 The Six Model Classes and Seventh Guardrail Outcome
 
@@ -40,10 +40,10 @@ A foundational constraint in ride-hailing dispute research is the **severe scarc
 - Proprietary dispute logs from commercial ride-hailing networks are inaccessible publicly due to passenger and driver PII protection.
 
 ### 2.1 Synthetic Enrichment as an Evaluation Mechanism
-To overcome data scarcity, P-063 engineered a deterministic generator (`scripts/benchmark/build_v2/`):
+To overcome data scarcity, GreenSentinel engineered a deterministic generator (`scripts/benchmark/build_v2/`):
 1. **Distributional Grounding**: Anchored on real-world reference priors, including 15s urban taxi cadence ([[REF-PORTO]](data/DATASET_CARDS.md#ref-porto)), 1s high-frequency mobile pings ([[REF-MIPO]](data/DATASET_CARDS.md#ref-mipo)), 18 real OpenStreetMap road corridors in Hanoi and Ho Chi Minh City ([[REF-OSM-VN]](data/DATASET_CARDS.md#ref-osm-vn)), and empirical traffic speeds (5.5–8.5 m/s cruise, 16.7 m/s arterial p95).
 2. **Enriched Class Distribution**: Rather than simulating a 0.13% needle-in-a-haystack where a 6,000-trip test set would contain fewer than 8 total violations, we enriched violation classes (70% honest, 8% ERR-02, 6% insufficient evidence, 5% ERR-01, 5% ERR-03, 3% ERR-04, 3% ERR-05). This enrichment is an explicit benchmarking decision to provide adequate statistical power for per-class F1, not a claim about real-world market prevalence.
-3. **Disjoint Driver Partitions**: The 40,000-trip corpus (`releases_v2.1`, `d52e52ff...`, published on Hugging Face Hub under [`datamonsterr/p-063-synthesized-trips`](https://huggingface.co/datasets/datamonsterr/p-063-synthesized-trips) at revision `abb8cc8b2464aacdcbec0aab039ef4e066f71f8e`) is partitioned 70% train (28,000), 15% validation (6,000), and 15% test (6,000) grouped strictly by `driver_id` across 2,000 drivers (0 driver overlap).
+3. **Disjoint Driver Partitions**: The 40,000-trip corpus (`releases_v2.1`, `d52e52ff...`, published on Hugging Face Hub under [`datamonsterr/green-sentinel-synthesized-trips`](https://huggingface.co/datasets/datamonsterr/green-sentinel-synthesized-trips) at revision `abb8cc8b2464aacdcbec0aab039ef4e066f71f8e`) is partitioned 70% train (28,000), 15% validation (6,000), and 15% test (6,000) grouped strictly by `driver_id` across 2,000 drivers (0 driver overlap).
 
 ### 2.2 Methodological Caveats: Leakage and Generalization
 - **"Leak-Audited" does NOT mean "Leak-Free"**: The R3C leak audit ([R3C_LEAK_AUDIT.md](data/experiments/R3C_LEAK_AUDIT.md)) enforced a strict univariate threshold (dropping features with single-variable depth-3 tree macro-F1 $> 0.30$). While this eliminated blatant synthetic generator artifacts, it does not prove that subtle multivariate interactions or synthetic generator idiosyncrasies are absent.
@@ -159,7 +159,7 @@ R3D is wired into production as the primary fraud classifier via `src/services/f
 
 - **Primary Classifier (`src/services/fraud_classifier/`)**:
   1. Production R3D stacker executes CPU-optimized `onnxruntime` for the R3F 1D-CNN and native `LightGBM` boosters for R3C and the Stacker meta-learner ($0 PyTorch/pickle dependencies).
-  2. Pinned immutable artifacts loaded from Hugging Face Hub (`datamonsterr/p-063-r3d-classifier` @ `268003f7...`) with SHA256 integrity verification.
+  2. Pinned immutable artifacts loaded from Hugging Face Hub (`datamonsterr/green-sentinel-r3d-classifier` @ `268003f7...`) with SHA256 integrity verification.
   3. Single-digit millisecond inference latency (~2.5–10.7 ms p50) serving real-time queue admission and triage.
 - **Secondary Advisory Layer (`src/services/jev_assessment_service.py`)**:
   1. Asynchronous decision-model advisory (`inception/mercury-decide:free`) providing forensic narrative explanation and customer dialogue reading.
@@ -314,12 +314,12 @@ R3D must be accurately reported as the **best in-generator candidate**, **not** 
 
 ## 9. Deployment Status
 
-R3D is deployed to production on Railway `p063-backend` (region `sfo`) as the primary fraud classifier via `src/services/fraud_classifier`, exposed at `POST /api/v1/classifier/assess`, and integrated as the primary worker queue pipeline per [ADR-030](architecture/adr-030-production-fraud-classifier.md) and PRs #575, #574, #576, #597, #600.
+R3D is deployed to production on Railway `greensentinel-backend` (region `sfo`) as the primary fraud classifier via `src/services/fraud_classifier`, exposed at `POST /api/v1/classifier/assess`, and integrated as the primary worker queue pipeline per [ADR-030](architecture/adr-030-production-fraud-classifier.md) and PRs #575, #574, #576, #597, #600.
 
 - **Production Deployment Metadata**:
-  - **Service**: Railway `p063-backend` production (`sfo`), deployed 2026-10-19 by workflow run `39287451597` from `main`.
+  - **Service**: Railway `greensentinel-backend` production (`sfo`), deployed 2026-10-19 by workflow run `39287451597` from `main`.
   - **Model ID**: `r3d-2026.10.18`.
-  - **Artifacts**: Pinned on Hugging Face Hub under `datamonsterr/p-063-r3d-classifier` at revision `268003f795b2950893e9ef6a54b250dec13eeee6` (`r3c.txt` `0eb2e54522e8`, `r3f.onnx` `23e9d5a2b96a`, `stacker.txt` `1559cd14cd74`).
+  - **Artifacts**: Pinned on Hugging Face Hub under `datamonsterr/green-sentinel-r3d-classifier` at revision `268003f795b2950893e9ef6a54b250dec13eeee6` (`r3c.txt` `0eb2e54522e8`, `r3f.onnx` `23e9d5a2b96a`, `stacker.txt` `1559cd14cd74`).
   - **Artifact Load Time**: 44.6 ms on startup.
   - **Advisory LLM**: `inception/mercury-decide:free` (optional per request, non-blocking in worker).
 - **Production Load Test Validation (`scripts/loadtest/classifier_load_test.py`)**:
@@ -343,5 +343,5 @@ R3D is deployed to production on Railway `p063-backend` (region `sfo`) as the pr
   - Inference p95: 13 / 18 / 31 / 52 ms at concurrency 1 / 4 / 8 / 16.
   - Advisory: p50 497 ms / p95 1566 ms.
 - **Known Gap**:
-  - Issue [#601](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/601): R3D misses violations on 1–3 point telemetry windows (mitigation planned).
+  - Issue [#601](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/601): R3D misses violations on 1–3 point telemetry windows (mitigation planned).
 

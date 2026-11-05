@@ -7,7 +7,7 @@ import { AnalyticsMetricsResponse, ObservabilitySummary } from "@/types/schemas"
 
 const mockAnalyticsResponse: AnalyticsMetricsResponse = {
   scope: "organization",
-  organization_id: "org-p063",
+  organization_id: "org-greensentinel",
   window_days: 30,
   generated_at: "2026-10-05T08:00:00Z",
   queue: {
@@ -87,7 +87,7 @@ const mockObservabilitySummary: ObservabilitySummary = {
   },
   tracing: {
     provider: "LangSmith",
-    project: "p063-agent-runtime",
+    project: "greensentinel-agent-runtime",
     project_url: "https://smith.langchain.com",
     enabled: true,
     environment: "production",

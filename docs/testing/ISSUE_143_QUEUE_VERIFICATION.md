@@ -2,7 +2,7 @@
 
 ## Scope and environment
 
-Issue: [#143](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/143). Branch: `fix/143-active-triage-terminal`. Verification date: 2026-10-05. The local PostgreSQL container `p063-issue143-postgres` holds the exclusively owned, migrated `issue143_queue` database. Hosted reproduction and authenticated preview acceptance remain separate.
+Issue: [#143](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/143). Branch: `fix/143-active-triage-terminal`. Verification date: 2026-10-05. The local PostgreSQL container `greensentinel-issue143-postgres` holds the exclusively owned, migrated `issue143_queue` database. Hosted reproduction and authenticated preview acceptance remain separate.
 
 ## Reproduction and regression evidence
 

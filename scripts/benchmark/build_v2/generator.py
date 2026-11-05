@@ -800,8 +800,8 @@ def build_v2_trip(
     # Identifiers
     trip_ref = f"rv2_{split}_{idx + 1:06d}"
     ns = uuid.UUID("6ba7b810-9dad-11d1-80b4-00c04fd430c8")
-    trip_id = str(uuid.uuid5(ns, f"p063:v2:trip:{trip_ref}"))
-    assign_id = str(uuid.uuid5(ns, f"p063:v2:assignment:{trip_ref}"))
+    trip_id = str(uuid.uuid5(ns, f"greensentinel:v2:trip:{trip_ref}"))
+    assign_id = str(uuid.uuid5(ns, f"greensentinel:v2:assignment:{trip_ref}"))
 
     clean_driver = dict(driver)
     clean_driver["organization_id"] = None

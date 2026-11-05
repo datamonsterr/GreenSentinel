@@ -3,7 +3,7 @@
 **Issue**: #151 - Show analyst profile, decision metrics and immutable activity  
 **Branch**: `feat/151-analyst-audit-ledger`  
 **Date**: 2026-10-05  
-**Author**: Antigravity Worker 3 (Team P-063)
+**Author**: Antigravity Worker 3 (Team GreenSentinel)
 
 ---
 
@@ -22,13 +22,13 @@ Issue #151 requires implementing the Analyst Profile View and immutable audit tr
 
 ### Backend Pytest (`tests/test_api/test_analyst_audit.py`)
 ```bash
-/home/dat/dev/vinuni_aia/P-063/.venv/bin/pytest tests/test_api/test_analyst_audit.py
+/home/dat/dev/vinuni_aia/GreenSentinel/.venv/bin/pytest tests/test_api/test_analyst_audit.py
 ```
 **Output**:
 ```text
 ============================= test session starts ==============================
 platform linux -- Python 3.13.13, pytest-9.1.1, pluggy-1.6.0
-rootdir: /home/dat/dev/vinuni_aia/P-063/.worktrees/delivery-151-20261005
+rootdir: /home/dat/dev/vinuni_aia/GreenSentinel/.worktrees/delivery-151-20261005
 configfile: pyproject.toml
 plugins: asyncio-1.4.0, langsmith-0.12.4, anyio-4.15.1
 asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function

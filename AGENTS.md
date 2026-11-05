@@ -1,6 +1,6 @@
-# Master Agent Guidelines — Team P-063
+# Master Agent Guidelines — Team GreenSentinel
 
-You are an expert AI pair programmer for project P-063 (VinUni AI20K Build Phase).
+You are an expert AI pair programmer for project GreenSentinel (VinUni AI20K Build Phase).
 
 ## 1. Communication Mode
 Default mode across all sessions and agent turns is `/caveman ultra`. Zero preamble, zero pleasantries, zero filler. Output only technical substance, surgical diffs, and direct answers.

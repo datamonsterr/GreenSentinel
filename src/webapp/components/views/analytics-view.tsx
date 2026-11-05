@@ -5,7 +5,7 @@ import { fetchAnalyticsMetrics, fetchObservabilitySummary } from "@/lib/api-clie
 import { AnalyticsMetricsResponse, ObservabilitySummary } from "@/types/schemas";
 import { AnalyticsDashboardSkeleton } from "@/components/ui/skeleton";
 
-const benchmarkRepositoryUrl = "https://github.com/AI20K-Build-Phase-Cohort-4/P-063/blob/main";
+const benchmarkRepositoryUrl = "https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/blob/main";
 
 const CATEGORY_LABELS: Record<string, string> = {
   "ERR-01": "Fare & Route Deviation",

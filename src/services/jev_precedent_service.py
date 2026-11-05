@@ -595,8 +595,8 @@ class JevPrecedentService:
         headers = {
             "Authorization": f"Bearer {self.settings.openrouter_api_key}",
             "Content-Type": "application/json",
-            "HTTP-Referer": "https://github.com/AI20K-Build-Phase-Cohort-4/P-063",
-            "X-Title": "P-063 Precedent Workflow Jev Matcher",
+            "HTTP-Referer": "https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel",
+            "X-Title": "GreenSentinel Precedent Workflow Jev Matcher",
         }
 
         async with httpx.AsyncClient(timeout=8.0) as client:

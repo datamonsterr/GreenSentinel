@@ -1,4 +1,4 @@
-# Master Deliverables Dashboard — Team P-063
+# Master Deliverables Dashboard — Team GreenSentinel
 
 This document tracks all 10 required deliverables for the VinUni AI20K Build Phase Demo Day.
 

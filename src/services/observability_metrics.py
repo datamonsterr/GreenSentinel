@@ -234,7 +234,7 @@ def get_observability_summary() -> dict[str, Any]:
         "benchmark": _benchmark_summary(),
         "tracing": {
             "provider": "LangSmith",
-            "project": os.getenv("LANGSMITH_PROJECT", os.getenv("LANGCHAIN_PROJECT", "p063-agent-runtime")),
+            "project": os.getenv("LANGSMITH_PROJECT", os.getenv("LANGCHAIN_PROJECT", "greensentinel-agent-runtime")),
             "project_url": "https://smith.langchain.com",
             "enabled": os.getenv("LANGSMITH_TRACING", os.getenv("LANGCHAIN_TRACING_V2", "false")).lower() == "true",
             "environment": settings.app_env,

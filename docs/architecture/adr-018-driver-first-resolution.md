@@ -2,7 +2,7 @@
 
 ## Status
 
-Proposed implementation contract for the 2026-10-05 approved business extension. Requirement approval is recorded in [#147](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/147). This document delivers no runtime/schema changes. The remaining reasonableness criterion is explicitly pending in [the requirements](../ba/DRIVER_FIRST_REQUIREMENTS.md).
+Proposed implementation contract for the 2026-10-05 approved business extension. Requirement approval is recorded in [#147](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/147). This document delivers no runtime/schema changes. The remaining reasonableness criterion is explicitly pending in [the requirements](../ba/DRIVER_FIRST_REQUIREMENTS.md).
 
 ## Context
 

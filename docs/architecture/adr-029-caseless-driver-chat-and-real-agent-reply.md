@@ -9,7 +9,7 @@ Accepted (Issue #482, driver app redesign slice 8/10, [PLAN.md](../design/driver
 `docs/design/driver-app-redesign/PLAN.md` (Q4) requires a case-less GSupport
 chat entry point: `POST /api/v1/driver/chat/stream`, where the agent resolves
 the driver's cases via the existing `list_my_cases` tool instead of a bound
-`case_id`. [Issue #482](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/482)
+`case_id`. [Issue #482](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/482)
 comment flagged a review finding from PR #485: `DriverDisputeService.process_driver_chat`
 fired `run_driver_support_agent` via `asyncio.create_task(...)` and discarded
 the result, so every chat caller — including the case-scoped SSE stream route

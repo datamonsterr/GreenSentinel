@@ -1,13 +1,13 @@
 # Research Harness Metric Integrity, State Mapping Review, and Measurement Flaws Audit
 
 - **Date**: 2026-10-17
-- **Review Issue**: [#525](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/525)
-- **Parent Epic**: [#494](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/494)
+- **Review Issue**: [#525](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/525)
+- **Parent Epic**: [#494](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/494)
 - **Related PRs Audited**:
-  - [#499](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/499) (`feat(detector): Jev state builder with derived kinematics and natural-language rendering`)
-  - [#500](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/500) (`feat(benchmark): experiment harness, metric suite, registry and staircase chart`)
-  - [#501](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/501) (`feat(benchmark): releases_v2 realistic corpus generator + realism report`)
-  - [#519](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/519) (`fix(benchmark): count and gate live-call failures in experiment harness`, addressing [#515](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/515))
+  - [#499](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/499) (`feat(detector): Jev state builder with derived kinematics and natural-language rendering`)
+  - [#500](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/500) (`feat(benchmark): experiment harness, metric suite, registry and staircase chart`)
+  - [#501](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/501) (`feat(benchmark): releases_v2 realistic corpus generator + realism report`)
+  - [#519](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/519) (`fix(benchmark): count and gate live-call failures in experiment harness`, addressing [#515](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/515))
 
 ---
 
@@ -116,7 +116,7 @@ The follow-up regression run first reproduced **17 failures and 11 passes** befo
 After correction, the focused local suite passed **90 tests** with no skips. Full-repository `ruff check .` passed; `ruff format --check .` reported 684 files already formatted; `git diff --check` passed:
 
 ```bash
-MPLCONFIGDIR=/tmp/p063-pr527-matplotlib .venv/bin/python -m pytest \
+MPLCONFIGDIR=/tmp/greensentinel-pr527-matplotlib .venv/bin/python -m pytest \
   tests/unit/benchmark/ \
   tests/unit/services/test_jev_state_builder.py \
   tests/unit/services/test_jev_criteria.py -q
@@ -124,7 +124,7 @@ MPLCONFIGDIR=/tmp/p063-pr527-matplotlib .venv/bin/python -m pytest \
 
 The [plotting regression](../../tests/unit/benchmark/test_experiment_staircase.py) verifies that missing matplotlib raises `ImportError` without creating artifacts. Existing chart tests render real SVG and PNG files with matplotlib installed. The placeholder SVG/empty PNG fallback introduced in the initial PR #527 patch was removed.
 
-This is local unit/fixture evidence. Provider calls, bulk live evaluation, and hosted authenticated tests were not performed by this follow-up. PR #527 initially reported only a skipped `fetch-verify-benchmark` job; that is no lint or test proof. Research CI is tracked separately in [PR #526](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/526) and was not inherited when these checks ran.
+This is local unit/fixture evidence. Provider calls, bulk live evaluation, and hosted authenticated tests were not performed by this follow-up. PR #527 initially reported only a skipped `fetch-verify-benchmark` job; that is no lint or test proof. Research CI is tracked separately in [PR #526](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/526) and was not inherited when these checks ran.
 
 Architecture decision: [ADR-029](../architecture/adr-029-harness-live-call-accounting.md). Historical delivery records: [worklog](../worklog/WORKLOG.md), [journal](../journal/JOURNAL.md).
 

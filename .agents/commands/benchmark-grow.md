@@ -1,4 +1,4 @@
-# benchmark-grow — grow the P-063 fraud benchmark (canonical command)
+# benchmark-grow — grow the GreenSentinel fraud benchmark (canonical command)
 
 Generate additional distinct labeled fraud-benchmark batches in parallel,
 fully validated. Use when asked to generate more benchmark data (10k more,
@@ -20,7 +20,7 @@ All four are thin pointers to this file. Plan spec is `name:seed:n[,name:seed:n.
   Extras via `uv pip install --python .venv/bin/python <pkg>`.
 - GitHub CLI: `export GH_CONFIG_DIR=$HOME/.config/gh` first (account `datamonsterr`).
 - Railway CLI: `~/.railway/bin/railway` (not on PATH). Project `caring-renewal`,
-  benchmark DB `p063-benchmark-db` in `dev` env. No local `psql`; use `.venv`
+  benchmark DB `greensentinel-benchmark-db` in `dev` env. No local `psql`; use `.venv`
   `psycopg` + `railway tcp-proxy create/delete`. Never commit creds.
 - Never make live LLM calls from benchmark scripts (offline guards enforced).
 

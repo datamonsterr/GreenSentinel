@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 /**
- * Verification Test Suite for AI Agent Hooks in P-063:
+ * Verification Test Suite for AI Agent Hooks in GreenSentinel:
  * 1. OpenAI Codex Hook
  * 2. Antigravity (AGY) PreInvocation & PostToolUse Hooks
  * 3. OpenCode Plugin (Chat Transform, Select Skill, Post-Tool Headroom)
@@ -26,7 +26,7 @@ function assert(condition: boolean, testName: string) {
 
 async function runVerification() {
   console.log("==================================================");
-  console.log("Running Hook & Tool Verification Suite for P-063");
+  console.log("Running Hook & Tool Verification Suite for GreenSentinel");
   console.log("==================================================");
 
   // ----------------------------------------------------

@@ -1,7 +1,7 @@
 # ADR-029: Record-derived live-call accounting in the research harness
 
 ## Status
-Accepted for PR #527; references [issue #525](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/525) and [epic #494](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/494).
+Accepted for PR #527; references [issue #525](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/525) and [epic #494](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/494).
 
 ## Context
 Soft guardrails can cap a successful provider response or a heuristic fallback. Their metadata cannot prove that a request bypassed the provider. Excluding such records hides live failures. Accepting an arbitrary caller-supplied denominator also allows a failed experiment to appear valid.

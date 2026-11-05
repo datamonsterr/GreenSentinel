@@ -186,16 +186,16 @@ def test_wait_timeout_bounds_polling_and_network_timeouts(capsys):
     assert "Timed out" in capsys.readouterr().err
 
 
-@pytest.mark.parametrize("returned_alias", ["p-063-dev.vercel.app", "other.vercel.app", None])
+@pytest.mark.parametrize("returned_alias", ["green-sentinel-dev.vercel.app", "other.vercel.app", None])
 def test_alias_uses_verified_deployment_id_and_confirms_alias(returned_alias, capsys):
     api = VercelAPI(READY, {"alias": returned_alias, "uid": "alias_example"})
     assert vercel_project.main(
-        ["alias", "https://preview.vercel.app", "p-063-dev.vercel.app"], environ=SETTINGS, opener=api
-    ) == (0 if returned_alias == "p-063-dev.vercel.app" else 1)
+        ["alias", "https://preview.vercel.app", "green-sentinel-dev.vercel.app"], environ=SETTINGS, opener=api
+    ) == (0 if returned_alias == "green-sentinel-dev.vercel.app" else 1)
     request, _ = api.requests[1]
     assert request.full_url == "https://api.vercel.com/v2/deployments/dpl_example/aliases?teamId=team_example"
     assert request.get_method() == "POST"
-    assert json.loads(request.data) == {"alias": "p-063-dev.vercel.app"}
+    assert json.loads(request.data) == {"alias": "green-sentinel-dev.vercel.app"}
     assert request.get_header("Content-type") == "application/json"
     assert capsys.readouterr().out == ""
 
@@ -204,7 +204,7 @@ def test_alias_never_mutates_unverified_project(capsys):
     api = VercelAPI({**READY, "projectId": "prj_other"})
     assert (
         vercel_project.main(
-            ["alias", "https://preview.vercel.app", "p-063-dev.vercel.app"], environ=SETTINGS, opener=api
+            ["alias", "https://preview.vercel.app", "green-sentinel-dev.vercel.app"], environ=SETTINGS, opener=api
         )
         == 1
     )
@@ -313,9 +313,9 @@ def test_wait_retries_transient_get_failures_within_deadline(failure, capsys):
 
 @pytest.mark.parametrize("failure", [http_failure(500), URLError("test-secret")])
 def test_alias_never_blindly_retries_failed_mutation(failure, capsys):
-    api = VercelAPI(READY, failure, {"alias": "p-063-dev.vercel.app"})
+    api = VercelAPI(READY, failure, {"alias": "green-sentinel-dev.vercel.app"})
     assert (
-        vercel_project.main(["alias", "preview.vercel.app", "p-063-dev.vercel.app"], environ=SETTINGS, opener=api) == 1
+        vercel_project.main(["alias", "preview.vercel.app", "green-sentinel-dev.vercel.app"], environ=SETTINGS, opener=api) == 1
     )
     assert [request.get_method() for request, _ in api.requests] == ["GET", "POST"]
     captured = capsys.readouterr()
@@ -338,16 +338,16 @@ def test_check_rejects_malformed_response_without_leaking_body(response, capsys)
 @pytest.mark.parametrize(
     ("aliases", "code"),
     [
-        ({"aliases": [{"alias": "p-063-dev.vercel.app", "uid": "alias_example"}]}, 0),
+        ({"aliases": [{"alias": "green-sentinel-dev.vercel.app", "uid": "alias_example"}]}, 0),
         ({"aliases": [{"alias": "other.vercel.app"}]}, 1),
         ({"aliases": []}, 1),
-        ({"aliases": "p-063-dev.vercel.app"}, 1),
+        ({"aliases": "green-sentinel-dev.vercel.app"}, 1),
     ],
 )
 def test_alias_conflict_succeeds_only_when_exact_deployment_owns_alias(aliases, code, capsys):
     api = VercelAPI(READY, http_failure(409), aliases)
     assert (
-        vercel_project.main(["alias", "preview.vercel.app", "p-063-dev.vercel.app"], environ=SETTINGS, opener=api)
+        vercel_project.main(["alias", "preview.vercel.app", "green-sentinel-dev.vercel.app"], environ=SETTINGS, opener=api)
         == code
     )
     assert [request.get_method() for request, _ in api.requests] == ["GET", "POST", "GET"]

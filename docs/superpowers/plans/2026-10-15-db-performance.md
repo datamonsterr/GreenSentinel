@@ -29,7 +29,7 @@
 - Safe allowlisted read-only workloads (case queue, trip-assignment lookup, driver scorecard, telemetry query, precedent lookup).
 - Bound parameters, bounded timeouts (`statement_timeout = '5s'`).
 - JSON output with `EXPLAIN (ANALYZE, BUFFERS, FORMAT JSON)`.
-- Live audit mode (sanitized, zero secrets) writing structured evidence to `/tmp/p063-indexes-before.json`.
+- Live audit mode (sanitized, zero secrets) writing structured evidence to `/tmp/greensentinel-indexes-before.json`.
 - Test suite: `tests/unit/test_db_profiler.py` mocking DB connections, validating allowlist enforcement, timeout bounds, and plan parsing.
 
 ### Step 2: Additive Index Migration & Rollback
@@ -50,5 +50,5 @@
 
 ### Step 4: Documentation & Conductor Artifacts
 - Record detailed evidence in [`docs/testing/DB_OPTIMIZATION_394.md`](../testing/DB_OPTIMIZATION_394.md).
-- Multi-environment sanitized audits saved in `/tmp/p063-indexes-before-{dev,staging,prod}.json`.
+- Multi-environment sanitized audits saved in `/tmp/greensentinel-indexes-before-{dev,staging,prod}.json`.
 - Conductor command provided for staged live apply post-review.

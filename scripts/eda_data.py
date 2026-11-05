@@ -1,5 +1,5 @@
 """
-Exploratory Data Analysis (EDA) for P-063 Synthetic & Real GIS Datasets.
+Exploratory Data Analysis (EDA) for GreenSentinel Synthetic & Real GIS Datasets.
 
 Validates:
 1. Entity integrity (100 trips, 50 users, 20 drivers, 10 analysts, 100 cases).
@@ -17,7 +17,7 @@ import jsonschema
 
 def run_eda():
     print("=" * 60)
-    print("P-063 DATASET EXPLORATORY DATA ANALYSIS (EDA)")
+    print("GreenSentinel DATASET EXPLORATORY DATA ANALYSIS (EDA)")
     print("=" * 60)
 
     # 1. Load real landmarks & routes

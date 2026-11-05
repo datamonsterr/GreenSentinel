@@ -1,10 +1,10 @@
 import { defineConfig, devices } from '../support/playwright';
 
 const FRONTEND_DEFAULTS: Record<string, string> = {
-  preview: 'https://p-063.vercel.app',
-  dev: 'https://p-063-dev.vercel.app',
-  staging: 'https://p-063-staging.vercel.app',
-  prod: 'https://p-063.vercel.app',
+  preview: 'https://green-sentinel.vercel.app',
+  dev: 'https://green-sentinel-dev.vercel.app',
+  staging: 'https://green-sentinel-staging.vercel.app',
+  prod: 'https://green-sentinel.vercel.app',
 };
 
 function resolveFrontendURL(): string {

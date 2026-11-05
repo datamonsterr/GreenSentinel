@@ -1,6 +1,6 @@
 # Issue #236: independent judgment before AI reveal
 
-This runbook verifies [issue #236](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/236). Use disposable cases with an authenticated analyst, a second analyst, known evidence, an AI suggestion, and a matched precedent. Record revision, environment, case IDs, analyst identities, timestamps, observed results, and artifact links. Hosted authentication must use real accounts.
+This runbook verifies [issue #236](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/236). Use disposable cases with an authenticated analyst, a second analyst, known evidence, an AI suggestion, and a matched precedent. Record revision, environment, case IDs, analyst identities, timestamps, observed results, and artifact links. Hosted authentication must use real accounts.
 
 ## Acceptance checks and test boundaries
 
@@ -111,11 +111,11 @@ Base revision: `f381c09be4f5c6a10ff30a89e89d0d8900da0274`, branch `feature/236-s
 # 8 failed, 13 passed
 .venv/bin/python -m pytest tests/integration/api/test_staged_adjudication.py -q
 # 18 failed, 4 passed
-XDG_DATA_HOME=/tmp/p063-236-test-data pnpm --config.verify-deps-before-run=false --dir src/webapp test tests/unit/components/staged-adjudication.test.tsx
+XDG_DATA_HOME=/tmp/greensentinel-236-test-data pnpm --config.verify-deps-before-run=false --dir src/webapp test tests/unit/components/staged-adjudication.test.tsx
 # 11 failed, 1 passed
-PORT=3236 PLAYWRIGHT_TEST_BASE_URL=http://localhost:3236 XDG_DATA_HOME=/tmp/p063-236-test-data pnpm --config.verify-deps-before-run=false --dir src/webapp test:browser staged-adjudication.spec.ts
+PORT=3236 PLAYWRIGHT_TEST_BASE_URL=http://localhost:3236 XDG_DATA_HOME=/tmp/greensentinel-236-test-data pnpm --config.verify-deps-before-run=false --dir src/webapp test:browser staged-adjudication.spec.ts
 # 5 failed, 1 passed
-XDG_DATA_HOME=/tmp/p063-236-test-data pnpm --config.verify-deps-before-run=false --dir src/webapp test:typecheck
+XDG_DATA_HOME=/tmp/greensentinel-236-test-data pnpm --config.verify-deps-before-run=false --dir src/webapp test:typecheck
 # passed: frontend and browser TypeScript
 .venv/bin/python -m pytest tests/unit/test_adjudication_rationale_validation.py tests/integration/api/test_active_case_queue.py -q
 # baseline: 10 passed
@@ -153,7 +153,7 @@ rtk git add tests/unit/test_staged_adjudication_contract.py tests/integration/ap
 ```
 
 ```text
-fatal: Unable to create '/home/dat/dev/vinuni_aia/P-063/.git/worktrees/delivery-236-20261013/index.lock': Read-only file system
+fatal: Unable to create '/home/dat/dev/vinuni_aia/GreenSentinel/.git/worktrees/delivery-236-20261013/index.lock': Read-only file system
 ```
 
 No files were staged and no commit SHA exists. A complete test/document patch is saved at `/tmp/236-staged-adjudication.patch`. From a session with writable repository Git metadata, stage the six explicit paths above and commit them locally on `feature/236-staged-adjudication`. Do not push or open a PR.

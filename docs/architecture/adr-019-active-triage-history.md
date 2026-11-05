@@ -1,7 +1,7 @@
 # ADR-019: Separate active triage membership from retained history
 
 ## Status
-Accepted for the bounded queue correction in [issue #143](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/143).
+Accepted for the bounded queue correction in [issue #143](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/143).
 
 ## Context
 The cockpit requests Available and My Cases without a status filter. The service previously included finalized records, and the client refreshed the queue only after a separate detail fetch succeeded. A committed decision could therefore leave an actionable row visible.

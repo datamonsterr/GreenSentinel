@@ -438,7 +438,7 @@ class QdrantPolicyStore:
             return []
         manifest_paths = [
             Path("data/processed/manifest.json"),
-            Path("/home/dat/dev/vinuni_aia/P-063/data/processed/manifest.json"),
+            Path("/home/dat/dev/vinuni_aia/GreenSentinel/data/processed/manifest.json"),
         ]
         manifest_file = next((p for p in manifest_paths if p.is_file()), None)
         if not manifest_file:

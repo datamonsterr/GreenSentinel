@@ -1,6 +1,6 @@
 ---
 license: cc-by-4.0
-pretty_name: P-063 Ride-Hailing Fraud & Violation Benchmark
+pretty_name: GreenSentinel Ride-Hailing Fraud & Violation Benchmark
 language:
   - vi
   - en
@@ -14,11 +14,11 @@ tags:
   - geospatial
 ---
 
-# P-063 Ride-Hailing Fraud & Violation Benchmark
+# GreenSentinel Ride-Hailing Fraud & Violation Benchmark
 
 A synthetic, reproducible benchmark for detecting **fraud and violations in a
-single ride-hailing trip**. One row = one trip. Built by Team P-063 (VinUni AI20K
-Build Phase). **Repo:** https://github.com/AI20K-Build-Phase-Cohort-4/P-063
+single ride-hailing trip**. One row = one trip. Built by Team GreenSentinel (VinUni AI20K
+Build Phase). **Repo:** https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel
 
 ## Why
 
@@ -121,14 +121,14 @@ Merges four 10,000-trip generations (`v1`, `feedback-v2`, `g1g2-v3`, `evidence-v
 
 ```bash
 # Fetch current synthetic research corpus (releases_v2.1) pinned to immutable revision:
-hf download datamonsterr/p-063-synthesized-trips \
+hf download datamonsterr/green-sentinel-synthesized-trips \
   --repo-type dataset \
   --include "releases_v2.1/*" \
   --revision abb8cc8b2464aacdcbec0aab039ef4e066f71f8e \
   --local-dir data/benchmark-10k
 
 # Fetch historical releases_v2:
-hf download datamonsterr/p-063-synthesized-trips \
+hf download datamonsterr/green-sentinel-synthesized-trips \
   --repo-type dataset \
   --include "releases_v2/*" \
   --revision cc8023b7022fdd5392a5655135712cc748967814 \
@@ -151,7 +151,7 @@ The fetcher and CLI verify downloaded files against the recorded SHA-256 checksu
 
 ## Licence & Attribution
 
-- **Synthetic Corpora & Trip Attributes:** Creative Commons Attribution 4.0 International (CC BY 4.0). Attribution: Team P-063, VinUni AI20K Build Phase.
+- **Synthetic Corpora & Trip Attributes:** Creative Commons Attribution 4.0 International (CC BY 4.0). Attribution: Team GreenSentinel, VinUni AI20K Build Phase.
 - **Vietnam Road Corridors Geometry:** Open Database License (ODbL) 1.0. Attribution: © OpenStreetMap contributors.
 - **Distributional Priors:** Porto Taxi (CC BY 4.0), NYC TLC (Public Domain), PaySim (MIT), MultiWOZ (MIT), SGD (CC BY-SA 4.0). Raw third-party source data is never redistributed.
 - **Advisory Scope:** Classifications and model outputs are advisory research measurements for human analysts; they do not constitute automated platform sanctions.

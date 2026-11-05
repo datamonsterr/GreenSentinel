@@ -50,7 +50,7 @@ jobs:
       - name: Configure uv cache
         run: |
           set -euo pipefail
-          export UV_CACHE_DIR="${RUNNER_TEMP}/p063-uv-cache"
+          export UV_CACHE_DIR="${RUNNER_TEMP}/greensentinel-uv-cache"
           mkdir -p "$UV_CACHE_DIR"
           echo "UV_CACHE_DIR=$UV_CACHE_DIR" >> "$GITHUB_ENV"
 
@@ -60,7 +60,7 @@ jobs:
       - name: Cache uv packages
         uses: actions/cache@v6
         with:
-          path: ${{ runner.temp }}/p063-uv-cache
+          path: ${{ runner.temp }}/greensentinel-uv-cache
           key: uv-${{ runner.os }}-${{ hashFiles('requirements.txt', 'uv.lock', 'pyproject.toml') }}
           restore-keys: uv-${{ runner.os }}-
 
@@ -114,7 +114,7 @@ jobs:
       - name: Configure uv cache
         run: |
           set -euo pipefail
-          export UV_CACHE_DIR="${RUNNER_TEMP}/p063-uv-cache"
+          export UV_CACHE_DIR="${RUNNER_TEMP}/greensentinel-uv-cache"
           mkdir -p "$UV_CACHE_DIR"
           echo "UV_CACHE_DIR=$UV_CACHE_DIR" >> "$GITHUB_ENV"
 
@@ -124,7 +124,7 @@ jobs:
       - name: Cache uv packages
         uses: actions/cache@v6
         with:
-          path: ${{ runner.temp }}/p063-uv-cache
+          path: ${{ runner.temp }}/greensentinel-uv-cache
           key: uv-${{ runner.os }}-${{ hashFiles('requirements.txt', 'uv.lock', 'pyproject.toml') }}
           restore-keys: uv-${{ runner.os }}-
 
@@ -248,7 +248,7 @@ jobs:
         # installed on the self-hosted runner (exit 127).
         run: |
           bash scripts/ci_runner_diagnostics.sh
-          export TMPDIR="${RUNNER_TEMP}/p063-vitest-tmp"
+          export TMPDIR="${RUNNER_TEMP}/greensentinel-vitest-tmp"
           mkdir -p "$TMPDIR"
           cd src/webapp
           pnpm test -- --maxWorkers=2 --minWorkers=1
@@ -347,17 +347,17 @@ jobs:
     # branches that predate the guard. Keep up to 100 pending required runs
     # instead of replacing the prior pending run.
     concurrency:
-      group: p063-docker-services
+      group: greensentinel-docker-services
       cancel-in-progress: false
       queue: max
     env:
       APP_ENV: test
       # Reuse Docker's existing bridge; the shared daemon has exhausted the
       # subnet pool used to create a new Compose network for every run.
-      P063_DOCKER_NETWORK_MODE: bridge
-      P063_PG_MEMORY: 768m
-      P063_REDIS_MEMORY: 256m
-      P063_QDRANT_MEMORY: 768m
+      GREENSENTINEL_DOCKER_NETWORK_MODE: bridge
+      GREENSENTINEL_PG_MEMORY: 768m
+      GREENSENTINEL_REDIS_MEMORY: 256m
+      GREENSENTINEL_QDRANT_MEMORY: 768m
     steps:
       - name: Clean root-owned Docker volumes from previous runs
         run: |
@@ -402,10 +402,10 @@ jobs:
             fi
           done
           {
-            echo "PG_NAME=p063-pg-${PG_SUFFIX}"
-            echo "REDIS_NAME=p063-redis-${PG_SUFFIX}"
-            echo "QDRANT_NAME=p063-qdrant-${PG_SUFFIX}"
-            echo "COMPOSE_PROJECT_NAME=p063-${PG_SUFFIX,,}"
+            echo "PG_NAME=greensentinel-pg-${PG_SUFFIX}"
+            echo "REDIS_NAME=greensentinel-redis-${PG_SUFFIX}"
+            echo "QDRANT_NAME=greensentinel-qdrant-${PG_SUFFIX}"
+            echo "COMPOSE_PROJECT_NAME=greensentinel-${PG_SUFFIX,,}"
             echo "POSTGRES_PORT=${POSTGRES_PORT}"
             echo "REDIS_PORT=${REDIS_PORT}"
             echo "QDRANT_PORT=${QDRANT_PORT}"
@@ -414,11 +414,11 @@ jobs:
             echo "ISSUE63_DATABASE_URL=postgresql://postgres:postgrespassword@localhost:${POSTGRES_PORT}/postgres"
             echo "REDIS_URL=redis://localhost:${REDIS_PORT}/0"
             echo "QDRANT_URL=http://localhost:${QDRANT_PORT}"
-            echo "PGDATA=${RUNNER_TEMP}/p063-pgdata-${PG_SUFFIX}"
-            echo "QDRANT_DATA=${RUNNER_TEMP}/p063-qdrant-${PG_SUFFIX}"
+            echo "PGDATA=${RUNNER_TEMP}/greensentinel-pgdata-${PG_SUFFIX}"
+            echo "QDRANT_DATA=${RUNNER_TEMP}/greensentinel-qdrant-${PG_SUFFIX}"
             NET_A=$(( (GITHUB_RUN_ID % 200) + 20 ))
             NET_B=$(( ((GITHUB_RUN_ID / 200) + GITHUB_RUN_ATTEMPT) % 250 + 1 ))
-            echo "P063_NETWORK_SUBNET=10.${NET_A}.${NET_B}.0/24"
+            echo "GREENSENTINEL_NETWORK_SUBNET=10.${NET_A}.${NET_B}.0/24"
           } >> "$GITHUB_ENV"
 
       - name: Set up uv
@@ -429,7 +429,7 @@ jobs:
       - name: Configure uv cache
         run: |
           set -euo pipefail
-          export UV_CACHE_DIR="${RUNNER_TEMP}/p063-uv-cache"
+          export UV_CACHE_DIR="${RUNNER_TEMP}/greensentinel-uv-cache"
           mkdir -p "$UV_CACHE_DIR"
           echo "UV_CACHE_DIR=$UV_CACHE_DIR" >> "$GITHUB_ENV"
 
@@ -439,7 +439,7 @@ jobs:
       - name: Cache uv packages
         uses: actions/cache@v6
         with:
-          path: ${{ runner.temp }}/p063-uv-cache
+          path: ${{ runner.temp }}/greensentinel-uv-cache
           key: uv-${{ runner.os }}-${{ hashFiles('requirements.txt', 'uv.lock', 'pyproject.toml') }}
           restore-keys: uv-${{ runner.os }}-
 
@@ -476,7 +476,7 @@ jobs:
     runs-on: self-hosted
     timeout-minutes: 25
     concurrency:
-      group: p063-browser-e2e
+      group: greensentinel-browser-e2e
       cancel-in-progress: false
       queue: max
     env:
@@ -550,7 +550,7 @@ jobs:
         env:
           PLAYWRIGHT_SERVER_MODE: start
         run: |
-          export TMPDIR="${RUNNER_TEMP}/p063-playwright-tmp"
+          export TMPDIR="${RUNNER_TEMP}/greensentinel-playwright-tmp"
           mkdir -p "$TMPDIR"
           cd src/webapp
           PORT=$(node -e 'const s=require("net").createServer();s.listen(0,()=>{console.log(s.address().port);s.close();})')
@@ -606,7 +606,7 @@ jobs:
           context: .
           push: false
           load: false
-          tags: p063-backend:ci
-          cache-from: type=gha,scope=p063-backend
-          cache-to: type=gha,mode=max,scope=p063-backend
+          tags: greensentinel-backend:ci
+          cache-from: type=gha,scope=greensentinel-backend
+          cache-to: type=gha,mode=max,scope=greensentinel-backend
 

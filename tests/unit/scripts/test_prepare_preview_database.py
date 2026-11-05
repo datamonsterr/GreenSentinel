@@ -11,7 +11,7 @@ def _env(monkeypatch, **values):
 def test_rejects_wrong_preview_environment_before_connecting(monkeypatch):
     from scripts import prepare_preview_database as module
 
-    _env(monkeypatch, RAILWAY_ENVIRONMENT_NAME="dev", P063_PREVIEW_HEAD_SHA="sha")
+    _env(monkeypatch, RAILWAY_ENVIRONMENT_NAME="dev", GREENSENTINEL_PREVIEW_HEAD_SHA="sha")
     monkeypatch.setenv("DATABASE_URL", "postgresql://preview")
     monkeypatch.setattr(module, "get_target_connection", pytest.fail)
     with pytest.raises(RuntimeError, match=r"matching pr-\* environment"):
@@ -21,7 +21,7 @@ def test_rejects_wrong_preview_environment_before_connecting(monkeypatch):
 def test_rejects_wrong_head_before_connecting(monkeypatch):
     from scripts import prepare_preview_database as module
 
-    _env(monkeypatch, RAILWAY_ENVIRONMENT_NAME="pr-340", P063_PREVIEW_HEAD_SHA="other")
+    _env(monkeypatch, RAILWAY_ENVIRONMENT_NAME="pr-340", GREENSENTINEL_PREVIEW_HEAD_SHA="other")
     monkeypatch.setenv("DATABASE_URL", "postgresql://preview")
     monkeypatch.setattr(module, "get_target_connection", pytest.fail)
     with pytest.raises(RuntimeError, match="matching preview head SHA"):
@@ -31,7 +31,7 @@ def test_rejects_wrong_head_before_connecting(monkeypatch):
 def test_rejects_missing_database_url_before_connecting(monkeypatch):
     from scripts import prepare_preview_database as module
 
-    _env(monkeypatch, RAILWAY_ENVIRONMENT_NAME="pr-340", P063_PREVIEW_HEAD_SHA="sha")
+    _env(monkeypatch, RAILWAY_ENVIRONMENT_NAME="pr-340", GREENSENTINEL_PREVIEW_HEAD_SHA="sha")
     monkeypatch.delenv("DATABASE_URL", raising=False)
     monkeypatch.setattr(module, "get_target_connection", pytest.fail)
     with pytest.raises(RuntimeError, match="DATABASE_URL is required"):
@@ -44,7 +44,7 @@ def test_rejects_conflicting_migration_override_before_connecting(monkeypatch):
     _env(
         monkeypatch,
         RAILWAY_ENVIRONMENT_NAME="pr-340",
-        P063_PREVIEW_HEAD_SHA="sha",
+        GREENSENTINEL_PREVIEW_HEAD_SHA="sha",
         DATABASE_URL="postgresql://preview",
         TARGET_DATABASE_URL="postgresql://other",
     )
@@ -59,7 +59,7 @@ def test_allowed_path_migrates_verifies_and_closes(monkeypatch):
     _env(
         monkeypatch,
         RAILWAY_ENVIRONMENT_NAME="pr-340",
-        P063_PREVIEW_HEAD_SHA="sha",
+        GREENSENTINEL_PREVIEW_HEAD_SHA="sha",
         DATABASE_URL="postgresql://preview",
     )
 
@@ -102,7 +102,7 @@ def test_connection_closes_when_migration_fails(monkeypatch):
     _env(
         monkeypatch,
         RAILWAY_ENVIRONMENT_NAME="pr-340",
-        P063_PREVIEW_HEAD_SHA="sha",
+        GREENSENTINEL_PREVIEW_HEAD_SHA="sha",
         DATABASE_URL="postgresql://preview",
     )
 

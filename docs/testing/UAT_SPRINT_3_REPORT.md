@@ -3,7 +3,7 @@
 ## Overview
 
 - **Sprint:** Sprint 3
-- **Issue:** [#197](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/197)
+- **Issue:** [#197](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/197)
 - **Branch:** feat/197-sprint3-e2e-uat
 - **Date:** 2026-10-07
 - **Author:** DatTienNguyenn
@@ -33,9 +33,9 @@ Command:
 Result:
 ```text
 ============================= test session starts ==============================
-platform linux -- Python 3.11.16, pytest-9.1.1, pluggy-1.6.0 -- /home/datnguyen-nuoa/P-063/.worktrees/feat-197-sprint3-e2e-uat/.venv/bin/python
+platform linux -- Python 3.11.16, pytest-9.1.1, pluggy-1.6.0 -- /home/datnguyen-nuoa/GreenSentinel/.worktrees/feat-197-sprint3-e2e-uat/.venv/bin/python
 cachedir: .pytest_cache
-rootdir: /home/datnguyen-nuoa/P-063/.worktrees/feat-197-sprint3-e2e-uat
+rootdir: /home/datnguyen-nuoa/GreenSentinel/.worktrees/feat-197-sprint3-e2e-uat
 configfile: pyproject.toml
 plugins: langsmith-0.12.4, anyio-4.15.1, asyncio-1.4.0
 asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function

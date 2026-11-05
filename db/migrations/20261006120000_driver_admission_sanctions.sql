@@ -38,7 +38,7 @@ comment on table app.driver_admission_sanctions is
 insert into app.policy_versions
     (version, status, effective_from, source_hash, action_matrix, is_demo_policy)
 values
-    ('p063-demo-admission-v1', 'published', now(), extensions.digest('p063-demo-admission-v1', 'sha256'),
+    ('greensentinel-demo-admission-v1', 'published', now(), extensions.digest('greensentinel-demo-admission-v1', 'sha256'),
      '{"ERR-02":{"default_sanction":"WARN"}}'::jsonb, true)
 on conflict (version) do nothing;
 

@@ -660,8 +660,8 @@ def build_vietnam_trip(
     # Trip and assignment identifiers (UUID5 for determinism)
     trip_ref = f"vn_trip_{idx + 1:04d}"
     ns = uuid.UUID("6ba7b810-9dad-11d1-80b4-00c04fd430c8")
-    trip_id = str(uuid.uuid5(ns, f"p063:vietnam:trip:{trip_ref}"))
-    assign_id = str(uuid.uuid5(ns, f"p063:vietnam:assignment:{trip_ref}"))
+    trip_id = str(uuid.uuid5(ns, f"greensentinel:vietnam:trip:{trip_ref}"))
+    assign_id = str(uuid.uuid5(ns, f"greensentinel:vietnam:assignment:{trip_ref}"))
 
     # Driver profile: portable without organization_id (tenant assigned at execution)
     clean_driver = dict(driver)

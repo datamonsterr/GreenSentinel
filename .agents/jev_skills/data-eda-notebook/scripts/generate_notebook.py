@@ -19,7 +19,7 @@ def create_notebook(title: str, dataset_path: str, output_path: str):
                     f"# EDA Report: {title}\n",
                     "## Ride-Hailing Spatial Telemetry & Dispute Analysis\n",
                     f"**Source Dataset:** `{dataset_path}`  \n",
-                    "**Project:** P-063 (GreenSM Fraud Analyst Adjudication Cockpit)\n",
+                    "**Project:** GreenSentinel (GreenSM Fraud Analyst Adjudication Cockpit)\n",
                     "\n",
                     "---"
                 ]

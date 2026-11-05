@@ -12,4 +12,4 @@
 | Vehicle plate | Vehicle registration/plate (biển số xe); the intended meaning of license number in case search. |
 | Context reset | Omit prior Analyst chatbot messages from one model request while retaining case context and stored conversation/audit. |
 
-Canonical rules: [Driver-first requirements](DRIVER_FIRST_REQUIREMENTS.md). Approval and implementation acceptance: [#147](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/147).
+Canonical rules: [Driver-first requirements](DRIVER_FIRST_REQUIREMENTS.md). Approval and implementation acceptance: [#147](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/147).

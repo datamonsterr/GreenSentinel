@@ -13,7 +13,7 @@ def _validate_preview(pr_number: int, head_sha: str) -> str:
     environment = os.environ.get("RAILWAY_ENVIRONMENT_NAME", "")
     if environment != expected_env:
         raise RuntimeError("preview database preparation requires the matching pr-* environment")
-    recorded_sha = os.environ.get("P063_PREVIEW_HEAD_SHA", "")
+    recorded_sha = os.environ.get("GREENSENTINEL_PREVIEW_HEAD_SHA", "")
     if not head_sha or recorded_sha != head_sha:
         raise RuntimeError("preview database preparation requires the matching preview head SHA")
     database_url = os.environ.get("DATABASE_URL", "")

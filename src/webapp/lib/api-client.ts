@@ -101,7 +101,7 @@ export const getApiBaseUrl = (): string => {
 
   // Automatic domain-aware routing in browser.
   // IMPORTANT: check most-specific substrings first — dev/staging hostnames
-  // also contain "p-063" so the generic production check must be last and
+  // also contain "green-sentinel" so the generic production check must be last and
   // explicitly exclude dev/staging to avoid misrouting.
   if (typeof window !== "undefined") {
     const host = window.location.hostname;
@@ -113,22 +113,22 @@ export const getApiBaseUrl = (): string => {
       host.startsWith("10.");
     const isDev =
       isLocal ||
-      host.includes("p-063-dev") ||
-      host.includes("dev.p-063") ||
-      host.includes("dev-p-063") ||
-      host.includes("p-063-driver") ||
-      host.includes("v1.p-063") ||
-      host.includes("v1-p-063") ||
-      host.includes("p-063-v1");
+      host.includes("green-sentinel-dev") ||
+      host.includes("dev.green-sentinel") ||
+      host.includes("dev-green-sentinel") ||
+      host.includes("green-sentinel-driver") ||
+      host.includes("v1.green-sentinel") ||
+      host.includes("v1-green-sentinel") ||
+      host.includes("green-sentinel-v1");
     const isStaging =
-      host.includes("staging.p-063") ||
-      host.includes("staging-p-063") ||
-      host.includes("p-063-staging");
+      host.includes("staging.green-sentinel") ||
+      host.includes("staging-green-sentinel") ||
+      host.includes("green-sentinel-staging");
     if (isLocal) return ""; // fall through to localhost:8000 at the bottom
-    if (isDev) return "https://p063-backend-dev.up.railway.app";
-    if (isStaging) return "https://p063-backend-staging.up.railway.app";
-    if ((host.includes("p-063") || host.includes("p063")) && !isDev && !isStaging) {
-      return "https://p063-backend-production.up.railway.app";
+    if (isDev) return "https://greensentinel-backend-dev.up.railway.app";
+    if (isStaging) return "https://greensentinel-backend-staging.up.railway.app";
+    if ((host.includes("green-sentinel") || host.includes("greensentinel")) && !isDev && !isStaging) {
+      return "https://greensentinel-backend-production.up.railway.app";
     }
     return "";
   }
@@ -136,7 +136,7 @@ export const getApiBaseUrl = (): string => {
   // The same-origin Next.js proxy is configured independently for every deployment.
   return typeof window !== "undefined"
     ? ""
-    : (process.env.API_BASE_URL || "https://p063-backend-production.up.railway.app");
+    : (process.env.API_BASE_URL || "https://greensentinel-backend-production.up.railway.app");
 };
 
 export class ApiError extends Error {

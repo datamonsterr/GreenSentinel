@@ -1,6 +1,6 @@
-# P-063 Ride-Hailing Fraud & Violation Benchmark Suite
+# GreenSentinel Ride-Hailing Fraud & Violation Benchmark Suite
 
-This document serves as the **single canonical index** of all benchmark evaluations conducted across the P-063 project lifecycle. Entries are recorded in chronological order from the earliest 30k-era heuristic assessments to the final out-of-sample test split evaluation of the stacked research classifier.
+This document serves as the **single canonical index** of all benchmark evaluations conducted across the GreenSentinel project lifecycle. Entries are recorded in chronological order from the earliest 30k-era heuristic assessments to the final out-of-sample test split evaluation of the stacked research classifier.
 
 **Review-budget limitation:** The saved R3D final evaluation reports `adverse_recall_at_budget=0.0`; all top 300 ranked test predictions were `insufficient_evidence` (378 such rows total). The 5% review budget therefore routes data-quality cases, not fraud cases, and requires a separate recovery queue. Variant artifact failures can silently yield uniform base probabilities while retaining a stacker label, so production integration requires artifact validation and explicit degradation provenance.
 
@@ -130,14 +130,14 @@ insufficient      [     0       0       0       0       0       0      58 ]  (F1
 - **Validity & Integrity Failure**:
   - **Contamination Unmasked**: Post-hoc review revealed that **942 out of 1,000 predictions in E0 were silent heuristic fallbacks** caused by OpenRouter credit and context limits ([HARNESS_INTEGRITY_REVIEW.md:136](HARNESS_INTEGRITY_REVIEW.md#4-guidance-for-parallel-workers-e1e7)).
   - Heavy prompt payload (~39,383 tokens/trip; raw maneuvers represented 84–93% of tokens); 5.2% of calls threw `max_tokens_exceeded`.
-  - Led to strict harness gating in [PR #519](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/519) and [PR #527](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/527).
+  - Led to strict harness gating in [PR #519](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/519) and [PR #527](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/527).
 
 ---
 
 ## 5. 2026-10-18: Round-3 Decision Models (Mercury Free + Pplx Fallback)
 
 - **Date**: 2026-10-18
-- **Model ID**: Default `inception/mercury-decide:free` (resolved `inception/mercury-decide-20260930`, $0 cost), fallback `perplexity/pplx-decider-flash-v1.2` ([PR #550](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/550)).
+- **Model ID**: Default `inception/mercury-decide:free` (resolved `inception/mercury-decide-20260930`, $0 cost), fallback `perplexity/pplx-decider-flash-v1.2` ([PR #550](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/550)).
 - **Dataset Reference**: `releases_v2.1` (`d52e52ff...`), evaluated on fixed `dev300` validation screening set (300 trips, seed `20261017`, SHA-256 `cd008ee10b22520fbd71598d1718d06cf9ba9a9f3af38ca8736a11019a9a9ed9`).
 - **Evaluation Mode**: Live (`--live`), `--enum-blind`, rule-free evidence context.
 - **Progression Iterations (dev300)**:
@@ -145,7 +145,7 @@ insufficient      [     0       0       0       0       0       0      58 ]  (F1
   - **R3B (Pickup Null Bug)**: Blind **0.4248 [0.389, 0.454]**, Strict **0.5657**, FPR **0.358**.
   - **R3B Fix (Pickup Wired, No Anchors)**: Blind **0.3353 [0.297, 0.370]**, Strict **0.4786**, FPR **1.000** (flagged 190/300 trips as ERR-03 due to missing normal baseline).
   - **R3H (Phase Split: Approach vs Trip)**: Blind **0.4854 [0.424, 0.534]**, Strict **0.6029**, FPR **0.451**.
-  - **R3H Phase + Train Medians (`evidence_classref`)**: Blind **0.6372 [0.577, 0.685]**, Strict **0.7113 [0.652, 0.763]**, FPR **0.275**, ECE **0.316**. Adopted as state default ([PR #557](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/557)). *(Note: PR #557 set default state_variant="evidence_classref", but JevAssessmentInput in code defaults criteria_variant="baseline" which still contains >=180s and >35% rules; benchmark research variant explicitly evaluated with criteria_variant="semantic").*
+  - **R3H Phase + Train Medians (`evidence_classref`)**: Blind **0.6372 [0.577, 0.685]**, Strict **0.7113 [0.652, 0.763]**, FPR **0.275**, ECE **0.316**. Adopted as state default ([PR #557](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/557)). *(Note: PR #557 set default state_variant="evidence_classref", but JevAssessmentInput in code defaults criteria_variant="baseline" which still contains >=180s and >35% rules; benchmark research variant explicitly evaluated with criteria_variant="semantic").*
 - **Confusion Matrix: R3H `evidence_classref` Blind (dev300, 300 trips)**:
 
 ```
@@ -170,9 +170,9 @@ insufficient      [     0       0       0       0       0       0      17 ]  (F1
 
 - **Date**: 2026-10-18
 - **Model IDs**:
-  - `R3C`: Clean LightGBM (37 audited features from raw telemetry, [PR #553](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/553))
-  - `R3F`: Trajectory 1D-CNN (128-step resampled GPS sequence, [PR #552](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/552))
-  - `R3D`: Stacker Meta-Learner (LightGBM over R3C + R3F OOF probabilities, [PR #556](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/556))
+  - `R3C`: Clean LightGBM (37 audited features from raw telemetry, [PR #553](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/553))
+  - `R3F`: Trajectory 1D-CNN (128-step resampled GPS sequence, [PR #552](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/552))
+  - `R3D`: Stacker Meta-Learner (LightGBM over R3C + R3F OOF probabilities, [PR #556](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/556))
 - **Dataset Reference**:
   - Primary: `releases_v2.1` (`d52e52ff...`), 6,000-trip validation split.
   - Cross-generator evaluation: `releases_v1` (`1a0f05b3...`), 6,000 validation trips.
@@ -265,10 +265,10 @@ insufficient      [     0       0       0       0       0       0      19 ]
 
 - **Date**: 2026-10-19
 - **Service & Deployment**:
-  - Railway `p063-backend` production (region `sfo`).
+  - Railway `greensentinel-backend` production (region `sfo`).
   - Deployed 2026-10-19 by workflow run `39287451597` from `main`.
   - Model: `r3d-2026.10.18`.
-  - Artifacts: HF `datamonsterr/p-063-r3d-classifier` @ `268003f795b2950893e9ef6a54b250dec13eeee6` (`r3c.txt` `0eb2e54522e8`, `r3f.onnx` `23e9d5a2b96a`, `stacker.txt` `1559cd14cd74`).
+  - Artifacts: HF `datamonsterr/green-sentinel-r3d-classifier` @ `268003f795b2950893e9ef6a54b250dec13eeee6` (`r3c.txt` `0eb2e54522e8`, `r3f.onnx` `23e9d5a2b96a`, `stacker.txt` `1559cd14cd74`).
   - Artifact load time: **44.6 ms**.
   - Decision-model advisory: `inception/mercury-decide:free`.
 - **Load Test Configuration**:
@@ -301,5 +301,5 @@ insufficient      [     0       0       0       0       0       0      19 ]
   - Inference p95: 13 / 18 / 31 / 52 ms at concurrency 1 / 4 / 8 / 16.
   - Advisory: p50 497 ms / p95 1566 ms.
 - **Known Gap**:
-  - Issue [#601](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/601) (R3D misses violations on 1–3 point telemetry windows; mitigation planned).
+  - Issue [#601](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/601) (R3D misses violations on 1–3 point telemetry windows; mitigation planned).
 

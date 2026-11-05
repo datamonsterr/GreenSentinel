@@ -86,7 +86,7 @@ The initial draft contained documentation and the standalone preview. The approv
 
 Stitch MCP generation previously succeeded and was not repeated during refinement:
 
-- Project: `projects/11976853810912444296`, “P-063 Organization Manager Redesign”.
+- Project: `projects/11976853810912444296`, “GreenSentinel Organization Manager Redesign”.
 - Tool: `generate_screen_from_text`.
 - Screen: `efcd30d8fc2949188dfedad4a66288b7`.
 - Design system asset: `assets/613c3635f3e749d589108e83f8741064`.
@@ -96,7 +96,7 @@ The generated source contained synthetic member email/avatar suggestions beyond 
 
 ## Local preview verification
 
-Verified on 2026-10-14 using installed Chromium 1243 through the isolated `agent-browser` session `p063-org-refine-1014`, opening the local HTML directly.
+Verified on 2026-10-14 using installed Chromium 1243 through the isolated `agent-browser` session `greensentinel-org-refine-1014`, opening the local HTML directly.
 
 | Check | Observed result |
 | --- | --- |

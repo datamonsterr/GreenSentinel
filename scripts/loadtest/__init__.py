@@ -1,1 +1,1 @@
-"""Load testing package for P-063 classifier service."""
+"""Load testing package for GreenSentinel classifier service."""

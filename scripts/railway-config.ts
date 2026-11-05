@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 /**
- * Programmatic Railway Configuration & Provisioning Script for P-063.
+ * Programmatic Railway Configuration & Provisioning Script for GreenSentinel.
  *
  * Verifies/provisions PostgreSQL & Redis services on Railway, sets environment
  * variables for backend and agent, and triggers deployment.
@@ -92,7 +92,7 @@ async function provisionDatabase(dbType: "postgres" | "redis", existingServices:
 }
 
 async function syncEnvironmentVariables(
-  serviceName: string = "p063-backend",
+  serviceName: string = "greensentinel-backend",
   targetEnvironments: string[] = ["dev", "staging", "production"]
 ): Promise<void> {
   const localEnv = loadLocalEnv();
@@ -103,7 +103,7 @@ async function syncEnvironmentVariables(
     const requiredVars: Record<string, string> = {
       APP_ENV: appEnv,
       CORS_ORIGINS:
-        "http://localhost:3000,http://127.0.0.1:3000,https://p-063.vercel.app,https://p063.vercel.app,https://p-063-staging.vercel.app,https://staging.p-063.vercel.app,https://staging-p-063.vercel.app,https://p-063-dev.vercel.app,https://dev.p-063.vercel.app,https://dev-p-063.vercel.app",
+        "http://localhost:3000,http://127.0.0.1:3000,https://green-sentinel.vercel.app,https://greensentinel.vercel.app,https://green-sentinel-staging.vercel.app,https://staging.green-sentinel.vercel.app,https://staging-green-sentinel.vercel.app,https://green-sentinel-dev.vercel.app,https://dev.green-sentinel.vercel.app,https://dev-green-sentinel.vercel.app",
       LOG_LEVEL: "INFO",
     };
 
@@ -141,7 +141,7 @@ async function syncEnvironmentVariables(
   }
 }
 
-async function triggerDeploy(serviceName: string = "p063-backend", environmentName: string = "production"): Promise<void> {
+async function triggerDeploy(serviceName: string = "greensentinel-backend", environmentName: string = "production"): Promise<void> {
   console.log(`[DEPLOY] Triggering Railway deployment for ${serviceName} in ${environmentName}...`);
   try {
     const out = run(`railway redeploy --service ${serviceName} --environment ${environmentName} --yes`, true);
@@ -177,7 +177,7 @@ async function main() {
     await provisionDatabase("redis", services);
 
     // Sync environment variables
-    const backendService = services.find((s) => s.name.includes("backend"))?.name || "p063-backend";
+    const backendService = services.find((s) => s.name.includes("backend"))?.name || "greensentinel-backend";
     await syncEnvironmentVariables(backendService);
 
     if (shouldDeploy) {

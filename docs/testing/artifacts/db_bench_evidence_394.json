@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "title": "P-063 Database Performance Benchmark Evidence (#394 / #399)",
+    "title": "GreenSentinel Database Performance Benchmark Evidence (#394 / #399)",
     "environment": "disposable_local_postgresql_16",
     "fixture_cardinality": {
       "trips": 100,

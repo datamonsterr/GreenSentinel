@@ -391,7 +391,7 @@ async def run_preset_batch(
                 vehicle_id=assigned_vehicle_id,
             )
 
-            event_trip_id = str(uuid5(NAMESPACE_URL, f"p063:preset-batch:{batch_id}:{trip_ref}:trip"))
+            event_trip_id = str(uuid5(NAMESPACE_URL, f"greensentinel:preset-batch:{batch_id}:{trip_ref}:trip"))
 
             event_payload = {
                 "event_id": str(uuid4()),

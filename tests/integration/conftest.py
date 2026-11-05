@@ -93,7 +93,7 @@ def disposable_database_dsn():
     assert_loopback_target(base_dsn)
 
     stamp = int(time.time() * 1000)
-    dbname = f"test_p063_disposable_{stamp}"
+    dbname = f"test_greensentinel_disposable_{stamp}"
 
     parsed = urlparse(base_dsn)
     user = parsed.username or "postgres"

@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 /**
- * RTK & Headroom Post-Tool Invocation Hook for Project P-063.
+ * RTK & Headroom Post-Tool Invocation Hook for Project GreenSentinel.
  * Enforces zero-fluff, token conservation, and context headroom after tool execution.
  * Reference: https://github.com/juliusbrussee/caveman
  */

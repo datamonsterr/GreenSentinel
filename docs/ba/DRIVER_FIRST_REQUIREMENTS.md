@@ -2,9 +2,9 @@
 
 ## Authority and delivery boundary
 
-Version `driver-first-v1`, dated 2026-10-05. Pham Thanh Dat (@datamonsterr) approved the lifecycle rules and scheduled this expansion in the saved session. [Issue #147](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/147) holds approval evidence and delivery acceptance. The [PRD](PRD.md) and [MVP](MVP.md) retain the adopted 2026-09-30 Analyst baseline; this extension supersedes Driver deferral and the requirement for Analyst involvement in **Driver-confirmed resolution only**. Analyst dismissal, exoneration and every adverse sanction still require authorized Analyst confirmation with rationale. No model score or silence authorizes closure or a sanction.
+Version `driver-first-v1`, dated 2026-10-05. Pham Thanh Dat (@datamonsterr) approved the lifecycle rules and scheduled this expansion in the saved session. [Issue #147](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/147) holds approval evidence and delivery acceptance. The [PRD](PRD.md) and [MVP](MVP.md) retain the adopted 2026-09-30 Analyst baseline; this extension supersedes Driver deferral and the requirement for Analyst involvement in **Driver-confirmed resolution only**. Analyst dismissal, exoneration and every adverse sanction still require authorized Analyst confirmation with rationale. No model score or silence authorizes closure or a sanction.
 
-These requirements authorize implementation, not a claim that the inherited runtime already conforms. Existing Driver transports are reusable seams; autonomous `auto_dismissed` behavior from historical [PR #40](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/40) remains superseded. The old mobile upload and blinded appeal proposals are not automatically scheduled by this desktop Driver conversation extension. Tester UI implementation remains queued; its specifications and isolation requirements remain applicable.
+These requirements authorize implementation, not a claim that the inherited runtime already conforms. Existing Driver transports are reusable seams; autonomous `auto_dismissed` behavior from historical [PR #40](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/40) remains superseded. The old mobile upload and blinded appeal proposals are not automatically scheduled by this desktop Driver conversation extension. Tester UI implementation remains queued; its specifications and isolation requirements remain applicable.
 
 ## Lifecycle contract
 
@@ -50,7 +50,7 @@ These requirements authorize implementation, not a claim that the inherited runt
 | `AC-WS-03` | Windowed metrics derive from recorded data with documented definitions and unavailable states; Manager and Analyst permissions remain distinct. | Seeded isolated runs, independent source/count reconciliation and real Clerk role tests. |
 | `AC-WS-04` | Cross-session queue changes appear within 5 seconds and no two sessions own the same live lease. | Two real sessions, competing claims and measured elapsed time. |
 
-Specification checks validate these documents only. Runtime, database migrations, provider availability, hosted browser observations and final dev E2E remain separate evidence. The [architecture decision](../architecture/adr-018-driver-first-resolution.md) defines the transition boundary. [GitHub Issues](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues) retain the native blockers and current DoD; this document is not a backlog.
+Specification checks validate these documents only. Runtime, database migrations, provider availability, hosted browser observations and final dev E2E remain separate evidence. The [architecture decision](../architecture/adr-018-driver-first-resolution.md) defines the transition boundary. [GitHub Issues](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues) retain the native blockers and current DoD; this document is not a backlog.
 
 ## Known facts, inferences and open decisions
 

@@ -29,7 +29,7 @@ except ImportError:
 
 DEV300_SHA256 = "cd008ee10b22520fbd71598d1718d06cf9ba9a9f3af38ca8736a11019a9a9ed9"
 DEFAULT_HF_DATASET_URL = (
-    "https://huggingface.co/datasets/datamonsterr/p-063-synthesized-trips/resolve/main/releases_v2.1/dev300.jsonl"
+    "https://huggingface.co/datasets/datamonsterr/green-sentinel-synthesized-trips/resolve/main/releases_v2.1/dev300.jsonl"
 )
 
 
@@ -189,7 +189,7 @@ def load_or_fetch_trips(
     else:
         sha_to_check = expected_sha or DEV300_SHA256
         # Check standard cache directory
-        c_dir = Path(cache_dir) if cache_dir else Path.home() / ".cache" / "p063" / "releases_v2.1"
+        c_dir = Path(cache_dir) if cache_dir else Path.home() / ".cache" / "greensentinel" / "releases_v2.1"
         c_dir.mkdir(parents=True, exist_ok=True)
         cached_file = c_dir / "dev300.jsonl"
 
@@ -569,7 +569,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument(
         "--base-url",
         default="http://localhost:8000",
-        help="Base service URL (e.g. https://p063-preview.up.railway.app)",
+        help="Base service URL (e.g. https://greensentinel-preview.up.railway.app)",
     )
     parser.add_argument(
         "--trips",

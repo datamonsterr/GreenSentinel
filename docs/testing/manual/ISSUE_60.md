@@ -1,6 +1,6 @@
-# GreenSentinel (P-063) - Issue #60 Manual Test Runbook
+# GreenSentinel - Issue #60 Manual Test Runbook
 
-This runbook guides manual verification of the reliable agent tool runtime, correlated event streaming, and recovery workflows delivered in [Issue #60](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/60).
+This runbook guides manual verification of the reliable agent tool runtime, correlated event streaming, and recovery workflows delivered in [Issue #60](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/60).
 
 ---
 

@@ -13,7 +13,7 @@
 ### Deep analyze (evidence, 2026-10-13)
 
 - Project `caring-renewal` (`c49458fb-...`): envs dev (`e0d4551b`), staging (`4d6a870f`), production (`388f3c91`) + 7 stale ephemeral `pr-225/239/272/279/312/316/320/321` (cleanup leak).
-- Services per env: `p063-backend` (RAILPACK, Dockerfile `python:3.11-slim`, `uvicorn src.main:app`, sfo x1) + `Postgres` (`postgis/postgis:16-3.4-alpine` + `postgres-volume` 500MB) + `Redis` (`redis:8.2` + `redis-volume` 500MB). Dev additionally `p063-benchmark-db` (`ghcr.io/railwayapp-templates/postgres-ssl:18` + 5000MB volume).
+- Services per env: `greensentinel-backend` (RAILPACK, Dockerfile `python:3.11-slim`, `uvicorn src.main:app`, sfo x1) + `Postgres` (`postgis/postgis:16-3.4-alpine` + `postgres-volume` 500MB) + `Redis` (`redis:8.2` + `redis-volume` 500MB). Dev additionally `greensentinel-benchmark-db` (`ghcr.io/railwayapp-templates/postgres-ssl:18` + 5000MB volume).
 - Drift proof: `pr-312` volumes are 5000MB vs dev/prod 500MB (ephemeral duplicate-from-dev grew volumes, never reconciled).
 - No `.railway/`, no `railway.toml/json` in repo. All config lives in dashboard + imperative `railway variable set` / `railway up` in `deploy-railway.yml` (`deploy-dev`, `deploy-staging`, `deploy-production`, `deploy-pr-preview`), plus `authorize_preview.sh` mutating `CLERK_AUTHORIZED_PARTIES` then full `railway up` redeploy.
 - Redeploy pain: (1) no `config plan` drift detection, (2) `railway up` uploads CWD tarball per env (slow, non-hermetic), (3) `CLERK_AUTHORIZED_PARTIES` merge-append in `auth_config.py:merged_railway_origins` grows unbounded on dev, (4) PR env leak (7 stale), (5) `scripts/railway-config.ts` is a provisioning script, not IaC (uses `railway add`, `variable set`, no `defineRailway`).
@@ -43,7 +43,7 @@ def test_iac_file_exists_and_is_typescript():
 def test_iac_defines_managed_resources():
     src = pathlib.Path(".railway/railway.ts").read_text()
     assert "defineRailway" in src
-    assert "service(" in src  # p063-backend
+    assert "service(" in src  # greensentinel-backend
     assert "postgres(" in src
     assert "redis(" in src
     assert "DATABASE_URL" in src
@@ -142,7 +142,7 @@ Expected: creates `.railway/railway.ts` importing current graph with `preserve()
 
 - [ ] **Step 2: Normalize to intent (no UUIDs, helpers, refs)**
 
-Keep: `postgres("postgres")`, `redis("redis")`, `postgres("p063-benchmark-db")` or `image()` for template PG, `service("p063-backend", { source: github("AI20K-Build-Phase-Cohort-4/P-063", { branch: "main" }), build/start from Dockerfile, env: { DATABASE_URL: db.env.DATABASE_URL, REDIS_URL: redis.env.REDIS_URL, APP_ENV: preserve(), CLERK_* : preserve(), ... }, replicas: { sfo: 1 }, volumeMounts only for DBs })`. Delete generated domains, UUIDs, literal secrets.
+Keep: `postgres("postgres")`, `redis("redis")`, `postgres("greensentinel-benchmark-db")` or `image()` for template PG, `service("greensentinel-backend", { source: github("AI20K-Build-Phase-Cohort-4/GreenSentinel", { branch: "main" }), build/start from Dockerfile, env: { DATABASE_URL: db.env.DATABASE_URL, REDIS_URL: redis.env.REDIS_URL, APP_ENV: preserve(), CLERK_* : preserve(), ... }, replicas: { sfo: 1 }, volumeMounts only for DBs })`. Delete generated domains, UUIDs, literal secrets.
 
 - [ ] **Step 3: Plan (read-only, no apply)**
 

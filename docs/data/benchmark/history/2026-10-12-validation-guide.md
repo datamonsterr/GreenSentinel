@@ -66,7 +66,7 @@ Pick one `trip_ref` from each row below (`data/benchmark-10k/v3/trips.jsonl`
 
 ## R4. Railway row count (optional, needs access)
 
-`p063-benchmark-db` (project `caring-renewal`, env `dev`) must hold **30,000
+`greensentinel-benchmark-db` (project `caring-renewal`, env `dev`) must hold **30,000
 prediction rows** across the v1/v2/v3 runs plus run-registry rows. If you
 cannot access Railway, skip — local artifacts are authoritative.
 

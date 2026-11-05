@@ -1,6 +1,6 @@
 ---
 name: repo-testing
-description: Run and improve P-063 unit, integration, E2E and manual verification with boundary-based discovery and honest evidence.
+description: Run and improve GreenSentinel unit, integration, E2E and manual verification with boundary-based discovery and honest evidence.
 ---
 
 # Repository testing

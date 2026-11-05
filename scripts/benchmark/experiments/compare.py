@@ -456,7 +456,7 @@ def compute_paired_ci_from_predictions(
 
 
 def main():
-    parser = argparse.ArgumentParser(description="P-063 Experiment Comparator")
+    parser = argparse.ArgumentParser(description="GreenSentinel Experiment Comparator")
     parser.add_argument("--candidate", type=Path, default=None, help="Candidate metrics.json")
     parser.add_argument("--best", type=Path, default=None, help="Best-so-far metrics.json")
     parser.add_argument(

@@ -87,7 +87,7 @@ def compute_plan_hash(
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="P-063 Bounded Workload Index Migration Runner")
+    parser = argparse.ArgumentParser(description="GreenSentinel Bounded Workload Index Migration Runner")
     target_group = parser.add_mutually_exclusive_group(required=True)
     target_group.add_argument(
         "--env", choices=["dev", "staging", "production"], help="Allowed Railway target environment"

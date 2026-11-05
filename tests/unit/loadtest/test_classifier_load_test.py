@@ -353,7 +353,7 @@ async def test_run_load_test_advisory_measurement():
 def test_format_markdown_report_rendering():
     dummy_result = {
         "config": {
-            "base_url": "https://p063-preview.up.railway.app",
+            "base_url": "https://greensentinel-preview.up.railway.app",
             "endpoint": "/api/v1/classifier/assess",
             "concurrency_levels": [1, 4, 8, 16],
             "requests_per_level": 300,
@@ -400,7 +400,7 @@ def test_format_markdown_report_rendering():
 
     report_md = format_markdown_report(dummy_result)
     assert "# Classifier Load Test Report" in report_md
-    assert "https://p063-preview.up.railway.app" in report_md
+    assert "https://greensentinel-preview.up.railway.app" in report_md
     assert "Health baseline" in report_md
     assert "45.2 ms" in report_md
     assert "Cold-start" in report_md

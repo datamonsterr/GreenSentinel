@@ -1,11 +1,11 @@
 ---
 name: write-a-doc
-description: Technical documentation authoring and maintenance protocol for P-063. Use when creating, updating, or reviewing documentation in docs/ (architecture, worklog, journal, deliverables), enforcing subfolder README specifications, required question checklists, template structures, and clickable links.
+description: Technical documentation authoring and maintenance protocol for GreenSentinel. Use when creating, updating, or reviewing documentation in docs/ (architecture, worklog, journal, deliverables), enforcing subfolder README specifications, required question checklists, template structures, and clickable links.
 ---
 
 # Write-a-Doc Protocol
 
-This skill standardizes technical documentation creation and updates across the P-063 project. It enforces the project rule: **always inspect the target subfolder's `README.md` before touching any document**.
+This skill standardizes technical documentation creation and updates across the GreenSentinel project. It enforces the project rule: **always inspect the target subfolder's `README.md` before touching any document**.
 
 ## 1. Step-by-Step Workflow
 
@@ -22,7 +22,7 @@ Before creating or editing any documentation:
 ### Step 2: Information & Evidence Gathering
 - Gather verifiable facts from code, git commits, terminal logs, or transcripts.
 - Convert all file, function, and schema mentions into clickable github-style links:
-  `[relative_path](file:///home/dat/dev/vinuni_aia/P-063/relative_path)`.
+  `[relative_path](file:///home/dat/dev/vinuni_aia/GreenSentinel/relative_path)`.
 - Never invent placeholder details or mock completed tasks without verifiable code artifacts.
 
 ### Step 3: Drafting & Template Compliance

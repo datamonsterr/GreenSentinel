@@ -1,5 +1,5 @@
 """
-Synthetic Dataset Generator for P-063 Driver Incentive Cheating (DIC) Fraud Engine.
+Synthetic Dataset Generator for GreenSentinel Driver Incentive Cheating (DIC) Fraud Engine.
 
 Generates:
 - 1 Organization (VinFast / GreenSM Mobility)
@@ -704,7 +704,7 @@ def generate_synthetic_dataset() -> dict[str, Any]:
                     "outcome": outcome,
                     "rationale": f"Hội đồng thẩm định kết luận: {outcome.upper()} căn cứ chứng cứ GPS và đối chiếu chính sách.",
                     "explicit_human_approval": True,
-                    "idempotency_key": str(uuid.uuid5(uuid.NAMESPACE_URL, f"p063:adjudication:{trip_idx}")),
+                    "idempotency_key": str(uuid.uuid5(uuid.NAMESPACE_URL, f"greensentinel:adjudication:{trip_idx}")),
                     "request_hash": "\\x" + hashlib.sha256(f"adj_{trip_idx}".encode()).hexdigest(),
                     "approved_at": (end_time + timedelta(minutes=20)).isoformat(),
                 }
@@ -721,7 +721,7 @@ def generate_synthetic_dataset() -> dict[str, Any]:
                         "starts_at": None,
                         "ends_at": None,
                         "status": "simulated_delivered",
-                        "external_effect_key": str(uuid.uuid5(uuid.NAMESPACE_URL, f"p063:sanction:{trip_idx}")),
+                        "external_effect_key": str(uuid.uuid5(uuid.NAMESPACE_URL, f"greensentinel:sanction:{trip_idx}")),
                         "is_simulated": True,
                         "created_at": (end_time + timedelta(minutes=21)).isoformat(),
                     }
@@ -809,7 +809,7 @@ def generate_synthetic_dataset() -> dict[str, Any]:
                     "source": "smartphone-app",
                     "occurred_at": pt_time.isoformat(),
                     "received_at": (pt_time + timedelta(milliseconds=200)).isoformat(),
-                    "correlation_id": str(uuid.uuid5(uuid.NAMESPACE_URL, f"p063:trip:{trip_idx}")),
+                    "correlation_id": str(uuid.uuid5(uuid.NAMESPACE_URL, f"greensentinel:trip:{trip_idx}")),
                     "causation_id": None,
                     "simulation_run_id": sim_run_ids[scen],
                     "trip_id": t_id,

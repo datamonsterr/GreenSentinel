@@ -390,7 +390,7 @@ def test_stale_head_cannot_resolve_old_preview(monkeypatch, capsys):
     monkeypatch.setattr(
         railway_pr.subprocess,
         "run",
-        lambda *a, **k: subprocess.CompletedProcess([], 0, '{"P063_PREVIEW_HEAD_SHA":"old"}', ""),
+        lambda *a, **k: subprocess.CompletedProcess([], 0, '{"GREENSENTINEL_PREVIEW_HEAD_SHA":"old"}', ""),
     )
     with pytest.raises(RuntimeError, match="head"):
         railway_pr.get_url(109, "project", "service", True, "new")
@@ -409,4 +409,4 @@ def test_dev_authorization_preserves_existing_exact_origins(monkeypatch):
     result = auth_config.merged_railway_origins("dev", "project", "service", "dev", "", ("https://new.vercel.app",))
     assert set(old.split(",")).issubset(result.split(","))
     assert "https://new.vercel.app" in result.split(",")
-    assert "https://p-063-dev.vercel.app" in result.split(",")
+    assert "https://green-sentinel-dev.vercel.app" in result.split(",")

@@ -115,7 +115,7 @@ def read_turn_state(principal: Any, case_id: str, turn_id: str | None = None) ->
 
 def _begin(principal: Any, case_id: str, turn_id: str, query: str) -> tuple[dict[str, Any], bool]:
     run_id = str(uuid4())
-    session_id = str(uuid5(NAMESPACE_URL, f"p063:{case_id}:{principal.id}"))
+    session_id = str(uuid5(NAMESPACE_URL, f"greensentinel:{case_id}:{principal.id}"))
     fingerprint = hashlib.sha256(query.encode()).hexdigest()
     with _connection() as conn, conn.cursor() as cur:
         cur.execute(

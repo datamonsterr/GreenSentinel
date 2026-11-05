@@ -19,7 +19,7 @@ questions — numbers updated for 30k where marked [30k].
 | Guardrail-blocked | 5,563/30,000 (18.5%) | per-batch `guardrail_blocked` sum |
 | Benchmark tests + ruff | green (`--noconftest`; root `jwt` gap is pre-existing env, not this PR) | `tests/unit/test_build_10k.py`, `test_grow.py`, `test_telemetry_generation.py` |
 | Blind-spot probes | loop/slowcrawl → `insuff`; legit-cancel → `insuff` (#265); ghost → `no_violation` (#264) | R3 probe table in guide |
-| Railway `p063-benchmark-db` | 30,000 prediction rows (v1+v2+v3 runs) | optional R4 |
+| Railway `greensentinel-benchmark-db` | 30,000 prediction rows (v1+v2+v3 runs) | optional R4 |
 | Diff hygiene | no `src/` behavior change, no secrets, bulk data ignored | `git log --stat` |
 
 ### Verdict rule

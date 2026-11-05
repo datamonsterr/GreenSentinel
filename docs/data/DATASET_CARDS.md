@@ -1,8 +1,8 @@
 # Reference Dataset Cards
 
-Cards for external reference datasets feeding the P-063 ride-hailing fraud benchmark. Our synthetic corpus is documented in [DATASET.md](DATASET.md); benchmark evaluation results are in [BENCHMARK.md](BENCHMARK.md).
+Cards for external reference datasets feeding the GreenSentinel ride-hailing fraud benchmark. Our synthetic corpus is documented in [DATASET.md](DATASET.md); benchmark evaluation results are in [BENCHMARK.md](BENCHMARK.md).
 
-Reference datasets provide **distributional priors, lexical structures, and geographic topologies**. No raw third-party rows are embedded in the benchmark; redistributable 100-row sample parquets are published under `samples/` on Hugging Face Hub ([datamonsterr/p-063-synthesized-trips](https://huggingface.co/datasets/datamonsterr/p-063-synthesized-trips)).
+Reference datasets provide **distributional priors, lexical structures, and geographic topologies**. No raw third-party rows are embedded in the benchmark; redistributable 100-row sample parquets are published under `samples/` on Hugging Face Hub ([datamonsterr/green-sentinel-synthesized-trips](https://huggingface.co/datasets/datamonsterr/green-sentinel-synthesized-trips)).
 
 ---
 

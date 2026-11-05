@@ -99,7 +99,7 @@ FRAUD_SCENARIOS = ["driver_stall_cancel", "gps_spoofing", "intentional_dic"]
 NORMAL_SCENARIOS = ["normal_trip", "normal_trip"]  # 2 normals per 1 fraud
 
 # ── Remote API config (override via env or --api-url CLI flag) ────────────────
-RAILWAY_API_URL = os.getenv("GREENSM_API_URL", "https://p063-backend-production.up.railway.app")
+RAILWAY_API_URL = os.getenv("GREENSM_API_URL", "https://greensentinel-backend-production.up.railway.app")
 DEFAULT_ANALYST_ID = os.getenv("DEFAULT_ANALYST_ID", "018f2f4e-1000-7000-8000-000000000001")
 DEFAULT_SCENARIO = os.getenv("DEFAULT_SCENARIO", "driver_stall_cancel")
 DEFAULT_DRIVER_ID: str | None = os.getenv("DEFAULT_DRIVER_ID", None)
@@ -358,7 +358,7 @@ def build_trip_lifecycle_frames(
     now = datetime.now(UTC)
     lat_pickup, lon_pickup = loc_pickup
     lat_drop, lon_drop = loc_dropoff
-    rng = tg.make_rng(cfg, seed, stream=uuid5(NAMESPACE_URL, f"p063:sim:{trip_id}").int % 2**32)
+    rng = tg.make_rng(cfg, seed, stream=uuid5(NAMESPACE_URL, f"greensentinel:sim:{trip_id}").int % 2**32)
     trip = tg.generate_trip(
         cfg,
         "normal_trip" if scenario == "phantom_booking" else scenario,

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""P-063 Database Identity Reconciliation CLI (#410 / #402 / #394).
+"""GreenSentinel Database Identity Reconciliation CLI (#410 / #402 / #394).
 
 Audited repository-owned dry-run and apply tool:
 - Mirrors paginated Clerk organizations and memberships to target database environment.
@@ -13,7 +13,7 @@ Audited repository-owned dry-run and apply tool:
 
 Usage:
     # 1. Read-only audit & plan generation (offline using audit snapshot)
-    python scripts/reconcile_identity.py --audit --env dev --clerk-snapshot-file /tmp/p063-identity-audit.json --offline
+    python scripts/reconcile_identity.py --audit --env dev --clerk-snapshot-file /tmp/greensentinel-identity-audit.json --offline
 
     # 2. Output plan JSON with plan hash
     python scripts/reconcile_identity.py --plan --json --env staging --offline
@@ -169,7 +169,7 @@ def _load_offline_db_state(snapshot_file: str, env: str) -> DatabaseAuditState:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="P-063 Database Identity Reconciliation CLI")
+    parser = argparse.ArgumentParser(description="GreenSentinel Database Identity Reconciliation CLI")
     parser.add_argument("--env", choices=["dev", "staging", "production", "test", "local"], help="Target environment")
     parser.add_argument("--audit", action="store_true", help="Perform read-only audit and print sanitized report")
     parser.add_argument("--plan", action="store_true", help="Generate and output reconciliation plan")
@@ -212,8 +212,8 @@ def main(argv: list[str] | None = None) -> int:
     # 1. Load Clerk Snapshot
     clerk_file = args.clerk_snapshot_file
     if not clerk_file:
-        if os.path.exists("/tmp/p063-identity-audit.json"):
-            clerk_file = "/tmp/p063-identity-audit.json"
+        if os.path.exists("/tmp/greensentinel-identity-audit.json"):
+            clerk_file = "/tmp/greensentinel-identity-audit.json"
 
     try:
         if clerk_file and os.path.exists(clerk_file):

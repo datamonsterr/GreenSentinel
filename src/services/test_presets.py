@@ -33,7 +33,7 @@ from src.models.test_simulation import (
 PINNED_REVISION = "914a36560727f5892a24fba3a4173cb245c963da"
 PINNED_REVISION_VIETNAM = "a914d500b1c536f1dbfb59f8ea4c961bd38b5c7e"
 VIETNAM_TRIPS_SHA256 = "c4c80903a998420b3a5d68ced5ffb5bb06709fc9ef12817651ab8b89baa628a2"
-DEFAULT_REPO = os.environ.get("P063_BENCHMARK_HF_REPO", "datamonsterr/p-063-synthesized-trips")
+DEFAULT_REPO = os.environ.get("GREENSENTINEL_BENCHMARK_HF_REPO", "datamonsterr/green-sentinel-synthesized-trips")
 DEFAULT_PROFILE = "releases_v1"
 
 # Published release identity (object storage manifest, not a local checksum).
@@ -645,10 +645,10 @@ def materialize_preset_simulation_input(
     src_vehicle_id = str((record.get("vehicle") or {}).get("id") or record.get("vehicle_id") or "veh-sim-001")
 
     # Map persisted identities through organization namespace to prevent cross-tenant collision
-    mapped_trip_id = str(uuid5(NAMESPACE_URL, f"p063:test-console:trip:{org_uuid}:{src_trip_id}"))
-    mapped_driver_id = str(uuid5(NAMESPACE_URL, f"p063:test-console:actor:{org_uuid}:driver:{src_driver_id}"))
-    mapped_passenger_id = str(uuid5(NAMESPACE_URL, f"p063:test-console:actor:{org_uuid}:passenger:{src_passenger_id}"))
-    mapped_vehicle_id = str(uuid5(NAMESPACE_URL, f"p063:test-console:actor:{org_uuid}:vehicle:{src_vehicle_id}"))
+    mapped_trip_id = str(uuid5(NAMESPACE_URL, f"greensentinel:test-console:trip:{org_uuid}:{src_trip_id}"))
+    mapped_driver_id = str(uuid5(NAMESPACE_URL, f"greensentinel:test-console:actor:{org_uuid}:driver:{src_driver_id}"))
+    mapped_passenger_id = str(uuid5(NAMESPACE_URL, f"greensentinel:test-console:actor:{org_uuid}:passenger:{src_passenger_id}"))
+    mapped_vehicle_id = str(uuid5(NAMESPACE_URL, f"greensentinel:test-console:actor:{org_uuid}:vehicle:{src_vehicle_id}"))
 
     driver_profile = dict(record.get("driver_profile") or {})
     driver_profile["organization_id"] = org_uuid

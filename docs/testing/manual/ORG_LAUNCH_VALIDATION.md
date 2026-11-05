@@ -1,13 +1,13 @@
 # Organization launch validation: 2026-10-13
 
-This is a revision-bound validation record and continuation runbook for [epic #285](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/285) and [PR #312](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/312). Acceptance is **not met**. Live inspection supersedes the earlier handoff's claims of completed hosted proof.
+This is a revision-bound validation record and continuation runbook for [epic #285](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/285) and [PR #312](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/312). Acceptance is **not met**. Live inspection supersedes the earlier handoff's claims of completed hosted proof.
 
 ## Revision and environments
 
-The published PR remains at `171de9e6260a4240c05afba207a9662d84caeb26` on `epic/285-org-setup`. Local repairs are assembled on `verify/285-dod-20261013` in `/tmp/p063-epic285-verify`; they have not been exported or deployed.
+The published PR remains at `171de9e6260a4240c05afba207a9662d84caeb26` on `epic/285-org-setup`. Local repairs are assembled on `verify/285-dod-20261013` in `/tmp/greensentinel-epic285-verify`; they have not been exported or deployed.
 
-- Frontend: `https://p-063-47dhf7jz8-datpt226024-husteduvns-projects.vercel.app`
-- Backend: `https://p063-backend-pr-312.up.railway.app`
+- Frontend: `https://green-sentinel-47dhf7jz8-datpt226024-husteduvns-projects.vercel.app`
+- Backend: `https://greensentinel-backend-pr-312.up.railway.app`
 - Railway environment: `pr-312`, `04ac3ba6-51ad-47fb-ba83-0f5391367027`
 - Preview database repair deployment: `92cd440f-4f63-4be1-ace8-afe5b835de8c`, observed `SUCCESS`
 
@@ -48,7 +48,7 @@ A real local Chromium session opened `/`, `/organization`, and `/workspace` sign
 
 Unauthenticated `/api/v1/me` and `/api/v1/admin/invitations` returned 401. Backend health returned `database: connected`. These are routing and denial checks, not authenticated organization acceptance.
 
-Real-account CI run [38328925500](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/actions/runs/38328925500), attempt 3, still failed after the database correction:
+Real-account CI run [38328925500](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/actions/runs/38328925500), attempt 3, still failed after the database correction:
 
 - Analyst: `/api/v1/me` returned 403.
 - Driver: `/api/v1/me` passed, but `/driver` displayed `Access denied`.
@@ -78,7 +78,7 @@ Root tests use throwing Next.js redirect/not-found mocks. Additional denial test
 
 The MyPy failures are in motivation assessment, RAG embedder/store, and test routes. They are not new authorization errors. A successful build or focused test run does not make the full quality gate green.
 
-The separately dispatched CI repair run [38351454598](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/actions/runs/38351454598) passed lint and Python units, but frontend validation was cancelled and integration could not start Docker: `all predefined address pools have been fully subnetted`. The integration code was not exercised by that failure. No shared Docker networks or services were pruned during this audit.
+The separately dispatched CI repair run [38351454598](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/actions/runs/38351454598) passed lint and Python units, but frontend validation was cancelled and integration could not start Docker: `all predefined address pools have been fully subnetted`. The integration code was not exercised by that failure. No shared Docker networks or services were pruned during this audit.
 
 ## Acceptance gaps and continuation
 

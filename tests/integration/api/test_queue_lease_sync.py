@@ -38,7 +38,7 @@ def lease_sync_app(monkeypatch):
         service._cases[cid] = {
             "id": cid,
             "status": "ready",
-            "organization_id": "org-p063",
+            "organization_id": "org-greensentinel",
             "priority_tier": 1,
             "priority_score": 90,
             "version": 1,
@@ -67,7 +67,7 @@ async def test_concurrent_analysts_available_queue_filters_foreign_leases(lease_
     async def get_analyst_b():
         return Principal(
             id="analyst-b",
-            organization_id="org-p063",
+            organization_id="org-greensentinel",
             roles=frozenset(["analyst"]),
         )
 
@@ -94,7 +94,7 @@ async def test_concurrent_analysts_available_queue_filters_foreign_leases(lease_
     async def get_analyst_a():
         return Principal(
             id="analyst-a",
-            organization_id="org-p063",
+            organization_id="org-greensentinel",
             roles=frozenset(["analyst"]),
         )
 
@@ -122,7 +122,7 @@ async def test_stale_claim_conflict_returns_409(lease_sync_app):
 
     # Analyst B attempts to claim case-101
     async def get_analyst_b():
-        return Principal(id="analyst-b", organization_id="org-p063", roles=frozenset(["analyst"]))
+        return Principal(id="analyst-b", organization_id="org-greensentinel", roles=frozenset(["analyst"]))
 
     app.dependency_overrides[require_principal] = get_analyst_b
 
@@ -149,7 +149,7 @@ async def test_stale_adjudication_conflict_returns_409(lease_sync_app):
 
     # Analyst B attempts to adjudicate case-101
     async def get_analyst_b():
-        return Principal(id="analyst-b", organization_id="org-p063", roles=frozenset(["analyst"]))
+        return Principal(id="analyst-b", organization_id="org-greensentinel", roles=frozenset(["analyst"]))
 
     app.dependency_overrides[require_principal] = get_analyst_b
 
@@ -180,7 +180,7 @@ async def test_lease_release_and_expiration_restores_available_queue(lease_sync_
 
     # Analyst B checks: case-101 excluded
     async def get_analyst_b():
-        return Principal(id="analyst-b", organization_id="org-p063", roles=frozenset(["analyst"]))
+        return Principal(id="analyst-b", organization_id="org-greensentinel", roles=frozenset(["analyst"]))
 
     app.dependency_overrides[require_principal] = get_analyst_b
 
@@ -190,7 +190,7 @@ async def test_lease_release_and_expiration_restores_available_queue(lease_sync_
 
     # 2. Analyst A releases the lease
     async def get_analyst_a():
-        return Principal(id="analyst-a", organization_id="org-p063", roles=frozenset(["analyst"]))
+        return Principal(id="analyst-a", organization_id="org-greensentinel", roles=frozenset(["analyst"]))
 
     app.dependency_overrides[require_principal] = get_analyst_a
 
@@ -235,7 +235,7 @@ async def test_foreign_analyst_cannot_release_lease(lease_sync_app):
 
     # Analyst B attempts release
     async def get_analyst_b():
-        return Principal(id="analyst-b", organization_id="org-p063", roles=frozenset(["analyst"]))
+        return Principal(id="analyst-b", organization_id="org-greensentinel", roles=frozenset(["analyst"]))
 
     app.dependency_overrides[require_principal] = get_analyst_b
 

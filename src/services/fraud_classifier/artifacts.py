@@ -4,7 +4,7 @@ Resolution order:
 1. Environment variable FRAUD_CLASSIFIER_ARTIFACT_DIR
 2. Production container path /app/models/r3d
 3. Repository local models directory (models/r3d)
-4. Hugging Face Hub download (repo: datamonsterr/p-063-r3d-classifier @ hf_revision)
+4. Hugging Face Hub download (repo: datamonsterr/green-sentinel-r3d-classifier @ hf_revision)
 
 Fails closed by raising ClassifierUnavailableError on any missing file or SHA256 mismatch.
 """
@@ -24,7 +24,7 @@ from huggingface_hub import hf_hub_download
 REPO_ROOT = Path(__file__).resolve().parents[3]
 DEFAULT_REPO_LOCAL_DIR = REPO_ROOT / "models" / "r3d"
 DEFAULT_CONTAINER_DIR = Path("/app/models/r3d")
-DEFAULT_CACHE_DIR = Path.home() / ".cache" / "p063" / "models" / "r3d"
+DEFAULT_CACHE_DIR = Path.home() / ".cache" / "greensentinel" / "models" / "r3d"
 
 logger = logging.getLogger(__name__)
 
@@ -80,7 +80,7 @@ def download_artifacts_from_hf(
     with manifest_path.open() as f:
         manifest = json.load(f)
 
-    repo_id = manifest.get("hf_repo_id", "datamonsterr/p-063-r3d-classifier")
+    repo_id = manifest.get("hf_repo_id", "datamonsterr/green-sentinel-r3d-classifier")
     revision = manifest.get("hf_revision")
     artifacts = manifest.get("artifacts", {})
 

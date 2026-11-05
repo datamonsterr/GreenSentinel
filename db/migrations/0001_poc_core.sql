@@ -1,4 +1,4 @@
--- P-063 PoC schema: ride operations, telemetry, fraud analysis, and HITL review.
+-- GreenSentinel PoC schema: ride operations, telemetry, fraud analysis, and HITL review.
 -- PostgreSQL 15+ / Supabase. All timestamps are UTC timestamptz values.
 
 create schema if not exists extensions;

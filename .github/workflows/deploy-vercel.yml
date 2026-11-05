@@ -143,7 +143,7 @@ jobs:
               exit 1
             fi
           else
-            BACKEND_URL="${{ vars.RAILWAY_DEV_URL || 'https://p063-backend-dev.up.railway.app' }}"
+            BACKEND_URL="${{ vars.RAILWAY_DEV_URL || 'https://greensentinel-backend-dev.up.railway.app' }}"
             if ! curl --silent --fail --max-time 5 "${BACKEND_URL%/}/health" >/dev/null; then
               echo "Dev backend ${BACKEND_URL} is unreachable." >&2
               exit 1
@@ -295,7 +295,7 @@ jobs:
   # 2. DEV ENVIRONMENT (Auto trigger on merge to main)
   # ==========================================
   deploy-dev:
-    name: Deploy to Dev (p-063-dev.vercel.app)
+    name: Deploy to Dev (green-sentinel-dev.vercel.app)
     if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && (inputs.target_env == 'dev' || inputs.target_env == 'all'))
     runs-on: self-hosted
     environment: dev
@@ -327,8 +327,8 @@ jobs:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
           CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
-          NEXT_PUBLIC_API_URL: ${{ vars.RAILWAY_DEV_URL || 'https://p063-backend-dev.up.railway.app' }}
-          API_BASE_URL: ${{ vars.RAILWAY_DEV_URL || 'https://p063-backend-dev.up.railway.app' }}
+          NEXT_PUBLIC_API_URL: ${{ vars.RAILWAY_DEV_URL || 'https://greensentinel-backend-dev.up.railway.app' }}
+          API_BASE_URL: ${{ vars.RAILWAY_DEV_URL || 'https://greensentinel-backend-dev.up.railway.app' }}
         run: |
           vercel pull --yes --environment=preview
           echo "NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}" >> .vercel/.env.preview.local
@@ -340,15 +340,15 @@ jobs:
           if [ -d ".git" ]; then mv .git .git_backup; fi
           trap 'if [ -d ".git_backup" ]; then mv .git_backup .git; fi' EXIT
           deploy_url="$(bash scripts/vercel_deploy.sh)"
-          python3 scripts/vercel_project.py alias "$deploy_url" "p-063-dev.vercel.app"
-          python3 scripts/vercel_project.py alias "$deploy_url" "dev.p-063.vercel.app" || echo "Optional dotted Dev alias unavailable; canonical Dev alias is ready." >&2
-          echo "Dev deployed to https://p-063-dev.vercel.app"
+          python3 scripts/vercel_project.py alias "$deploy_url" "green-sentinel-dev.vercel.app"
+          python3 scripts/vercel_project.py alias "$deploy_url" "dev.green-sentinel.vercel.app" || echo "Optional dotted Dev alias unavailable; canonical Dev alias is ready." >&2
+          echo "Dev deployed to https://green-sentinel-dev.vercel.app"
 
   # ==========================================
-  # 3. STAGING ENVIRONMENT (staging.p-063.vercel.app - Gated by Approval)
+  # 3. STAGING ENVIRONMENT (staging.green-sentinel.vercel.app - Gated by Approval)
   # ==========================================
   deploy-staging:
-    name: Deploy to Staging (staging.p-063.vercel.app)
+    name: Deploy to Staging (staging.green-sentinel.vercel.app)
     if: "github.event_name == 'workflow_dispatch' && (inputs.target_env == 'staging' || inputs.target_env == 'all')"
     runs-on: self-hosted
     environment: staging
@@ -380,8 +380,8 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          NEXT_PUBLIC_API_URL: ${{ vars.RAILWAY_STAGING_URL || 'https://p063-backend-staging.up.railway.app' }}
-          API_BASE_URL: ${{ vars.RAILWAY_STAGING_URL || 'https://p063-backend-staging.up.railway.app' }}
+          NEXT_PUBLIC_API_URL: ${{ vars.RAILWAY_STAGING_URL || 'https://greensentinel-backend-staging.up.railway.app' }}
+          API_BASE_URL: ${{ vars.RAILWAY_STAGING_URL || 'https://greensentinel-backend-staging.up.railway.app' }}
         run: |
           vercel pull --yes --environment=preview
           echo "NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}" >> .vercel/.env.preview.local
@@ -390,15 +390,15 @@ jobs:
           if [ -d ".git" ]; then mv .git .git_backup; fi
           trap 'if [ -d ".git_backup" ]; then mv .git_backup .git; fi' EXIT
           deploy_url="$(bash scripts/vercel_deploy.sh)"
-          python3 scripts/vercel_project.py alias "$deploy_url" "p-063-staging.vercel.app"
-          python3 scripts/vercel_project.py alias "$deploy_url" "staging.p-063.vercel.app" || echo "Optional dotted Staging alias unavailable; canonical Staging alias is ready." >&2
-          echo "Staging deployed to https://p-063-staging.vercel.app"
+          python3 scripts/vercel_project.py alias "$deploy_url" "green-sentinel-staging.vercel.app"
+          python3 scripts/vercel_project.py alias "$deploy_url" "staging.green-sentinel.vercel.app" || echo "Optional dotted Staging alias unavailable; canonical Staging alias is ready." >&2
+          echo "Staging deployed to https://green-sentinel-staging.vercel.app"
 
   # ==========================================
-  # 4. PRODUCTION ENVIRONMENT (p-063.vercel.app - Manual Gated)
+  # 4. PRODUCTION ENVIRONMENT (green-sentinel.vercel.app - Manual Gated)
   # ==========================================
   deploy-production:
-    name: Deploy to Production (p-063.vercel.app - Manual Gated)
+    name: Deploy to Production (green-sentinel.vercel.app - Manual Gated)
     needs: [deploy-staging]
     if: "github.ref == 'refs/heads/main' && !cancelled() && !failure() && github.event_name == 'workflow_dispatch' && (inputs.target_env == 'production' || inputs.target_env == 'all')"
     runs-on: self-hosted
@@ -431,8 +431,8 @@ jobs:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-          NEXT_PUBLIC_API_URL: ${{ vars.RAILWAY_PRODUCTION_URL || 'https://p063-backend-production.up.railway.app' }}
-          API_BASE_URL: ${{ vars.RAILWAY_PRODUCTION_URL || 'https://p063-backend-production.up.railway.app' }}
+          NEXT_PUBLIC_API_URL: ${{ vars.RAILWAY_PRODUCTION_URL || 'https://greensentinel-backend-production.up.railway.app' }}
+          API_BASE_URL: ${{ vars.RAILWAY_PRODUCTION_URL || 'https://greensentinel-backend-production.up.railway.app' }}
         run: |
           vercel pull --yes --environment=production
           echo "NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}" >> .vercel/.env.production.local
@@ -441,5 +441,5 @@ jobs:
           if [ -d ".git" ]; then mv .git .git_backup; fi
           trap 'if [ -d ".git_backup" ]; then mv .git_backup .git; fi' EXIT
           deploy_url="$(bash scripts/vercel_deploy.sh --prod)"
-          python3 scripts/vercel_project.py alias "$deploy_url" "p-063.vercel.app"
-          echo "Production deployed to https://p-063.vercel.app"
+          python3 scripts/vercel_project.py alias "$deploy_url" "green-sentinel.vercel.app"
+          echo "Production deployed to https://green-sentinel.vercel.app"

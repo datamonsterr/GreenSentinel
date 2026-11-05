@@ -17,8 +17,8 @@ All dismissals and analyst Agree/Disagree outcomes require authorized analyst co
 |---|---|
 | **Use Case ID** | `UC-L06-01` |
 | **Use Case Name** | Choose Passenger Recovery |
-| **Created By / Date** | P-063 BA documentation / 2026-09-17 |
-| **Last Updated By / Date** | P-063 BA documentation / 2026-09-17 |
+| **Created By / Date** | GreenSentinel BA documentation / 2026-09-17 |
+| **Last Updated By / Date** | GreenSentinel BA documentation / 2026-09-17 |
 | **Actor** | **Primary:** Passenger with an active pickup. **Secondary:** Notification channel. |
 | **Description** | Because an approved real-time score enters the prompt band, the Passenger reviews cautious suspected-DIC information and chooses recovery or continuation. The use case ends with exactly one immutable Passenger choice and no fraud confirmation. |
 | **Preconditions** | 1. Trip is active and assigned.<br>2. Approved pre-score policy/version enters the prompt band.<br>3. No terminal Passenger choice or prior prompt exists for the trip. |
@@ -39,8 +39,8 @@ All dismissals and analyst Agree/Disagree outcomes require authorized analyst co
 |---|---|
 | **Use Case ID** | `UC-L06-02` |
 | **Use Case Name** | Receive Preserved Reassignment |
-| **Created By / Date** | P-063 BA documentation / 2026-09-17 |
-| **Last Updated By / Date** | P-063 BA documentation / 2026-09-17 |
+| **Created By / Date** | GreenSentinel BA documentation / 2026-09-17 |
+| **Last Updated By / Date** | GreenSentinel BA documentation / 2026-09-17 |
 | **Actor** | **Primary:** Passenger who selected recovery. **Secondary:** Dispatch, Pricing/Voucher, Payment services. |
 | **Description** | After choosing recovery, the Passenger receives a replacement assignment without rebooking or losing original trip value. The use case ends in successful replacement or the approved failed-recovery state. |
 | **Preconditions** | 1. UC-L06-01 ended with `Reassign`.<br>2. Original fare, voucher, pickup, and destination snapshots exist.<br>3. No replacement is active. |
@@ -61,8 +61,8 @@ All dismissals and analyst Agree/Disagree outcomes require authorized analyst co
 |---|---|
 | **Use Case ID** | `UC-L06-03` |
 | **Use Case Name** | Submit Driver Evidence |
-| **Created By / Date** | P-063 BA documentation / 2026-09-17 |
-| **Last Updated By / Date** | P-063 BA documentation / 2026-09-17 |
+| **Created By / Date** | GreenSentinel BA documentation / 2026-09-17 |
+| **Last Updated By / Date** | GreenSentinel BA documentation / 2026-09-17 |
 | **Actor** | **Primary:** Driver notified after the approved Passenger event. **Secondary:** Evidence scanning/storage service. |
 | **Description** | The Driver submits a reason and permitted evidence so legitimate conditions can be reviewed. The use case ends with an accepted, late, absent, rejected, or quarantined submission state without changing Passenger recovery. |
 | **Preconditions** | 1. A deduplicated suspected-DIC case exists.<br>2. Approved notice event occurred.<br>3. Driver identity matches the assignment.<br>4. Submission state is open or late submissions are permitted. |
@@ -83,8 +83,8 @@ All dismissals and analyst Agree/Disagree outcomes require authorized analyst co
 |---|---|
 | **Use Case ID** | `UC-L06-04` |
 | **Use Case Name** | Adjudicate Initial Case |
-| **Created By / Date** | P-063 BA documentation / 2026-09-17 |
-| **Last Updated By / Date** | P-063 BA documentation / 2026-09-28 |
+| **Created By / Date** | GreenSentinel BA documentation / 2026-09-17 |
+| **Last Updated By / Date** | GreenSentinel BA documentation / 2026-09-28 |
 | **Actor** | **Primary:** Fraud Analyst (Initial Reviewer). **Secondary:** Audit Subsystem. |
 | **Description** | The Fraud Analyst inspects prioritized suspected-DIC cases, views the unified spatial GIS trajectory alongside legal shortest routes, checks the system error guardrail for technical outages, and signs off on an authorized outcome with mandatory rationale. |
 | **Preconditions** | 1. Case is ingested and in status `Ready for review`.<br>2. Analyst possesses authenticated role (`Fraud Analyst`).<br>3. No conflicting active review lock exists (or previous lock has expired). |
@@ -105,8 +105,8 @@ All dismissals and analyst Agree/Disagree outcomes require authorized analyst co
 |---|---|
 | **Use Case ID** | `UC-L06-05` |
 | **Use Case Name** | Appeal Enforcement Decision |
-| **Created By / Date** | P-063 BA documentation / 2026-09-17 |
-| **Last Updated By / Date** | P-063 BA documentation / 2026-09-17 |
+| **Created By / Date** | GreenSentinel BA documentation / 2026-09-17 |
+| **Last Updated By / Date** | GreenSentinel BA documentation / 2026-09-17 |
 | **Actor** | **Primary:** Driver with an eligible adverse decision. **Secondary:** Different second-review Fraud Analyst, sanction/account services. |
 | **Description** | The Driver requests a blinded second review to correct a potentially wrong fine or suspension. The use case ends with an upheld or overturned outcome, reconciled enforcement, and preserved internal audit linkage. Phase 1 applies no fine, suspension, or other sanction; this use case is retained only as deferred reference. |
 | **Preconditions** | 1. Eligible adverse initial decision exists.<br>2. Appeal is within approved policy.<br>3. No terminal second review exists.<br>4. A different authorized analyst is available or queueable. |
@@ -127,8 +127,8 @@ All dismissals and analyst Agree/Disagree outcomes require authorized analyst co
 |---|---|
 | **Use Case ID** | `UC-L06-06` |
 | **Use Case Name** | Complete Failed Recovery |
-| **Created By / Date** | P-063 BA documentation / 2026-09-17 |
-| **Last Updated By / Date** | P-063 BA documentation / 2026-09-17 |
+| **Created By / Date** | GreenSentinel BA documentation / 2026-09-17 |
+| **Last Updated By / Date** | GreenSentinel BA documentation / 2026-09-17 |
 | **Actor** | **Primary:** Passenger whose replacement search reached the approved no-driver state. **Secondary:** Payment, Voucher, Customer Support services. |
 | **Description** | The Passenger receives a mandatory refund and the approved voucher/support outcome when reassignment fails. The use case ends only when the recovery result is truthful and reconcilable. |
 | **Preconditions** | 1. Accepted recovery has no replacement at the approved timeout/state.<br>2. Original payment/voucher snapshot exists.<br>3. No completed recovery refund exists. |
@@ -149,8 +149,8 @@ All dismissals and analyst Agree/Disagree outcomes require authorized analyst co
 |---|---|
 | **Use Case ID** | `UC-L06-07` |
 | **Use Case Name** | Govern Release Phase |
-| **Created By / Date** | P-063 BA documentation / 2026-09-17 |
-| **Last Updated By / Date** | P-063 BA documentation / 2026-09-17 |
+| **Created By / Date** | GreenSentinel BA documentation / 2026-09-17 |
+| **Last Updated By / Date** | GreenSentinel BA documentation / 2026-09-17 |
 | **Actor** | **Primary:** Product Owner accountable for Release 1. **Secondary:** Fraud, Driver, Customer, Dispatch Operations; Security, Data/BI. |
 | **Description** | The Product Owner reviews a versioned gate packet and enables, pauses, rolls back, or holds one bounded Release 1 phase. The use case ends with an auditable boundary and never reduces human approval for fines/suspensions. |
 | **Preconditions** | 1. G1–G4 evidence and phase configuration are versioned.<br>2. Required operational/control tests and capacity evidence exist.<br>3. Actor has release authority.<br>4. No unresolved stop incident permits enablement. |
@@ -171,13 +171,13 @@ All dismissals and analyst Agree/Disagree outcomes require authorized analyst co
 |---|---|
 | **Use Case ID** | `UC-L06-08` |
 | **Use Case Name** | Conduct Async Driver Disputation via Driver Agent |
-| **Created By / Date** | P-063 BA documentation / 2026-09-26 |
-| **Last Updated By / Date** | P-063 BA documentation / 2026-09-26 |
+| **Created By / Date** | GreenSentinel BA documentation / 2026-09-26 |
+| **Last Updated By / Date** | GreenSentinel BA documentation / 2026-09-26 |
 | **Actor** | **Primary:** Driver notified of suspected fraud. **Secondary:** AI Driver Agent, Telemetry & Traffic Services, Case Service. |
 | **Description** | A driver notified of a fraud alert disputes the finding via an asynchronous conversational session with the AI Driver Agent. The agent validates driver identity, conducts structured question-and-answer, triggers deterministic verification tools to corroborate factual claims, and compiles an evidence dossier for analyst review without imposing autonomous sanctions. |
 | **Preconditions** | 1. A suspected fraud case exists in `driver_notified` or `in_review` status.<br>2. Driver is authenticated with `role: driver` in `app.principal_roles` matching `driver_id`.<br>3. Dispute window has not expired. |
 | **Postconditions** | 1. Driver statements, timestamps, and attached evidence are recorded in the case session.<br>2. Tool verification corroboration score and discrepancies are computed.<br>3. Case transitions to `driver_disputed` with synthesized brief available to Fraud Analyst.<br>4. Zero automated sanction is applied (`NFR-L06-02`). |
-| **Priority** | Deferred (Phase 2+) — reference to existing implementation in [MERGED PR #40](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/40), not Phase 1 acceptance. |
+| **Priority** | Deferred (Phase 2+) — reference to existing implementation in [MERGED PR #40](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/40), not Phase 1 acceptance. |
 | **Frequency of Use** | Once per contested fraud notification; expected volume proportional to driver dispute rate. |
 | **Normal Course of Events** | 1. Driver opens fraud notification and selects **Dispute Violation**.<br>2. System validates driver credentials against database `driver` role.<br>3. Driver Agent initiates session, disclosing suspected violation details and policy context.<br>4. Driver provides written explanation and context.<br>5. Driver Agent queries shared verification tools (telemetry, route history, traffic check).<br>6. Driver Agent prompts driver for targeted clarification or permitted media evidence based on similar case procedures.<br>7. Driver completes evidence submission.<br>8. Driver Agent acknowledges receipt, informs driver of async review SLA, and compiles structured dossier.<br>9. Driver Agent transitions case to `driver_disputed` and alerts Analyst Cockpit. |
 | **Alternative Courses** | **UC-L06-08.AC.1: Driver accepts violation** — At step 4, when Driver confirms violation: 4a. Agent records admission; 4b. Case routes directly to analyst expedited resolution.<br>**UC-L06-08.AC.2: Driver requests human agent** — At step 4, when Driver insists on human contact: 4a. Agent records request and escalates priority; continue from step 8. |
@@ -193,13 +193,13 @@ All dismissals and analyst Agree/Disagree outcomes require authorized analyst co
 |---|---|
 | **Use Case ID** | `UC-L06-09` |
 | **Use Case Name** | Collaborate with Driver Agent in Analyst Cockpit |
-| **Created By / Date** | P-063 BA documentation / 2026-09-26 |
-| **Last Updated By / Date** | P-063 BA documentation / 2026-09-26 |
+| **Created By / Date** | GreenSentinel BA documentation / 2026-09-26 |
+| **Last Updated By / Date** | GreenSentinel BA documentation / 2026-09-26 |
 | **Actor** | **Primary:** Fraud Analyst holding active case lease. **Secondary:** Sentinel Copilot, AI Driver Agent, Case Service. |
 | **Description** | The Fraud Analyst reviews the synthesized dispute summary generated by the Driver Agent within the unified Cockpit chatbox. The analyst can cross-examine findings, instruct the Driver Agent to ask specific follow-up questions, or request manual driver actions before finalizing adjudication. |
 | **Preconditions** | 1. Case has active or completed Driver Agent interaction (`driver_disputed`).<br>2. Fraud Analyst holds valid review lease.<br>3. Case evidence snapshot is current. |
 | **Postconditions** | 1. Driver Agent synthesis, discrepancy score, and transcript are rendered in cockpit.<br>2. Delegated follow-up prompts are asynchronously dispatched to Driver Agent.<br>3. Case remains open until explicit human adjudication (`AGREE`, `DISAGREE`, `REQUEST_EVIDENCE`). |
-| **Priority** | Deferred (Phase 2+) — reference to existing implementation in [MERGED PR #40](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/pull/40), not Phase 1 acceptance. |
+| **Priority** | Deferred (Phase 2+) — reference to existing implementation in [MERGED PR #40](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/pull/40), not Phase 1 acceptance. |
 | **Frequency of Use** | Repeated turns during active case investigation. |
 | **Normal Course of Events** | 1. Fraud Analyst opens claimed case in Cockpit.<br>2. Cockpit chatbox displays Driver Agent synthesis badge: driver explanation summary, tool corroboration status, discrepancy score, and recommended next steps.<br>3. Analyst queries Copilot in the chatbox regarding driver claims or policy clauses.<br>4. Copilot returns policy citations and corroborating telemetry timestamps.<br>5. Analyst enters delegation instruction (e.g. "Ask driver to explain 5-minute stationary gap at Point B").<br>6. Cockpit dispatches asynchronous task to Driver Agent and displays delivery receipt.<br>7. Analyst proceeds with adjudication or leaves case in `evidence_requested` pending driver reply. |
 | **Alternative Courses** | **UC-L06-09.AC.1: Direct transcript inspection** — At step 2, analyst expands full verbatim driver-agent chat transcript for forensic verification.<br>**UC-L06-09.AC.2: Autonomous recommendation override** — At step 7, analyst disagrees with Driver Agent recommendation and records human override rationale. |

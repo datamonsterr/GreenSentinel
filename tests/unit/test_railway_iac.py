@@ -12,7 +12,7 @@ def test_iac_file_exists_and_is_typescript():
 def test_iac_defines_managed_resources():
     src = pathlib.Path(".railway/railway.ts").read_text()
     assert "defineRailway" in src
-    assert "service(" in src  # p063-backend
+    assert "service(" in src  # greensentinel-backend
     assert "postgres(" in src
     assert "redis(" in src
     assert "DATABASE_URL" in src

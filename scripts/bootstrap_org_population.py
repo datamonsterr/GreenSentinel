@@ -3,7 +3,7 @@
 
 Usage:
     python scripts/bootstrap_org_population.py --org-id <uuid>
-        [--template-version v1] [--seed p063-s4-actors]
+        [--template-version v1] [--seed greensentinel-s4-actors]
         [--database-url $DATABASE_URL]
 
 Exit codes: 0 ready, 1 failed (safe to retry: rerun the same command),

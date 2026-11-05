@@ -61,9 +61,9 @@ Sample outputs rendered in `docs/testing/artifacts/geo_evidence/index.html`.
 
 ## Hosted preview validation (PR #316)
 
-- Railway preview backend deployed from this branch: `https://p063-backend-pr-316.up.railway.app`
+- Railway preview backend deployed from this branch: `https://greensentinel-backend-pr-316.up.railway.app`
   (`/health` ⇒ `{"status":"ok","env":"development","database":"connected"}`).
-- Vercel webapp preview deployed: `https://p-063-c1xkl8t9x-datpt226024-husteduvns-projects.vercel.app`.
+- Vercel webapp preview deployed: `https://green-sentinel-c1xkl8t9x-datpt226024-husteduvns-projects.vercel.app`.
 - CI gates attributable to this branch all green (Lint, Unit, Vitest, Local Docker
   integration/agent/E2E). The `test_agent.sh` suite including the analyst tool registry
   now asserts the expanded surface explicitly (`ANALYST_TOOLS == 15` with the three #230

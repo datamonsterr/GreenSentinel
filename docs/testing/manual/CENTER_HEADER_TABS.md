@@ -2,7 +2,7 @@
 
 ## Scope and evidence
 
-Verify [issue #188](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/188) against the [approved scoped design](../../design/center-header-compact/design.md). Use the rendered cockpit boundary and the existing header/tab component tests. API fixtures are synthetic presentation evidence; they do not prove a migrated database or authenticated hosted behavior.
+Verify [issue #188](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/188) against the [approved scoped design](../../design/center-header-compact/design.md). Use the rendered cockpit boundary and the existing header/tab component tests. API fixtures are synthetic presentation evidence; they do not prove a migrated database or authenticated hosted behavior.
 
 Fixture case: `11111111-1111-4111-8111-111111111111`. Use a disposable local test server with the repository's explicit E2E authentication configuration and the existing browser API fixture installer. Never enable test authentication on a hosted environment. Use an isolated `agent-browser` session and record its revision, URL, viewport, observations, and screenshots.
 
@@ -19,7 +19,7 @@ Fixture case: `11111111-1111-4111-8111-111111111111`. Use a disposable local tes
 
 Baseline at `05bb3da`, local fixture cockpit, 1440 × 900: full frontend units passed (34 files, 246 tests). The header measured 155.3125px; the tab strip measured 51px; buttons measured 38px; labels measured 12px; icons measured 24px despite a smaller utility class. The header-to-tabs gap was 10px, and one assessment row was present. [Before screenshot](../assets/center-header-tabs/before-1440.png).
 
-Verified source revision: `aafc554`, rebased onto `b9cc1a2`; upstream additions affect architecture documentation only. These manual observations were made on the same UI source before that documentation-only rebase, on 2026-10-08, using `agent-browser --session p063-ui-review`, `http://localhost:3187/workplace`, local E2E authentication, and the fixture case above.
+Verified source revision: `aafc554`, rebased onto `b9cc1a2`; upstream additions affect architecture documentation only. These manual observations were made on the same UI source before that documentation-only rebase, on 2026-10-08, using `agent-browser --session greensentinel-ui-review`, `http://localhost:3187/workplace`, local E2E authentication, and the fixture case above.
 
 | Check | Observed result |
 |---|---|

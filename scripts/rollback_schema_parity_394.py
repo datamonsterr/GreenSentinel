@@ -23,15 +23,15 @@ HISTORICAL_AUDIT_SNAPSHOT = {
     "environments": {
         "dev": {
             "sha256": "ca1b85fbf900de8c5187e68dfac251ea5cd7ef04fc1096b35b7d85401d34b166",
-            "historical_path": "/home/dat/.local/state/p063-db-finalize-394/backups/20261015T173125Z/dev.dump",
+            "historical_path": "/home/dat/.local/state/greensentinel-db-finalize-394/backups/20261015T173125Z/dev.dump",
         },
         "staging": {
             "sha256": "71133c4f5020bcbd2066708a4dd4d761607a54ce9311c4d280cc9410670b82f2",
-            "historical_path": "/home/dat/.local/state/p063-db-finalize-394/backups/20261015T173125Z/staging.dump",
+            "historical_path": "/home/dat/.local/state/greensentinel-db-finalize-394/backups/20261015T173125Z/staging.dump",
         },
         "production": {
             "sha256": "f72331f9085c5f87ce0d91ebeb018228dfcc84f4205833ca02690fc62a8cc321",
-            "historical_path": "/home/dat/.local/state/p063-db-finalize-394/backups/20261015T173125Z/production.dump",
+            "historical_path": "/home/dat/.local/state/greensentinel-db-finalize-394/backups/20261015T173125Z/production.dump",
         },
     },
 }
@@ -39,7 +39,7 @@ HISTORICAL_AUDIT_SNAPSHOT = {
 
 def print_guidance(custom_backups: dict[str, dict[str, str]] | None = None) -> None:
     print("=" * 70)
-    print("P-063 Schema Parity Rollback Policy (Issue #394 / Child Task #423)")
+    print("GreenSentinel Schema Parity Rollback Policy (Issue #394 / Child Task #423)")
     print("=" * 70)
     print(
         "\n1. ADDITIVE BACKWARD COMPATIBILITY:\n"
@@ -105,7 +105,7 @@ def load_manifest(manifest_path: Path) -> dict[str, dict[str, str]]:
 
 
 def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="P-063 schema parity rollback guidance and backup verification")
+    parser = argparse.ArgumentParser(description="GreenSentinel schema parity rollback guidance and backup verification")
     parser.add_argument(
         "--manifest",
         type=Path,

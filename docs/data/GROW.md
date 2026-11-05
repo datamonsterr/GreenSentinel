@@ -58,7 +58,7 @@ into a scratch `--base` and compare manifest hashes.
 
 - Import new batch predictions: rerun the `--benchmark` flow or
   `scripts/import_benchmark.py`, then insert `benchmark_runs` /
-  `benchmark_predictions` rows into `p063-benchmark-db` (Railway private
+  `benchmark_predictions` rows into `greensentinel-benchmark-db` (Railway private
   network: use `railway tcp-proxy create/delete`, never commit creds).
 - Bulk `trips.jsonl` stays git-ignored; commit only the new batch
   `manifest.json` (+ sample if reviewed).

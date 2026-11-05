@@ -323,8 +323,8 @@ class CopilotDecisionService:
         headers = {
             "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
-            "HTTP-Referer": "https://github.com/AI20K-Build-Phase-Cohort-4/P-063",
-            "X-Title": "P-063 Cockpit Copilot Jev Decision Engine",
+            "HTTP-Referer": "https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel",
+            "X-Title": "GreenSentinel Cockpit Copilot Jev Decision Engine",
         }
 
         async with httpx.AsyncClient(timeout=4.0) as client:

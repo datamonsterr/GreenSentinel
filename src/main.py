@@ -141,7 +141,7 @@ async def ready():
 async def root():
     import os
 
-    base_url = os.getenv("VERCEL_APP_URL", "https://p-063.vercel.app").rstrip("/")
+    base_url = os.getenv("VERCEL_APP_URL", "https://green-sentinel.vercel.app").rstrip("/")
     return RedirectResponse(url=f"{base_url}/workplace")
 
 
@@ -149,5 +149,5 @@ async def root():
 async def workplace():
     import os
 
-    base_url = os.getenv("VERCEL_APP_URL", "https://p-063.vercel.app").rstrip("/")
+    base_url = os.getenv("VERCEL_APP_URL", "https://green-sentinel.vercel.app").rstrip("/")
     return RedirectResponse(url=f"{base_url}/workplace")

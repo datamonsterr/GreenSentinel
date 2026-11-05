@@ -1,4 +1,4 @@
-"""Publish the P-063 benchmark release to a public Hugging Face dataset repo.
+"""Publish the GreenSentinel benchmark release to a public Hugging Face dataset repo.
 
 Uploads a release directory (produced by ``merge_releases.py``) under
 ``<release_name>/`` together with the dataset card as ``README.md``. Streams
@@ -7,7 +7,7 @@ files; no large staging copy.
 Usage::
 
     HF_TOKEN=... python scripts/benchmark/publish_dataset.py \
-        --repo <owner>/p-063-synthesized-trips \
+        --repo <owner>/green-sentinel-synthesized-trips \
         --release-dir <dir-with-trips.jsonl> \
         --release-name releases_v1
 """
@@ -37,7 +37,7 @@ def _list_release(release_dir: Path) -> list[Path]:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--repo", required=True, help="dataset repo id, e.g. <owner>/p-063-synthesized-trips")
+    ap.add_argument("--repo", required=True, help="dataset repo id, e.g. <owner>/green-sentinel-synthesized-trips")
     ap.add_argument("--release-dir", type=Path, required=True)
     ap.add_argument("--release-name", default="releases_v1")
     ap.add_argument("--card", type=Path, default=CARD_DEFAULT)

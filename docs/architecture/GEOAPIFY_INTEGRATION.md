@@ -2,7 +2,7 @@
 
 **Status:** Historical assessment retained; provider foundation implemented in #227. Map/UI activation and subsequent epic slices remain gated. The #227 boundary below supersedes the earlier open product questions.
 
-**Scope:** Capability and boundary assessment for Geoapify routing, geocoding, map matching, map tiles/styles, and MCP tools in P-063. This document does not authorize production rollout, national coverage, quota/licence entitlement, or a replacement of the existing map UI.
+**Scope:** Capability and boundary assessment for Geoapify routing, geocoding, map matching, map tiles/styles, and MCP tools in GreenSentinel. This document does not authorize production rollout, national coverage, quota/licence entitlement, or a replacement of the existing map UI.
 
 ## Evidence baseline
 
@@ -15,7 +15,7 @@ Six sanitized authenticated probes ran against public Hanoi examples on 2026-10-
 | Routing | `MultiLineString`; 1,317 m; 87.581 s; `drive`; `free_flow` | This is a free-flow estimate without traffic influence. No live or historical traffic proof. |
 | Map matching | `MultiLineString`; 102 m; 23 s; `matched`, `matched`, `unmatched` | Unmatched points must remain explicit. |
 | Map style | Style version 8; one source; 111 layers | Attribution and tile entitlement still require review. |
-| MCP | 11 tools returned | Capability discovery only; agent exposure remains governed by P-063 registries. |
+| MCP | 11 tools returned | Capability discovery only; agent exposure remains governed by GreenSentinel registries. |
 
 Authoritative references: [Geoapify Routing API](https://apidocs.geoapify.com/docs/routing/), [traffic route times](https://apidocs.geoapify.com/how-to/routing/traffic-route-times/), [map matching](https://apidocs.geoapify.com/docs/map-matching/), [map tiles](https://apidocs.geoapify.com/docs/maps/map-tiles/), and [Geoapify MCP](https://apidocs.geoapify.com/docs/mcp/).
 
@@ -122,4 +122,4 @@ Stakeholder-approved T0 terms retain MapLibre, store the timeline in the applica
 
 Validation evidence is recorded in [GEOAPIFY_PROVIDER.md](../testing/manual/GEOAPIFY_PROVIDER.md). Local unit/ASGI contracts and bounded live-provider probes passed separately. No database migration, Geoapify map activation, or authenticated hosted acceptance is claimed.
 
-T0 licence/quota/attribution terms were confirmed by the stakeholder on 2026-10-09 ([acceptance record](https://github.com/AI20K-Build-Phase-Cohort-4/P-063/issues/227#issuecomment-6076628622)). The conservative planning limits and required Geoapify/data-source attribution follow the published [pricing](https://www.geoapify.com/pricing/) and [terms](https://www.geoapify.com/terms-and-conditions/); actual account entitlement remains unverified. `ROUTING_PROVIDER=osrm` preserves existing case persistence; selecting `geoapify` enables the server routing port and route-resolution API. Case storage/rendering migration belongs to #228. Disjoint geometry is returned intact by resolution and rejected by the current single-line simulation-definition boundary, never flattened into a shortcut.
+T0 licence/quota/attribution terms were confirmed by the stakeholder on 2026-10-09 ([acceptance record](https://github.com/AI20K-Build-Phase-Cohort-4/GreenSentinel/issues/227#issuecomment-6076628622)). The conservative planning limits and required Geoapify/data-source attribution follow the published [pricing](https://www.geoapify.com/pricing/) and [terms](https://www.geoapify.com/terms-and-conditions/); actual account entitlement remains unverified. `ROUTING_PROVIDER=osrm` preserves existing case persistence; selecting `geoapify` enables the server routing port and route-resolution API. Case storage/rendering migration belongs to #228. Disjoint geometry is returned intact by resolution and rejected by the current single-line simulation-definition boundary, never flattened into a shortcut.

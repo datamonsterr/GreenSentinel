@@ -24,7 +24,7 @@ from huggingface_hub import HfApi, get_token
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_MODELS_DIR = REPO_ROOT / "models" / "r3d"
-DEFAULT_REPO_ID = "datamonsterr/p-063-r3d-classifier"
+DEFAULT_REPO_ID = "datamonsterr/green-sentinel-r3d-classifier"
 
 logger = logging.getLogger(__name__)
 
@@ -53,19 +53,19 @@ tags:
 - lightgbm
 - onnx
 - gps-telemetry
-- p-063
+- green-sentinel
 metrics:
 - f1
 - accuracy
 model-index:
-- name: p-063-r3d-classifier
+- name: green-sentinel-r3d-classifier
   results:
   - task:
       type: tabular-classification
       name: Ride-Hailing Telemetry Fraud Classification
     dataset:
       type: releases_v2.1
-      name: P-063 Benchmark 10k Releases v2.1
+      name: GreenSentinel Benchmark 10k Releases v2.1
       revision: {manifest.get("corpus_sha256")}
     metrics:
     - name: Macro-F1 (Held-out Test 6k)
@@ -87,7 +87,7 @@ model-index:
 
 # R3D Stacked Fraud Classifier (Production Bundle)
 
-Production release `{manifest.get("model_version")}` for Team P-063 (VinUni AI20K Build Phase).
+Production release `{manifest.get("model_version")}` for Team GreenSentinel (VinUni AI20K Build Phase).
 
 ## Architecture Overview
 

@@ -12,17 +12,17 @@ export type RoleAccount = 'analyst' | 'driver' | 'admin';
 export type TargetEnv = 'preview' | 'dev' | 'staging' | 'prod';
 
 const FRONTEND_DEFAULTS: Record<TargetEnv, string> = {
-  preview: 'https://p-063.vercel.app',
-  dev: 'https://p-063-dev.vercel.app',
-  staging: 'https://p-063-staging.vercel.app',
-  prod: 'https://p-063.vercel.app',
+  preview: 'https://green-sentinel.vercel.app',
+  dev: 'https://green-sentinel-dev.vercel.app',
+  staging: 'https://green-sentinel-staging.vercel.app',
+  prod: 'https://green-sentinel.vercel.app',
 };
 
 const BACKEND_DEFAULTS: Record<TargetEnv, string> = {
-  preview: 'https://p063-backend-production.up.railway.app',
-  dev: 'https://p063-backend-dev.up.railway.app',
-  staging: 'https://p063-backend-staging.up.railway.app',
-  prod: 'https://p063-backend-production.up.railway.app',
+  preview: 'https://greensentinel-backend-production.up.railway.app',
+  dev: 'https://greensentinel-backend-dev.up.railway.app',
+  staging: 'https://greensentinel-backend-staging.up.railway.app',
+  prod: 'https://greensentinel-backend-production.up.railway.app',
 };
 
 export function targetEnv(): TargetEnv {
