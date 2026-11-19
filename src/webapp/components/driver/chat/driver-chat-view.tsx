@@ -15,6 +15,7 @@ import {
   CheckCircle2,
   ShieldOff,
   Loader2,
+  SendHorizontal,
   ChevronDown,
   AlertCircle,
 } from "lucide-react";
@@ -692,12 +693,17 @@ export function DriverChatView({ caseId }: DriverChatViewProps) {
             <PromptInputFooter className="flex items-center justify-end pt-1 shrink-0 w-auto">
               <Button
                 type="submit"
-                size="sm"
+                size="icon"
                 disabled={composerDisabled}
                 aria-label={t("send")}
+                title={t("send")}
                 className="bg-emerald-600 hover:bg-emerald-700 text-white shrink-0"
               >
-                {t("send")}
+                {viewStatus === "streaming" ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />
+                ) : (
+                  <SendHorizontal className="h-3.5 w-3.5" aria-hidden="true" />
+                )}
               </Button>
             </PromptInputFooter>
           </PromptInputBody>
