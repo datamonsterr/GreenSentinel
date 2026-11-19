@@ -26,16 +26,9 @@ jobs:
   format-and-lint:
     name: Draft Lint (Ruff)
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == true
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Clean root-owned Docker volumes from previous runs
-        run: |
-          if [ -d "$GITHUB_WORKSPACE/data" ]; then
-            docker run --rm -v "$GITHUB_WORKSPACE/data:/target" alpine \
-              sh -c "rm -rf /target/*" || true
-            rm -rf "$GITHUB_WORKSPACE/data" || true
-          fi
       - uses: actions/checkout@v7
 
       - name: Set up uv
@@ -78,16 +71,9 @@ jobs:
     name: Draft Unit Tests
     needs: [format-and-lint]
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == true
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     timeout-minutes: 40
     steps:
-      - name: Clean root-owned Docker volumes from previous runs
-        run: |
-          if [ -d "$GITHUB_WORKSPACE/data" ]; then
-            docker run --rm -v "$GITHUB_WORKSPACE/data:/target" alpine \
-              sh -c "rm -rf /target/*" || true
-            rm -rf "$GITHUB_WORKSPACE/data" || true
-          fi
       - uses: actions/checkout@v7
 
       - name: Set up uv
@@ -138,8 +124,6 @@ jobs:
       - name: Run Pytest Unit Tests (Parallel)
         # Unit scope only: tests/integration and tests/e2e need live
         # Postgres/Redis/Qdrant, which this job does not start.
-        # Bound workers on self-hosted machines: visible host CPUs can exceed
-        # the ephemeral runner's available CPU/memory budget.
         run: |
           set -euxo pipefail
           bash scripts/ci_runner_diagnostics.sh || true
@@ -177,7 +161,7 @@ jobs:
     name: Draft Frontend Vitest & Typecheck
     needs: [format-and-lint]
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == true
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v7
@@ -202,7 +186,7 @@ jobs:
 
       - name: Run full frontend Vitest suite
         # NOTE: no /usr/bin/time wrapper; the `time` package is not
-        # installed on the self-hosted runner (exit 127).
+        # installed on the runner (exit 127).
         run: |
           bash scripts/ci_runner_diagnostics.sh
           export TMPDIR="${RUNNER_TEMP}/greensentinel-vitest-tmp"

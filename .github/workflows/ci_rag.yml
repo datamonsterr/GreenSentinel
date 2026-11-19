@@ -38,11 +38,12 @@ on:
 jobs:
   sprint4-grounding-benchmark:
     name: Sprint 4 Grounding Benchmark
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     env:
-      LLM_MODEL: openai
+      LLM_MODEL: openrouter
       RAG_EMBEDDING_PROVIDER: openai
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # embeddings only
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
     steps:
       - uses: actions/checkout@v4
       - name: Ensure Python is available
@@ -52,24 +53,16 @@ jobs:
 
   rag-lint-and-unit-tests:
     name: RAG Unit Tests & Lint
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     env:
-      LLM_MODEL: openai
-      OPENAI_MODEL: ${{ vars.OPENAI_MODEL || 'gpt-4o-mini' }}
+      LLM_MODEL: openrouter
       RAG_EMBEDDING_PROVIDER: openai
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # embeddings only
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       LANGCHAIN_TRACING_V2: "false"
       LANGSMITH_TRACING: "false"
 
     steps:
-      - name: Clean root-owned Docker volumes from previous runs
-        run: |
-          if [ -d "$GITHUB_WORKSPACE/data" ]; then
-            docker run --rm -v "$GITHUB_WORKSPACE/data:/target" alpine \
-              sh -c "rm -rf /target/*" || true
-            rm -rf "$GITHUB_WORKSPACE/data" || true
-          fi
-
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -125,14 +118,14 @@ jobs:
         run: PYTHONPATH=. pytest tests/unit/rag/ -q
         env:
           APP_ENV: test
+          OPENROUTER_API_KEY: test-key
           OPENAI_API_KEY: test-key
-          GEMINI_API_KEY: test-key
           LANGCHAIN_TRACING_V2: "false"
           LANGSMITH_TRACING: "false"
 
       - name: Verify OpenAI embedding credentials
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # embeddings only
         run: |
           if [ -z "$OPENAI_API_KEY" ]; then
             echo "::error::Repository secret OPENAI_API_KEY is required for policy indexing."
@@ -145,7 +138,7 @@ jobs:
         env:
           APP_ENV: test
           RAG_EMBEDDING_PROVIDER: openai
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # embeddings only
           QDRANT_CLUSTER_URL: ${{ secrets.QDRANT_CLUSTER_URL }}
           QDRANT_URL: ${{ secrets.QDRANT_CLUSTER_URL || 'http://localhost:6333' }}
           QDRANT_API_KEY: ${{ secrets.QDRANT_TEST_API_KEY || '' }}
@@ -158,7 +151,7 @@ jobs:
         env:
           APP_ENV: test
           RAG_EMBEDDING_PROVIDER: openai
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # embeddings only
           QDRANT_CLUSTER_URL: ${{ secrets.QDRANT_CLUSTER_URL }}
           QDRANT_URL: ${{ secrets.QDRANT_CLUSTER_URL || 'http://localhost:6333' }}
           QDRANT_API_KEY: ${{ secrets.QDRANT_TEST_API_KEY || '' }}
@@ -171,14 +164,14 @@ jobs:
     # use ci-draft.yml + rag unit tests. Re-runs on ready_for_review.
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     needs: rag-lint-and-unit-tests
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     env:
       APP_ENV: test
-      LLM_MODEL: openai
-      OPENAI_MODEL: ${{ vars.OPENAI_MODEL || 'gpt-4o-mini' }}
+      LLM_MODEL: openrouter
       EVAL_JUDGE_MODEL: ${{ vars.EVAL_JUDGE_MODEL || 'gpt-4o-mini' }}
       RAG_EMBEDDING_PROVIDER: openai
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # embeddings only
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       LANGCHAIN_API_KEY: ${{ secrets.LANGCHAIN_API_KEY }}
       LANGCHAIN_TRACING_V2: "true"
       LANGCHAIN_PROJECT: "greensm-cockpit-rag-ci"
@@ -189,14 +182,6 @@ jobs:
       QDRANT_COLLECTION: test-policies-openai-text-embedding-3-small-1536
 
     steps:
-      - name: Clean root-owned Docker volumes from previous runs
-        run: |
-          if [ -d "$GITHUB_WORKSPACE/data" ]; then
-            docker run --rm -v "$GITHUB_WORKSPACE/data:/target" alpine \
-              sh -c "rm -rf /target/*" || true
-            rm -rf "$GITHUB_WORKSPACE/data" || true
-          fi
-
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -249,8 +234,8 @@ jobs:
 
       - name: Run Benchmark & LangSmith Judge Gate
         run: |
-          if [ -z "${OPENAI_API_KEY}" ]; then
-            echo "::error::OPENAI_API_KEY is required for the live LLM judge."
+          if [ -z "${OPENROUTER_API_KEY}" ]; then
+            echo "::error::OPENROUTER_API_KEY is required for the live LLM judge."
             exit 1
           fi
           LIMIT="${{ inputs.eval_sample_limit || '10' }}"

@@ -2,11 +2,14 @@
 
 Verified against official product documentation on 2026-09-22.
 
-## Preview runner scheduling — 2026-10-06
+## CI/CD: single `production` environment
 
-For backend/full-stack PRs, `deploy-railway.yml` calls the reusable `deploy-vercel.yml` only after `deploy-pr-preview` succeeds. The call passes `railway_ready: true`; GitHub schedules its jobs through `needs` without allocating a runner to wait. Both deployment jobs can therefore share one self-hosted runner. The earlier hosted-wait attempt could not start because GitHub rejected it for account billing/spending limits; [ADR-023](architecture/adr-023-preview-workflow-sequencing.md) records the replacement.
+One environment only: Railway project `greensentinel` (environment `production`: Postgres, Redis, `greensentinel-backend`) plus Vercel production. All workflows run on GitHub-hosted `ubuntu-latest` runners. No dev/staging environments and no per-PR preview deploys.
 
-Frontend-only PRs deploy directly through the Vercel pull-request workflow using the healthy dev backend. Backend PRs skip that independent deployment path. Failed, cancelled, or skipped Railway provisioning prevents the reusable call; exact-head URL resolution and health checks still run before Vercel builds. Rerun the Railway workflow to retry the complete backend/frontend sequence. Do not treat a cancelled, skipped, or queued preview as deployment proof.
+- `deploy-railway.yml`: validates compose config on PRs; on push to `main` (and manual dispatch) optionally migrates (`DATABASE_URL`), runs `scripts/railway_deploy_code.sh` (`railway up`, waits for SUCCESS), then probes `/health`. The Railway service has no GitHub source, so there is no double deploy.
+- `deploy-vercel.yml`: on push to `main` touching `src/webapp/**` (and manual dispatch) runs `vercel pull`, `vercel build --prod`, `vercel deploy --prebuilt --prod`. Independent of the Railway job.
+
+Required GitHub secrets: `RAILWAY_API_TOKEN`, `RAILWAY_PROJECT_ID`, `RAILWAY_SERVICE_ID`, `RAILWAY_ENVIRONMENT_ID`, `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`, `OPENROUTER_API_KEY`. Optional: `DATABASE_URL` (migrations), `HF_TOKEN`. Variable: `RAILWAY_PRODUCTION_URL`.
 
 ## Target topology
 

@@ -268,7 +268,7 @@ insufficient      [     0       0       0       0       0       0      19 ]
   - Railway `greensentinel-backend` production (region `sfo`).
   - Deployed 2026-10-19 by workflow run `39287451597` from `main`.
   - Model: `r3d-2026.10.18`.
-  - Artifacts: HF `datamonsterr/green-sentinel-r3d-classifier` @ `268003f795b2950893e9ef6a54b250dec13eeee6` (`r3c.txt` `0eb2e54522e8`, `r3f.onnx` `23e9d5a2b96a`, `stacker.txt` `1559cd14cd74`).
+  - Artifacts: HF `datamonsterr/p-063-r3d-classifier` @ `268003f795b2950893e9ef6a54b250dec13eeee6` (`r3c.txt` `0eb2e54522e8`, `r3f.onnx` `23e9d5a2b96a`, `stacker.txt` `1559cd14cd74`).
   - Artifact load time: **44.6 ms**.
   - Decision-model advisory: `inception/mercury-decide:free`.
 - **Load Test Configuration**:

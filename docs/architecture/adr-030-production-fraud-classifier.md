@@ -41,7 +41,7 @@ To productionise R3D under the system constraints of GreenSentinel, we must reso
    - Strictly prohibit Python `pickle` and `torch` in runtime dependencies (`requirements.txt`).
 
 3. **Artifact Storage and Supply Chain**:
-   - Public Hugging Face Hub model repository: `datamonsterr/green-sentinel-r3d-classifier`.
+   - Public Hugging Face Hub model repository: `datamonsterr/p-063-r3d-classifier`.
    - Immutable artifact resolution pinned by commit hash revision: `268003f795b2950893e9ef6a54b250dec13eeee6`.
    - Strict SHA256 integrity verification against `models/r3d/manifest.json`. Resolution hierarchy:
      1. `FRAUD_CLASSIFIER_ARTIFACT_DIR` environment override

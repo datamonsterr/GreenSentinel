@@ -21,7 +21,7 @@ permissions:
 jobs:
   fetch-verify-benchmark:
     if: github.event_name == 'workflow_dispatch' || github.event.label.name == 'benchmark'
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     env:
       HF_TOKEN: ${{ secrets.HF_TOKEN }}
     steps:

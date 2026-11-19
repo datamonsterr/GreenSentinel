@@ -159,7 +159,7 @@ R3D is wired into production as the primary fraud classifier via `src/services/f
 
 - **Primary Classifier (`src/services/fraud_classifier/`)**:
   1. Production R3D stacker executes CPU-optimized `onnxruntime` for the R3F 1D-CNN and native `LightGBM` boosters for R3C and the Stacker meta-learner ($0 PyTorch/pickle dependencies).
-  2. Pinned immutable artifacts loaded from Hugging Face Hub (`datamonsterr/green-sentinel-r3d-classifier` @ `268003f7...`) with SHA256 integrity verification.
+  2. Pinned immutable artifacts loaded from Hugging Face Hub (`datamonsterr/p-063-r3d-classifier` @ `268003f7...`) with SHA256 integrity verification.
   3. Single-digit millisecond inference latency (~2.5–10.7 ms p50) serving real-time queue admission and triage.
 - **Secondary Advisory Layer (`src/services/jev_assessment_service.py`)**:
   1. Asynchronous decision-model advisory (`inception/mercury-decide:free`) providing forensic narrative explanation and customer dialogue reading.
@@ -319,7 +319,7 @@ R3D is deployed to production on Railway `greensentinel-backend` (region `sfo`) 
 - **Production Deployment Metadata**:
   - **Service**: Railway `greensentinel-backend` production (`sfo`), deployed 2026-10-19 by workflow run `39287451597` from `main`.
   - **Model ID**: `r3d-2026.10.18`.
-  - **Artifacts**: Pinned on Hugging Face Hub under `datamonsterr/green-sentinel-r3d-classifier` at revision `268003f795b2950893e9ef6a54b250dec13eeee6` (`r3c.txt` `0eb2e54522e8`, `r3f.onnx` `23e9d5a2b96a`, `stacker.txt` `1559cd14cd74`).
+  - **Artifacts**: Pinned on Hugging Face Hub under `datamonsterr/p-063-r3d-classifier` at revision `268003f795b2950893e9ef6a54b250dec13eeee6` (`r3c.txt` `0eb2e54522e8`, `r3f.onnx` `23e9d5a2b96a`, `stacker.txt` `1559cd14cd74`).
   - **Artifact Load Time**: 44.6 ms on startup.
   - **Advisory LLM**: `inception/mercury-decide:free` (optional per request, non-blocking in worker).
 - **Production Load Test Validation (`scripts/loadtest/classifier_load_test.py`)**:
