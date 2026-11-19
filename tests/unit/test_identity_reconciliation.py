@@ -54,6 +54,9 @@ def test_role_mapping_valid():
     assert map_clerk_role("analyst") == "fraud_analyst"
     assert map_clerk_role("org:driver") == "driver"
     assert map_clerk_role("driver") == "driver"
+    assert map_clerk_role("org:reviewer") == "reviewer"
+    assert map_clerk_role("org:ops_director") == "ops_director"
+    assert map_clerk_role("org:marketplace_director") == "marketplace_director"
 
 
 def test_role_mapping_unknown_rejected():

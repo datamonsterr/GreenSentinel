@@ -85,7 +85,7 @@ function roleAllows(principal: { organization_id?: unknown; roles?: unknown }, a
   if (area === 'organization') {
     return principal.roles.includes('admin');
   }
-  return principal.roles.some((role: string) => ['analyst', 'fraud_analyst', 'admin'].includes(role));
+  return principal.roles.some((role: string) => ['analyst', 'fraud_analyst', 'admin', 'reviewer', 'ops_director', 'marketplace_director'].includes(role));
 }
 
 export async function decideArea(token: string, area: ProtectedArea, requestUrlOrHost?: string): Promise<AreaDecision> {

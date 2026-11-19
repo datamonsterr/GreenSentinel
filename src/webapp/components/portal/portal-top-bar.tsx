@@ -3,20 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 import type { Locale } from "@/lib/locale";
+import { roleStyle } from "@/lib/role-style";
 
 type TabKey = "cockpit" | "analytics" | "profile";
 type NavMessages = Record<string, string>;
-
-/** Role badge colours lifted from the GSM reference ROLES table. */
-const ROLE_STYLE: Record<string, { label: string; bg: string; fg: string }> = {
-  admin: { label: "ADMIN", bg: "#e3ecfb", fg: "#3b6fd6" },
-  senior_analyst: { label: "KSGL+", bg: "#f0e6fb", fg: "#7b3ed6" },
-  fraud_analyst: { label: "KSGL", bg: "#f0e6fb", fg: "#7b3ed6" },
-  analyst: { label: "KSGL", bg: "#f0e6fb", fg: "#7b3ed6" },
-  driver: { label: "TX", bg: "#e3f6e8", fg: "#22a45d" },
-};
-export const roleStyle = (role?: string | null) =>
-  ROLE_STYLE[(role ?? "").toLowerCase()] ?? { label: (role ?? "—").toUpperCase(), bg: "#eef1f4", fg: "#5a6b78" };
 
 function useClock(locale: Locale) {
   const [now, setNow] = useState<Date | null>(null);

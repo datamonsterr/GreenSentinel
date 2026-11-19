@@ -8,7 +8,8 @@ const CASE_STATUS_TONE: Record<string, Tone> = {
   pending: 'amber', open: 'amber', new: 'amber',
   in_review: 'cyan', reviewing: 'cyan', assigned: 'cyan',
   awaiting_driver: 'purple', awaiting_response: 'purple', escalated: 'orange',
-  resolved: 'green', closed: 'green', confirmed: 'red', rejected: 'grey', dismissed: 'grey',
+  resolved: 'cyan', closed: 'grey', auto_dismissed: 'grey',
+  report_issued: 'purple', report_confirmed: 'green', need_ops_dir_approved: 'orange', need_mkp_dir_approved: 'orange', completed: 'green', confirmed: 'red', rejected: 'grey', dismissed: 'grey',
 };
 export const caseStatusTone = (status?: string | null): string =>
   statusTone(CASE_STATUS_TONE[(status ?? '').toLowerCase()] ?? 'grey');

@@ -71,6 +71,7 @@ from src.models.schemas import (
     WorkflowDraftResponse,
     WorkflowTrace,
 )
+from src.services import case_workflow
 from src.services.access_control import require_case_scope
 from src.services.case_service import CaseService, get_case_service
 from src.services.driver_dispute_service import DriverDisputeService, get_driver_dispute_service
@@ -181,7 +182,7 @@ async def get_account_settings(
             )
         raise HTTPException(status_code=401, detail="Authentication required")
 
-    canonical_roles = {"admin", "analyst", "driver"}
+    canonical_roles = {"admin", "analyst", "driver", *case_workflow.WORKFLOW_ROLES}
     normalized_roles = set()
     for r in principal.roles:
         if r in {"analyst", "fraud_analyst"}:
@@ -583,6 +584,48 @@ async def adjudicate_case(
         ),
     )
     return result
+
+
+@router.get("/cases/{id}/workflow")
+async def get_case_workflow(
+    id: str,
+    case_service: CaseService = Depends(get_case_service),
+    principal: Principal | None = Depends(require_principal),
+) -> dict[str, Any]:
+    require_role(principal, "analyst", "senior_analyst", "admin", "reviewer", "ops_director", "marketplace_director")
+    if principal is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    require_case_scope(case_service, id, principal.organization_id)
+    return await asyncio.to_thread(
+        case_workflow.load_stepper,
+        case_service._get_db_connection,
+        case_service._resolve_case_id(id),
+        principal.organization_id,
+    )
+
+
+@router.post("/cases/{id}/workflow/{action}")
+async def advance_case_workflow(
+    id: str,
+    action: str,
+    case_service: CaseService = Depends(get_case_service),
+    principal: Principal | None = Depends(require_principal),
+) -> dict[str, Any]:
+    if principal is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    case_workflow.authorize(action, principal.roles)
+    require_case_scope(case_service, id, principal.organization_id)
+    out = await asyncio.to_thread(
+        case_workflow.apply_transition,
+        case_service._get_db_connection,
+        case_service._resolve_case_id(id),
+        principal.organization_id,
+        principal.id,
+        action,
+        principal.roles,
+    )
+    out["actions"] = case_workflow.allowed_actions(out["status"], principal.roles)
+    return out
 
 
 @router.get("/cases/{id}/stream")
