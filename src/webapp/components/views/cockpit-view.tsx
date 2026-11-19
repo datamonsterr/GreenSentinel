@@ -21,7 +21,6 @@ import {
 import { CaseDetailResponse, DisputeDossierResponse, WorkflowTrace, PreliminaryJudgmentChoice, PrecedentSimilarityMatch } from "@/types/schemas";
 import { CenterPanelTabs, CenterTabType } from "@/components/adjudication/center-panel-tabs";
 import { useLocale } from "@/lib/locale";
-import { CaseMetadata } from "@/components/cockpit/case-metadata";
 import { workspaceMessages } from "@/lib/workspace-messages";
 import { savedWorkspaceJudgment } from "@/lib/workspace-data";
 import { CopyId } from "@/components/adjudication/overview-tab";
@@ -941,7 +940,6 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
         {detailError && <div className="m-auto p-6 text-center space-y-3"><p role="alert" className="text-sm text-red-700">{detailError}</p><button onClick={()=>setDetailRevision(v=>v+1)} className="border rounded px-3 py-1 text-sm">{m.retryCase}</button></div>}
         {caseDetail && <div hidden={detailLoading || Boolean(detailError) || caseDetail.case.id !== selectedCaseId} inert={detailLoading || Boolean(detailError) || caseDetail.case.id !== selectedCaseId} className={`${detailLoading || Boolean(detailError) || caseDetail.case.id !== selectedCaseId ? 'hidden' : 'flex'} flex-col flex-1 min-h-0`}>
         <div className="relative flex-1 min-h-0 overflow-y-auto p-2.5">
-          <CaseMetadata caseDetail={caseDetail} locale={locale} />
           <CenterPanelTabs activeTab={activeCenterTab} onTabChange={setActiveCenterTab} />
           {isLockedByOther && <p role="status" aria-label={m.readOnly} className="my-2 rounded border border-amber-200 bg-amber-50 p-2 text-xs text-amber-900">{m.readOnly}</p>}
           {feedbackMessage && <div className="my-2 flex items-center gap-2">

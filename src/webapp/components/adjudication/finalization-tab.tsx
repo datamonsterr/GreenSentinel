@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import type { CaseDetailResponse, DisputeDossierResponse, PreliminaryJudgmentChoice, PrecedentSimilarityMatch, WorkflowTrace } from '@/types/schemas';
 import { useLocale } from '@/lib/locale';
+import { CaseLevelFacts } from '@/components/cockpit/case-facts';
 import { workspaceMessages } from '@/lib/workspace-messages';
 import { savedWorkspaceJudgment, workspaceMotivation } from '@/lib/workspace-data';
 import { WorkflowTab } from './workflow-tab';
@@ -55,6 +56,7 @@ export function FinalizationTab(props: FinalizationTabProps) {
   const precedent = props.disputeDossier?.matched_precedent;
   return (
     <div role="tabpanel" id="panel-finalization" aria-labelledby="tab-finalization" hidden={!props.isActive} inert={!props.isActive} className="space-y-3 p-3 bg-slate-50/60 border-x border-b border-slate-200 rounded-b-lg text-xs">
+      <CaseLevelFacts caseDetail={props.caseDetail} />
       <WorkflowTab key={props.caseDetail.case.id} caseDetail={props.caseDetail} caseWorkflowTrace={props.workflow} aiRevealed={revealed} canWrite={props.canWrite && !props.busy} />
       {revealed && (
         <section role="region" aria-label={m.judgment} className="rounded-lg border border-slate-200 bg-slate-50/70 p-3 shadow-xs space-y-1">
