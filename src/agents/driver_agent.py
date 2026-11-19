@@ -137,7 +137,7 @@ def _extract_text_content(
         return " ".join(items)
 
     if isinstance(content, dict):
-        if content.get("type") in ("tool_use", "function_call"):
+        if content.get("type") in ("tool_use", "function_call", "reasoning", "thinking", "reasoning_content"):
             return ""
         if content.get("type") == "image_url":
             return "[Hình ảnh đính kèm]"
