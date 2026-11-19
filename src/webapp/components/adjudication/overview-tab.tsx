@@ -12,6 +12,7 @@ import { MetricCard } from '@/components/cockpit/metric-card';
 import { MetricGrid } from '@/components/cockpit/metric-grid';
 import { SectionCard } from '@/components/cockpit/section-card';
 import { TripStatusRow } from '@/components/cockpit/trip-status-row';
+import { TripExtraFacts } from '@/components/cockpit/case-facts';
 import { toneDot } from '@/components/cockpit/icon-tile';
 import { formatClock, numberLocale } from '@/components/cockpit/messages';
 
@@ -185,6 +186,7 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
         </div>
       )}
       <TripStatusRow caseDetail={caseDetail} onOpen={() => onTabChange?.('maps')} />
+      <TripExtraFacts caseDetail={caseDetail} />
       <MetricGrid>
         <MetricCard icon={TriangleAlert} label={t.abnormal} hint={t.abnormalHint} value={abnormalCount === null ? null : fmt(abnormalCount)} severity={abnormalCount ? 'warning' : undefined} />
         <MetricCard icon={Hourglass} tone="warning" label={t.stationary} value={stationary === null ? null : `${fmt(stationary)} s`} />
