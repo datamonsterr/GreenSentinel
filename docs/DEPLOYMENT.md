@@ -85,7 +85,7 @@ Store each secret only where consuming process needs it.
 | `DATABASE_URL` | Yes | No | Yes | Yes | Yes |
 | `MIGRATION_DATABASE_URL` | Yes | No | No | No | Yes |
 | `REDIS_URL` | Yes | No | Yes | Yes | Yes |
-| `OPENROUTER_API_KEY`, `OPENROUTER_BASE_URL`, `JEV_MODEL` | Yes | No | Yes | Yes | Optional evaluation job |
+| `OPENROUTER_API_KEY`, `OPENROUTER_BASE_URL`, `OPENROUTER_MODEL` (default `z-ai/glm-5.3-flash`), `OPENROUTER_REASONING_EFFORT` (default `low`), `JEV_MODEL` | Yes | No | Yes | Yes | Optional evaluation job |
 | `LANGSMITH_API_KEY`, `LANGSMITH_TRACING`, `LANGSMITH_PROJECT` | Yes | No | Yes | Yes | Optional evaluation job |
 | `SUPABASE_PROJECT_REF` | Optional | No | No | No | Optional |
 
@@ -200,6 +200,8 @@ This split prevents stale or client-controlled Clerk metadata from authorizing f
 ```dotenv
 OPENROUTER_API_KEY=your-openrouter-key
 OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
+OPENROUTER_MODEL=z-ai/glm-5.3-flash
+OPENROUTER_REASONING_EFFORT=low
 JEV_MODEL=~typesafe/jev-latest
 ```
 

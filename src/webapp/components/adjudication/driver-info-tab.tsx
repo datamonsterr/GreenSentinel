@@ -31,6 +31,7 @@ export const HIGH_REPEAT_RISK = 70;
 
 const copy = {
   en: {
+    driverRef: "Driver ID",
     title: "Driver information", name: "Name", plate: "Vehicle plate", vehicle: "Vehicle model", status: "Driver status",
     statement: "Driver statement", rating: "Average rating", ar: "Acceptance rate", cr: "Cancellation rate", trips: "Total trips",
     unavailable: "No data yet", history: "Driver history", loading: "Loading driver history…", error: "Driver history unavailable.",
@@ -41,6 +42,7 @@ const copy = {
     outcomes: { penalized: "Penalized", exonerated: "Exonerated", warned: "Warned", fine: "Fine", fined: "Fined", dismiss: "Dismissed", dismissed: "Dismissed", suspend: "Suspended", suspended: "Suspended" } as Record<string, string>,
   },
   vi: {
+    driverRef: "Mã tài xế",
     title: "Thông tin tài xế", name: "Tên", plate: "Biển số", vehicle: "Mẫu xe", status: "Trạng thái tài xế",
     statement: "Giải trình tài xế", rating: "Điểm đánh giá trung bình", ar: "Tỷ lệ nhận chuyến", cr: "Tỷ lệ huỷ chuyến", trips: "Tổng số chuyến",
     unavailable: "Chưa có dữ liệu", history: "Lịch sử tài xế", loading: "Đang tải lịch sử tài xế…", error: "Không có lịch sử tài xế.",
@@ -152,6 +154,7 @@ export const DriverInfoTab: React.FC<DriverInfoTabProps> = ({ caseDetail, active
               <CardTitle title={t.name} className="break-words text-base font-semibold lg:text-lg">{show(name)}</CardTitle>
               <div className="mt-2 flex flex-wrap gap-1.5">
                 <Badge variant="outline" className="bg-white font-mono text-xs" title={t.plate}>{show(plate)}</Badge>
+                {trip?.driver_ref && <Badge variant="outline" className="bg-white font-mono text-xs" title={t.driverRef}>{String(trip.driver_ref)}</Badge>}
                 <Badge variant="outline" className="bg-white/70 text-xs" title={t.vehicle}>{show(vehicle)}</Badge>
                 <Badge variant="outline" className={cn("text-xs", statusTone)} title={t.status}>{workspaceState(status, locale)}</Badge>
               </div>

@@ -169,10 +169,18 @@ class Settings(BaseSettings):
         ),
     )
     openrouter_model: str = Field(
-        default="google/gemini-3.5-flash-lite",
+        default="z-ai/glm-5.3-flash",
         validation_alias=AliasChoices(
             "openrouter_model",
             "OPENROUTER_MODEL",
+        ),
+    )
+    # GLM 5.3 Flash reasoning is mandatory; "low" keeps interactive chat inside the agent timeout.
+    openrouter_reasoning_effort: Literal["max", "high", "medium", "low", "minimal"] = Field(
+        default="low",
+        validation_alias=AliasChoices(
+            "openrouter_reasoning_effort",
+            "OPENROUTER_REASONING_EFFORT",
         ),
     )
 

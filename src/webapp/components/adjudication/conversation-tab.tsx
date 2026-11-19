@@ -10,6 +10,7 @@ import { EmptyState } from "@/components/cockpit/empty-state";
 import { ChatThread } from "@/components/cockpit/chat-thread";
 import { EventTimeline } from "@/components/cockpit/event-timeline";
 import { TripStatusRow } from "@/components/cockpit/trip-status-row";
+import { DisputeFacts } from "@/components/cockpit/case-facts";
 
 interface ConversationTabProps { caseDetail: CaseDetailResponse; disputeDossier?: DisputeDossierResponse | null; caseWorkflowTrace?: WorkflowTrace | null; activeCaseDriverName?: string; isApplyingPrecedent?: boolean; isLockedByOther?: boolean; onApplyPrecedent?: (precedent: PrecedentSimilarityMatch) => void; }
 const copy = {
@@ -53,6 +54,7 @@ export const ConversationTab: React.FC<ConversationTabProps> = ({ caseDetail, ac
     <div role="tabpanel" id="panel-customer" aria-labelledby="tab-customer" className="space-y-3 rounded-b-lg border-x border-b border-slate-200 bg-slate-50/60 p-3 text-xs">
       <h2 className="sr-only">{t.title}</h2>
       <TripStatusRow caseDetail={caseDetail} />
+      <DisputeFacts caseDetail={caseDetail} />
       <SectionCard
         icon={Quote}
         tone="info"

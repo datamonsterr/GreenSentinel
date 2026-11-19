@@ -21,11 +21,13 @@ import {
 import { CaseDetailResponse, DisputeDossierResponse, WorkflowTrace, PreliminaryJudgmentChoice, PrecedentSimilarityMatch } from "@/types/schemas";
 import { CenterPanelTabs, CenterTabType } from "@/components/adjudication/center-panel-tabs";
 import { useLocale } from "@/lib/locale";
-import { CaseMetadata } from "@/components/cockpit/case-metadata";
 import { WorkflowStepper } from "@/components/cockpit/workflow-stepper";
 import { workspaceMessages } from "@/lib/workspace-messages";
 import { savedWorkspaceJudgment } from "@/lib/workspace-data";
 import { CopyId } from "@/components/adjudication/overview-tab";
+import { QueueFilterBar } from "@/components/cockpit/case-queue-filters";
+import { caseStatusTone } from "@/lib/status-tone";
+import { EMPTY_FILTERS, applyFilters, isQueueExpanded, queueText, toFetchParams, withQueueExpanded, type Availability, type QueueFilters } from "@/lib/case-queue";
 
 import { MapsTab } from "@/components/adjudication/maps-tab";
 import { FinalizationTab } from "@/components/adjudication/finalization-tab";
@@ -90,6 +92,7 @@ interface CaseItem {
   preliminaryJudgment?: string | null;
   aiSuggestion?: { category?: string | null; confidence?: number | null } | null;
   delta?: string | null;
+  openedAt?: string | null;
 }
 
 function preliminaryDelta(judgment: string | undefined, category: string | null | undefined): "match" | "mismatch" {
@@ -145,7 +148,14 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
   const [detailError, setDetailError] = useState<string | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
   const [detailRevision, setDetailRevision] = useState(0);
-  const [lockFilter, setLockFilter] = useState<'available' | 'mine'>('available');
+  const [lockFilter, setLockFilter] = useState<Availability>('available');
+  const [facets, setFacets] = useState<Pick<QueueFilters, 'statuses' | 'priority' | 'category' | 'assignee' | 'from' | 'to'>>({ statuses: [], priority: '', category: '', assignee: '', from: '', to: '' });
+  const [queueExpanded, setQueueExpanded] = useState(() => typeof window !== 'undefined' && isQueueExpanded(window.location.search));
+  const setExpanded = React.useCallback((next: boolean) => {
+    setQueueExpanded(next);
+    const qs = withQueueExpanded(window.location.search, next);
+    window.history.replaceState(null, '', `${window.location.pathname}${qs ? `?${qs}` : ''}${window.location.hash}`);
+  }, []);
   const [rationale, setRationale] = useState('');
   const [ownershipBusy, setOwnershipBusy] = useState<Record<string, 'claim' | 'release'>>({});
   const ownershipPending = useRef(new Set<string>());
@@ -238,6 +248,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
           preliminaryJudgment: item.preliminary_judgment?.judgment,
           aiSuggestion: item.ai_suggestion,
           delta: item.delta,
+          openedAt: item.opened_at,
         }));
         setCases(mapped);
         setSelectedCaseId(prev => mapped.some(c => c.id === prev) ? prev : mapped[0]?.id ?? '');
@@ -245,8 +256,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
       } else {
         const [res, analyst] = await Promise.all([
           fetchCases({
-            availability: lockFilter,
-            search: searchQuery.trim() || undefined,
+            ...toFetchParams({ ...EMPTY_FILTERS, search: searchQuery, availability: lockFilter }),
             limit: 200,
           }),
           fetchCurrentAnalyst(),
@@ -274,6 +284,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
             preliminaryJudgment: item.preliminary_judgment?.judgment,
             aiSuggestion: item.ai_suggestion,
             delta: item.delta,
+            openedAt: item.opened_at,
           };
         });
         const targetUrlId = getUrlCaseId();
@@ -299,6 +310,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
                 version: detail.case.version,
                 status: detail.case.status,
                 assignedAnalystName: detail.case.assigned_analyst_name || undefined,
+                openedAt: detail.case.opened_at,
               };
               mapped = [injected, ...mapped];
               targetSelectedId = detail.case.id;
@@ -766,11 +778,28 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
   const destinationLocation = coordinateLocation(caseDetail?.trip?.dropoff?.coordinates,caseDetail?.trip?.dropoff_address)
     ?? coordinateLocation(caseDetail?.destination && [caseDetail.destination.longitude,caseDetail.destination.latitude],caseDetail?.destination?.label);
 
+  const qt = queueText[locale];
+  const queueFilters: QueueFilters = { ...facets, search: searchQuery, availability: lockFilter };
+  const visibleCases = queueTab === 'active' ? applyFilters(cases, queueFilters) : cases;
+  const rowInfo = (item: CaseItem) => {
+    const detail = caseDetail?.case.id === item.id ? caseDetail : ownership[item.id];
+    const activeLease = detail?.active_lease;
+    const alive = Boolean(activeLease && (!activeLease.expires_at || Date.parse(activeLease.expires_at) > clockNow));
+    const holder = detail ? (alive ? activeLease?.analyst_id : undefined) : item.lockedBy;
+    return {
+      mine: Boolean(holder && holder === currentAnalyst?.id),
+      other: Boolean(holder && holder !== currentAnalyst?.id),
+      archived: ['resolved', 'dismissed', 'auto_dismissed'].includes(detail?.case.status || item.status || ''),
+      busy: ownershipBusy[item.id],
+    };
+  };
+  const openFromTable = (id: string) => { selectCase(id); setExpanded(false); };
+
   if (loading) return <WorkspaceLoading message={m.loadingWorkspace} />;
   if (queueError) return <div className="m-auto p-6 text-center space-y-3"><p role="alert" className="text-sm text-red-700">{queueError}</p><button onClick={()=>{setLoading(true);void handleManualRefresh();}} className="rounded border px-3 py-1 text-sm">{m.retry}</button></div>;
   return (
     <div className="flex-1 flex flex-col lg:flex-row h-full min-h-0 overflow-auto lg:overflow-hidden bg-slate-50 text-slate-900">
-      <section aria-label={m.triage} className="w-full min-w-0 shrink-0 lg:w-[22%] lg:shrink-0 border-r border-slate-200 flex flex-col max-h-64 lg:max-h-none lg:h-full min-h-0 bg-white">
+      <section aria-label={m.triage} className={`w-full min-w-0 shrink-0 ${queueExpanded ? 'lg:flex-1' : 'lg:w-[22%]'} lg:shrink-0 border-r border-slate-200 flex flex-col ${queueExpanded ? 'lg:max-h-none' : 'max-h-64'} lg:max-h-none lg:h-full min-h-0 bg-white`}>
         <div className="h-10 px-2.5 border-b flex items-center justify-between gap-1 shrink-0 bg-white">
           <div className="flex items-center gap-1">
             <button
@@ -783,7 +812,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
                 queueTab === 'active' ? 'bg-slate-200 text-slate-900 font-bold' : 'text-slate-500 hover:text-slate-800'
               }`}
             >
-              {m.active} <span className="text-[11px] font-normal text-slate-500">{queueTab === 'active' ? `(${cases.length})` : ''}</span>
+              {m.active} <span className="text-[11px] font-normal text-slate-500">{queueTab === 'active' ? `(${visibleCases.length})` : ''}</span>
             </button>
             <button
               type="button"
@@ -798,10 +827,20 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
               {m.history} <span className="text-[11px] font-normal text-slate-500">{queueTab === 'history' ? `(${historyTotal})` : ''}</span>
             </button>
           </div>
-          <button aria-label={m.refresh} onClick={()=>void handleManualRefresh()} className="p-1 rounded hover:bg-slate-100"><span aria-hidden="true" className="material-symbols-outlined text-base">sync</span></button>
+          <div className="flex items-center gap-0.5">
+            <button aria-label={m.refresh} onClick={()=>void handleManualRefresh()} className="p-1 rounded hover:bg-slate-100"><span aria-hidden="true" className="material-symbols-outlined text-base">sync</span></button>
+            <button
+              type="button"
+              aria-label={queueExpanded ? qt.collapse : qt.expand}
+              aria-expanded={queueExpanded}
+              title={queueExpanded ? qt.collapse : qt.expand}
+              onClick={() => setExpanded(!queueExpanded)}
+              className="rounded px-1.5 py-0.5 text-sm font-bold text-cyan-700 hover:bg-cyan-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-600"
+            >{queueExpanded ? '<<' : '>>'}</button>
+          </div>
         </div>
-        <div className="p-2 space-y-1.5 border-b shrink-0 bg-slate-50/50">
-          <div className="relative flex items-center">
+        <div className={`p-2 border-b shrink-0 bg-slate-50/50 ${queueExpanded ? 'flex flex-wrap items-start gap-2' : 'space-y-1.5'}`}>
+          <div className={`relative flex items-center ${queueExpanded ? 'w-64' : ''}`}>
             <input
               type="text"
               aria-label={m.search}
@@ -828,11 +867,12 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
             <select
               aria-label={m.lockFilter}
               value={lockFilter}
-              onChange={e => setLockFilter(e.target.value as 'available'|'mine')}
-              className="h-8 w-full rounded-md border border-slate-300 bg-white px-2.5 text-xs text-slate-700 shadow-none outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+              onChange={e => setLockFilter(e.target.value as Availability)}
+              className={`h-8 ${queueExpanded ? 'w-48' : 'w-full'} rounded-md border border-slate-300 bg-white px-2.5 text-xs text-slate-700 shadow-none outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100`}
             >
               <option value="available">{m.availableCases}</option>
               <option value="mine">{m.mine}</option>
+              <option value="all">{qt.allCases}</option>
             </select>
           ) : (
             <select
@@ -847,9 +887,48 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
               <option value="auto_dismissed">{m.autoDismissed}</option>
             </select>
           )}
+          {queueTab === 'active' && <div className={queueExpanded ? 'min-w-0 flex-1' : ''}>
+            <QueueFilterBar filters={queueFilters} onChange={next => setFacets({ statuses: next.statuses, priority: next.priority, category: next.category, assignee: next.assignee, from: next.from, to: next.to })} rows={cases} locale={locale} expanded={queueExpanded} />
+          </div>}
         </div>
+        {queueExpanded ? (
+          <div className="relative flex-1 overflow-auto">
+            {!visibleCases.length ? <p className="py-6 text-center text-xs text-slate-500">{searchQuery ? m.noSearch : queueTab === 'history' ? m.noHistory : m.noCases}</p> : (
+            <table className="w-full min-w-[56rem] border-collapse text-left text-xs">
+              <thead className="sticky top-0 z-10 bg-slate-50 text-[11px] uppercase tracking-wide text-slate-500">
+                <tr>{[qt.id, qt.driver, qt.plate, qt.category, qt.status, qt.priority, qt.assignee, qt.opened, 'SLA', qt.action].map(h => <th key={h} scope="col" className="border-b px-3 py-2 font-semibold">{h}</th>)}</tr>
+              </thead>
+              <tbody>
+                {visibleCases.map(item => {
+                  const { mine, other, archived, busy } = rowInfo(item);
+                  return (
+                    <tr key={item.id} onClick={(e) => { if (!(e.target as HTMLElement).closest('button')) openFromTable(item.id); }} className={`cursor-pointer border-b border-slate-100 hover:bg-cyan-50/50 ${item.id === selectedCaseId ? 'bg-cyan-50/70' : ''}`}>
+                      <td className="px-3 py-2 font-mono text-[11px]">{item.code}</td>
+                      <td className="px-3 py-2">
+                        <button type="button" aria-label={`${item.severity} · ${item.code} ${item.driverName} ${item.plate}`} onClick={() => openFromTable(item.id)} className="max-w-[12rem] truncate text-left font-medium hover:underline focus-visible:outline-cyan-700">{item.driverName}</button>
+                      </td>
+                      <td className="px-3 py-2 text-slate-600">{item.plate}</td>
+                      <td className="px-3 py-2 text-slate-600">{item.category || '—'}</td>
+                      <td className="px-3 py-2">{item.status ? <span className={`gs-tone pill ${caseStatusTone(item.status)}`}>{qt[item.status] ?? item.status}</span> : '—'}</td>
+                      <td className="px-3 py-2"><span className={`gs-tone pill ${item.severity === 'P0' ? 't-red' : item.severity === 'P1' ? 't-amber' : 't-blue'}`}>{item.severity}</span></td>
+                      <td className="px-3 py-2 text-slate-600">{item.assignedAnalystName || qt.unassigned}</td>
+                      <td className="px-3 py-2 tabular-nums text-slate-600">{item.openedAt ? new Date(item.openedAt).toLocaleString(locale === 'vi' ? 'vi-VN' : 'en-GB', { dateStyle: 'short', timeStyle: 'short' }) : '—'}</td>
+                      <td className="px-3 py-2 tabular-nums text-slate-600">{item.sla}</td>
+                      <td className="px-3 py-2">
+                        {archived ? <span data-testid="terminal-status-badge">{m.archived}</span> : (
+                          <button title={mine ? m.releaseCase : m.claimCase} aria-label={busy === 'claim' ? m.claiming : busy === 'release' ? m.releasing : other ? m.ownedOther : mine ? m.release : m.claim} disabled={Boolean(busy) || other || !isAnalystAuthorized} onClick={() => void updateLock(item.id, mine)} className={`inline-flex h-7 min-w-[4.5rem] items-center justify-center rounded-md px-2 text-[11px] font-semibold text-white disabled:bg-slate-300 disabled:text-slate-700 disabled:opacity-100 ${mine ? 'bg-red-600 hover:bg-red-700' : 'bg-emerald-600 hover:bg-emerald-700'}`}>{busy === 'claim' ? m.claiming : busy === 'release' ? m.releasing : other ? m.ownedOther : mine ? m.release : m.claim}</button>
+                        )}
+                        {ownershipErrors[item.id] && <p role="alert" className="text-red-800">{ownershipErrors[item.id]}</p>}
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>)}
+          </div>
+        ) : (
         <div className="relative overflow-y-auto p-2 space-y-1 flex-1">
-          {!cases.length && (
+          {!visibleCases.length && (
             <p className="py-6 text-center text-xs text-slate-500">
               {searchQuery
                 ? m.noSearch
@@ -858,7 +937,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
                 : m.noCases}
             </p>
           )}
-          {cases.map(item => {
+          {visibleCases.map(item => {
             const detail = caseDetail?.case.id === item.id ? caseDetail : ownership[item.id];
             const activeLease = detail?.active_lease;
             const alive = Boolean(activeLease && (!activeLease.expires_at || Date.parse(activeLease.expires_at) > clockNow));
@@ -910,6 +989,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
             );
           })}
         </div>
+        )}
         {queueTab === 'history' && historyTotal > historyLimit && (
           <div className="flex items-center justify-between px-2 py-1.5 border-t text-xs text-slate-500 bg-slate-50 shrink-0">
             <span>{historyOffset + 1}-{Math.min(historyOffset + historyLimit, historyTotal)} {m.of} {historyTotal}</span>
@@ -936,13 +1016,12 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
           </div>
         )}
       </section>
-      {!activeCase ? <div className="flex-1 m-auto p-6 text-center text-sm text-slate-500">{m.selectCase}</div> : <>
+      {queueExpanded ? null : !activeCase ? <div className="flex-1 m-auto p-6 text-center text-sm text-slate-500">{m.selectCase}</div> : <>
       <section aria-label={m.workspace} className="w-full min-w-0 shrink-0 lg:w-[50%] lg:shrink-0 border-r border-slate-200 flex flex-col min-h-[70vh] lg:min-h-0 lg:h-full bg-white">
         {detailLoading && <WorkspaceLoading message={m.loadingCase} />}
         {detailError && <div className="m-auto p-6 text-center space-y-3"><p role="alert" className="text-sm text-red-700">{detailError}</p><button onClick={()=>setDetailRevision(v=>v+1)} className="border rounded px-3 py-1 text-sm">{m.retryCase}</button></div>}
         {caseDetail && <div hidden={detailLoading || Boolean(detailError) || caseDetail.case.id !== selectedCaseId} inert={detailLoading || Boolean(detailError) || caseDetail.case.id !== selectedCaseId} className={`${detailLoading || Boolean(detailError) || caseDetail.case.id !== selectedCaseId ? 'hidden' : 'flex'} flex-col flex-1 min-h-0`}>
         <div className="relative flex-1 min-h-0 overflow-y-auto p-2.5">
-          <CaseMetadata caseDetail={caseDetail} locale={locale} />
           <CenterPanelTabs activeTab={activeCenterTab} onTabChange={setActiveCenterTab} />
           {isLockedByOther && <p role="status" aria-label={m.readOnly} className="my-2 rounded border border-amber-200 bg-amber-50 p-2 text-xs text-amber-900">{m.readOnly}</p>}
           {feedbackMessage && <div className="my-2 flex items-center gap-2">
