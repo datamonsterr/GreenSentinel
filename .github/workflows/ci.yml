@@ -24,22 +24,9 @@ jobs:
     # Ready-tier only: drafts use ci-draft.yml Draft Lint. Push-to-main
     # and workflow_dispatch always run (no PR object).
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Clean root-owned Docker volumes from previous runs
-        run: |
-          if [ -d "$GITHUB_WORKSPACE/.git" ] && command -v docker >/dev/null 2>&1; then
-            docker run --rm -v "$GITHUB_WORKSPACE:/target" alpine \
-              chown -R "$(id -u):$(id -g)" /target/.git
-          fi
-          if [ -d "$GITHUB_WORKSPACE/data" ]; then
-            if command -v docker >/dev/null 2>&1; then
-              docker run --rm -v "$GITHUB_WORKSPACE/data:/target" alpine \
-                sh -c "rm -rf /target/*" || true
-            fi
-            rm -rf "$GITHUB_WORKSPACE/data" || true
-          fi
       - uses: actions/checkout@v7
 
       - name: Set up uv
@@ -83,27 +70,14 @@ jobs:
     # Ready-tier only: drafts use ci-draft.yml Draft Unit Tests.
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     needs: [format-and-lint]
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     env:
-      LLM_MODEL: openai
+      LLM_MODEL: openrouter
       RAG_EMBEDDING_PROVIDER: openai
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY || 'test-key' }}
-    # Shared runners have shown ~13 minutes of startup delay before pytest.
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY || 'test-key' }}
+      OPENAI_API_KEY: test-key
     timeout-minutes: 40
     steps:
-      - name: Clean root-owned Docker volumes from previous runs
-        run: |
-          if [ -d "$GITHUB_WORKSPACE/.git" ] && command -v docker >/dev/null 2>&1; then
-            docker run --rm -v "$GITHUB_WORKSPACE:/target" alpine \
-              chown -R "$(id -u):$(id -g)" /target/.git
-          fi
-          if [ -d "$GITHUB_WORKSPACE/data" ]; then
-            if command -v docker >/dev/null 2>&1; then
-              docker run --rm -v "$GITHUB_WORKSPACE/data:/target" alpine \
-                sh -c "rm -rf /target/*" || true
-            fi
-            rm -rf "$GITHUB_WORKSPACE/data" || true
-          fi
       - uses: actions/checkout@v7
 
       - name: Set up uv
@@ -166,8 +140,6 @@ jobs:
         # Postgres/Redis/Qdrant, which this job does not start. Collecting
         # them here hangs on connection retry (main CI sat 77min then failed).
         # Integration/E2E run in integration-tests and browser-e2e below.
-        # Bound workers on self-hosted machines: visible host CPUs can exceed
-        # the ephemeral runner's available CPU/memory budget.
         # uv run (not a bare .venv path) resolves the venv interpreter, so a
         # broken PATH surfaces as a readable error instead of silent 127.
         run: |
@@ -208,21 +180,9 @@ jobs:
     # Ready-tier only: drafts use ci-draft.yml Draft Frontend Vitest.
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     needs: [format-and-lint]
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
-      - name: Clean root-owned frontend dependencies from previous runs
-        run: |
-          if [ -d "$GITHUB_WORKSPACE" ] && command -v docker >/dev/null 2>&1; then
-            docker run --rm -v "$GITHUB_WORKSPACE:/target" alpine sh -c '
-              rm -rf /target/src/webapp/node_modules /target/src/webapp/test-results
-              chown -R '"$(id -u):$(id -g)"' /target
-            '
-          fi
-          if [ -d "$GITHUB_WORKSPACE/src/webapp/node_modules" ] && command -v docker >/dev/null 2>&1; then
-            docker run --rm -v "$GITHUB_WORKSPACE:/target" alpine \
-              rm -rf /target/src/webapp/node_modules
-          fi
       - uses: actions/checkout@v7
 
       - name: Setup Node.js and pnpm
@@ -245,7 +205,7 @@ jobs:
 
       - name: Run full frontend Vitest suite
         # NOTE: no /usr/bin/time wrapper; the `time` package is not
-        # installed on the self-hosted runner (exit 127).
+        # installed on the runner (exit 127).
         run: |
           bash scripts/ci_runner_diagnostics.sh
           export TMPDIR="${RUNNER_TEMP}/greensentinel-vitest-tmp"
@@ -264,21 +224,9 @@ jobs:
     # Ready-tier only: drafts use ci-draft.yml.
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     needs: [frontend-vitest]
-    runs-on: self-hosted
-    # Shared self-hosted runners can spend more than 20 minutes in queued I/O
-    # during dependency install and Next.js compilation.
+    runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
-      - name: Clean root-owned frontend dependencies from previous runs
-        run: |
-          if [ -d "$GITHUB_WORKSPACE/.git" ] && command -v docker >/dev/null 2>&1; then
-            docker run --rm -v "$GITHUB_WORKSPACE:/target" alpine \
-              chown -R "$(id -u):$(id -g)" /target/.git
-          fi
-          if [ -d "$GITHUB_WORKSPACE/src/webapp/node_modules" ] && command -v docker >/dev/null 2>&1; then
-            docker run --rm -v "$GITHUB_WORKSPACE:/target" alpine \
-              rm -rf /target/src/webapp/node_modules
-          fi
       - uses: actions/checkout@v7
 
       - name: Setup Node.js and pnpm
@@ -341,86 +289,12 @@ jobs:
     # Push-to-main and workflow_dispatch always run (no PR object).
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     needs: [unit-tests]
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     timeout-minutes: 25
-    # Serialize guarded runs; per-run ports/names below isolate against
-    # branches that predate the guard. Keep up to 100 pending required runs
-    # instead of replacing the prior pending run.
-    concurrency:
-      group: greensentinel-docker-services
-      cancel-in-progress: false
-      queue: max
     env:
       APP_ENV: test
-      # Reuse Docker's existing bridge; the shared daemon has exhausted the
-      # subnet pool used to create a new Compose network for every run.
-      GREENSENTINEL_DOCKER_NETWORK_MODE: bridge
-      GREENSENTINEL_PG_MEMORY: 768m
-      GREENSENTINEL_REDIS_MEMORY: 256m
-      GREENSENTINEL_QDRANT_MEMORY: 768m
     steps:
-      - name: Clean root-owned Docker volumes from previous runs
-        run: |
-          if [ -d "$GITHUB_WORKSPACE/.git" ] && command -v docker >/dev/null 2>&1; then
-            docker run --rm -v "$GITHUB_WORKSPACE:/target" alpine \
-              chown -R "$(id -u):$(id -g)" /target/.git
-          fi
-          if [ -d "$GITHUB_WORKSPACE/data" ]; then
-            if command -v docker >/dev/null 2>&1; then
-              docker run --rm -v "$GITHUB_WORKSPACE/data:/target" alpine \
-                sh -c "rm -rf /target/*" || true
-            fi
-            rm -rf "$GITHUB_WORKSPACE/data" || true
-          fi
       - uses: actions/checkout@v7
-      - name: Ensure Docker and build tools
-        run: bash scripts/ci/ensure_docker.sh
-
-      # Allocate free host ports and unique container/data names for this run.
-      # Everything downstream (docker_up.sh, test_integration.sh)
-      # inherits these via GITHUB_ENV. Local dev keeps compose defaults.
-      - name: Allocate isolated service ports and names
-        run: |
-          PG_SUFFIX="${GITHUB_RUN_ID}_${GITHUB_RUN_ATTEMPT}"
-          PG_SUFFIX="${PG_SUFFIX//-/_}"
-          read -r POSTGRES_PORT REDIS_PORT QDRANT_PORT QDRANT_GRPC_PORT <<<"$(
-            python3 -c "
-          import socket
-          # Hold all sockets open while reading ports: sequential bind/close
-          # lets the OS hand the same ephemeral port back twice, which made
-          # Postgres/Redis/Qdrant share one port (bind conflict in docker_up).
-          sockets = [socket.socket() for _ in range(4)]
-          for sock in sockets:
-              sock.bind(('', 0))
-          print(' '.join(str(sock.getsockname()[1]) for sock in sockets))
-          ")"
-          for candidate in "$POSTGRES_PORT" "$REDIS_PORT" "$QDRANT_PORT" "$QDRANT_GRPC_PORT"; do
-            others="$(printf '%s\n' "$POSTGRES_PORT" "$REDIS_PORT" "$QDRANT_PORT" "$QDRANT_GRPC_PORT" | grep -c "^${candidate}$")"
-            if [ "$others" -ne 1 ]; then
-              echo "Allocated ports are not distinct; aborting before docker_up." >&2
-              exit 1
-            fi
-          done
-          {
-            echo "PG_NAME=greensentinel-pg-${PG_SUFFIX}"
-            echo "REDIS_NAME=greensentinel-redis-${PG_SUFFIX}"
-            echo "QDRANT_NAME=greensentinel-qdrant-${PG_SUFFIX}"
-            echo "COMPOSE_PROJECT_NAME=greensentinel-${PG_SUFFIX,,}"
-            echo "POSTGRES_PORT=${POSTGRES_PORT}"
-            echo "REDIS_PORT=${REDIS_PORT}"
-            echo "QDRANT_PORT=${QDRANT_PORT}"
-            echo "QDRANT_GRPC_PORT=${QDRANT_GRPC_PORT}"
-            echo "DATABASE_URL=postgresql://postgres:postgrespassword@localhost:${POSTGRES_PORT}/postgres"
-            echo "ISSUE63_DATABASE_URL=postgresql://postgres:postgrespassword@localhost:${POSTGRES_PORT}/postgres"
-            echo "REDIS_URL=redis://localhost:${REDIS_PORT}/0"
-            echo "QDRANT_URL=http://localhost:${QDRANT_PORT}"
-            echo "PGDATA=${RUNNER_TEMP}/greensentinel-pgdata-${PG_SUFFIX}"
-            echo "QDRANT_DATA=${RUNNER_TEMP}/greensentinel-qdrant-${PG_SUFFIX}"
-            NET_A=$(( (GITHUB_RUN_ID % 200) + 20 ))
-            NET_B=$(( ((GITHUB_RUN_ID / 200) + GITHUB_RUN_ATTEMPT) % 250 + 1 ))
-            echo "GREENSENTINEL_NETWORK_SUBNET=10.${NET_A}.${NET_B}.0/24"
-          } >> "$GITHUB_ENV"
-
       - name: Set up uv
         uses: astral-sh/setup-uv@v7
         with:
@@ -454,10 +328,6 @@ jobs:
       - name: Generate synthetic dataset for seed data
         run: python scripts/generate_synthetic_data.py
 
-      - name: Remove own stale containers (never siblings')
-        run: |
-          docker rm -f "$PG_NAME" "$REDIS_NAME" "$QDRANT_NAME" 2>/dev/null || true
-
       - name: Start Docker backing services (Postgres, Redis, Qdrant)
         run: ./scripts/docker_up.sh
 
@@ -473,7 +343,7 @@ jobs:
     # Ready-tier only: drafts use ci-draft.yml.
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     needs: [webapp-build]
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     timeout-minutes: 25
     concurrency:
       group: greensentinel-browser-e2e
@@ -483,18 +353,6 @@ jobs:
       NODE_OPTIONS: --max-old-space-size=1024
       CI: "true"
     steps:
-      - name: Clean root-owned frontend dependencies from previous runs
-        run: |
-          if [ -d "$GITHUB_WORKSPACE" ] && command -v docker >/dev/null 2>&1; then
-            docker run --rm -v "$GITHUB_WORKSPACE:/target" alpine sh -c '
-              rm -rf /target/src/webapp/node_modules /target/src/webapp/test-results
-              chown -R '"$(id -u):$(id -g)"' /target
-            '
-          fi
-          if [ -d "$GITHUB_WORKSPACE/src/webapp/node_modules" ] && command -v docker >/dev/null 2>&1; then
-            docker run --rm -v "$GITHUB_WORKSPACE:/target" alpine \
-              rm -rf /target/src/webapp/node_modules
-          fi
       - uses: actions/checkout@v7
 
       - name: Setup Node.js and pnpm
@@ -576,22 +434,9 @@ jobs:
     # Ready-tier only, verifies build artifacts after all test jobs pass.
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     needs: [frontend-vitest, integration-tests, browser-e2e, webapp-build]
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - name: Clean root-owned Docker volumes from previous runs
-        run: |
-          if [ -d "$GITHUB_WORKSPACE/.git" ] && command -v docker >/dev/null 2>&1; then
-            docker run --rm -v "$GITHUB_WORKSPACE:/target" alpine \
-              chown -R "$(id -u):$(id -g)" /target/.git
-          fi
-          if [ -d "$GITHUB_WORKSPACE/data" ]; then
-            if command -v docker >/dev/null 2>&1; then
-              docker run --rm -v "$GITHUB_WORKSPACE/data:/target" alpine \
-                sh -c "rm -rf /target/*" || true
-            fi
-            rm -rf "$GITHUB_WORKSPACE/data" || true
-          fi
       - uses: actions/checkout@v7
 
       - name: Validate Docker Compose Configuration

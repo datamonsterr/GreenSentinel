@@ -24,7 +24,7 @@ from huggingface_hub import HfApi, get_token
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_MODELS_DIR = REPO_ROOT / "models" / "r3d"
-DEFAULT_REPO_ID = "datamonsterr/green-sentinel-r3d-classifier"
+DEFAULT_REPO_ID = "datamonsterr/p-063-r3d-classifier"
 
 logger = logging.getLogger(__name__)
 
