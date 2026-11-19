@@ -12,61 +12,83 @@
   }
 }
 
-@theme inline {
-  --color-primary: #006948;
-  --color-primary-container: #00855d;
+@theme {
+  /* GSM admin portal palette (cyan light). Driver app re-pins emerald via .driver-scope below. */
+  --color-primary: #0fb3c1;
+  --color-primary-container: #0b97a4;
   --color-on-primary: #ffffff;
-  --color-primary-fixed: #85f8c4;
-  --color-primary-fixed-dim: #68dba9;
-  --color-on-primary-fixed: #002114;
-  --color-on-primary-container: #f5fff7;
+  --color-primary-fixed: #e9f8f9;
+  --color-primary-fixed-dim: #bdebef;
+  --color-on-primary-fixed: #06454c;
+  --color-on-primary-container: #ffffff;
 
-  --color-secondary: #565e74;
-  --color-secondary-container: #dae2fd;
+  --color-secondary: #5a6b78;
+  --color-secondary-container: #eaeef2;
   --color-on-secondary: #ffffff;
 
-  --color-tertiary: #0058be;
-  --color-tertiary-container: #2170e4;
+  --color-tertiary: #2f6fe0;
+  --color-tertiary-container: #e3ecfb;
   --color-on-tertiary: #ffffff;
 
-  --color-error: #ba1a1a;
-  --color-error-container: #ffdad6;
+  --color-error: #e0484b;
+  --color-error-container: #fde4e4;
   --color-on-error: #ffffff;
-  --color-on-error-container: #93000a;
+  --color-on-error-container: #a62a2d;
 
-  --color-surface: #f8f9ff;
-  --color-surface-dim: #cbdbf5;
-  --color-surface-bright: #f8f9ff;
+  --color-surface: #f4f6f8;
+  --color-surface-dim: #e2e7ec;
+  --color-surface-bright: #f4f6f8;
   --color-surface-container-lowest: #ffffff;
-  --color-surface-container-low: #eff4ff;
-  --color-surface-container: #e5eeff;
-  --color-surface-container-high: #dce9ff;
-  --color-surface-container-highest: #d3e4fe;
-  --color-on-surface: #0b1c30;
-  --color-on-surface-variant: #3d4a42;
+  --color-surface-container-low: #f7f9fa;
+  --color-surface-container: #f0f3f6;
+  --color-surface-container-high: #eaeef2;
+  --color-surface-container-highest: #e2e7ec;
+  --color-on-surface: #1c2733;
+  --color-on-surface-variant: #3a4552;
 
-  --color-outline: #6d7a72;
-  --color-outline-variant: #bccac0;
+  --color-outline: #8794a2;
+  --color-outline-variant: #e2e7ec;
 
-  --color-background: #f8f9ff;
-  --color-foreground: #0b1c30;
+  --color-background: #f4f6f8;
+  --color-foreground: #1c2733;
 
   --color-card: #ffffff;
-  --color-card-foreground: #0b1c30;
+  --color-card-foreground: #1c2733;
   --color-popover: #ffffff;
-  --color-popover-foreground: #0b1c30;
-  --color-muted: #eff4ff;
-  --color-muted-foreground: #565e74;
-  --color-border: #bccac0;
-  --color-input: #bccac0;
-  --color-ring: #006948;
+  --color-popover-foreground: #1c2733;
+  --color-muted: #eef1f4;
+  --color-muted-foreground: #5a6b78;
+  --color-border: #e2e7ec;
+  --color-input: #e2e7ec;
+  --color-ring: #0fb3c1;
 
   --color-primary-foreground: #ffffff;
   --color-secondary-foreground: #ffffff;
-  --color-destructive: #ba1a1a;
+  --color-destructive: #e0484b;
   --color-destructive-foreground: #ffffff;
-  --color-accent: #e5eeff;
-  --color-accent-foreground: #0b1c30;
+  --color-accent: #e9f8f9;
+  --color-accent-foreground: #1c2733;
+
+  /* status colours (GSM): utilities like bg-amber-soft / text-green */
+  --color-gs-cyan: #0fb3c1;
+  --color-gs-cyan-soft: #e9f8f9;
+  --color-gs-amber: #c99616;
+  --color-gs-amber-soft: #fff4d6;
+  --color-gs-green: #22a45d;
+  --color-gs-green-soft: #e3f6e8;
+  --color-gs-red: #e0484b;
+  --color-gs-red-soft: #fde4e4;
+  --color-gs-orange: #c8601e;
+  --color-gs-orange-soft: #fdeede;
+  --color-gs-purple: #7b3ed6;
+  --color-gs-purple-soft: #efe6fb;
+  --color-gs-blue: #2f6fe0;
+  --color-gs-blue-soft: #e3ecfb;
+  --color-gs-ink-2: #3a4552;
+  --color-gs-mute: #8794a2;
+  --color-gs-mute-2: #5a6b78;
+  --color-gs-line: #eaeef2;
+  --color-gs-line-2: #e2e7ec;
 
   --radius-sm: 0.25rem;
   --radius-md: 0.375rem;
@@ -77,8 +99,8 @@
 }
 
 :root {
-  --background: #f8f9ff;
-  --foreground: #0b1c30;
+  --background: #f4f6f8;
+  --foreground: #1c2733;
   --radius: 0.375rem;
 }
 
@@ -114,3 +136,66 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
+
+/* Driver app keeps its emerald palette (pinned; portal theme must not leak). */
+.driver-scope {
+  --color-primary: #006948;
+  --color-primary-container: #00855d;
+  --color-on-primary: #ffffff;
+  --color-primary-fixed: #85f8c4;
+  --color-primary-fixed-dim: #68dba9;
+  --color-on-primary-fixed: #002114;
+  --color-on-primary-container: #f5fff7;
+  --color-secondary: #565e74;
+  --color-secondary-container: #dae2fd;
+  --color-on-secondary: #ffffff;
+  --color-tertiary: #0058be;
+  --color-tertiary-container: #2170e4;
+  --color-on-tertiary: #ffffff;
+  --color-error: #ba1a1a;
+  --color-error-container: #ffdad6;
+  --color-on-error: #ffffff;
+  --color-on-error-container: #93000a;
+  --color-surface: #f8f9ff;
+  --color-surface-dim: #cbdbf5;
+  --color-surface-bright: #f8f9ff;
+  --color-surface-container-lowest: #ffffff;
+  --color-surface-container-low: #eff4ff;
+  --color-surface-container: #e5eeff;
+  --color-surface-container-high: #dce9ff;
+  --color-surface-container-highest: #d3e4fe;
+  --color-on-surface: #0b1c30;
+  --color-on-surface-variant: #3d4a42;
+  --color-outline: #6d7a72;
+  --color-outline-variant: #bccac0;
+  --color-background: #f8f9ff;
+  --color-foreground: #0b1c30;
+  --color-card: #ffffff;
+  --color-card-foreground: #0b1c30;
+  --color-popover: #ffffff;
+  --color-popover-foreground: #0b1c30;
+  --color-muted: #eff4ff;
+  --color-muted-foreground: #565e74;
+  --color-border: #bccac0;
+  --color-input: #bccac0;
+  --color-ring: #006948;
+  --color-primary-foreground: #ffffff;
+  --color-secondary-foreground: #ffffff;
+  --color-destructive: #ba1a1a;
+  --color-destructive-foreground: #ffffff;
+  --color-accent: #e5eeff;
+  --color-accent-foreground: #0b1c30;
+}
+
+/* Status tone chips (GSM reference): <span class="gs-tone t-amber"> or statusTone() in lib/status-tone.ts */
+.gs-tone { display:inline-flex; align-items:center; border-radius:6px; padding:3px 10px; font-size:13px; font-weight:700; border:1px solid transparent; white-space:nowrap; }
+.gs-tone.pill { border-radius:999px; padding:2px 10px; font-size:12px; }
+.t-red{background:#fde4e4;color:#e0484b}
+.t-green{background:#e3f6e8;color:#1e7a45}
+.t-amber{background:#fff4d6;color:#a9820f;border-color:#f3dc9a}
+.t-blue{background:#e3ecfb;color:#2f6fe0}
+.t-purple{background:#efe6fb;color:#7b3ed6}
+.t-orange{background:#fdeede;color:#c8601e}
+.t-grey{background:#eef1f4;color:#5a6b78}
+.t-cyan{background:#e9f8f9;color:#0fb3c1}
+.t-brown{background:#f5e6d3;color:#a9660f}

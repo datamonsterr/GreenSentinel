@@ -238,6 +238,8 @@ export interface FraudCaseSummary extends StagedAdjudicationContext {
   stall_duration_s?: number | null;
   sla_countdown_s?: number | null;
   assigned_analyst_name?: string | null;
+  dispute_status?: string | null;
+  dispute_deadline?: string | null;
 }
 
 export interface CaseListResponse {
@@ -276,6 +278,13 @@ export interface TripDetail {
   passenger_statement?: string;
   cancellation_reason?: string | null;
   cancellation_actor?: string | null;
+  driver_ref?: string | null;
+  vehicle_model?: string | null;
+  assignment_state?: string | null;
+  requested_at?: string | null;
+  arrived_at?: string | null;
+  ended_at?: string | null;
+  completed_at?: string | null;
   [key: string]: any;
 }
 

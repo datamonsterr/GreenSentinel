@@ -246,6 +246,10 @@ def _blocking_guardrail_reasons(
     return list(dict.fromkeys(reasons))
 
 
+def _iso_or_none(value: Any) -> str | None:
+    return value.isoformat() if isinstance(value, datetime) else (str(value) if value else None)
+
+
 class CaseService:
     """Service handling fraud cases, telemetry, simulations, leases, and adjudication.
 
@@ -2661,6 +2665,7 @@ class CaseService:
                                t.pickup_address, t.dropoff_address, t.district as trip_district,
                                t.match_type as trip_match_type,
                                t.fare_amount_vnd as direct_fare_vnd,
+                               t.requested_at as trip_requested_at, t.completed_at as trip_completed_at,
                                ST_AsGeoJSON(t.pickup)::json as trip_pickup,
                                ST_AsGeoJSON(t.dropoff)::json as trip_dropoff,
                                p_an.display_name as analyst_name,
@@ -3027,6 +3032,14 @@ class CaseService:
                         "passenger_statement": row.get("passenger_statement") or "",
                         "cancellation_reason": row.get("cancellation_reason"),
                         "cancellation_actor": row.get("cancellation_actor"),
+                        # Additive case-metadata fields (portal case header).
+                        "driver_ref": row.get("driver_ref"),
+                        "vehicle_model": row.get("vehicle_model"),
+                        "assignment_state": row.get("assignment_state"),
+                        "requested_at": _iso_or_none(row.get("trip_requested_at")),
+                        "arrived_at": _iso_or_none(row.get("arrived_at")),
+                        "ended_at": _iso_or_none(row.get("ended_at")),
+                        "completed_at": _iso_or_none(row.get("trip_completed_at")),
                     }
 
                     now_utc = datetime.now(UTC)
