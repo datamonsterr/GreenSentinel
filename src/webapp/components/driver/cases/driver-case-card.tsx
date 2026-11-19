@@ -7,6 +7,7 @@ import { Clock, Hourglass, ChevronRight } from "lucide-react";
 import type { DriverCaseSessionItem } from "@/types/schemas";
 import { formatShortCaseId, getStatusCopy, getViolationTitle } from "@/lib/driver/status-copy";
 import { isResolvedCase } from "@/lib/driver/case-segments";
+import { getTicketPhase, getTicketStep, TICKET_STEP_COUNT } from "@/lib/driver/tickets";
 
 export interface DriverCaseCardProps {
   item: DriverCaseSessionItem;
@@ -43,16 +44,14 @@ export function DriverCaseCard({ item, className = "" }: DriverCaseCardProps) {
   // Status pill appearance
   let pillColor =
     "bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800";
-  let leftBorderColor = "bg-amber-500";
+  
 
   if (resolved) {
     pillColor =
       "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border-emerald-200 dark:border-emerald-800";
-    leftBorderColor = "bg-emerald-500";
   } else if (isUnderReview) {
     pillColor =
       "bg-sky-50 dark:bg-sky-950/40 text-sky-700 dark:text-sky-400 border-sky-200 dark:border-sky-800";
-    leftBorderColor = "bg-sky-500";
   }
 
   // Relative / formatted time calculation.
@@ -114,6 +113,17 @@ export function DriverCaseCard({ item, className = "" }: DriverCaseCardProps) {
     }
   }
 
+  const phase = getTicketPhase(item);
+  const ticketStep = getTicketStep(item);
+  const nextAction =
+    phase === "closed"
+      ? t("tickets.nextClosed")
+      : phase === "pending"
+        ? t("tickets.nextPending")
+        : deadlineHint === t("cases.deadlinePassed")
+          ? t("tickets.nextExpired")
+          : t("tickets.nextOpen");
+
   const handleClick = () => {
     router.push(`/driver/chat/${encodeURIComponent(item.case_id)}`);
   };
@@ -133,10 +143,9 @@ export function DriverCaseCard({ item, className = "" }: DriverCaseCardProps) {
           handleClick();
         }
       }}
-      className={`relative overflow-hidden rounded-2xl border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-xs hover:border-emerald-500/70 hover:shadow-md transition-all active:scale-[0.99] cursor-pointer group select-none ${className}`}
+      className={`relative overflow-hidden rounded-[20px] border border-slate-200/90 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shadow-xs hover:border-emerald-500/70 hover:shadow-md transition-all active:scale-[0.99] cursor-pointer group select-none ${className}`}
     >
       {/* Accent left line */}
-      <div className={`absolute left-0 top-0 bottom-0 w-1 ${leftBorderColor}`} />
 
       {/* Top row: Short case ID & Natural status pill */}
       <div className="flex items-center justify-between gap-2 mb-2">
@@ -159,6 +168,25 @@ export function DriverCaseCard({ item, className = "" }: DriverCaseCardProps) {
       <h2 className="text-sm font-bold text-slate-900 dark:text-slate-100 group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors leading-snug line-clamp-2">
         {displayTitle}
       </h2>
+
+      {/* Ticket progress + next action */}
+      <div className="mt-3" data-testid="ticket-progress">
+        <div className="flex items-center gap-1" role="img" aria-label={t("tickets.stepOf", { current: ticketStep, total: TICKET_STEP_COUNT })}>
+          {Array.from({ length: TICKET_STEP_COUNT }, (_, i) => (
+            <span
+              key={i}
+              className={`h-1.5 flex-1 rounded-full ${i < ticketStep ? (resolved ? "bg-emerald-600" : "bg-emerald-600") : "bg-slate-200 dark:bg-slate-700"}`}
+            />
+          ))}
+        </div>
+        <div className="mt-1.5 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
+          <span className="font-semibold text-slate-600 dark:text-slate-300">{t(`tickets.step${ticketStep}`)}</span>
+          <span>{t("tickets.stepOf", { current: ticketStep, total: TICKET_STEP_COUNT })}</span>
+        </div>
+        <p data-testid="ticket-next-action" className="mt-2 rounded-xl bg-[var(--driver-strip)] px-3 py-2 text-xs font-medium text-emerald-800 dark:text-emerald-300">
+          {nextAction}
+        </p>
+      </div>
 
       {/* Bottom meta row: Relative time, deadline hint, chevron */}
       <div className="mt-3 pt-2.5 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-xs">

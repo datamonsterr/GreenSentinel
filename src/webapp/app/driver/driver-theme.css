@@ -1,0 +1,32 @@
+/* Driver-scoped theme (journey look: teal primary, soft grey canvas, rounded pills).
+   Re-maps Tailwind palette vars only inside .driver-scope; portal untouched. */
+.driver-scope {
+  --color-emerald-50: #e8f4f4;
+  --color-emerald-100: #d3ebeb;
+  --color-emerald-200: #a9d6d6;
+  --color-emerald-300: #6fbcbc;
+  --color-emerald-400: #3aa0a0;
+  --color-emerald-500: #1f9393;
+  --color-emerald-600: #168a8a;
+  --color-emerald-700: #107373;
+  --color-emerald-800: #0d5c5c;
+  --color-emerald-900: #0b4a4a;
+  --color-emerald-950: #062f2f;
+  --color-teal-50: #e8f4f4;
+  --color-teal-950: #062f2f;
+  --driver-canvas: #f4f6f6;
+  --driver-ink: #1b2a33;
+  --driver-strip: #e4f2f2;
+  font-family: var(--font-driver, "Be Vietnam Pro"), var(--font-geist-sans), system-ui, sans-serif;
+  color: var(--driver-ink);
+}
+.driver-scope.dark {
+  --driver-canvas: #0b1418;
+  --driver-ink: #e6eef0;
+  --driver-strip: #0f2a2a;
+}
+@keyframes driver-typing { 0%, 60%, 100% { opacity: .3; transform: translateY(0) } 30% { opacity: 1; transform: translateY(-3px) } }
+.driver-typing-dot { animation: driver-typing 1.2s infinite ease-in-out; }
+.driver-typing-dot:nth-child(2) { animation-delay: .15s }
+.driver-typing-dot:nth-child(3) { animation-delay: .3s }
+@media (prefers-reduced-motion: reduce) { .driver-typing-dot { animation: none; opacity: .6 } }

@@ -86,7 +86,7 @@ describe('Driver UI i18n & Locale Switch', () => {
 
     expect(await screen.findByText('Vụ việc của bạn')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Đang mở/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Đã xử lý/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Đã đóng/i })).toBeInTheDocument();
 
     expect(
       await screen.findByText('Chiếm đoạt chuyến/đơn: hủy rồi phục vụ ngoài ứng dụng thu tiền mặt')
@@ -103,7 +103,7 @@ describe('Driver UI i18n & Locale Switch', () => {
 
     expect(await screen.findByText('Your cases')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Open/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Resolved/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Closed/i })).toBeInTheDocument();
 
     expect(
       await screen.findByText('Trip/order embezzlement: cancel then collect cash off-app')
