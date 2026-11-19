@@ -617,7 +617,7 @@ def materialize_preset_simulation_input(
         coords = [
             [float(pt["longitude"]), float(pt["latitude"])]
             for pt in telemetry
-            if "longitude" in pt and "latitude" in pt
+            if pt.get("longitude") is not None and pt.get("latitude") is not None
         ]
     if len(coords) < 2:
         raise ValueError("Trip has insufficient coordinates for simulation")

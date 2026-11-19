@@ -341,14 +341,17 @@ async def run_preset_batch(
 
             # Persist samples into test repository
             for idx, pt in enumerate(telemetry):
+                # GPS-dropout points carry null coordinates; the timestamp gap remains visible.
+                if pt.get("latitude") is None or pt.get("longitude") is None:
+                    continue
                 repository.save_sample(
                     TestTelemetrySample(
                         run_id=run_resp.id,
                         step_index=idx,
                         latitude=float(pt["latitude"]),
                         longitude=float(pt["longitude"]),
-                        speed_mps=float(pt.get("speed_mps", 0.0)),
-                        heading_deg=float(pt.get("bearing_deg", 0.0)),
+                        speed_mps=float(pt.get("speed_mps") or 0.0),
+                        heading_deg=float(pt.get("bearing_deg") or 0.0),
                         emitted_at=t_now,
                     )
                 )
@@ -376,12 +379,13 @@ async def run_preset_batch(
                     "occurred_at": pt.get("occurred_at") or t_now.isoformat(),
                     "latitude": float(pt["latitude"]),
                     "longitude": float(pt["longitude"]),
-                    "speed_mps": float(pt.get("speed_mps", 0.0)),
-                    "bearing_deg": float(pt.get("bearing_deg", 0.0)),
+                    "speed_mps": float(pt.get("speed_mps") or 0.0),
+                    "bearing_deg": float(pt.get("bearing_deg") or 0.0),
                     "accuracy_m": float(pt["accuracy_m"]) if pt.get("accuracy_m") is not None else 5.0,
                     "mock_location_reported": bool(pt.get("mock_location_reported", False)),
                 }
                 for pt in telemetry
+                if pt.get("latitude") is not None and pt.get("longitude") is not None
             ]
 
             passenger_id, vehicle_id = _ensure_tenant_actors(
