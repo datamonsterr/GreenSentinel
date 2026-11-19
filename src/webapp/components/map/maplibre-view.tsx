@@ -13,6 +13,8 @@ import {
 import { formatStallDuration } from "@/lib/utils";
 import { useLocale } from "@/lib/locale";
 import { mapMessages } from "@/lib/map-messages";
+import { clipSegmentsAt, type SegmentKind, type TripSegment } from "@/lib/trip-segments";
+import { TripSegmentLayers, TripSegmentLegend, type CancelPoint } from "@/components/map/trip-segment-layers";
 export type TripStatus = "coming" | "picked up" | "complete" | "stalled" | "suspended" | string;
 
 export interface StallPointInfo {
@@ -62,6 +64,11 @@ export interface MapLibreViewProps {
   gpsLatencyMs?: number;
   telemetrySamples?: Array<Record<string, any>>;
   routeGeometry?: Record<string, any> | null;
+  /** Classified trip segments (planned/actual/off-route/gap/post-cancel); replaces the single-colour trail when set. */
+  tripSegments?: TripSegment[];
+  cancelPoint?: CancelPoint | null;
+  /** Fixed map canvas height in px (default: compact 256/288). */
+  mapHeight?: number;
   className?: string;
   initialTraffic?: boolean;
   initialBreadcrumbs?: boolean;
@@ -174,6 +181,9 @@ export function MapLibreView({
   gpsLatencyMs,
   telemetrySamples,
   routeGeometry,
+  tripSegments,
+  cancelPoint,
+  mapHeight,
   className = "",
   initialTraffic,
   initialBreadcrumbs,
@@ -387,6 +397,11 @@ export function MapLibreView({
     : [extractCoordinates(driverBreadcrumbs)],
   [hasTelemetrySource, playbackTrack, currentTimeMs, startTimestampMs, visibleStartSecond, driverBreadcrumbs]);
   const derivedBreadcrumbs = useMemo(() => breadcrumbSegments.flat(), [breadcrumbSegments]);
+  const hasSegments = Boolean(tripSegments?.length);
+  // Replay: only draw what has been recorded up to the playhead.
+  const visibleSegments = useMemo(() => (tripSegments?.length ? clipSegmentsAt(tripSegments, currentTimeMs) : []), [tripSegments, currentTimeMs]);
+  const legendKinds = useMemo(() => (["planned", "actual", "offroute", "gap", "postcancel"] as SegmentKind[]).filter((k) => tripSegments?.some((seg) => seg.kind === k)), [tripSegments]);
+  const visibleCancel = cancelPoint && (!Number.isFinite(Date.parse(cancelPoint.timestamp ?? "")) || Date.parse(cancelPoint.timestamp!) <= currentTimeMs || !normalizedTelemetry.length) ? cancelPoint : null;
   const observedBreadcrumbs = useMemo(() => normalizedTelemetry.filter((s) => s._time >= startTimestampMs + visibleStartSecond * 1000 && s._time <= currentTimeMs),
     [normalizedTelemetry, startTimestampMs, visibleStartSecond, currentTimeMs]);
   // Gap anchors sit on recorded fixes only; no geometry is invented between them.
@@ -732,9 +747,9 @@ export function MapLibreView({
       map.setPaintProperty(layerId, "line-width", width);
       map.setPaintProperty(layerId, "line-color", color);
     };
-    line("pickup-route", derivedPickupRoute, "#2563eb", showRoute);
-    line("destination-route", derivedDestinationRoute, "#7c3aed", showRoute);
-    line("driver-trajectory", derivedBreadcrumbs, "#ea580c", showBreadcrumbs, 4.5, breadcrumbSegments);
+    line("pickup-route", derivedPickupRoute, "#2563eb", showRoute && !hasSegments);
+    line("destination-route", derivedDestinationRoute, "#7c3aed", showRoute && !hasSegments);
+    line("driver-trajectory", derivedBreadcrumbs, "#ea580c", showBreadcrumbs && !hasSegments, 4.5, breadcrumbSegments);
     const observations = { type: "FeatureCollection", features: observedBreadcrumbs.map((s) => ({
       type: "Feature", properties: { recorded_at: s.recorded_at }, geometry: { type: "Point", coordinates: s.position.coordinates },
     })) };
@@ -916,7 +931,7 @@ export function MapLibreView({
     }
 
     map.triggerRepaint();
-  }, [allCoordinates, minLon, minLat, maxLon, maxLat, mapLoaded, derivedPickupRoute, derivedDestinationRoute, derivedBreadcrumbs, breadcrumbSegments, observedBreadcrumbs, gapEndpoints, candidateRoutes, activeDriver, playback?.mode, vehicleType, initialDriverPos, activeCustomer, destinationPos, activeStall, activeHotspots, anomalyMilestones, showRoute, showBreadcrumbs, showHotspots, inspectedRouteId, isFollowingDriver, draggableStops, activeWaypoints, proximityCircle]);
+  }, [allCoordinates, minLon, minLat, maxLon, maxLat, mapLoaded, derivedPickupRoute, derivedDestinationRoute, derivedBreadcrumbs, breadcrumbSegments, observedBreadcrumbs, gapEndpoints, candidateRoutes, activeDriver, playback?.mode, vehicleType, initialDriverPos, activeCustomer, destinationPos, activeStall, activeHotspots, anomalyMilestones, showRoute, showBreadcrumbs, showHotspots, hasSegments, inspectedRouteId, isFollowingDriver, draggableStops, activeWaypoints, proximityCircle]);
 
   const centerWholeTrip = () => {
     if (allCoordinates.length && mapInstanceRef.current) {
@@ -1102,7 +1117,9 @@ export function MapLibreView({
       )}
 
       {/* Main Map Area with Overlays */}
-      <div className={`relative w-full overflow-hidden ${className?.includes("h-full") ? "flex-1 h-full min-h-[380px]" : "h-64 sm:h-72"}`}>
+      <div style={mapHeight ? { height: mapHeight } : undefined} className={`relative w-full overflow-hidden ${mapHeight ? "" : className?.includes("h-full") ? "flex-1 h-full min-h-[380px]" : "h-64 sm:h-72"}`}>
+        {hasSegments && <TripSegmentLayers mapRef={mapInstanceRef} ready={mapLoaded} segments={visibleSegments} cancel={visibleCancel} showTrack={showBreadcrumbs} showPlanned={showRoute} />}
+        {hasSegments && <TripSegmentLegend kinds={legendKinds} showCancel={Boolean(cancelPoint)} />}
         {/* Main Map Canvas or SVG Headless Fallback */}
         {hasWebGL ? (
           <div

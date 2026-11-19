@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Activity, BatteryMedium, ChevronDown, ChevronRight, CloudSun, Crosshair, Gauge, Globe, LocateOff, Navigation, NetworkIcon, Radar, Route, ShieldCheck, Signal, Timer, TrafficCone, Users, Waypoints, type LucideIcon } from "lucide-react";
-import { MapLibreView, type CustomerLocationInfo } from "@/components/map/maplibre-view";
+import { MapLibreView, extractCoordinates, type CustomerLocationInfo } from "@/components/map/maplibre-view";
+import { classifyTripSegments, plannedSegment, type LonLat } from "@/lib/trip-segments";
 import type { CaseDetailResponse, DisputeDossierResponse } from "@/types/schemas";
 import { useLocale } from "@/lib/locale";
 import { daviScore, finite, mockLocationRatio, speedComparison, speedMarkers, speedSeries } from "@/lib/cockpit-signals";
@@ -34,7 +35,7 @@ const copy = {
     segment: "Road segment", avgSpeed: "Average speed", congestion: "Congestion", provider: "Provider", peers: "Peer vehicles", source: "Evidence source",
     gpsAccuracy: "GPS accuracy", gpsAccuracyHint: "Observed GPS accuracy", mock: "Mock location", ping: "Ping latency", battery: "Battery",
     stall: "Stall duration", drift: "Drift distance", samples: "Telemetry samples", point: "Point",
-    noTraffic: "No traffic reference recorded for this trip yet.", noSection: "Nothing recorded for this check yet.",
+    cancelled: "Cancelled", noTraffic: "No traffic reference recorded for this trip yet.", noSection: "Nothing recorded for this check yet.",
   },
   vi: {
     heading: "Bản đồ và dữ liệu hành trình", charts: "Biểu đồ tín hiệu",
@@ -44,7 +45,7 @@ const copy = {
     segment: "Đoạn đường", avgSpeed: "Tốc độ trung bình", congestion: "Ùn tắc", provider: "Nhà cung cấp", peers: "Xe đối chứng", source: "Nguồn đo",
     gpsAccuracy: "Độ chính xác GPS", gpsAccuracyHint: "Độ chính xác GPS thực tế", mock: "Vị trí giả", ping: "Độ trễ ping", battery: "Pin",
     stall: "Thời gian dừng", drift: "Khoảng lệch tuyến", samples: "Mẫu telemetry", point: "Điểm",
-    noTraffic: "Chưa có dữ liệu giao thông đối chứng cho chuyến này.", noSection: "Chưa ghi nhận dữ liệu cho mục này.",
+    cancelled: "Hủy đơn", noTraffic: "Chưa có dữ liệu giao thông đối chứng cho chuyến này.", noSection: "Chưa ghi nhận dữ liệu cho mục này.",
   },
 } as const;
 
@@ -93,6 +94,26 @@ export const MapsTab: React.FC<MapsTabProps> = ({
   const sensor = (key: string) => latest?.[key] ?? features[key] ?? evidence.sensor_reliability?.[key] ?? evidence.stall_davi?.[key];
   const unit = (value: unknown, suffix: string) => (finite(value) === null ? show(value) : `${fmt(finite(value)!)}${suffix}`);
 
+  // Raw samples (incl. null-coordinate dropouts) so GPS gaps render as gap segments.
+  const { tripSegments, cancelPoint } = useMemo(() => {
+    const planned: LonLat[] = [
+      ...extractCoordinates(caseDetail.route_geometry?.pickup_route?.coordinates ?? caseDetail.route_geometry?.pickup_route?.route?.coordinates),
+      ...extractCoordinates(caseDetail.route_geometry?.destination_route?.coordinates ?? caseDetail.route_geometry?.destination_route?.route?.coordinates),
+    ];
+    const trip = caseDetail.trip;
+    const cancelled = /cancel/i.test(String(trip?.status ?? "")) && Number.isFinite(Date.parse(trip?.ended_at ?? ""));
+    const cancelAtMs = cancelled ? Date.parse(trip!.ended_at!) : null;
+    const raw = caseDetail.telemetry_samples ?? [];
+    const actual = classifyTripSegments({ samples: raw, planned, gaps: caseDetail.missingness_alerts, cancelAtMs });
+    const plan = plannedSegment(planned);
+    const fixes = raw.map((s) => ({ s, c: s?.position?.coordinates, t: Date.parse(s.recorded_at ?? s.occurred_at) })).filter((f) => Array.isArray(f.c) && Number.isFinite(f.c[0]) && Number.isFinite(f.c[1]) && Number.isFinite(f.t));
+    const at = cancelAtMs == null ? undefined : [...fixes].reverse().find((f) => f.t <= cancelAtMs) ?? fixes[fixes.length - 1];
+    return {
+      tripSegments: [...(plan ? [plan] : []), ...actual],
+      cancelPoint: at ? { longitude: Number(at.c[0]), latitude: Number(at.c[1]), timestamp: trip?.ended_at ?? null, label: t.cancelled } : null,
+    };
+  }, [caseDetail.route_geometry, caseDetail.telemetry_samples, caseDetail.missingness_alerts, caseDetail.trip, t.cancelled]);
+
   const stallSeconds = finite(sensor("stall_duration_s")) ?? finite(traffic?.suspect_driver?.stall_duration_s);
   const davi = daviScore(caseDetail, samples);
   const series = speedSeries(samples);
@@ -113,7 +134,7 @@ export const MapsTab: React.FC<MapsTabProps> = ({
     <div role="tabpanel" id="panel-maps" aria-labelledby="tab-maps" className="space-y-3 rounded-b-lg border-x border-b border-slate-200 bg-slate-50/60 px-3 pb-3 pt-0.5 text-xs">
       <h2 className="sr-only">{t.heading}</h2>
       {isActive && <div className="overflow-hidden rounded-lg border border-slate-200 bg-white shadow-xs">
-        <MapLibreView caseId={selectedCaseId} vehicleType={caseDetail.trip?.vehicle_type} customerLocation={pickupLocation} driverInitialLocation={initialDriverLocation} destinationLocation={destinationLocation} candidateRoutes={caseDetail.candidate_routes} trafficCorroboration={caseDetail.traffic_corroboration} timelineMilestones={caseDetail.timeline_milestones} missingnessAlerts={caseDetail.missingness_alerts} telemetrySamples={mapTelemetry} routeGeometry={caseDetail.route_geometry} showKinematicFooter stallDurationSeconds={stallSeconds} daviScore={davi} />
+        <MapLibreView caseId={selectedCaseId} vehicleType={caseDetail.trip?.vehicle_type} customerLocation={pickupLocation} driverInitialLocation={initialDriverLocation} destinationLocation={destinationLocation} candidateRoutes={caseDetail.candidate_routes} trafficCorroboration={caseDetail.traffic_corroboration} timelineMilestones={caseDetail.timeline_milestones} missingnessAlerts={caseDetail.missingness_alerts} telemetrySamples={mapTelemetry} routeGeometry={caseDetail.route_geometry} tripSegments={tripSegments} cancelPoint={cancelPoint} mapHeight={520} showKinematicFooter stallDurationSeconds={stallSeconds} daviScore={davi} />
       </div>}
       <TripStatusRow caseDetail={caseDetail} />
       <section aria-label={t.charts} className="grid grid-cols-1 gap-3 xl:grid-cols-2">
