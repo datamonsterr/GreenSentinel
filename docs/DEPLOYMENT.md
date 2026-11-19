@@ -9,7 +9,9 @@ One environment only: Railway project `greensentinel` (environment `production`:
 - `deploy-railway.yml`: validates compose config on PRs; on push to `main` (and manual dispatch) optionally migrates (`DATABASE_URL`), runs `scripts/railway_deploy_code.sh` (`railway up`, waits for SUCCESS), then probes `/health`. The Railway service has no GitHub source, so there is no double deploy.
 - `deploy-vercel.yml`: on push to `main` touching `src/webapp/**` (and manual dispatch) runs `vercel pull`, `vercel build --prod`, `vercel deploy --prebuilt --prod`. Independent of the Railway job.
 
-Required GitHub secrets: `RAILWAY_API_TOKEN`, `RAILWAY_PROJECT_ID`, `RAILWAY_SERVICE_ID`, `RAILWAY_ENVIRONMENT_ID`, `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`, `OPENROUTER_API_KEY`. Optional: `DATABASE_URL` (migrations), `HF_TOKEN`. Variable: `RAILWAY_PRODUCTION_URL`.
+Required GitHub secrets (green pipeline on `main`): `OPENROUTER_API_KEY`, `RAILWAY_API_TOKEN`, `RAILWAY_PROJECT_ID`, `RAILWAY_SERVICE_ID`, `RAILWAY_ENVIRONMENT_ID`, `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`. Variable: `RAILWAY_PRODUCTION_URL` (falls back to the default Railway domain).
+
+Optional (feature skips cleanly when absent): `DATABASE_URL` (pre-deploy migration), `HF_TOKEN` (private HF artifacts), `OPENAI_API_KEY` (RAG embedding, ingest and judge steps in `ci_rag.yml`), `LANGCHAIN_API_KEY` (LangSmith tracing). Qdrant runs as a local container in CI; no Qdrant secrets. Build artifacts use `actions/upload-artifact`/`download-artifact`; no object-storage credentials.
 
 ## Target topology
 

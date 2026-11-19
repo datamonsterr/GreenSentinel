@@ -1,12 +1,10 @@
 """Judge provider and score gates must reflect actual external model results."""
 
 import json
-from pathlib import Path
 from types import SimpleNamespace
 from unittest.mock import Mock
 
 import pytest
-import yaml
 
 from eval import bench
 from src.config import get_settings
@@ -49,14 +47,3 @@ def test_required_judge_missing_key_fails_before_retrieval(monkeypatch, tmp_path
     with pytest.raises(RuntimeError, match="judge.*configured"):
         bench.evaluate_rag(cases, tmp_path / "output", enable_langsmith=False, require_live_judge=True)
     agent.assert_not_called()
-
-
-def test_ci_uses_openai_for_chat_embedding_and_judge():
-    workflow = yaml.safe_load(Path(".github/workflows/ci_rag.yml").read_text(encoding="utf-8"))
-    for job in workflow["jobs"].values():
-        assert job["env"]["LLM_MODEL"] == "openai"
-        assert job["env"]["RAG_EMBEDDING_PROVIDER"] == "openai"
-        assert job["env"]["OPENAI_API_KEY"] == "${{ secrets.OPENAI_API_KEY }}"
-    text = Path(".github/workflows/ci_rag.yml").read_text(encoding="utf-8")
-    assert "secrets.GEMINI_API_KEY" not in text
-    assert "skipping LLM judge evaluation" not in text

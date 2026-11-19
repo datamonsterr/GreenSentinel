@@ -145,13 +145,7 @@ jobs:
       - name: Upload pytest startup diagnostics
         if: always()
         continue-on-error: true
-        uses: ./.github/actions/oci-upload
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.OCI_S3_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.OCI_S3_SECRET_KEY }}
-          AWS_DEFAULT_REGION: ${{ vars.OCI_REGION || secrets.OCI_REGION }}
-          AWS_ENDPOINT_URL: ${{ vars.OCI_S3_ENDPOINT || secrets.OCI_S3_ENDPOINT }}
-          OCI_S3_BUCKET: ${{ vars.OCI_S3_BUCKET }}
+        uses: actions/upload-artifact@v4
         with:
           name: pytest-startup-draft-${{ github.run_attempt }}
           path: ${{ runner.temp }}/pytest-startup.log

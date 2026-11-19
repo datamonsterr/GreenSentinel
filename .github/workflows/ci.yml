@@ -163,13 +163,7 @@ jobs:
       - name: Upload pytest startup diagnostics
         if: always()
         continue-on-error: true
-        uses: ./.github/actions/oci-upload
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.OCI_S3_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.OCI_S3_SECRET_KEY }}
-          AWS_DEFAULT_REGION: ${{ vars.OCI_REGION || secrets.OCI_REGION }}
-          AWS_ENDPOINT_URL: ${{ vars.OCI_S3_ENDPOINT || secrets.OCI_S3_ENDPOINT }}
-          OCI_S3_BUCKET: ${{ vars.OCI_S3_BUCKET }}
+        uses: actions/upload-artifact@v4
         with:
           name: pytest-startup-${{ github.run_attempt }}
           path: ${{ runner.temp }}/pytest-startup.log
@@ -266,21 +260,16 @@ jobs:
           NEXT_PUBLIC_API_URL: "http://127.0.0.1:8000"
           NODE_OPTIONS: --max-old-space-size=3072
 
-      # Test-only artifact: uses isolated GIS build escape hatch for localTestAuthentication under NODE_ENV=production. Never deployed; retention is managed by the OCI bucket lifecycle.
+      # Test-only artifact: uses isolated GIS build escape hatch for localTestAuthentication under NODE_ENV=production. Never deployed.
       - name: Upload Webapp Next.js bundle
-        uses: ./.github/actions/oci-upload
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.OCI_S3_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.OCI_S3_SECRET_KEY }}
-          AWS_DEFAULT_REGION: ${{ vars.OCI_REGION || secrets.OCI_REGION }}
-          AWS_ENDPOINT_URL: ${{ vars.OCI_S3_ENDPOINT || secrets.OCI_S3_ENDPOINT }}
-          OCI_S3_BUCKET: ${{ vars.OCI_S3_BUCKET }}
+        uses: actions/upload-artifact@v4
         with:
           name: webapp-next
-          path: src/webapp/.next-gis
+          path: |
+            src/webapp/.next-gis
+            !src/webapp/.next-gis/cache
           if-no-files-found: error
           include-hidden-files: true
-          exclude: cache
 
   integration-tests:
     name: Integration Tests (Docker services)
@@ -383,19 +372,14 @@ jobs:
 
       - name: Download webapp build artifact
         id: webapp-artifact
-        uses: ./.github/actions/oci-download
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.OCI_S3_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.OCI_S3_SECRET_KEY }}
-          AWS_DEFAULT_REGION: ${{ vars.OCI_REGION || secrets.OCI_REGION }}
-          AWS_ENDPOINT_URL: ${{ vars.OCI_S3_ENDPOINT || secrets.OCI_S3_ENDPOINT }}
-          OCI_S3_BUCKET: ${{ vars.OCI_S3_BUCKET }}
+        uses: actions/download-artifact@v4
+        continue-on-error: true
         with:
           name: webapp-next
           path: src/webapp/.next-gis
 
-      - name: Build webapp when OCI credentials are unavailable
-        if: steps.webapp-artifact.outputs.downloaded != 'true'
+      - name: Build webapp when build artifact is unavailable
+        if: steps.webapp-artifact.outcome != 'success'
         working-directory: src/webapp
         run: pnpm build
         env:
@@ -417,13 +401,7 @@ jobs:
 
       - name: Upload Playwright report
         if: failure()
-        uses: ./.github/actions/oci-upload
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.OCI_S3_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.OCI_S3_SECRET_KEY }}
-          AWS_DEFAULT_REGION: ${{ vars.OCI_REGION || secrets.OCI_REGION }}
-          AWS_ENDPOINT_URL: ${{ vars.OCI_S3_ENDPOINT || secrets.OCI_S3_ENDPOINT }}
-          OCI_S3_BUCKET: ${{ vars.OCI_S3_BUCKET }}
+        uses: actions/upload-artifact@v4
         with:
           name: playwright-report-${{ github.run_attempt }}
           path: src/webapp/playwright-report
