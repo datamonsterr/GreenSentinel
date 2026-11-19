@@ -9,7 +9,7 @@ export default function DriverChatIndexPage() {
     <DriverI18nProvider>
       <div
         data-testid="driver-chat-container"
-        className="flex-1 flex flex-col h-full overflow-hidden pb-[max(1rem,env(safe-area-inset-bottom))]"
+        className="flex flex-col shrink-0 h-[calc(100dvh-5rem)] min-h-0 overflow-hidden pb-[max(1rem,env(safe-area-inset-bottom))]"
       >
         <DriverChatView />
       </div>
