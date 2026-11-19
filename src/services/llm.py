@@ -77,6 +77,9 @@ def get_llm(
         # Luna's Chat Completions tool calls require non-reasoning mode.
         # Omit sampling parameters rather than sending a legacy temperature.
         options = {"reasoning_effort": "none", "use_responses_api": False}
+    if config.provider == "openrouter":
+        # Reasoning is mandatory on some models (GLM 5.3 Flash); cap effort for chat latency.
+        options["extra_body"] = {"reasoning": {"effort": s.openrouter_reasoning_effort}}
     if seed is not None:
         options["seed"] = seed
     return ChatOpenAI(
