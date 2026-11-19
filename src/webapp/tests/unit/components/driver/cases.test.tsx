@@ -343,11 +343,13 @@ describe('DriverCasesView (Cases Tab)', () => {
 
     // Segmented control tabs
     const openTab = screen.getByRole('button', { name: /Đang mở/i });
-    const resolvedTab = screen.getByRole('button', { name: /Đã xử lý/i });
+    const resolvedTab = screen.getByRole('button', { name: /Đã đóng/i });
     expect(openTab).toBeInTheDocument();
     expect(resolvedTab).toBeInTheDocument();
 
-    // Default is Open tab: sampleOpenCase should be visible
+    // Default is "all"; Open tab shows only sampleOpenCase
+    expect(screen.getByText('#5678')).toBeInTheDocument();
+    fireEvent.click(openTab);
     expect(screen.getByText('#1234')).toBeInTheDocument();
     expect(screen.queryByText('#5678')).not.toBeInTheDocument();
 
@@ -427,9 +429,10 @@ describe('DriverCasesView (Cases Tab)', () => {
     );
 
     await screen.findByText('#1234');
+    fireEvent.click(screen.getByRole('button', { name: /Đang mở/i }));
     expect(screen.queryByText('#4321')).not.toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: /Đã xử lý/i }));
+    fireEvent.click(screen.getByRole('button', { name: /Đã đóng/i }));
     expect(await screen.findByText('#4321')).toBeInTheDocument();
     expect(screen.queryByText('#1234')).not.toBeInTheDocument();
   });
@@ -448,6 +451,6 @@ describe('DriverCasesView (Cases Tab)', () => {
 
     expect(await screen.findByText(/Your cases/i)).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /Open/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Resolved/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /Closed/i })).toBeInTheDocument();
   });
 });

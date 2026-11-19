@@ -42,7 +42,7 @@ vi.mock("@clerk/nextjs", () => ({
 import { DriverChatView } from "@/components/driver/chat/driver-chat-view";
 
 describe("DriverChatView — user message bubble contrast (BUG 1)", () => {
-  it("renders user bubble with dark green background, white text, and inverted prose", () => {
+  it("renders user bubble with teal background, white text, and inverted prose", () => {
     render(
       <DriverI18nProvider locale="en" messages={enMessages}>
         <DriverChatView />
@@ -58,8 +58,8 @@ describe("DriverChatView — user message bubble contrast (BUG 1)", () => {
     expect(bubble).not.toBeNull();
     const className = bubble?.className || "";
 
-    // Dark green background in light mode (bg-emerald-800) and dark mode (dark:bg-emerald-700)
-    expect(className).toMatch(/bg-emerald-800/);
+    // Dark green background in light mode (bg-emerald-600) and dark mode (dark:bg-emerald-700)
+    expect(className).toMatch(/bg-emerald-600/);
     expect(className).toMatch(/dark:bg-emerald-700/);
 
     // White text

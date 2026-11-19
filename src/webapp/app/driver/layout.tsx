@@ -1,4 +1,6 @@
 import { cookies } from 'next/headers';
+import { Be_Vietnam_Pro } from 'next/font/google';
+import './driver-theme.css';
 import { getLocale, getMessages } from 'next-intl/server';
 import { DriverAuthBoundary } from '@/components/driver/driver-auth-boundary';
 import { DriverI18nProvider } from '@/lib/driver/i18n-provider';
@@ -6,6 +8,8 @@ import { type Locale } from '@/lib/driver/locale';
 import { resolveTheme } from '@/lib/driver/theme';
 import { localTestAuthentication } from '@/lib/route-authorization';
 import { requirePageAccess } from '@/lib/server-route-guard';
+
+const driverFont = Be_Vietnam_Pro({ subsets: ['latin', 'vietnamese'], weight: ['400', '500', '600', '700'], variable: '--font-driver', display: 'swap' });
 
 export default async function ProtectedLayout({ children }: { children: React.ReactNode }) {
   await requirePageAccess('driver');
@@ -21,7 +25,7 @@ export default async function ProtectedLayout({ children }: { children: React.Re
       <div
         id="driver-root"
         data-theme-scope="driver"
-        className={`driver-scope ${theme === 'dark' ? 'dark' : 'light'} min-h-screen`}
+        className={`${driverFont.variable} driver-scope ${theme === 'dark' ? 'dark' : 'light'} min-h-screen`}
         suppressHydrationWarning
       >
         <script

@@ -29,6 +29,8 @@ import { getLocalizedChatErrorMessage } from "@/lib/driver/chat-errors";
 import * as apiClient from "@/lib/api-client";
 import { BlockRenderer } from "@/components/driver/blocks/block-renderer";
 import { ConfirmationCard } from "@/components/driver/blocks/confirmation-card";
+import { BotAvatar, CaseSummaryCard, ChatHeader, MsgTime, QuickReplies, TypingBubble } from "@/components/driver/chat/chat-parts";
+import { DriverExplainFlow } from "@/components/driver/chat/driver-explain-flow";
 import { DriverActionBar } from "@/components/driver/chat/driver-action-bar";
 import { ResumeDraftBanner, type DriverStatementDraft } from "@/components/driver/chat/resume-draft-banner";
 import type { ConfirmationBlock, DriverChatBlock } from "@/types/driver-blocks";
@@ -180,6 +182,9 @@ export function DriverChatView({ caseId }: DriverChatViewProps) {
   const [pendingConfirm, setPendingConfirm] = useState(false);
   const [savedDraft, setSavedDraft] = useState<DriverStatementDraft | null>(null);
   const autoSentRef = useRef(false);
+  const [explainOpen, setExplainOpen] = useState(false);
+  // First-seen time per message id (history has no timestamps in the UI model).
+  const [msgTimes, setMsgTimes] = useState<Record<string, Date>>({});
   const suggestionsRef = useRef<HTMLDivElement>(null);
 
   // Greeting + suggestion-chip entrance (gated by prefers-reduced-motion,
@@ -296,6 +301,16 @@ export function DriverChatView({ caseId }: DriverChatViewProps) {
     void sendMessage({ text: prompt });
   }, [caseId, contextError, historyLoaded, messages.length, sendMessage, t]);
 
+  // Stamp first-seen time for new messages (derive-state-in-render pattern).
+  if (messages.some((m) => !msgTimes[m.id])) {
+    const now = new Date();
+    setMsgTimes((prev) => {
+      const next = { ...prev };
+      for (const m of messages) if (!next[m.id]) next[m.id] = now;
+      return next;
+    });
+  }
+
   const viewStatus = toViewStatus(status);
 
   const suggestionKeys = ["suggestion1", "suggestion2", "suggestion3", "suggestion4"] as const;
@@ -327,13 +342,12 @@ export function DriverChatView({ caseId }: DriverChatViewProps) {
   const handleRejectViolation = () => {
     setLocalConfirmCard(null);
     setDraftSavedNote(false);
-    let promptText = "I want to reject and explain this case";
-    try {
-      promptText = t("rejectPrompt");
-    } catch {
-      // use fallback
-    }
-    handleSend(promptText);
+    setExplainOpen(true);
+  };
+
+  const handleQuickReply = (key: string) => {
+    if (key === "explain") return handleRejectViolation();
+    handleSend(t(`${key}Prompt`));
   };
 
   const handleConfirmBlock = async (block: ConfirmationBlock) => {
@@ -424,31 +438,15 @@ export function DriverChatView({ caseId }: DriverChatViewProps) {
   }
 
   return (
-    <div data-testid="driver-chat-view" className="flex-1 flex flex-col h-full min-h-0 overflow-hidden">
-      {caseId && (
-        <div className="flex items-center gap-2 px-4 py-2.5 border-b border-slate-200 dark:border-slate-800">
-          <button
-            type="button"
-            data-testid="case-back-button"
-            aria-label={t("backAriaLabel")}
-            title={t("backAriaLabel")}
-            onClick={handleBack}
-            className="-ml-2 flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
-          >
-            <ChevronLeft className="h-5 w-5" aria-hidden="true" />
-          </button>
-          {caseTitle && <span className="text-sm font-medium min-w-0 truncate">{caseTitle}</span>}
-          {statusCopy && (
-            <span
-              data-testid="case-status-pill"
-              title={statusCopy.explanation}
-              className="ml-auto px-2 py-0.5 rounded-full text-[11px] bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300 whitespace-nowrap shrink-0"
-            >
-              {statusCopy.label}
-            </span>
-          )}
-        </div>
-      )}
+    <div data-testid="driver-chat-view" className="relative flex-1 flex flex-col h-full min-h-0 overflow-hidden bg-[var(--driver-canvas)]">
+      <ChatHeader
+        onBack={caseId ? handleBack : undefined}
+        backLabel={t("backAriaLabel")}
+        title={t("botName")}
+        subtitle={caseTitle || t("botSubtitle")}
+        statusLabel={caseId ? statusCopy?.label : null}
+        statusExplanation={statusCopy?.explanation}
+      />
 
       {contextError && (
         <div
@@ -529,6 +527,10 @@ export function DriverChatView({ caseId }: DriverChatViewProps) {
       {!contextError && (
         <Conversation className="flex-1 min-h-0">
           <ConversationContent>
+            {caseId && !contextError && (caseTitle || statusCopy) && (
+              <CaseSummaryCard code={shortCode || ""} statusLabel={statusCopy?.label} deadline={caseDeadline} />
+            )}
+
             {messages.length === 0 && !caseId && (
               <ConversationEmptyState icon={<Sparkles className="w-8 h-8 text-emerald-600" />}>
                 <div ref={greetingRef} data-testid="driver-chat-greeting" className="space-y-1">
@@ -547,14 +549,18 @@ export function DriverChatView({ caseId }: DriverChatViewProps) {
                 ? message.parts.filter((p: any) => p.type === "text")
                 : [];
               const isAnalyst = (message as any).metadata?.sourceRole === "analyst";
+              const sentAt = msgTimes[message.id];
+              const isUser = message.role === "user";
               return (
-                <Message key={message.id} from={message.role}>
+                <Message key={message.id} from={message.role} className={isUser ? "" : "flex-row items-end gap-2"}>
+                  {!isUser && <BotAvatar size={28} />}
+                  <div className="min-w-0 flex-1 flex flex-col">
                   <MessageContent
                     data-testid={message.role === "user" ? "driver-user-bubble" : undefined}
                     className={
                       message.role === "user"
-                        ? "bg-emerald-800 dark:bg-emerald-700 text-white [&_*]:text-white group-[.is-user]:bg-emerald-800 dark:group-[.is-user]:bg-emerald-700 group-[.is-user]:text-white prose-invert"
-                        : undefined
+                        ? "bg-emerald-600 dark:bg-emerald-700 text-white [&_*]:text-white group-[.is-user]:bg-emerald-600 dark:group-[.is-user]:bg-emerald-700 group-[.is-user]:text-white group-[.is-user]:rounded-2xl group-[.is-user]:rounded-br-md prose-invert text-sm"
+                        : "bg-white dark:bg-slate-800 rounded-2xl rounded-bl-md px-4 py-3 shadow-xs text-sm"
                     }
                   >
                     {isAnalyst && (
@@ -595,6 +601,8 @@ export function DriverChatView({ caseId }: DriverChatViewProps) {
                       />
                     )}
                   </MessageContent>
+                  <MsgTime date={sentAt} align={isUser ? "right" : "left"} />
+                  </div>
                 </Message>
               );
             })}
@@ -612,12 +620,7 @@ export function DriverChatView({ caseId }: DriverChatViewProps) {
               </div>
             )}
 
-            {viewStatus === "streaming" && (
-              <div role="status" aria-label={t("statusStreaming")} className="flex items-center gap-2 text-xs text-slate-500">
-                <Loader />
-                {t("statusStreaming")}
-              </div>
-            )}
+            {viewStatus === "streaming" && <TypingBubble label={t("statusStreaming")} />}
 
             {viewStatus === "error" && (
               <div
@@ -652,6 +655,19 @@ export function DriverChatView({ caseId }: DriverChatViewProps) {
         </div>
       )}
 
+      {caseId && !contextError && !isExpired && !isResolved && !submittedReceipt && viewStatus !== "streaming" && messages.length > 0 && (
+        <QuickReplies
+          disabled={pendingConfirm}
+          onPick={handleQuickReply}
+          items={[
+            { key: "explain", label: t("quickExplain") },
+            { key: "why", label: t("quickWhy") },
+            { key: "time", label: t("quickTime") },
+            { key: "policy", label: t("quickPolicy") },
+          ]}
+        />
+      )}
+
       {/* Accept/Reject action bar slot (Issue #483). */}
       <div data-testid="driver-chat-action-bar-slot">
         {caseId && (
@@ -664,6 +680,17 @@ export function DriverChatView({ caseId }: DriverChatViewProps) {
           />
         )}
       </div>
+
+      {explainOpen && (
+        <DriverExplainFlow
+          caseTitle={caseTitle}
+          deadline={caseDeadline}
+          onClose={() => setExplainOpen(false)}
+          onSubmit={(summary) =>
+            handleConfirmBlock({ type: "confirmation", action: "submit_statement", checklist: [], summary })
+          }
+        />
+      )}
 
       {policySheet && (
         <div
@@ -691,13 +718,13 @@ export function DriverChatView({ caseId }: DriverChatViewProps) {
             if (!text) return;
             handleSend(text);
           }}
-          className="w-full flex-1 min-w-0 [&_[data-slot=input-group]]:h-auto [&_[data-slot=input-group]]:w-full [&_[data-slot=input-group]]:rounded-2xl [&_[data-slot=input-group]]:border-slate-300 [&_[data-slot=input-group]]:shadow-sm"
+          className="w-full flex-1 min-w-0 [&_[data-slot=input-group]]:h-auto [&_[data-slot=input-group]]:w-full [&_[data-slot=input-group]]:rounded-3xl [&_[data-slot=input-group]]:bg-white [&_[data-slot=input-group]]:border-slate-200 [&_[data-slot=input-group]]:shadow-sm"
         >
           <PromptInputBody className="w-full flex-1 min-w-0">
             <PromptInputTextarea
               placeholder={t("composerPlaceholder")}
               disabled={composerDisabled}
-              className="text-xs min-h-12 max-h-28 flex-1 min-w-0 w-full"
+              className="text-sm min-h-12 max-h-28 flex-1 min-w-0 w-full"
             />
             <PromptInputFooter className="flex items-center justify-end pt-1 shrink-0 w-auto">
               <Button

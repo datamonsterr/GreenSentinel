@@ -5,10 +5,10 @@ import { useTranslations } from "next-intl";
 import { Shield, Sparkles, AlertCircle, RefreshCw, Inbox } from "lucide-react";
 import type { DriverCaseSessionItem } from "@/types/schemas";
 import { fetchDriverCases } from "@/lib/api-client";
-import { isResolvedCase } from "@/lib/driver/case-segments";
+import { countByPhase, getTicketPhase, type TicketFilter } from "@/lib/driver/tickets";
 import { DriverCaseCard } from "./driver-case-card";
 
-export type CasesTab = "open" | "resolved";
+export type CasesTab = TicketFilter;
 
 export function DriverCasesView() {
   const t = useTranslations("driver");
@@ -16,7 +16,7 @@ export function DriverCasesView() {
   const [cases, setCases] = useState<DriverCaseSessionItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<CasesTab>("open");
+  const [activeTab, setActiveTab] = useState<CasesTab>("all");
 
   const loadCases = useCallback(async () => {
     setLoading(true);
@@ -36,104 +36,73 @@ export function DriverCasesView() {
     loadCases();
   }, [loadCases]);
 
-  const openCases = cases.filter((c) => !isResolvedCase(c));
-  const resolvedCases = cases.filter(isResolvedCase);
-
-  const displayedCases = activeTab === "open" ? openCases : resolvedCases;
+  const counts = countByPhase(cases);
+  const displayedCases = activeTab === "all" ? cases : cases.filter((c) => getTicketPhase(c) === activeTab);
+  const filters: { id: CasesTab; label: string }[] = [
+    { id: "all", label: t("tickets.filterAll") },
+    { id: "open", label: t("tickets.filterOpen") },
+    { id: "pending", label: t("tickets.filterPending") },
+    { id: "closed", label: t("tickets.filterClosed") },
+  ];
 
   return (
     <div className="w-full flex flex-col flex-1 pb-24 text-slate-900 dark:text-slate-100">
-      {/* Top App Bar */}
-      <header className="sticky top-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 px-4 py-3 flex items-center justify-between shadow-2xs">
-        <div className="flex items-center space-x-2.5">
-          <div className="w-9 h-9 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/20 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+      <header className="sticky top-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 px-4 pt-4 pb-3">
+        <div className="flex items-center gap-2.5">
+          <div className="w-10 h-10 rounded-full bg-emerald-50 dark:bg-emerald-500/20 flex items-center justify-center text-emerald-700 dark:text-emerald-400">
             <Shield className="w-5 h-5" />
           </div>
-          <div className="flex items-center space-x-2">
-            <h1 className="text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight">
-              {t("cases.title")}
-            </h1>
-            <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-600 text-white shadow-2xs">
-              ({cases.length})
-            </span>
+          <div className="min-w-0">
+            <div className="flex items-center gap-2">
+              <h1 className="text-lg font-bold tracking-tight">{t("cases.title")}</h1>
+              <span className="inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs font-bold bg-emerald-600 text-white">
+                ({cases.length})
+              </span>
+            </div>
+            <p className="text-xs text-slate-500 dark:text-slate-400" data-testid="tickets-summary">
+              {t("tickets.summary", { open: counts.open, pending: counts.pending, closed: counts.closed })}
+            </p>
           </div>
+        </div>
+        <div className="mt-3 flex gap-2 overflow-x-auto -mx-1 px-1 pb-0.5" aria-label={t("cases.title")}>
+          {filters.map((f) => {
+            const active = activeTab === f.id;
+            return (
+              <button
+                key={f.id}
+                type="button"
+                aria-pressed={active}
+                onClick={() => setActiveTab(f.id)}
+                className={`shrink-0 min-h-11 px-4 rounded-full border text-sm font-semibold flex items-center gap-1.5 transition-colors cursor-pointer ${
+                  active
+                    ? "bg-[#1b2a33] border-[#1b2a33] text-white dark:bg-emerald-600 dark:border-emerald-600"
+                    : "bg-white border-slate-200 text-slate-700 dark:bg-slate-900 dark:border-slate-700 dark:text-slate-300"
+                }`}
+              >
+                <span>{f.label}</span>
+                <span className={`text-xs ${active ? "text-white/70" : "text-slate-400"}`}>{counts[f.id]}</span>
+              </button>
+            );
+          })}
         </div>
       </header>
 
       <div className="p-4 space-y-4">
-        {/* AI Assurance Notice Banner */}
-        <div className="rounded-2xl p-3.5 bg-gradient-to-r from-emerald-50 via-teal-50/60 to-white dark:from-emerald-950/40 dark:via-teal-950/30 dark:to-slate-900 border border-emerald-500/20 dark:border-emerald-500/30 shadow-2xs flex items-start space-x-3">
-          <div className="w-8 h-8 rounded-xl bg-emerald-600 text-white flex items-center justify-center shrink-0 mt-0.5 shadow-2xs">
+        {/* AI Assurance Notice */}
+        <div className="rounded-[20px] p-3.5 bg-[var(--driver-strip)] border border-emerald-500/20 flex items-start gap-3">
+          <div className="w-8 h-8 rounded-full bg-emerald-600 text-white flex items-center justify-center shrink-0">
             <Sparkles className="w-4 h-4" />
           </div>
           <div className="flex-1">
-            <div className="flex items-center space-x-1.5 mb-0.5">
-              <span className="text-xs font-bold text-emerald-800 dark:text-emerald-300">
-                {t("cases.aiNoticeTitle")}
-              </span>
-              <span className="text-[10px] uppercase font-bold tracking-wide px-1.5 py-0.2 rounded bg-emerald-600/15 text-emerald-700 dark:text-emerald-300">
+            <div className="flex items-center gap-1.5 mb-0.5">
+              <span className="text-xs font-bold text-emerald-800 dark:text-emerald-300">{t("cases.aiNoticeTitle")}</span>
+              <span className="text-[10px] uppercase font-bold tracking-wide px-1.5 rounded bg-emerald-600/15 text-emerald-700 dark:text-emerald-300">
                 {t("cases.aiNoticeBadge")}
               </span>
             </div>
-            <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-300">
-              {t("cases.aiNoticeDesc")}
-            </p>
+            <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-300">{t("cases.aiNoticeDesc")}</p>
           </div>
         </div>
-
-        {/* Segmented Control Filter Tabs */}
-        <div className="p-1 bg-slate-100 dark:bg-slate-800/80 rounded-2xl flex items-center border border-slate-200/80 dark:border-slate-700/80">
-          <button
-            type="button"
-            onClick={() => setActiveTab("open")}
-            className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center space-x-1.5 transition-all cursor-pointer ${
-              activeTab === "open"
-                ? "bg-emerald-600 text-white shadow-xs"
-                : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
-            }`}
-          >
-            <span>{t("cases.tabOpen")}</span>
-            <span
-              className={`w-5 h-5 rounded-full text-[11px] font-bold flex items-center justify-center ${
-                activeTab === "open"
-                  ? "bg-white/20 text-white"
-                  : "bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300"
-              }`}
-            >
-              {openCases.length}
-            </span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => setActiveTab("resolved")}
-            className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold flex items-center justify-center space-x-1.5 transition-all cursor-pointer ${
-              activeTab === "resolved"
-                ? "bg-emerald-600 text-white shadow-xs"
-                : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
-            }`}
-          >
-            <span>{t("cases.tabResolved")}</span>
-            <span
-              className={`w-5 h-5 rounded-full text-[11px] font-bold flex items-center justify-center ${
-                activeTab === "resolved"
-                  ? "bg-white/20 text-white"
-                  : "bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300"
-              }`}
-            >
-              {resolvedCases.length}
-            </span>
-          </button>
-        </div>
-
-        {/* Section title */}
-        {activeTab === "open" && openCases.length > 0 && (
-          <div className="flex items-center justify-between pt-1">
-            <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-              {t("cases.needActionSection")}
-            </span>
-          </div>
-        )}
 
         {/* Content Area */}
         {loading ? (
@@ -191,14 +160,10 @@ export function DriverCasesView() {
             </div>
             <div>
               <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
-                {activeTab === "open"
-                  ? t("cases.emptyOpenTitle")
-                  : t("cases.emptyResolvedTitle")}
+                {cases.length === 0 ? t("tickets.emptyAllTitle") : t("tickets.emptyFilterTitle")}
               </h3>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-xs mx-auto">
-                {activeTab === "open"
-                  ? t("cases.emptyOpenDesc")
-                  : t("cases.emptyResolvedDesc")}
+                {cases.length === 0 ? t("tickets.emptyAllDesc") : t("tickets.emptyFilterDesc")}
               </p>
             </div>
           </div>
