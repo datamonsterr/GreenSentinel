@@ -135,3 +135,8 @@ export function clipSegmentsAt(segments: TripSegment[], tMs: number): TripSegmen
 export function plannedSegment(planned: LonLat[]): TripSegment | null {
   return planned.length > 1 ? build("planned", planned, planned.map(() => null)) : null;
 }
+
+/** Valid [lon, lat] vertices of a GeoJSON coordinate array; anything else is dropped. */
+export function lonLatList(value: unknown): LonLat[] {
+  return Array.isArray(value) ? value.map((c) => lonLat({ position: { coordinates: c } })).filter((c): c is LonLat => c !== null) : [];
+}

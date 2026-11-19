@@ -2,8 +2,8 @@
 
 import React, { useMemo, useState } from "react";
 import { Activity, BatteryMedium, ChevronDown, ChevronRight, CloudSun, Crosshair, Gauge, Globe, LocateOff, Navigation, NetworkIcon, Radar, Route, ShieldCheck, Signal, Timer, TrafficCone, Users, Waypoints, type LucideIcon } from "lucide-react";
-import { MapLibreView, extractCoordinates, type CustomerLocationInfo } from "@/components/map/maplibre-view";
-import { classifyTripSegments, plannedSegment, type LonLat } from "@/lib/trip-segments";
+import { MapLibreView, type CustomerLocationInfo } from "@/components/map/maplibre-view";
+import { classifyTripSegments, lonLatList, plannedSegment, type LonLat } from "@/lib/trip-segments";
 import type { CaseDetailResponse, DisputeDossierResponse } from "@/types/schemas";
 import { useLocale } from "@/lib/locale";
 import { daviScore, finite, mockLocationRatio, speedComparison, speedMarkers, speedSeries } from "@/lib/cockpit-signals";
@@ -97,8 +97,8 @@ export const MapsTab: React.FC<MapsTabProps> = ({
   // Raw samples (incl. null-coordinate dropouts) so GPS gaps render as gap segments.
   const { tripSegments, cancelPoint } = useMemo(() => {
     const planned: LonLat[] = [
-      ...extractCoordinates(caseDetail.route_geometry?.pickup_route?.coordinates ?? caseDetail.route_geometry?.pickup_route?.route?.coordinates),
-      ...extractCoordinates(caseDetail.route_geometry?.destination_route?.coordinates ?? caseDetail.route_geometry?.destination_route?.route?.coordinates),
+      ...lonLatList(caseDetail.route_geometry?.pickup_route?.coordinates ?? caseDetail.route_geometry?.pickup_route?.route?.coordinates),
+      ...lonLatList(caseDetail.route_geometry?.destination_route?.coordinates ?? caseDetail.route_geometry?.destination_route?.route?.coordinates),
     ];
     const trip = caseDetail.trip;
     const cancelled = /cancel/i.test(String(trip?.status ?? "")) && Number.isFinite(Date.parse(trip?.ended_at ?? ""));
