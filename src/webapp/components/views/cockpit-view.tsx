@@ -22,6 +22,7 @@ import { CaseDetailResponse, DisputeDossierResponse, WorkflowTrace, PreliminaryJ
 import { CenterPanelTabs, CenterTabType } from "@/components/adjudication/center-panel-tabs";
 import { useLocale } from "@/lib/locale";
 import { CaseMetadata } from "@/components/cockpit/case-metadata";
+import { WorkflowStepper } from "@/components/cockpit/workflow-stepper";
 import { workspaceMessages } from "@/lib/workspace-messages";
 import { savedWorkspaceJudgment } from "@/lib/workspace-data";
 import { CopyId } from "@/components/adjudication/overview-tab";
@@ -954,6 +955,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
             >{m.retry}</button>}
           </div>}
           {caseDetail.guardrails?.is_blocking && <p role="status" className="rounded bg-amber-50 p-2 text-xs text-amber-900">{m.incomplete}</p>}
+          {activeCenterTab === 'overview' && <WorkflowStepper caseId={caseDetail.case.id} locale={locale} refreshKey={caseDetail.case.status} />}
           {activeCenterTab === 'overview' && (
             <OverviewTab
               caseDetail={caseDetail}

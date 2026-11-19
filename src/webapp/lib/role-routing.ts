@@ -3,7 +3,7 @@ export const ORGANIZATION_ROUTE = '/organization';
 export const WORKSPACE_ROUTE = '/workspace';
 export const DRIVER_ROUTE = '/driver';
 
-const ANALYST_ROLES = new Set(['analyst', 'fraud_analyst', 'senior_analyst']);
+const ANALYST_ROLES = new Set(['analyst', 'fraud_analyst', 'senior_analyst', 'reviewer', 'ops_director', 'marketplace_director']);
 
 export function resolveInitialRoute(roles: readonly string[] | null | undefined): string {
   const normalized = new Set(

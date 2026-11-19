@@ -12,7 +12,7 @@ ORGANIZATION_ROUTE = "/organization"
 WORKSPACE_ROUTE = "/workspace"
 DRIVER_ROUTE = "/driver"
 
-_ANALYST_ROLES = {"analyst", "fraud_analyst", "senior_analyst"}
+_ANALYST_ROLES = {"analyst", "fraud_analyst", "senior_analyst", "reviewer", "ops_director", "marketplace_director"}
 
 
 def resolve_initial_route(roles: Iterable[str] | None, has_org: bool = True) -> str:

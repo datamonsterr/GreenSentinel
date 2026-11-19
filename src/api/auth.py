@@ -91,6 +91,10 @@ class Principal:
     driver_id: str | None = None
 
 
+# GSM workflow roles (ADR-031): Clerk org keys org:reviewer / org:ops_director / org:marketplace_director.
+WORKFLOW_ORG_ROLES = frozenset({"reviewer", "ops_director", "marketplace_director"})
+
+
 def test_auth_enabled(settings: Settings | None = None) -> bool:
     """Local fixture compatibility is an explicit opt-in, never a hosted fallback."""
     settings = settings or get_settings()
@@ -260,6 +264,8 @@ async def require_principal(
             mapped_role = "fraud_analyst"
         elif canonical_org_role == "driver":
             mapped_role = "driver"
+        elif canonical_org_role in WORKFLOW_ORG_ROLES:
+            mapped_role = canonical_org_role
         else:
             mapped_role = None
 
@@ -304,7 +310,10 @@ async def require_principal(
             except (ValueError, AttributeError, TypeError) as exc:
                 raise HTTPException(status_code=403, detail="Clerk organization membership required") from exc
     row = await asyncio.to_thread(load_principal, service._get_db_connection, user_id, claimed_uuid_org)
-    known_roles = {"analyst", "fraud_analyst", "driver", "admin", "demo_operator", "senior_analyst", "member"}
+    known_roles = {
+        "analyst", "fraud_analyst", "driver", "admin", "demo_operator", "senior_analyst", "member",
+        *WORKFLOW_ORG_ROLES,
+    }
 
     # Inactive rows are terminal until an administrator reactivates them.
     if row and row.get("status") not in (None, "active"):

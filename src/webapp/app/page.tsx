@@ -74,7 +74,7 @@ export default async function RootPage() {
           const principal = await settings.json();
           if (!principal?.organization_id || !Array.isArray(principal.roles) ||
               !principal.roles.some((role: string) =>
-                ["admin", "analyst", "fraud_analyst", "senior_analyst", "driver"].includes(role))) notFound();
+                ["admin", "analyst", "fraud_analyst", "senior_analyst", "driver", "reviewer", "ops_director", "marketplace_director"].includes(role))) notFound();
           destination = resolveInitialRoute(principal?.roles);
         } else if (settings.status === 403) {
           unprovisioned = true;

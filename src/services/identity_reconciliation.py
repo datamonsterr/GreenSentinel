@@ -53,6 +53,9 @@ ROLE_MAPPING: dict[str, str] = {
     "analyst": "fraud_analyst",
     "org:driver": "driver",
     "driver": "driver",
+    # GSM workflow roles (ADR-031)
+    **{f"org:{r}": r for r in ("reviewer", "ops_director", "marketplace_director")},
+    **{r: r for r in ("reviewer", "ops_director", "marketplace_director")},
 }
 
 # Proven mock identifiers from test fixtures and seed_cloud.sql
