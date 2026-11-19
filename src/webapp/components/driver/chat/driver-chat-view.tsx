@@ -419,7 +419,7 @@ export function DriverChatView({ caseId }: DriverChatViewProps) {
   }
 
   return (
-    <div data-testid="driver-chat-view" className="flex-1 flex flex-col h-full overflow-hidden">
+    <div data-testid="driver-chat-view" className="flex-1 flex flex-col h-full min-h-0 overflow-hidden">
       {caseId && (
         <div className="flex items-center gap-2 px-4 py-2.5 border-b border-slate-200 dark:border-slate-800">
           <span
@@ -518,7 +518,7 @@ export function DriverChatView({ caseId }: DriverChatViewProps) {
       )}
 
       {!contextError && (
-        <Conversation className="flex-1">
+        <Conversation className="flex-1 min-h-0">
           <ConversationContent>
             {messages.length === 0 && !caseId && (
               <ConversationEmptyState icon={<Sparkles className="w-8 h-8 text-emerald-600" />}>

@@ -27,3 +27,12 @@ describe('DriverChatCasePage Composer clearance', () => {
     expect(chatWrapper.className).toMatch(/pb-/);
   });
 });
+
+describe('DriverChatCasePage bounded height', () => {
+  it('bounds the chat container to the viewport so a long conversation cannot push the composer out of view', async () => {
+    render(<DriverChatCasePage />);
+    const chatWrapper = await screen.findByTestId('driver-chat-container');
+    expect(chatWrapper.className).toMatch(/h-\[calc\(100dvh-5rem\)\]/);
+    expect(chatWrapper.className).toMatch(/min-h-0/);
+  });
+});
