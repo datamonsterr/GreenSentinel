@@ -35,7 +35,7 @@ export default function DriverChatCasePage({
     <DriverI18nProvider>
       <div
         data-testid="driver-chat-container"
-        className="flex flex-col shrink-0 h-[calc(100dvh-5rem)] min-h-0 overflow-hidden pb-[max(1rem,env(safe-area-inset-bottom))]"
+        className="flex flex-col shrink-0 h-dvh min-h-0 overflow-hidden"
       >
         <DriverChatView caseId={caseId} />
       </div>

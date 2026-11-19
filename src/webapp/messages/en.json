@@ -245,6 +245,7 @@
       "backToPortal": "Return to Driver Portal"
     },
     "chat": {
+      "backAriaLabel": "Back",
       "greetingTitle": "Hi {name} 👋",
       "greetingSubtitle": "I'm GSupport. How can I help you today?",
       "driverDefault": "partner",

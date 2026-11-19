@@ -103,10 +103,10 @@ describe("Driver Case Chat Page (/driver/chat/[caseId])", () => {
     vi.mocked(api.fetchDriverSession).mockResolvedValue({ messages: [] } as any);
   });
 
-  it("renders the case chip and header title once context loads", async () => {
+  it("renders the back button and header title once context loads", async () => {
     render(<DriverDisputePage />);
 
-    expect(await screen.findByTestId("case-chip")).toBeInTheDocument();
+    expect(await screen.findByTestId("case-back-button")).toBeInTheDocument();
     expect(await screen.findByText(/Lái xe lệch tuyến, kéo dài hoặc di chuyển sai hướng/i)).toBeInTheDocument();
   });
 });

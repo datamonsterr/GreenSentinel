@@ -245,6 +245,7 @@
       "backToPortal": "Quay lại Cổng đối tác"
     },
     "chat": {
+      "backAriaLabel": "Quay lại",
       "greetingTitle": "Chào {name} 👋",
       "greetingSubtitle": "Tôi là GSupport. Bạn cần hỗ trợ gì hôm nay?",
       "driverDefault": "đối tác",

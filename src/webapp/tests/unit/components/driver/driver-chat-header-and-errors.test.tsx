@@ -6,6 +6,8 @@ import viMessages from "@/messages/vi.json";
 import enMessages from "@/messages/en.json";
 import * as apiClient from "@/lib/api-client";
 
+const mockPush = vi.fn();
+const mockBack = vi.fn();
 let mockStatus = "ready";
 let mockError: any = null;
 
@@ -25,7 +27,7 @@ vi.mock("@clerk/nextjs", () => ({
 }));
 
 vi.mock("next/navigation", () => ({
-  useRouter: () => ({ push: vi.fn() }),
+  useRouter: () => ({ push: mockPush, back: mockBack }),
 }));
 
 vi.mock("@/lib/api-client", () => ({
@@ -77,9 +79,10 @@ describe("DriverChatView — F1, F2, F3, F4", () => {
     expect(pill).toHaveClass("whitespace-nowrap");
     expect(pill).toHaveClass("shrink-0");
 
-    // Case chip
-    const chip = screen.getByTestId("case-chip");
-    expect(chip).toHaveClass("shrink-0");
+    // Back button replaces the case chip
+    expect(screen.queryByTestId("case-chip")).toBeNull();
+    const back = screen.getByRole("button", { name: "Quay lại" });
+    expect(back).toHaveAttribute("aria-label", "Quay lại");
   });
 
   it("F4: renders English violation title in header when locale is en", async () => {

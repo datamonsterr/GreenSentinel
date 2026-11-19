@@ -17,6 +17,7 @@ import {
   Loader2,
   SendHorizontal,
   ChevronDown,
+  ChevronLeft,
   AlertCircle,
 } from "lucide-react";
 
@@ -401,6 +402,10 @@ export function DriverChatView({ caseId }: DriverChatViewProps) {
   };
 
   const shortCode = caseId ? formatShortCaseId(caseId) : null;
+  const handleBack = () => {
+    if (typeof window !== "undefined" && window.history.length > 1) router.back();
+    else router.push("/driver/cases");
+  };
   const statusCopy = caseStatusKey ? getDisputeStatusCopy(caseStatusKey, locale) : null;
 
   const isClosed = Boolean(caseStatusKey && CLOSED_STATUSES.has(caseStatusKey));
@@ -422,12 +427,16 @@ export function DriverChatView({ caseId }: DriverChatViewProps) {
     <div data-testid="driver-chat-view" className="flex-1 flex flex-col h-full min-h-0 overflow-hidden">
       {caseId && (
         <div className="flex items-center gap-2 px-4 py-2.5 border-b border-slate-200 dark:border-slate-800">
-          <span
-            data-testid="case-chip"
-            className="px-2 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400 shrink-0"
+          <button
+            type="button"
+            data-testid="case-back-button"
+            aria-label={t("backAriaLabel")}
+            title={t("backAriaLabel")}
+            onClick={handleBack}
+            className="-ml-2 flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800"
           >
-            {shortCode}
-          </span>
+            <ChevronLeft className="h-5 w-5" aria-hidden="true" />
+          </button>
           {caseTitle && <span className="text-sm font-medium min-w-0 truncate">{caseTitle}</span>}
           {statusCopy && (
             <span
@@ -674,7 +683,7 @@ export function DriverChatView({ caseId }: DriverChatViewProps) {
 
       <div
         data-testid="chat-composer"
-        className="pb-[max(1rem,env(safe-area-inset-bottom))] w-full"
+        className="mx-3 mb-[max(0.75rem,env(safe-area-inset-bottom))] w-auto"
       >
         <PromptInput
           onSubmit={(data) => {
@@ -682,7 +691,7 @@ export function DriverChatView({ caseId }: DriverChatViewProps) {
             if (!text) return;
             handleSend(text);
           }}
-          className="border-t border-slate-200 dark:border-slate-800 w-full flex-1 min-w-0 [&_[data-slot=input-group]]:h-auto [&_[data-slot=input-group]]:w-full"
+          className="w-full flex-1 min-w-0 [&_[data-slot=input-group]]:h-auto [&_[data-slot=input-group]]:w-full [&_[data-slot=input-group]]:rounded-2xl [&_[data-slot=input-group]]:border-slate-300 [&_[data-slot=input-group]]:shadow-sm"
         >
           <PromptInputBody className="w-full flex-1 min-w-0">
             <PromptInputTextarea
@@ -697,7 +706,7 @@ export function DriverChatView({ caseId }: DriverChatViewProps) {
                 disabled={composerDisabled}
                 aria-label={t("send")}
                 title={t("send")}
-                className="bg-emerald-600 hover:bg-emerald-700 text-white shrink-0"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white shrink-0 rounded-full"
               >
                 {viewStatus === "streaming" ? (
                   <Loader2 className="h-3.5 w-3.5 animate-spin" aria-hidden="true" />

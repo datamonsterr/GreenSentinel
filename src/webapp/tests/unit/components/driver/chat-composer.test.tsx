@@ -18,21 +18,13 @@ vi.mock('@/components/driver/chat/driver-chat-view', () => ({
   ),
 }));
 
-describe('DriverChatCasePage Composer clearance', () => {
-  it('renders chat view and clears the fixed bottom nav with bottom padding and safe-area', async () => {
+describe('DriverChatCasePage full-screen height', () => {
+  it('fills the whole viewport (nav is hidden on this route) and stays bounded so the composer stays visible', async () => {
     render(<DriverChatCasePage />);
     const chatWrapper = await screen.findByTestId('driver-chat-container');
-    expect(chatWrapper).toBeInTheDocument();
-    // Verify container or composer has bottom padding/clearance class
-    expect(chatWrapper.className).toMatch(/pb-/);
-  });
-});
-
-describe('DriverChatCasePage bounded height', () => {
-  it('bounds the chat container to the viewport so a long conversation cannot push the composer out of view', async () => {
-    render(<DriverChatCasePage />);
-    const chatWrapper = await screen.findByTestId('driver-chat-container');
-    expect(chatWrapper.className).toMatch(/h-\[calc\(100dvh-5rem\)\]/);
+    expect(chatWrapper.className).toMatch(/\bh-dvh\b/);
+    expect(chatWrapper.className).not.toMatch(/100dvh-5rem/);
     expect(chatWrapper.className).toMatch(/min-h-0/);
+    expect(chatWrapper.className).toMatch(/overflow-hidden/);
   });
 });
