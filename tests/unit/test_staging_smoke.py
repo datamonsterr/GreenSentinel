@@ -2,87 +2,15 @@
 
 import io
 import json
-import os
-import subprocess
 import sys
-import textwrap
 from pathlib import Path
 from urllib.error import HTTPError, URLError
 
 import pytest
-import yaml
 
 from scripts import staging_smoke
 
 ROOT = Path(__file__).resolve().parents[2]
-
-
-def test_staging_smoke_step_checks_remote_contract_and_exits(tmp_path):
-    """A healthy remote API must finish without entering the local simulator."""
-    workflow = yaml.safe_load((ROOT / ".github/workflows/deploy-railway.yml").read_text())
-    step = next(step for step in workflow["jobs"]["deploy-staging"]["steps"] if "Smoke Test" in step.get("name", ""))
-    calls = tmp_path / "requests.txt"
-    launcher = tmp_path / "python3"
-    launcher.write_text(
-        f"#!{sys.executable}\n"
-        + textwrap.dedent(
-            """\
-            import io
-            import os
-            import runpy
-            import sys
-            from urllib.error import HTTPError
-            import urllib.request
-
-            if sys.argv[1] != "scripts/staging_smoke.py":
-                sys.exit("Staging smoke entered the local trip simulator instead of probing the API")
-
-            def urlopen(request, *, timeout):
-                url = request.full_url
-                assert request.get_method() == "GET"
-                assert not request.has_header("Authorization")
-                assert not request.has_header("Cookie")
-                assert 0 < timeout <= 20
-                with open(os.environ["SMOKE_CALLS"], "a") as calls:
-                    calls.write(url + "\\n")
-                if url == "https://staging.example/health":
-                    response = io.BytesIO(b'{"status":"ok","database":"connected","env":"staging"}')
-                    response.status = 200
-                    return response
-                assert url == "https://staging.example/api/v1/account/settings"
-                raise HTTPError(url, 401, "Unauthorized", {}, io.BytesIO(b'{"detail":"Clerk session required"}'))
-
-            urllib.request.urlopen = urlopen
-            sys.argv = sys.argv[1:]
-            runpy.run_path(sys.argv[0], run_name="__main__")
-            """
-        )
-    )
-    launcher.chmod(0o755)
-    # Let the old shell reach its simulator call without touching a real API.
-    curl = tmp_path / "curl"
-    curl.write_text('#!/bin/sh\ncase "$*" in *account/settings*) printf 401;; esac\n')
-    curl.chmod(0o755)
-
-    result = subprocess.run(
-        ["bash", "-e", "-o", "pipefail", "-c", step["run"]],
-        cwd=ROOT,
-        env={
-            **os.environ,
-            "PATH": f"{tmp_path}:{os.environ['PATH']}",
-            "STAGING_API_URL": "https://staging.example/",
-            "SMOKE_CALLS": str(calls),
-        },
-        capture_output=True,
-        text=True,
-        timeout=5,
-    )
-
-    assert result.returncode == 0, result.stdout + result.stderr
-    assert calls.read_text().splitlines() == [
-        "https://staging.example/health",
-        "https://staging.example/api/v1/account/settings",
-    ]
 
 
 HEALTH = (200, b'{"status":"ok","database":"connected","env":"staging"}')

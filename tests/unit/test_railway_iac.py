@@ -13,7 +13,7 @@ def test_iac_defines_managed_resources():
     src = pathlib.Path(".railway/railway.ts").read_text()
     assert "defineRailway" in src
     assert "service(" in src  # greensentinel-backend
-    assert "postgres(" in src
+    assert "postgis/postgis" in src
     assert "redis(" in src
     assert "DATABASE_URL" in src
     assert "REDIS_URL" in src

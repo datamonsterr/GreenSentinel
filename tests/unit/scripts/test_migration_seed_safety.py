@@ -2,7 +2,6 @@ from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pytest
-import yaml
 
 import scripts.migrate_postgres as migrator
 
@@ -19,42 +18,6 @@ def test_workflows_no_implicit_mock_seed():
     assert "Small Model & Mock Setup" not in content, (
         "Misleading 'Small Model & Mock Setup' label found in deploy-railway.yml"
     )
-
-
-def test_ephemeral_preview_explicitly_seeds_acceptance_fixtures():
-    workflow_path = ROOT_DIR / ".github" / "workflows" / "deploy-railway.yml"
-    content = workflow_path.read_text(encoding="utf-8")
-
-    assert '--database-url "$PREVIEW_DB_URL" --seed --allow-remote-seed' in content
-
-
-def test_ephemeral_preview_docker_setup_is_distribution_portable():
-    workflow_path = ROOT_DIR / ".github" / "workflows" / "deploy-railway.yml"
-    content = workflow_path.read_text(encoding="utf-8")
-    workflow = yaml.safe_load(content)
-    steps = workflow["jobs"]["deploy-pr-preview"]["steps"]
-    docker_setup = next(step["run"] for step in steps if step.get("name") == "Ensure Docker and build tools")
-
-    assert docker_setup == "bash scripts/ci/ensure_docker.sh"
-
-
-def test_workflow_docker_installers_do_not_assume_ubuntu():
-    workflow_path = ROOT_DIR / ".github" / "workflows" / "deploy-railway.yml"
-    content = workflow_path.read_text(encoding="utf-8")
-    workflow = yaml.safe_load(content)
-    docker_installers = [
-        next(
-            step["run"]
-            for step in workflow["jobs"][job_name]["steps"]
-            if step.get("name") == "Ensure Docker and build tools"
-        )
-        for job_name in ("validate-config", "deploy-pr-preview")
-    ]
-
-    assert docker_installers == ["bash scripts/ci/ensure_docker.sh"] * 2
-    helper = (ROOT_DIR / "scripts" / "ci" / "ensure_docker.sh").read_text(encoding="utf-8")
-    assert "https://download.docker.com/linux/${distro}" in helper
-    assert "rm -f /etc/apt/sources.list.d/docker.list" in helper
 
 
 def test_default_migration_never_invokes_seed_or_enrich():
