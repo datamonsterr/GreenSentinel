@@ -1,5 +1,8 @@
 name: Deploy Railway
 
+# Single environment: Railway project `greensentinel`, environment `production`.
+# Deploys on push to main and manual dispatch. No PR previews.
+
 on:
   push:
     branches: [main]
@@ -10,715 +13,79 @@ on:
       - "requirements.txt"
       - "pyproject.toml"
       - "uv.lock"
-      - "scripts/railway_pr.py"
-      - "scripts/auth_config.py"
-      - "scripts/deployment_policy.py"
-      - "scripts/authorize_preview.sh"
+      - "scripts/**"
       - ".github/workflows/deploy-railway.yml"
-      - ".github/workflows/deploy-vercel.yml"
   pull_request:
-    types: [opened, synchronize, reopened, closed, ready_for_review]
     branches: [main]
+    paths:
+      - "Dockerfile"
+      - "docker-compose.yml"
+      - ".github/workflows/deploy-railway.yml"
   workflow_dispatch:
-    inputs:
-      target_env:
-        description: "Target environment to deploy"
-        required: true
-        default: "dev"
-        type: choice
-        options:
-          - dev
-          - staging
-          - production
-          - all
-      seed_issue_191_acceptance:
-        description: "Seed the deterministic ERR-01 acceptance case in dev only"
-        required: false
-        default: false
-        type: boolean
 
 permissions:
   contents: read
-  actions: read
-  pull-requests: write
-  issues: write
+
+concurrency:
+  group: deploy-railway
+  cancel-in-progress: false
 
 jobs:
   validate-config:
     name: Validate Infrastructure Configuration
-    if: github.event.action != 'closed'
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
-      - name: Clean root-owned Docker volumes from previous runs
-        run: |
-          if [ -d "$GITHUB_WORKSPACE" ] && command -v docker >/dev/null 2>&1; then
-            docker run --rm -v "$GITHUB_WORKSPACE:/target" alpine sh -c '
-              rm -rf /target/src/webapp/node_modules /target/src/webapp/test-results
-              chown -R '"$(id -u):$(id -g)"' /target
-            '
-          fi
       - uses: actions/checkout@v7
-      - name: Ensure Docker and build tools
-        run: bash scripts/ci/ensure_docker.sh
       - name: Validate Docker Compose Configuration
         run: docker compose config
 
-  # ==========================================
-  # 1b. IAC DRIFT GATE (dev representative; plan is read-only)
-  # `railway link` needs user-session auth and rejects API tokens, so the
-  # link state is written directly (no API call). Config commands then run
-  # under RAILWAY_TOKEN_DEV when present.
-  # ==========================================
-  iac-drift:
-    name: Railway IaC Drift Check
+  deploy-production:
+    name: Deploy Backend to Railway (production)
     needs: [validate-config]
-    if: github.event.action != 'closed' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
-    runs-on: self-hosted
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: production
+    timeout-minutes: 30
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
     steps:
-      - name: Clean root-owned Docker volumes from previous runs
-        run: |
-          if [ -d "$GITHUB_WORKSPACE" ] && command -v docker >/dev/null 2>&1; then
-            docker run --rm -v "$GITHUB_WORKSPACE:/target" alpine sh -c '
-              rm -rf /target/src/webapp/node_modules /target/src/webapp/test-results
-              chown -R '"$(id -u):$(id -g)"' /target
-            '
-          fi
       - uses: actions/checkout@v7
+
       - uses: actions/setup-node@v7
         with:
           node-version: 22
       - run: npm install -g @railway/cli
-      - name: Install IaC authoring SDK
-        run: npm --prefix .railway ci --no-audit --no-fund
-      - name: Plan against dev (detailed exit code)
-        env:
-          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
-          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
-          RAILWAY_DEV_ENVIRONMENT_ID: ${{ secrets.RAILWAY_DEV_ENVIRONMENT_ID }}
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_DEV }}
-        run: |
-          if [ -z "${RAILWAY_TOKEN:-}" ]; then
-            echo "IaC drift check skipped: add RAILWAY_TOKEN_DEV (environment token) to enable code-based drift detection." >> "$GITHUB_STEP_SUMMARY"
-            exit 0
-          fi
-          python3 - <<'PY'
-          import json, os
-          from pathlib import Path
-          ws = os.environ["GITHUB_WORKSPACE"]
-          cfg_path = Path.home() / ".railway" / "config.json"
-          data = json.loads(cfg_path.read_text()) if cfg_path.exists() else {}
-          data.setdefault("projects", {})[ws] = {
-              "environment": os.environ["RAILWAY_DEV_ENVIRONMENT_ID"],
-              "environmentName": "dev",
-              "name": "caring-renewal",
-              "project": os.environ["RAILWAY_PROJECT_ID"],
-              "projectPath": ws,
-          }
-          cfg_path.parent.mkdir(parents=True, exist_ok=True)
-          cfg_path.write_text(json.dumps(data))
-          PY
-          set +e
-          railway config plan --detailed-exit-code
-          code=$?
-          set -e
-          if [ "$code" -eq 2 ]; then
-            if [ "${GITHUB_EVENT_NAME}" = "pull_request" ]; then
-              echo "Pending IaC changes on this PR (expected when .railway/ changes); merge review covers the apply." >> "$GITHUB_STEP_SUMMARY"
-            else
-              echo "IaC drift on ${GITHUB_EVENT_NAME}: deploy-dev applies the saved plan next; recording only." >> "$GITHUB_STEP_SUMMARY"
-            fi
-            exit 0
-          fi
-          exit "$code"
 
-  classify-pr:
-    name: Classify PR Scope
-    if: github.event_name == 'pull_request' && github.event.action != 'closed'
-    runs-on: self-hosted
-    outputs:
-      backend: ${{ steps.classify.outputs.backend }}
-      frontend: ${{ steps.classify.outputs.frontend }}
-    steps:
-      - name: Clean root-owned Docker volumes from previous runs
-        run: |
-          if [ -d "$GITHUB_WORKSPACE" ] && command -v docker >/dev/null 2>&1; then
-            docker run --rm -v "$GITHUB_WORKSPACE:/target" alpine sh -c '
-              rm -rf /target/src/webapp/node_modules /target/src/webapp/test-results
-              chown -R '"$(id -u):$(id -g)"' /target
-            '
-          fi
-      - uses: actions/checkout@v7
-      - name: Classify PR
-        id: classify
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-        run: |
-          python3 scripts/deployment_policy.py classify --pr ${{ github.event.pull_request.number }}
-
-  # ==========================================
-  # 1. PR PREVIEW ENVIRONMENT (Ephemeral Railway)
-  # ==========================================
-  deploy-pr-preview:
-    name: Deploy PR Preview to Railway (Ephemeral Domain)
-    needs: [validate-config, classify-pr]
-    # Ready-tier only: no ephemeral Railway services for drafts.
-    # ready_for_review re-triggers this job when the PR flips to ready.
-    if: github.event_name == 'pull_request' && github.event.action != 'closed' && github.event.pull_request.draft == false && needs.classify-pr.outputs.backend == 'true'
-    runs-on: self-hosted
-    steps:
-      - name: Clean root-owned Docker volumes from previous runs
-        run: |
-          if [ -d "$GITHUB_WORKSPACE/data" ]; then
-            if command -v docker >/dev/null 2>&1; then
-              docker run --rm -v "$GITHUB_WORKSPACE/data:/target" alpine \
-                sh -c "rm -rf /target/*" || true
-            fi
-            rm -rf "$GITHUB_WORKSPACE/data" || true
-          fi
-      - uses: actions/checkout@v7
-      - name: Ensure Docker and build tools
-        run: bash scripts/ci/ensure_docker.sh
-
-      - name: Setup Node.js & Railway CLI
-        uses: actions/setup-node@v7
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v7
         with:
-          node-version: 22
-      - run: npm install -g @railway/cli
+          enable-cache: false
 
-      - name: Ensure uv and python available
+      - name: Database migration
+        if: ${{ env.DATABASE_URL != '' }}
         run: |
-          if ! command -v uv > /dev/null 2>&1; then
-            curl -LsSf https://astral.sh/uv/install.sh | sh
-          fi
-          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
-          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          uv run --python 3.12 --with "psycopg[binary]>=3.2" --with python-dotenv \
+            python scripts/migrate_postgres.py --database-url "$DATABASE_URL"
 
-      - name: Provision Ephemeral Preview Environment and Domain
-        id: railway-preview
+      - name: Deploy code to Railway
         env:
           RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
-          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
-          RAILWAY_DEV_ENVIRONMENT_ID: ${{ secrets.RAILWAY_DEV_ENVIRONMENT_ID }}
-          RAILWAY_DEV_SERVICE_ID: ${{ secrets.RAILWAY_DEV_SERVICE_ID || secrets.RAILWAY_SERVICE_ID }}
         run: |
-          python3 scripts/railway_pr.py setup --pr ${{ github.event.pull_request.number }} --head-sha ${{ github.event.pull_request.head.sha }}
+          bash scripts/railway_deploy_code.sh \
+            --service "${{ secrets.RAILWAY_SERVICE_ID }}" \
+            --project "${{ secrets.RAILWAY_PROJECT_ID }}" \
+            --environment "${{ secrets.RAILWAY_ENVIRONMENT_ID }}" \
+            --message "CI/CD: production release ${GITHUB_SHA::7}"
 
-      - name: Migrate Preview Database (app schema)
-        env:
-          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
-          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
-        run: |
-          # Ephemeral envs duplicate dev services with EMPTY volumes, so the
-          # preview Postgres has no app schema and /health 503s until migrated.
-          export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
-          PG_VARS_JSON="$(railway variables --service Postgres --project "$RAILWAY_PROJECT_ID" --environment "pr-${{ github.event.pull_request.number }}" --json 2>/dev/null || true)"
-          PREVIEW_DB_URL="$(python3 - "$PG_VARS_JSON" <<'PY'
-          import json, sys
-          try:
-              raw = sys.argv[1] if len(sys.argv) > 1 else ''
-              if not raw or raw.strip().startswith('<'):
-                  raise ValueError('empty')
-              data = json.loads(raw)
-              if isinstance(data, dict) and 'variables' in data and isinstance(data['variables'], dict):
-                  data = data['variables']
-              direct = data.get('DATABASE_URL') or ''
-              if direct and 'railway.internal' not in direct:
-                  print(direct)
-              else:
-                  # Fall back to the public TCP proxy: the runner cannot
-                  # reach Railway private DNS names.
-                  host = data.get('RAILWAY_TCP_PROXY_DOMAIN') or ''
-                  port = str(data.get('RAILWAY_TCP_PROXY_PORT') or '')
-                  user = data.get('PGUSER') or data.get('POSTGRES_USER') or 'postgres'
-                  password = data.get('PGPASSWORD') or data.get('POSTGRES_PASSWORD') or ''
-                  db = data.get('PGDATABASE') or data.get('POSTGRES_DB') or 'railway'
-                  if host and port and password:
-                      from urllib.parse import quote_plus
-                      print(f"postgresql://{quote_plus(user)}:{quote_plus(password)}@{host}:{port}/{db}?sslmode=prefer")
-          except Exception:
-              pass
-          PY
-          )"
-          if [ -z "$PREVIEW_DB_URL" ]; then
-            echo "[FAIL] preview Postgres URL unavailable; cannot migrate pr-${{ github.event.pull_request.number }}" >&2
-            exit 1
-          fi
-          if ! command -v uv >/dev/null 2>&1; then
-            curl -LsSf https://astral.sh/uv/install.sh | sh
-          fi
-          uv run --python 3.12 --with "psycopg[binary]>=3.2" --with python-dotenv python scripts/migrate_postgres.py \
-            --database-url "$PREVIEW_DB_URL" --seed --allow-remote-seed
-          echo "PREVIEW_DB_URL=${PREVIEW_DB_URL}" >> "$GITHUB_ENV"
-
-      - name: Link E2E Clerk Org to Preview Seed Tenant
-        env:
-          E2E_CLERK_ORGANIZATION_ID: ${{ vars.E2E_CLERK_ORGANIZATION_ID }}
-        run: |
-          # Real-account preview E2E signs in as members of one provisioned
-          # Clerk org; the backend resolves native orgs only through an
-          # explicit admin link, and ephemeral preview databases start
-          # unlinked. Act as the preview admin: link the seed tenant.
-          # Unset var = skip openly (E2E stays denied by design, never silent).
-          if [ -z "${E2E_CLERK_ORGANIZATION_ID:-}" ]; then
-            echo "E2E_CLERK_ORGANIZATION_ID is not set; skipping preview org link (real-account E2E stays denied)." >> "$GITHUB_STEP_SUMMARY"
-            exit 0
-          fi
-          if [ -z "${PREVIEW_DB_URL:-}" ]; then
-            echo "[FAIL] PREVIEW_DB_URL is empty; cannot link org on pr-${{ github.event.pull_request.number }}" >&2
-            exit 1
-          fi
-          export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
-          if ! command -v uv >/dev/null 2>&1; then
-            curl -LsSf https://astral.sh/uv/install.sh | sh
-          fi
-          uv run --python 3.12 --with "psycopg[binary]>=3.2" python - "$PREVIEW_DB_URL" "$E2E_CLERK_ORGANIZATION_ID" <<'PY'
-          import sys
-          import psycopg
-          db_url, clerk_org = sys.argv[1], sys.argv[2]
-          with psycopg.connect(db_url) as conn:
-              with conn.cursor() as cur:
-                  cur.execute("SET search_path = app, extensions, public;")
-                  cur.execute(
-                      """
-                      INSERT INTO app.organizations (id, name, clerk_organization_id)
-                      VALUES ('018f2f4e-0000-7000-8000-000000000001', 'VinUni Demo Org', %s)
-                      ON CONFLICT (id) DO UPDATE SET clerk_organization_id = EXCLUDED.clerk_organization_id;
-                      """,
-                      (clerk_org,),
-                  )
-                  print(f"linked={cur.rowcount} clerk_org={clerk_org}")
-              conn.commit()
-          PY
-
-      - name: PR Preview Health Check Probe
-        id: preview-health
-        run: |
-          PREVIEW_URL="${{ steps.railway-preview.outputs.railway_url || env.railway_url }}"
-          if [ -z "$PREVIEW_URL" ]; then
-            PREVIEW_URL="$(python3 scripts/railway_pr.py get-url --pr ${{ github.event.pull_request.number }} --require-preview --head-sha ${{ github.event.pull_request.head.sha }})"
-          fi
-          echo "Checking health for $PREVIEW_URL..."
-          for i in {1..24}; do
-            if curl -s -f "${PREVIEW_URL%/}/health" >/dev/null; then
-              echo "Preview API is healthy at ${PREVIEW_URL}"
-              exit 0
-            fi
-            sleep 5
-          done
-          echo "[FAIL] Preview health check timed out" && exit 1
-
-      - name: Diagnose unavailable PR Preview
-        if: failure() && steps.preview-health.outcome == 'failure'
-        env:
-          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
-          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
-          RAILWAY_DEV_SERVICE_ID: ${{ secrets.RAILWAY_DEV_SERVICE_ID || secrets.RAILWAY_SERVICE_ID }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: |
-          python3 - <<'PY'
-          import os
-          from scripts.railway_pr import preview_failure_diagnostics
-          print(preview_failure_diagnostics(
-              os.environ["RAILWAY_DEV_SERVICE_ID"],
-              os.environ["RAILWAY_PROJECT_ID"],
-              f"pr-{os.environ['PR_NUMBER']}",
-          ))
-          PY
-
-      - name: Comment Preview Link on Pull Request
-        if: github.event_name == 'pull_request'
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PREVIEW_URL: ${{ steps.railway-preview.outputs.railway_url }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: |
-          if [ -z "$PREVIEW_URL" ]; then
-            echo "[FAIL] Railway preview URL output is missing" >&2
-            exit 1
-          fi
-          printf "🚀 **Railway Backend Preview Deployed**\n- **Environment:** \`pr-%s\`\n- **Backend API URL:** %s\n- **Health Endpoint:** %s/health\n" \
-            "$PR_NUMBER" "$PREVIEW_URL" "$PREVIEW_URL" > /tmp/railway_comment.txt
-          cat /tmp/railway_comment.txt >> "$GITHUB_STEP_SUMMARY"
-          gh pr comment "$PR_NUMBER" --body-file /tmp/railway_comment.txt || true
-
-  deploy-vercel-pr-preview:
-    name: Deploy Frontend After Railway Preview
-    needs: [deploy-pr-preview]
-    # Ready-tier only: follows deploy-pr-preview, which skips on drafts.
-    if: github.event_name == 'pull_request' && github.event.action != 'closed' && github.event.pull_request.draft == false
-    uses: ./.github/workflows/deploy-vercel.yml
-    with:
-      railway_ready: true
-    secrets: inherit
-
-  # ==========================================
-  # 2. PR CLEANUP (Destroy Ephemeral Railway on Close)
-  # ==========================================
-  cleanup-pr-preview:
-    name: Cleanup Railway PR Ephemeral Environment
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    runs-on: self-hosted
-    steps:
-      - name: Clean root-owned Docker volumes from previous runs
-        run: |
-          if [ -d "$GITHUB_WORKSPACE/data" ]; then
-            if command -v docker >/dev/null 2>&1; then
-              docker run --rm -v "$GITHUB_WORKSPACE/data:/target" alpine \
-                sh -c "rm -rf /target/*" || true
-            fi
-            rm -rf "$GITHUB_WORKSPACE/data" || true
-          fi
-      - uses: actions/checkout@v7
-      - name: Setup Node.js & Railway CLI
-        uses: actions/setup-node@v7
-        with:
-          node-version: 22
-      - run: npm install -g @railway/cli
-      - name: Destroy PR Ephemeral Environment
-        env:
-          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
-          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
-        run: |
-          python3 scripts/railway_pr.py cleanup --pr ${{ github.event.pull_request.number }}
-
-  # ==========================================
-  # 3. DEV ENVIRONMENT (Auto trigger on merge to main)
-  # ==========================================
-  deploy-dev:
-    name: Deploy to Dev (Fast Redeploy & Health Check)
-    needs: [validate-config]
-    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'workflow_dispatch' && (inputs.target_env == 'dev' || inputs.target_env == 'all'))
-    runs-on: self-hosted
-    environment: dev
-    steps:
-      - name: Clean root-owned Docker volumes from previous runs
-        run: |
-          if [ -d "$GITHUB_WORKSPACE/data" ]; then
-            if command -v docker >/dev/null 2>&1; then
-              docker run --rm -v "$GITHUB_WORKSPACE/data:/target" alpine \
-                sh -c "rm -rf /target/*" || true
-            fi
-            rm -rf "$GITHUB_WORKSPACE/data" || true
-          fi
-      - uses: actions/checkout@v7
-
-      - name: Setup Node.js & Railway CLI
-        uses: actions/setup-node@v7
-        with:
-          node-version: 22
-      - run: npm install -g @railway/cli
-
-      - name: Run Dev Database Migration
-        env:
-          DATABASE_URL: ${{ secrets.DEV_DATABASE_URL || secrets.DATABASE_URL }}
-        run: |
-          if ! command -v uv >/dev/null 2>&1; then
-            curl -LsSf https://astral.sh/uv/install.sh | sh
-          fi
-          if [ -n "$DATABASE_URL" ]; then
-            export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
-            # Pin Python 3.12: system 3.15 breaks PyO3 builds (ormsgpack), same as ci.yml.
-            uv python install 3.12
-            uv run --python 3.12 --with "psycopg[binary]>=3.2" --with python-dotenv python scripts/migrate_postgres.py --database-url "$DATABASE_URL"
-          fi
-
-      - name: Seed Issue 191 acceptance data in Dev
-        if: github.event_name == 'workflow_dispatch' && inputs.target_env == 'dev' && inputs.seed_issue_191_acceptance == true
-        env:
-          DATABASE_URL: ${{ secrets.DEV_DATABASE_URL || secrets.DATABASE_URL }}
-        run: |
-          if [ -z "$DATABASE_URL" ]; then
-            echo "DEV_DATABASE_URL is required for Issue #191 acceptance seeding." >&2
-            exit 1
-          fi
-          export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
-          uv run --python 3.12 --with "psycopg[binary]>=3.2" python scripts/seed_issue_191_acceptance.py \
-            --database-url "$DATABASE_URL" --allow-remote-seed
-
-      - name: Deploy Service to Railway Dev
-        env:
-          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
-          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
-          TARGET_SERVICE: ${{ secrets.RAILWAY_DEV_SERVICE_ID || secrets.RAILWAY_SERVICE_ID }}
-          TARGET_ENV: ${{ secrets.RAILWAY_DEV_ENVIRONMENT_ID || 'dev' }}
-          CLERK_AUTHORIZED_PARTIES_OVERRIDE: ${{ vars.CLERK_AUTHORIZED_PARTIES }}
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_DEV }}
-        run: |
-          CLERK_AUTHORIZED_PARTIES="$(python3 scripts/auth_config.py dev --override "$CLERK_AUTHORIZED_PARTIES_OVERRIDE")"
-          railway variable set --service "${TARGET_SERVICE}" --project "${RAILWAY_PROJECT_ID}" --environment "${TARGET_ENV}" --skip-deploys "CLERK_AUTHORIZED_PARTIES=${CLERK_AUTHORIZED_PARTIES}" >/dev/null
-          npm --prefix .railway ci --no-audit --no-fund
-          # Config heredoc stays at top level: nested heredocs keep YAML
-          # indentation and break Python. The token gate only wraps plan/apply.
-          python3 - <<'PY'
-          import json, os
-          from pathlib import Path
-          ws = os.environ["GITHUB_WORKSPACE"]
-          cfg_path = Path.home() / ".railway" / "config.json"
-          data = json.loads(cfg_path.read_text()) if cfg_path.exists() else {}
-          data.setdefault("projects", {})[ws] = {
-              "environment": os.environ["TARGET_ENV"],
-              "environmentName": "dev",
-              "name": "caring-renewal",
-              "project": os.environ["RAILWAY_PROJECT_ID"],
-              "projectPath": ws,
-          }
-          cfg_path.parent.mkdir(parents=True, exist_ok=True)
-          cfg_path.write_text(json.dumps(data))
-          PY
-          if [ -n "${RAILWAY_TOKEN:-}" ]; then
-            railway config plan --out railway-plan.json
-            railway config apply --plan railway-plan.json --yes
-            echo "Applied IaC saved plan (configuration only)." >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "RAILWAY_TOKEN_DEV not set; IaC saved plan skipped. Add RAILWAY_TOKEN_DEV/STAGING/PRODUCTION (environment tokens) to enable config applies." >> "$GITHUB_STEP_SUMMARY"
-          fi
-          # config apply never ships application code, so the plan and the code
-          # deploy are separate: without the second half the health probe below
-          # answers for a stale build and CI reports success for it.
-          bash scripts/railway_deploy_code.sh --service "${TARGET_SERVICE}" --project "${RAILWAY_PROJECT_ID}" --environment "${TARGET_ENV}" --message "CI/CD: Fast Redeploy to Dev"
-          echo "Deployed application code from the checkout." >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Refuse test-auth on Railway Dev
-        env:
-          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
-          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
-          TARGET_SERVICE: ${{ secrets.RAILWAY_DEV_SERVICE_ID || secrets.RAILWAY_SERVICE_ID }}
-          TARGET_ENV: ${{ secrets.RAILWAY_DEV_ENVIRONMENT_ID || 'dev' }}
-        run: |
-          vars="$(railway variable list --service "${TARGET_SERVICE}" --project "${RAILWAY_PROJECT_ID}" --environment "${TARGET_ENV}" --json)"
-          python3 - "$vars" <<'PY'
-          import json, sys
-          v = json.loads(sys.argv[1])
-          assert v.get("APP_ENV") != "test", "refusing deploy with APP_ENV=test on persistent env"
-          assert str(v.get("TEST_AUTH_ENABLED", "")).lower() not in ("true", "1", "yes"), "refusing deploy with TEST_AUTH_ENABLED on persistent env"
-          PY
-
-      - name: Dev E2E API Verification Probe
-        env:
-          DEV_API_URL: ${{ vars.RAILWAY_DEV_URL || 'https://greensentinel-backend-dev.up.railway.app' }}
-        run: |
-          for i in {1..12}; do
-            if curl -s -f "${DEV_API_URL%/}/health" >/dev/null; then
-              echo "Dev API is healthy and reachable at ${DEV_API_URL}"
-              exit 0
-            fi
-            sleep 5
-          done
-          echo "Dev healthcheck failed" && exit 1
-
-  # ==========================================
-  # 4. STAGING ENVIRONMENT (Mirrors Prod, Auto-Migration, Gated by Approval)
-  # ==========================================
-  deploy-staging:
-    name: Deploy to Staging (Read-only Contract Smoke Tests)
-    needs: [validate-config]
-    if: "github.event_name == 'workflow_dispatch' && (inputs.target_env == 'staging' || inputs.target_env == 'all')"
-    runs-on: self-hosted
-    environment: staging
-    steps:
-      - name: Clean root-owned Docker volumes from previous runs
-        run: |
-          if [ -d "$GITHUB_WORKSPACE/data" ]; then
-            if command -v docker >/dev/null 2>&1; then
-              docker run --rm -v "$GITHUB_WORKSPACE/data:/target" alpine \
-                sh -c "rm -rf /target/*" || true
-            fi
-            rm -rf "$GITHUB_WORKSPACE/data" || true
-          fi
-      - uses: actions/checkout@v7
-
-      - name: Setup Node.js & Railway CLI
-        uses: actions/setup-node@v7
-        with:
-          node-version: 22
-      - run: npm install -g @railway/cli
-
-      - name: Auto-apply Staging Database Migrations
-        env:
-          DATABASE_URL: ${{ secrets.STAGING_DATABASE_URL || secrets.DATABASE_URL }}
-        run: |
-          if ! command -v uv >/dev/null 2>&1; then
-            curl -LsSf https://astral.sh/uv/install.sh | sh
-          fi
-          if [ -n "$DATABASE_URL" ]; then
-            export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
-            # Pin Python 3.12: system 3.15 breaks PyO3 builds (ormsgpack), same as ci.yml.
-            uv python install 3.12
-            uv run --python 3.12 --with "psycopg[binary]>=3.2" --with python-dotenv python scripts/migrate_postgres.py --database-url "$DATABASE_URL"
-          fi
-
-      - name: Deploy Service to Railway Staging
-        env:
-          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
-          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
-          TARGET_SERVICE: ${{ secrets.RAILWAY_STAGING_SERVICE_ID || secrets.RAILWAY_V1_SERVICE_ID || secrets.RAILWAY_SERVICE_ID }}
-          TARGET_ENV: ${{ secrets.RAILWAY_STAGING_ENVIRONMENT_ID || secrets.RAILWAY_V1_ENVIRONMENT_ID || 'staging' }}
-          CLERK_AUTHORIZED_PARTIES_OVERRIDE: ${{ vars.CLERK_AUTHORIZED_PARTIES }}
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_STAGING }}
-        run: |
-          CLERK_AUTHORIZED_PARTIES="$(python3 scripts/auth_config.py staging --override "$CLERK_AUTHORIZED_PARTIES_OVERRIDE")"
-          railway variable set --service "${TARGET_SERVICE}" --project "${RAILWAY_PROJECT_ID}" --environment "${TARGET_ENV}" --skip-deploys "CLERK_AUTHORIZED_PARTIES=${CLERK_AUTHORIZED_PARTIES}" >/dev/null
-          npm --prefix .railway ci --no-audit --no-fund
-          # Config heredoc stays at top level: nested heredocs keep YAML
-          # indentation and break Python. The token gate only wraps plan/apply.
-          python3 - <<'PY'
-          import json, os
-          from pathlib import Path
-          ws = os.environ["GITHUB_WORKSPACE"]
-          cfg_path = Path.home() / ".railway" / "config.json"
-          data = json.loads(cfg_path.read_text()) if cfg_path.exists() else {}
-          data.setdefault("projects", {})[ws] = {
-              "environment": os.environ["TARGET_ENV"],
-              "environmentName": "staging",
-              "name": "caring-renewal",
-              "project": os.environ["RAILWAY_PROJECT_ID"],
-              "projectPath": ws,
-          }
-          cfg_path.parent.mkdir(parents=True, exist_ok=True)
-          cfg_path.write_text(json.dumps(data))
-          PY
-          if [ -n "${RAILWAY_TOKEN:-}" ]; then
-            railway config plan --out railway-plan.json
-            railway config apply --plan railway-plan.json --yes
-            echo "Applied IaC saved plan (configuration only)." >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "RAILWAY_TOKEN_STAGING not set; IaC saved plan skipped. Add RAILWAY_TOKEN_DEV/STAGING/PRODUCTION (environment tokens) to enable config applies." >> "$GITHUB_STEP_SUMMARY"
-          fi
-          # config apply never ships application code. Staging stayed on the
-          # 2026-10-12 build this way while the frontend shipped, so every
-          # signed-in user got "Access denied" from the middleware contract call.
-          bash scripts/railway_deploy_code.sh --service "${TARGET_SERVICE}" --project "${RAILWAY_PROJECT_ID}" --environment "${TARGET_ENV}" --message "CI/CD: Staging Deployment"
-          echo "Deployed application code from the checkout." >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Refuse test-auth on Railway Staging
-        env:
-          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
-          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
-          TARGET_SERVICE: ${{ secrets.RAILWAY_STAGING_SERVICE_ID || secrets.RAILWAY_V1_SERVICE_ID || secrets.RAILWAY_SERVICE_ID }}
-          TARGET_ENV: ${{ secrets.RAILWAY_STAGING_ENVIRONMENT_ID || secrets.RAILWAY_V1_ENVIRONMENT_ID || 'staging' }}
-        run: |
-          vars="$(railway variable list --service "${TARGET_SERVICE}" --project "${RAILWAY_PROJECT_ID}" --environment "${TARGET_ENV}" --json)"
-          python3 - "$vars" <<'PY'
-          import json, sys
-          v = json.loads(sys.argv[1])
-          assert v.get("APP_ENV") != "test", "refusing deploy with APP_ENV=test on persistent env"
-          assert str(v.get("TEST_AUTH_ENABLED", "")).lower() not in ("true", "1", "yes"), "refusing deploy with TEST_AUTH_ENABLED on persistent env"
-          PY
-
-      - name: Read-only Contract Smoke Test Against Staging
-        timeout-minutes: 4
-        env:
-          STAGING_API_URL: ${{ vars.RAILWAY_STAGING_URL || vars.RAILWAY_V1_URL || 'https://greensentinel-backend-staging.up.railway.app' }}
-        run: |
-          python3 scripts/staging_smoke.py --api-url "${STAGING_API_URL}"
-
-  # ==========================================
-  # 5. PRODUCTION ENVIRONMENT (Manual Approval Gated, Zero-Downtime)
-  # ==========================================
-  deploy-production:
-    name: Deploy to Production (Manual Approval Gated)
-    needs: [validate-config, deploy-staging]
-    if: "!cancelled() && !failure() && needs.validate-config.result == 'success' && github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main' && (inputs.target_env == 'production' || inputs.target_env == 'all')"
-    runs-on: self-hosted
-    environment: production
-    steps:
-      - name: Clean root-owned Docker volumes from previous runs
-        run: |
-          if [ -d "$GITHUB_WORKSPACE/data" ]; then
-            if command -v docker >/dev/null 2>&1; then
-              docker run --rm -v "$GITHUB_WORKSPACE/data:/target" alpine \
-                sh -c "rm -rf /target/*" || true
-            fi
-            rm -rf "$GITHUB_WORKSPACE/data" || true
-          fi
-      - uses: actions/checkout@v7
-
-      - name: Setup Node.js & Railway CLI
-        uses: actions/setup-node@v7
-        with:
-          node-version: 22
-      - run: npm install -g @railway/cli
-
-      - name: Zero-Downtime Safe Database Migration
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-        run: |
-          if ! command -v uv >/dev/null 2>&1; then
-            curl -LsSf https://astral.sh/uv/install.sh | sh
-          fi
-          export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
-          # Pin Python 3.12: system 3.15 breaks PyO3 builds (ormsgpack), same as ci.yml.
-          uv python install 3.12
-          uv run --python 3.12 --with "psycopg[binary]>=3.2" --with python-dotenv python scripts/migrate_postgres.py --database-url "$DATABASE_URL"
-
-      - name: Deploy Service to Railway Production
-        env:
-          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
-          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
-          TARGET_SERVICE: ${{ secrets.RAILWAY_SERVICE_ID }}
-          TARGET_ENV: ${{ secrets.RAILWAY_ENVIRONMENT_ID }}
-          CLERK_AUTHORIZED_PARTIES_OVERRIDE: ${{ vars.CLERK_AUTHORIZED_PARTIES }}
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_PRODUCTION }}
-        run: |
-          CLERK_AUTHORIZED_PARTIES="$(python3 scripts/auth_config.py production --override "$CLERK_AUTHORIZED_PARTIES_OVERRIDE")"
-          railway variable set --service "${TARGET_SERVICE}" --project "${RAILWAY_PROJECT_ID}" --environment "${TARGET_ENV}" --skip-deploys "CLERK_AUTHORIZED_PARTIES=${CLERK_AUTHORIZED_PARTIES}" >/dev/null
-          npm --prefix .railway ci --no-audit --no-fund
-          # Config heredoc stays at top level: nested heredocs keep YAML
-          # indentation and break Python. The token gate only wraps plan/apply.
-          python3 - <<'PY'
-          import json, os
-          from pathlib import Path
-          ws = os.environ["GITHUB_WORKSPACE"]
-          cfg_path = Path.home() / ".railway" / "config.json"
-          data = json.loads(cfg_path.read_text()) if cfg_path.exists() else {}
-          data.setdefault("projects", {})[ws] = {
-              "environment": os.environ["TARGET_ENV"],
-              "environmentName": "production",
-              "name": "caring-renewal",
-              "project": os.environ["RAILWAY_PROJECT_ID"],
-              "projectPath": ws,
-          }
-          cfg_path.parent.mkdir(parents=True, exist_ok=True)
-          cfg_path.write_text(json.dumps(data))
-          PY
-          if [ -n "${RAILWAY_TOKEN:-}" ]; then
-            railway config plan --out railway-plan.json
-            railway config apply --plan railway-plan.json --yes
-            echo "Applied IaC saved plan (configuration only)." >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "RAILWAY_TOKEN_PRODUCTION not set; IaC saved plan skipped. Add RAILWAY_TOKEN_DEV/STAGING/PRODUCTION (environment tokens) to enable config applies." >> "$GITHUB_STEP_SUMMARY"
-          fi
-          # Same contract as dev and staging: the saved plan carries no source,
-          # so production code ships from the checkout and must reach SUCCESS
-          # before the health probe runs.
-          bash scripts/railway_deploy_code.sh --service "${TARGET_SERVICE}" --project "${RAILWAY_PROJECT_ID}" --environment "${TARGET_ENV}" --message "CI/CD: Gated Production Release"
-          echo "Deployed application code from the checkout." >> "$GITHUB_STEP_SUMMARY"
-
-      - name: Refuse test-auth on Railway Production
-        env:
-          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_API_TOKEN }}
-          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
-          TARGET_SERVICE: ${{ secrets.RAILWAY_SERVICE_ID }}
-          TARGET_ENV: ${{ secrets.RAILWAY_ENVIRONMENT_ID }}
-        run: |
-          vars="$(railway variable list --service "${TARGET_SERVICE}" --project "${RAILWAY_PROJECT_ID}" --environment "${TARGET_ENV}" --json)"
-          python3 - "$vars" <<'PY'
-          import json, sys
-          v = json.loads(sys.argv[1])
-          assert v.get("APP_ENV") != "test", "refusing deploy with APP_ENV=test on persistent env"
-          assert str(v.get("TEST_AUTH_ENABLED", "")).lower() not in ("true", "1", "yes"), "refusing deploy with TEST_AUTH_ENABLED on persistent env"
-          PY
-
-      - name: Non-Destructive Production Health Probe
+      - name: Health probe
         env:
           PROD_API_URL: ${{ vars.RAILWAY_PRODUCTION_URL || 'https://greensentinel-backend-production.up.railway.app' }}
         run: |
-          for i in {1..15}; do
+          for i in {1..24}; do
             if curl -s -f "${PROD_API_URL%/}/health" >/dev/null; then
               echo "Production API healthy: ${PROD_API_URL}"
               exit 0
             fi
             sleep 5
           done
-          echo "Production health check probe timed out" && exit 1
+          echo "Production health check timed out" && exit 1

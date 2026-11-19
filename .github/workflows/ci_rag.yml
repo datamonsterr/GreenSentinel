@@ -38,11 +38,9 @@ on:
 jobs:
   sprint4-grounding-benchmark:
     name: Sprint 4 Grounding Benchmark
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     env:
-      LLM_MODEL: openai
-      RAG_EMBEDDING_PROVIDER: openai
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      LLM_MODEL: openrouter
     steps:
       - uses: actions/checkout@v4
       - name: Ensure Python is available
@@ -52,24 +50,18 @@ jobs:
 
   rag-lint-and-unit-tests:
     name: RAG Unit Tests & Lint
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     env:
-      LLM_MODEL: openai
-      OPENAI_MODEL: ${{ vars.OPENAI_MODEL || 'gpt-4o-mini' }}
+      LLM_MODEL: openrouter
       RAG_EMBEDDING_PROVIDER: openai
+      # Embeddings need OPENAI_API_KEY; embedding/ingest/judge steps skip when unset.
+      HAS_OPENAI: ${{ secrets.OPENAI_API_KEY != '' }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       LANGCHAIN_TRACING_V2: "false"
       LANGSMITH_TRACING: "false"
 
     steps:
-      - name: Clean root-owned Docker volumes from previous runs
-        run: |
-          if [ -d "$GITHUB_WORKSPACE/data" ]; then
-            docker run --rm -v "$GITHUB_WORKSPACE/data:/target" alpine \
-              sh -c "rm -rf /target/*" || true
-            rm -rf "$GITHUB_WORKSPACE/data" || true
-          fi
-
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -100,22 +92,14 @@ jobs:
             echo "$PWD/.venv/bin" >> $GITHUB_PATH
           fi
 
-      - name: Start Qdrant service (Local Fallback)
-        env:
-          QDRANT_CLUSTER_URL: ${{ secrets.QDRANT_CLUSTER_URL }}
+      - name: Start local Qdrant
+        if: env.HAS_OPENAI == 'true'
         run: |
-          if [ -z "$QDRANT_CLUSTER_URL" ]; then
-            if ! curl -s http://localhost:6333/readyz >/dev/null 2>&1; then
-              docker rm -f ci-qdrant 2>/dev/null || true
-              docker run -d --name ci-qdrant -p 6333:6333 qdrant/qdrant:latest
-              for i in {1..30}; do
-                curl -s http://localhost:6333/readyz && break || sleep 1
-              done
-            fi
-            curl -f -s http://localhost:6333/readyz
-          else
-            echo "QDRANT_CLUSTER_URL is configured; using remote Qdrant cluster."
-          fi
+          docker run -d --name ci-qdrant -p 6333:6333 qdrant/qdrant:v1.19.1
+          for i in {1..30}; do
+            curl -fs http://localhost:6333/readyz && break || sleep 1
+          done
+          curl -f -s http://localhost:6333/readyz
 
       - name: Lint RAG source and eval suites
         run: |
@@ -125,44 +109,31 @@ jobs:
         run: PYTHONPATH=. pytest tests/unit/rag/ -q
         env:
           APP_ENV: test
+          OPENROUTER_API_KEY: test-key
           OPENAI_API_KEY: test-key
-          GEMINI_API_KEY: test-key
           LANGCHAIN_TRACING_V2: "false"
           LANGSMITH_TRACING: "false"
 
-      - name: Verify OpenAI embedding credentials
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: |
-          if [ -z "$OPENAI_API_KEY" ]; then
-            echo "::error::Repository secret OPENAI_API_KEY is required for policy indexing."
-            exit 1
-          fi
-
       - name: Index crawled policies into Qdrant
+        if: env.HAS_OPENAI == 'true'
         run: |
           PYTHONPATH=. python src/rag/ingest.py
         env:
           APP_ENV: test
           RAG_EMBEDDING_PROVIDER: openai
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          QDRANT_CLUSTER_URL: ${{ secrets.QDRANT_CLUSTER_URL }}
-          QDRANT_URL: ${{ secrets.QDRANT_CLUSTER_URL || 'http://localhost:6333' }}
-          QDRANT_API_KEY: ${{ secrets.QDRANT_TEST_API_KEY || '' }}
-          QDRANT_TEST_API_KEY: ${{ secrets.QDRANT_TEST_API_KEY || '' }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # embeddings only
+          QDRANT_URL: http://localhost:6333
           QDRANT_COLLECTION: test-policies-openai-text-embedding-3-small-1536
 
       - name: Run RAG integration and guardrail tests
+        if: env.HAS_OPENAI == 'true'
         run: |
           PYTHONPATH=. pytest -p no:conftest tests/test_rag.py -v --tb=short
         env:
           APP_ENV: test
           RAG_EMBEDDING_PROVIDER: openai
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          QDRANT_CLUSTER_URL: ${{ secrets.QDRANT_CLUSTER_URL }}
-          QDRANT_URL: ${{ secrets.QDRANT_CLUSTER_URL || 'http://localhost:6333' }}
-          QDRANT_API_KEY: ${{ secrets.QDRANT_TEST_API_KEY || '' }}
-          QDRANT_TEST_API_KEY: ${{ secrets.QDRANT_TEST_API_KEY || '' }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  # embeddings only
+          QDRANT_URL: http://localhost:6333
           QDRANT_COLLECTION: test-policies-openai-text-embedding-3-small-1536
 
   rag-langsmith-eval:
@@ -171,32 +142,24 @@ jobs:
     # use ci-draft.yml + rag unit tests. Re-runs on ready_for_review.
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     needs: rag-lint-and-unit-tests
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     env:
       APP_ENV: test
-      LLM_MODEL: openai
-      OPENAI_MODEL: ${{ vars.OPENAI_MODEL || 'gpt-4o-mini' }}
+      LLM_MODEL: openrouter
       EVAL_JUDGE_MODEL: ${{ vars.EVAL_JUDGE_MODEL || 'gpt-4o-mini' }}
       RAG_EMBEDDING_PROVIDER: openai
+      # Embeddings need OPENAI_API_KEY; embedding/ingest/judge steps skip when unset.
+      HAS_OPENAI: ${{ secrets.OPENAI_API_KEY != '' }}
       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
       LANGCHAIN_API_KEY: ${{ secrets.LANGCHAIN_API_KEY }}
-      LANGCHAIN_TRACING_V2: "true"
+      # Tracing is optional: enabled only when LANGCHAIN_API_KEY is set.
+      LANGCHAIN_TRACING_V2: ${{ secrets.LANGCHAIN_API_KEY != '' && 'true' || 'false' }}
       LANGCHAIN_PROJECT: "greensm-cockpit-rag-ci"
-      QDRANT_CLUSTER_URL: ${{ secrets.QDRANT_CLUSTER_URL }}
-      QDRANT_URL: ${{ secrets.QDRANT_CLUSTER_URL || 'http://localhost:6333' }}
-      QDRANT_API_KEY: ${{ secrets.QDRANT_TEST_API_KEY || '' }}
-      QDRANT_TEST_API_KEY: ${{ secrets.QDRANT_TEST_API_KEY || '' }}
+      QDRANT_URL: http://localhost:6333
       QDRANT_COLLECTION: test-policies-openai-text-embedding-3-small-1536
 
     steps:
-      - name: Clean root-owned Docker volumes from previous runs
-        run: |
-          if [ -d "$GITHUB_WORKSPACE/data" ]; then
-            docker run --rm -v "$GITHUB_WORKSPACE/data:/target" alpine \
-              sh -c "rm -rf /target/*" || true
-            rm -rf "$GITHUB_WORKSPACE/data" || true
-          fi
-
       - name: Checkout code
         uses: actions/checkout@v4
 
@@ -226,31 +189,25 @@ jobs:
             echo "$PWD/.venv/bin" >> $GITHUB_PATH
           fi
 
-      - name: Start Qdrant service (Local Fallback)
-        env:
-          QDRANT_CLUSTER_URL: ${{ secrets.QDRANT_CLUSTER_URL }}
+      - name: Start local Qdrant
+        if: env.HAS_OPENAI == 'true'
         run: |
-          if [ -z "$QDRANT_CLUSTER_URL" ]; then
-            if ! curl -s http://localhost:6333/readyz >/dev/null 2>&1; then
-              docker rm -f ci-qdrant 2>/dev/null || true
-              docker run -d --name ci-qdrant -p 6333:6333 qdrant/qdrant:latest
-              for i in {1..30}; do
-                curl -s http://localhost:6333/readyz && break || sleep 1
-              done
-            fi
-            curl -f -s http://localhost:6333/readyz
-          else
-            echo "QDRANT_CLUSTER_URL is configured; using remote Qdrant cluster."
-          fi
+          docker run -d --name ci-qdrant -p 6333:6333 qdrant/qdrant:v1.19.1
+          for i in {1..30}; do
+            curl -fs http://localhost:6333/readyz && break || sleep 1
+          done
+          curl -f -s http://localhost:6333/readyz
 
       - name: Index crawled policies into Qdrant
+        if: env.HAS_OPENAI == 'true'
         run: |
           PYTHONPATH=. python src/rag/ingest.py
 
       - name: Run Benchmark & LangSmith Judge Gate
+        if: env.HAS_OPENAI == 'true'
         run: |
-          if [ -z "${OPENAI_API_KEY}" ]; then
-            echo "::error::OPENAI_API_KEY is required for the live LLM judge."
+          if [ -z "${OPENROUTER_API_KEY}" ]; then
+            echo "::error::OPENROUTER_API_KEY is required for the live LLM judge."
             exit 1
           fi
           LIMIT="${{ inputs.eval_sample_limit || '10' }}"
@@ -265,13 +222,7 @@ jobs:
 
       - name: Upload Benchmark Results Artifact
         if: always()
-        uses: ./.github/actions/oci-upload
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.OCI_S3_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.OCI_S3_SECRET_KEY }}
-          AWS_DEFAULT_REGION: ${{ vars.OCI_REGION || secrets.OCI_REGION }}
-          AWS_ENDPOINT_URL: ${{ vars.OCI_S3_ENDPOINT || secrets.OCI_S3_ENDPOINT }}
-          OCI_S3_BUCKET: ${{ vars.OCI_S3_BUCKET }}
+        uses: actions/upload-artifact@v4
         with:
           name: rag-benchmark-report
           path: |

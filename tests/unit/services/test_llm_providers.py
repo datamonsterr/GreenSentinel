@@ -256,3 +256,35 @@ def test_adapter_preserves_case_sensitive_tool_argument_values():
         "type": "VIP",
         "nested": {"type": "CAR", "driverId": "DRV-A"},
     }
+
+
+def test_openrouter_defaults_to_glm_flash_with_low_reasoning(monkeypatch):
+    monkeypatch.delenv("OPENROUTER_MODEL", raising=False)
+    monkeypatch.delenv("OPENROUTER_REASONING_EFFORT", raising=False)
+    settings = Settings(_env_file=None, llm_model="openrouter", openrouter_api_key="openrouter-test-key")
+    assert resolve_llm_config(settings).model == "z-ai/glm-5.3-flash"
+    model = get_llm(settings)
+    assert model.extra_body == {"reasoning": {"effort": "low"}}
+
+
+def test_openrouter_model_and_effort_configurable_via_env(monkeypatch):
+    monkeypatch.setenv("OPENROUTER_MODEL", "z-ai/other")
+    monkeypatch.setenv("OPENROUTER_REASONING_EFFORT", "high")
+    settings = Settings(_env_file=None, llm_model="openrouter", openrouter_api_key="openrouter-test-key")
+    assert resolve_llm_config(settings).model == "z-ai/other"
+    assert get_llm(settings).extra_body == {"reasoning": {"effort": "high"}}
+
+
+def test_reasoning_blocks_never_reach_user_text():
+    from langchain_core.messages import AIMessage
+
+    from src.agents.driver_agent import _extract_text_content
+    from src.services.content_adapter import message_text
+
+    blocks = [
+        {"type": "reasoning", "text": "secret chain of thought"},
+        {"type": "thinking", "thinking": "more secret", "text": "more secret"},
+        {"type": "text", "text": "Xin chào"},
+    ]
+    assert _extract_text_content(blocks) == "Xin chào"
+    assert message_text(AIMessage(content=blocks)) == "Xin chào"

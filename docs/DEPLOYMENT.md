@@ -2,11 +2,16 @@
 
 Verified against official product documentation on 2026-09-22.
 
-## Preview runner scheduling — 2026-10-06
+## CI/CD: single `production` environment
 
-For backend/full-stack PRs, `deploy-railway.yml` calls the reusable `deploy-vercel.yml` only after `deploy-pr-preview` succeeds. The call passes `railway_ready: true`; GitHub schedules its jobs through `needs` without allocating a runner to wait. Both deployment jobs can therefore share one self-hosted runner. The earlier hosted-wait attempt could not start because GitHub rejected it for account billing/spending limits; [ADR-023](architecture/adr-023-preview-workflow-sequencing.md) records the replacement.
+One environment only: Railway project `greensentinel` (environment `production`: Postgres, Redis, `greensentinel-backend`) plus Vercel production. All workflows run on GitHub-hosted `ubuntu-latest` runners. No dev/staging environments and no per-PR preview deploys.
 
-Frontend-only PRs deploy directly through the Vercel pull-request workflow using the healthy dev backend. Backend PRs skip that independent deployment path. Failed, cancelled, or skipped Railway provisioning prevents the reusable call; exact-head URL resolution and health checks still run before Vercel builds. Rerun the Railway workflow to retry the complete backend/frontend sequence. Do not treat a cancelled, skipped, or queued preview as deployment proof.
+- `deploy-railway.yml`: validates compose config on PRs; on push to `main` (and manual dispatch) optionally migrates (`DATABASE_URL`), runs `scripts/railway_deploy_code.sh` (`railway up`, waits for SUCCESS), then probes `/health`. The Railway service has no GitHub source, so there is no double deploy.
+- `deploy-vercel.yml`: on push to `main` touching `src/webapp/**` (and manual dispatch) runs `vercel pull`, `vercel build --prod`, `vercel deploy --prebuilt --prod`. Independent of the Railway job.
+
+Required GitHub secrets (green pipeline on `main`): `OPENROUTER_API_KEY`, `RAILWAY_API_TOKEN`, `RAILWAY_PROJECT_ID`, `RAILWAY_SERVICE_ID`, `RAILWAY_ENVIRONMENT_ID`, `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`. Variable: `RAILWAY_PRODUCTION_URL` (falls back to the default Railway domain).
+
+Optional (feature skips cleanly when absent): `DATABASE_URL` (pre-deploy migration), `HF_TOKEN` (private HF artifacts), `OPENAI_API_KEY` (RAG embedding, ingest and judge steps in `ci_rag.yml`), `LANGCHAIN_API_KEY` (LangSmith tracing). Qdrant runs as a local container in CI; no Qdrant secrets. Build artifacts use `actions/upload-artifact`/`download-artifact`; no object-storage credentials.
 
 ## Target topology
 
@@ -80,7 +85,7 @@ Store each secret only where consuming process needs it.
 | `DATABASE_URL` | Yes | No | Yes | Yes | Yes |
 | `MIGRATION_DATABASE_URL` | Yes | No | No | No | Yes |
 | `REDIS_URL` | Yes | No | Yes | Yes | Yes |
-| `OPENROUTER_API_KEY`, `OPENROUTER_BASE_URL`, `JEV_MODEL` | Yes | No | Yes | Yes | Optional evaluation job |
+| `OPENROUTER_API_KEY`, `OPENROUTER_BASE_URL`, `OPENROUTER_MODEL` (default `z-ai/glm-5.3-flash`), `OPENROUTER_REASONING_EFFORT` (default `low`), `JEV_MODEL` | Yes | No | Yes | Yes | Optional evaluation job |
 | `LANGSMITH_API_KEY`, `LANGSMITH_TRACING`, `LANGSMITH_PROJECT` | Yes | No | Yes | Yes | Optional evaluation job |
 | `SUPABASE_PROJECT_REF` | Optional | No | No | No | Optional |
 
@@ -195,6 +200,8 @@ This split prevents stale or client-controlled Clerk metadata from authorizing f
 ```dotenv
 OPENROUTER_API_KEY=your-openrouter-key
 OPENROUTER_BASE_URL=https://openrouter.ai/api/v1
+OPENROUTER_MODEL=z-ai/glm-5.3-flash
+OPENROUTER_REASONING_EFFORT=low
 JEV_MODEL=~typesafe/jev-latest
 ```
 
