@@ -683,6 +683,7 @@ export function DriverChatView({ caseId }: DriverChatViewProps) {
 
       {explainOpen && (
         <DriverExplainFlow
+          caseId={caseId}
           caseTitle={caseTitle}
           deadline={caseDeadline}
           onClose={() => setExplainOpen(false)}
