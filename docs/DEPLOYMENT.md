@@ -4,14 +4,15 @@ Verified against official product documentation on 2026-09-22.
 
 ## CI/CD: single `production` environment
 
-One environment only: Railway project `greensentinel` (environment `production`: Postgres, Redis, `greensentinel-backend`) plus Vercel production. All workflows run on GitHub-hosted `ubuntu-latest` runners. No dev/staging environments and no per-PR preview deploys.
+Updated 2026-11-21. One environment only: Railway project `greensentinel` (environment `production`: Postgres, Redis, `greensentinel-backend`) plus Vercel production. No dev/staging environments and no per-PR preview deploys.
 
-- `deploy-railway.yml`: validates compose config on PRs; on push to `main` (and manual dispatch) optionally migrates (`DATABASE_URL`), runs `scripts/railway_deploy_code.sh` (`railway up`, waits for SUCCESS), then probes `/health`. The Railway service has no GitHub source, so there is no double deploy.
-- `deploy-vercel.yml`: on push to `main` touching `src/webapp/**` (and manual dispatch) runs `vercel pull`, `vercel build --prod`, `vercel deploy --prebuilt --prod`. Independent of the Railway job.
+- CI: `.github/workflows/ci.yml` on GitHub-hosted `ubuntu-latest` runners. The repository is public, so standard runners are free.
+- Backend deploy: Railway's GitHub integration. The `greensentinel-backend` service builds the root `Dockerfile` from `main`, waits for GitHub check suites to pass, and only rebuilds when backend paths change (see `watchPatterns` in `.railway/railway.ts`). Health check: `/health`. The service sleeps when idle and wakes on the first request (about 6 s).
+- Frontend deploy: Vercel's GitHub integration. Project `greensentinel`, root directory `src/webapp`, builds `main` only (ignored build step skips other branches).
+- There are no deploy workflows and no deploy tokens in GitHub. `RAILWAY_API_TOKEN` and `VERCEL_TOKEN` are not needed.
+- Database migrations are not run by CI/CD. Apply them manually with `scripts/migrate_postgres.py --database-url ...` before pushing code that needs them.
 
-Required GitHub secrets (green pipeline on `main`): `OPENROUTER_API_KEY`, `RAILWAY_API_TOKEN`, `RAILWAY_PROJECT_ID`, `RAILWAY_SERVICE_ID`, `RAILWAY_ENVIRONMENT_ID`, `VERCEL_TOKEN`, `VERCEL_ORG_ID`, `VERCEL_PROJECT_ID`. Variable: `RAILWAY_PRODUCTION_URL` (falls back to the default Railway domain).
-
-Optional (feature skips cleanly when absent): `DATABASE_URL` (pre-deploy migration), `HF_TOKEN` (private HF artifacts), `OPENAI_API_KEY` (RAG embedding, ingest and judge steps in `ci_rag.yml`), `LANGCHAIN_API_KEY` (LangSmith tracing). Qdrant runs as a local container in CI; no Qdrant secrets. Build artifacts use `actions/upload-artifact`/`download-artifact`; no object-storage credentials.
+GitHub secrets used by CI: `OPENROUTER_API_KEY`, `CLERK_SECRET_KEY`, `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`. Optional (feature skips cleanly when absent): `HF_TOKEN` (private HF artifacts), `OPENAI_API_KEY` (RAG embedding, ingest and judge steps in `ci_rag.yml`), `LANGCHAIN_API_KEY` (LangSmith tracing). Qdrant runs as a local container in CI; no Qdrant secrets.
 
 ## Target topology
 

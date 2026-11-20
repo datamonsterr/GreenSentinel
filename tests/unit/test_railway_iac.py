@@ -33,5 +33,4 @@ def test_iac_has_no_uuids_no_generated_domains_no_secrets():
 def test_iac_preserves_backend_model_env():
     src = pathlib.Path(".railway/railway.ts").read_text()
     assert "LLM_MODEL: preserve()" in src, "IaC must preserve backend LLM_MODEL runtime variable"
-    assert "MODEL: preserve()" in src
-    assert "GEMINI_MODEL: preserve()" in src
+    assert "OPENROUTER_MODEL: preserve()" in src

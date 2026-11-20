@@ -100,17 +100,8 @@ def test_unit_tests_use_uv_run_with_preflight():
     assert "timeout-minutes: 45" in wf
 
 
-def test_vercel_workflow_caches_pnpm_store():
-    wf = _read(".github/workflows/deploy-vercel.yml")
-    assert "pnpm-lock.yaml" in wf and "cache" in wf
-
-
 def test_actions_run_on_supported_node_runtime():
-    for wf_file in (
-        ".github/workflows/ci.yml",
-        ".github/workflows/deploy-railway.yml",
-        ".github/workflows/deploy-vercel.yml",
-    ):
+    for wf_file in (".github/workflows/ci.yml",):
         wf = _read(wf_file)
         assert "actions/checkout@v4" not in wf, f"{wf_file} still pins node20 checkout"
         assert "actions/setup-node@v4" not in wf, f"{wf_file} still pins node20 setup-node"
