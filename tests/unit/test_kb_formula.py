@@ -96,3 +96,8 @@ def test_length_and_depth_limits():
         parse("=" + "(" * 100 + "1" + ")" * 100)
     with pytest.raises(FormulaError):
         parse("=" + "1+" * 2000 + "1")
+
+
+def test_huge_power_fails_fast_instead_of_hanging():
+    with pytest.raises(FormulaError):
+        evaluate(parse("=9^9^9"), {})

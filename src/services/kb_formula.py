@@ -295,7 +295,7 @@ def evaluate(node: Any, params: dict[str, Any]) -> Any:
             return a / b
         if op == "^":
             try:
-                r = a**b
+                r = float(a) ** float(b)  # float pow: big ints would hang the worker
             except (OverflowError, ZeroDivisionError) as exc:
                 raise FormulaError("div_zero" if isinstance(exc, ZeroDivisionError) else "overflow", str(exc), node.pos) from exc
             if isinstance(r, complex) or abs(r) > 1e18:
