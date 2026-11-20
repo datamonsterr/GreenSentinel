@@ -244,7 +244,7 @@ def load_stepper(conn_factory: Callable[[], Any], case_id: str, organization_id:
         explain_at = tsr.get("driver_at") or tsr.get("asked_at")
         if explain_at:
             ts["NEED_TO_EXPLAIN"] = explain_at
-        review_at = tsr.get("review_at") or (adj["approved_at"] if adj else None)
+        review_at = (adj["approved_at"] if adj else None) or tsr.get("review_at")  # review ends at adjudication
         if review_at:
             ts["UNDER_REVIEW"] = review_at
         out = build_stepper(row["status"], events, row["created_at"], row.get("dispute_status"), ts)
