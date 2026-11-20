@@ -124,7 +124,7 @@ export function ExplainSection({ caseId, locale, roles }: { caseId: string; loca
                     <span className="text-gs-mute">{m.source}: {v.source} · {fmt(v.created_at, locale)}</span>
                     <button type="button" data-testid={`version-toggle-${v.version}`} aria-expanded={expanded}
                       onClick={() => setOpen(expanded ? null : v.version)}
-                      className="ml-auto rounded border border-gs-line-2 bg-white px-2 py-0.5 text-[11px] text-gs-ink-2 hover:bg-slate-50">
+                      className="ml-auto rounded border border-gs-line-2 bg-white px-2 py-0.5 text-[11px] text-gs-ink-2 hover:bg-background">
                       {expanded ? m.hide : m.show}
                     </button>
                   </div>
@@ -242,7 +242,7 @@ export function ExplainSection({ caseId, locale, roles }: { caseId: string; loca
               <div role="group" aria-label={m.feedback} className="flex gap-2">
                 {(["agree", "disagree"] as const).map((v) => (
                   <button key={v} type="button" data-testid={`feedback-${v}`} aria-pressed={verdict === v} onClick={() => setVerdict(v)}
-                    className={`rounded-lg border px-3 py-1 text-xs font-semibold ${verdict === v ? "border-primary bg-gs-cyan-soft text-primary" : "border-gs-line-2 bg-white text-gs-ink-2 hover:bg-slate-50"}`}>
+                    className={`rounded-lg border px-3 py-1 text-xs font-semibold ${verdict === v ? "border-primary bg-gs-cyan-soft text-primary" : "border-gs-line-2 bg-white text-gs-ink-2 hover:bg-background"}`}>
                     {v === "agree" ? m.agree : m.disagree}
                   </button>
                 ))}

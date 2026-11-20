@@ -61,7 +61,7 @@ function Item({ item, locale, onChanged, onOpenCase }: { item: HelpRequest; loca
         <span className={chip(claimed ? "t-cyan" : "t-amber")}>{claimed ? m.claimed : m.open}</span>
         <span className="font-mono text-gs-mute">{item.case_id.slice(0, 8)}</span>
         {claimed && item.claimed_by_name && <span className="text-gs-mute">{m.claimedBy}: {item.claimed_by_name}</span>}
-        {onOpenCase && <button type="button" onClick={() => onOpenCase(item.case_id)} className="ml-auto rounded border border-gs-line-2 bg-white px-2 py-0.5 text-[11px] hover:bg-slate-50">{m.openCase}</button>}
+        {onOpenCase && <button type="button" onClick={() => onOpenCase(item.case_id)} className="ml-auto rounded border border-gs-line-2 bg-white px-2 py-0.5 text-[11px] hover:bg-background">{m.openCase}</button>}
       </div>
       {item.summary && <p className="text-gs-ink">{item.summary}</p>}
       {item.stuck_point && <p><span className="font-semibold">{m.stuck}:</span> {item.stuck_point}</p>}
@@ -72,7 +72,7 @@ function Item({ item, locale, onChanged, onOpenCase }: { item: HelpRequest; loca
       )}
       {claimed && (
         <div className="space-y-2">
-          {detail?.statement_text && <p className="rounded bg-slate-50 p-2"><span className="font-semibold">{m.driverSays}:</span> {detail.statement_text}</p>}
+          {detail?.statement_text && <p className="rounded bg-background p-2"><span className="font-semibold">{m.driverSays}:</span> {detail.statement_text}</p>}
           {detail && detail.transcript.length > 0 && (
             <details><summary className="cursor-pointer text-gs-mute">{m.transcript}</summary>
               <ul className="mt-1 space-y-1">{detail.transcript.map((t) => (
@@ -116,12 +116,12 @@ export function HelpQueuePanel({ locale, open, onClose, onChanged, onOpenCase }:
   const changed = () => { onChanged?.(); };
   return (
     <aside role="dialog" aria-label={m.title} data-testid="help-queue-panel"
-      className="fixed right-0 top-16 z-40 flex h-[calc(100vh-4rem)] w-full max-w-md flex-col border-l border-gs-line-2 bg-slate-50 shadow-lg">
+      className="fixed right-0 top-16 z-40 flex h-[calc(100vh-4rem)] w-full max-w-md flex-col border-l border-gs-line-2 bg-background shadow-lg">
       <header className="flex items-center gap-2 border-b border-gs-line bg-white px-4 py-3">
         <span className="material-symbols-outlined text-[20px] text-gs-purple">support_agent</span>
         <h2 className="flex-1 text-sm font-bold text-gs-ink">{m.title}</h2>
-        <button type="button" onClick={() => setRev((r) => r + 1)} className="rounded border border-gs-line-2 bg-white px-2 py-1 text-[11px] hover:bg-slate-50">{m.refresh}</button>
-        <button type="button" onClick={onClose} aria-label={m.close} className="rounded p-1 text-gs-mute hover:bg-slate-100">
+        <button type="button" onClick={() => setRev((r) => r + 1)} className="rounded border border-gs-line-2 bg-white px-2 py-1 text-[11px] hover:bg-background">{m.refresh}</button>
+        <button type="button" onClick={onClose} aria-label={m.close} className="rounded p-1 text-gs-mute hover:bg-gs-cyan-soft">
           <span className="material-symbols-outlined text-[18px]">close</span>
         </button>
       </header>
