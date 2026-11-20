@@ -33,13 +33,13 @@ export function ChatThread({ messages, driverLabel, emptyHint, className, ...res
         const time = formatClock(message.occurred_at, locale);
         return (
           <div key={`${message.role}-${index}`} data-align={customer ? "right" : "left"} className={cn("flex items-end gap-2", customer && "flex-row-reverse")}>
-            <span aria-hidden="true" className={cn("inline-flex size-8 shrink-0 items-center justify-center rounded-full", customer ? "bg-sky-50 text-sky-700" : "bg-emerald-50 text-emerald-700")}>
+            <span aria-hidden="true" className={cn("inline-flex size-8 shrink-0 items-center justify-center rounded-full", customer ? "bg-gs-cyan-soft text-gs-cyan" : "bg-gs-green-soft text-gs-green-ink")}>
               <Avatar size={16} className="block" />
             </span>
             <div className={cn("flex max-w-[75%] min-w-0 flex-col gap-1", customer ? "items-end" : "items-start")}>
               <p className={cn(
                 "whitespace-pre-wrap break-words rounded-2xl px-3 py-2 text-[13px] leading-relaxed",
-                customer ? "rounded-br-sm bg-sky-50 text-slate-800" : "rounded-bl-sm border border-emerald-100 bg-emerald-50/60 text-slate-800",
+                customer ? "rounded-br-sm bg-gs-cyan-soft text-gs-ink-2" : "rounded-bl-sm border border-gs-green/30 bg-gs-green-soft/60 text-slate-800",
               )}>
                 {message.text}
               </p>

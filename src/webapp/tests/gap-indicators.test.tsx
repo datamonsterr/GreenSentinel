@@ -68,7 +68,7 @@ describe("MapLibreView gap indicators", () => {
     expect(band).toHaveAttribute("aria-label", expect.stringContaining("00:01:10"));
     expect(band).toHaveAttribute("aria-label", expect.stringContaining("50s"));
     expect(band).toHaveAttribute("aria-label", expect.stringContaining("Network offline"));
-    expect(band).toHaveStyle({ borderTop: "2px dashed #dc2626", borderBottom: "2px dashed #dc2626" });
+    expect(band).toHaveStyle({ borderTop: "2px dashed #e0484b", borderBottom: "2px dashed #e0484b" });
     expect(band.style.background).toContain("repeating-linear-gradient");
     expect(band.closest('[data-testid="timeline-gap-bands"]')).toHaveClass("pointer-events-none");
   });
@@ -201,7 +201,7 @@ describe("MapLibreView gap indicators", () => {
     expect(markers).toHaveLength(2);
     for (const marker of markers) {
       const circle = marker.querySelector("circle");
-      expect(circle).toHaveAttribute("stroke", "#dc2626");
+      expect(circle).toHaveAttribute("stroke", "#e0484b");
       expect(circle).toHaveAttribute("stroke-dasharray", "3 2");
       expect(marker.querySelector("title")).toHaveTextContent("00:00:20");
       expect(marker.querySelector("title")).toHaveTextContent("00:01:10");
@@ -250,7 +250,7 @@ describe("MapLibreView gap warnings map layer", () => {
     expect(gapLayer).toBeDefined();
     if (!gapLayer) throw new Error("gap-warnings layer was not created");
     expect(gapLayer.type).toBe("circle");
-    expect(gapLayer.paint).toMatchObject({ "circle-stroke-color": "#dc2626", "circle-stroke-width": 2 });
+    expect(gapLayer.paint).toMatchObject({ "circle-stroke-color": "#e0484b", "circle-stroke-width": 2 });
     const gapSource = map.getSource("gap-warnings-source");
     expect(gapSource).toBeDefined();
     if (!gapSource) throw new Error("gap-warnings source was not created");

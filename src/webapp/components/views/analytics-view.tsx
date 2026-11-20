@@ -117,7 +117,7 @@ export function AnalyticsDashboardView() {
       </div>
 
       {error ? (
-        <div role="alert" className="rounded-md border border-red-200 bg-red-50 p-3 text-xs text-red-700">
+        <div role="alert" className="rounded-md border border-gs-red/30 bg-gs-red-soft p-3 text-xs text-gs-red">
           {error}
         </div>
       ) : queue ? (
@@ -144,9 +144,9 @@ export function AnalyticsDashboardView() {
                       key={priority}
                       className={`inline-flex items-center rounded px-1.5 py-0.5 text-[11px] font-medium border ${
                         priority === "P0"
-                          ? "bg-rose-50 text-rose-700 border-rose-200"
+                          ? "bg-gs-red-soft text-gs-red border-gs-red/30"
                           : priority === "P1"
-                          ? "bg-amber-50 text-amber-700 border-amber-200"
+                          ? "bg-gs-amber-soft text-gs-amber-ink border-gs-amber/30"
                           : "bg-slate-50 text-slate-700 border-slate-200"
                       }`}
                     >
@@ -202,18 +202,18 @@ export function AnalyticsDashboardView() {
                 </div>
                 <div>
                   <dt className="text-xs text-slate-500">Available Unclaimed</dt>
-                  <dd className="mt-1 text-lg font-semibold text-emerald-700">{queue.available_unclaimed}</dd>
+                  <dd className="mt-1 text-lg font-semibold text-gs-green-ink">{queue.available_unclaimed}</dd>
                 </div>
                 <div>
                   <dt className="text-xs text-slate-500">Active Review Leases</dt>
-                  <dd className="mt-1 text-lg font-semibold text-indigo-700">{queue.claimed_cases}</dd>
+                  <dd className="mt-1 text-lg font-semibold text-gs-blue">{queue.claimed_cases}</dd>
                 </div>
                 <div>
                   <dt className="text-xs text-slate-500">System Health</dt>
                   <dd className="mt-1 flex items-center gap-1.5 text-xs font-medium text-slate-700">
                     <span
                       className={`inline-block h-2 w-2 rounded-full ${
-                        health?.database_healthy ? "bg-emerald-500" : "bg-rose-500"
+                        health?.database_healthy ? "bg-gs-green" : "bg-gs-red"
                       }`}
                     />
                     {health?.database_healthy ? "Healthy" : "Degraded"} · {health?.worker_status || "active"}
@@ -230,11 +230,11 @@ export function AnalyticsDashboardView() {
                   </div>
                   <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100 flex">
                     <div
-                      className="bg-emerald-500 transition-all"
+                      className="bg-gs-green transition-all"
                       style={{ width: `${(queue.available_unclaimed / queue.total_cases) * 100}%` }}
                     />
                     <div
-                      className="bg-indigo-500 transition-all"
+                      className="bg-gs-blue transition-all"
                       style={{ width: `${(queue.claimed_cases / queue.total_cases) * 100}%` }}
                     />
                   </div>
@@ -255,7 +255,7 @@ export function AnalyticsDashboardView() {
                 <div className="grid grid-cols-2 gap-3">
                   <div className="rounded border border-slate-100 bg-slate-50/50 p-3">
                     <dt className="text-xs text-slate-500">Driver Exonerations</dt>
-                    <dd className="mt-1 text-xl font-bold text-emerald-700">
+                    <dd className="mt-1 text-xl font-bold text-gs-green-ink">
                       {dispositions?.driver_confirmed_resolutions || 0}
                     </dd>
                     <p className="mt-1 text-[11px] text-slate-500">Exonerated via statement</p>
@@ -311,7 +311,7 @@ export function AnalyticsDashboardView() {
                         </div>
                         <div className="h-2 w-full overflow-hidden rounded-full bg-slate-100">
                           <div
-                            className="h-full bg-emerald-600 transition-all rounded-full"
+                            className="h-full bg-primary transition-all rounded-full"
                             style={{ width: `${percentage}%` }}
                           />
                         </div>
@@ -333,7 +333,7 @@ export function AnalyticsDashboardView() {
           Agent observability
         </h2>
         {summaryError ? (
-          <p role="alert" className="text-xs text-red-700">
+          <p role="alert" className="text-xs text-gs-red">
             {summaryError}
           </p>
         ) : summary ? (
@@ -398,7 +398,7 @@ export function AnalyticsDashboardView() {
                   {summary.benchmark.benchmark_prompt_version ?? "not recorded"}
                 </p>
                 <a
-                  className="mt-1 inline-block text-blue-700 underline"
+                  className="mt-1 inline-block text-gs-blue underline"
                   href={`${benchmarkRepositoryUrl}/${summary.benchmark.dataset_path}`}
                   target="_blank"
                   rel="noreferrer"
@@ -406,7 +406,7 @@ export function AnalyticsDashboardView() {
                   View benchmark dataset
                 </a>
                 <a
-                  className="ml-3 inline-block text-blue-700 underline"
+                  className="ml-3 inline-block text-gs-blue underline"
                   href={`${benchmarkRepositoryUrl}/${summary.benchmark.result_path}`}
                   target="_blank"
                   rel="noreferrer"
@@ -438,7 +438,7 @@ export function AnalyticsDashboardView() {
                   {summary.tracing.project}
                 </p>
                 <a
-                  className="text-blue-700 underline"
+                  className="text-gs-blue underline"
                   href={summary.tracing.project_url}
                   target="_blank"
                   rel="noreferrer"

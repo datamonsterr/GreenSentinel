@@ -30,10 +30,10 @@ const glyphs = {
 
 const colors = {
   surface: '#ffffff',
-  start: '#0b1c30',
-  primary: '#006948',
-  destination: '#6d28d9',
-  unknown: '#565e74',
+  start: '#16273b',
+  primary: '#22a45d',
+  destination: '#7b3ed6',
+  unknown: '#5a6b78',
 } as const;
 
 function presentation(role: CheckpointRole, vehicleType?: string | null) {

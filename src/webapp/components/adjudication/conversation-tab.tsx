@@ -61,14 +61,14 @@ export const ConversationTab: React.FC<ConversationTabProps> = ({ caseDetail, ac
         title={t.customer}
         headingLevel={3}
         right={rating != null && rating !== "" && (
-          <span title={t.rating} className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-0.5 text-[13px] font-semibold text-amber-800">
-            <Star aria-hidden="true" size={14} className="block fill-amber-400 text-amber-500" />
+          <span title={t.rating} className="inline-flex items-center gap-1 rounded-full bg-gs-amber-soft px-2 py-0.5 text-[13px] font-semibold text-gs-amber-ink">
+            <Star aria-hidden="true" size={14} className="block fill-gs-amber text-gs-amber" />
             <span className="sr-only">{t.rating}: </span><span>{String(rating)}</span>
           </span>
         )}
       >
         {statement
-          ? <p title={`${t.customer}: ${statement}`} className="whitespace-pre-wrap break-words border-l-2 border-sky-400 pl-3 text-sm italic leading-relaxed text-slate-800">{String(statement)}</p>
+          ? <p title={`${t.customer}: ${statement}`} className="whitespace-pre-wrap break-words border-l-2 border-gs-cyan pl-3 text-sm italic leading-relaxed text-slate-800">{String(statement)}</p>
           : <EmptyState compact icon={Quote} hint={t.noStatement} />}
       </SectionCard>
       <div className="grid grid-cols-1 gap-3 lg:grid-cols-3">

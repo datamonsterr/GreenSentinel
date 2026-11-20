@@ -83,9 +83,9 @@ export const WorkflowTab: React.FC<WorkflowTabProps> = ({ caseDetail, caseWorkfl
     <SectionCard aria-label={undefined} icon={Workflow} tone="info" title={t.title} subtitle={!caseDetail.workflow_draft ? t.local : undefined} bodyClassName="space-y-3">
       {!writable && <p className="text-xs text-slate-500">{t.readOnly}</p>}
       <label className="block text-xs font-semibold text-slate-700">{t.draft}
-        <textarea rows={2} maxLength={20000} disabled={!writable || saving} className="mt-1 min-h-16 w-full resize-y rounded-md border border-slate-300 bg-slate-50 p-2 text-[13px] font-normal outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100 disabled:bg-slate-100" aria-label={t.draft} value={draft} onChange={event => { setDraft(event.target.value); setDirty(true); setSaved(false); }} />
+        <textarea rows={2} maxLength={20000} disabled={!writable || saving} className="mt-1 min-h-16 w-full resize-y rounded-md border border-slate-300 bg-slate-50 p-2 text-[13px] font-normal outline-none focus:border-gs-green focus:ring-2 focus:ring-gs-green/30 disabled:bg-slate-100" aria-label={t.draft} value={draft} onChange={event => { setDraft(event.target.value); setDirty(true); setSaved(false); }} />
       </label>
-      <div className="flex items-center gap-2"><button type="button" onClick={() => void save()} disabled={!writable || saving || draft.length > 20000} className="rounded-md border border-slate-300 bg-white px-3 py-1.5 text-xs font-medium hover:bg-slate-50 disabled:opacity-50">{saving ? t.saving : t.save}</button>{saved && <span role="status" className="text-xs text-emerald-700">{t.saved}</span>}{error && <span role="alert" className="text-xs text-rose-700">{error}</span>}</div>
+      <div className="flex items-center gap-2"><button type="button" onClick={() => void save()} disabled={!writable || saving || draft.length > 20000} className="rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-white hover:bg-primary-container disabled:opacity-50">{saving ? t.saving : t.save}</button>{saved && <span role="status" className="text-xs text-gs-green-ink">{t.saved}</span>}{error && <span role="alert" className="text-xs text-gs-red">{error}</span>}</div>
       <section aria-label={t.timeline}>
         <h3 className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-slate-500">{t.timeline}</h3>
         {timeline.length ? (
@@ -122,12 +122,12 @@ export const WorkflowTab: React.FC<WorkflowTabProps> = ({ caseDetail, caseWorkfl
         <section aria-label={t.policies}>
           <h3 className="mb-2 text-[11px] font-semibold uppercase tracking-wide text-slate-500">{t.policies}</h3>
           <ul className="space-y-1.5">
-            {policies.map((policy: any) => <li key={`${policy.policy_code}-${policy.clause}`} className="flex items-start gap-2 text-[13px] text-slate-700"><ScrollText aria-hidden="true" size={14} className="mt-1 block shrink-0 text-indigo-600" /><span>{policy.policy_code} · {policy.clause}: {policy.rationale}</span></li>)}
+            {policies.map((policy: any) => <li key={`${policy.policy_code}-${policy.clause}`} className="flex items-start gap-2 text-[13px] text-slate-700"><ScrollText aria-hidden="true" size={14} className="mt-1 block shrink-0 text-gs-blue" /><span>{policy.policy_code} · {policy.clause}: {policy.rationale}</span></li>)}
           </ul>
         </section>
       )}
       {aiRevealed && workflow?.final_decision && <section aria-label={t.finalDecision}><h3 className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-slate-500">{t.finalDecision}</h3><p className="text-[13px] text-slate-800">{workflow.final_decision.verdict} · {workflow.final_decision.rationale}</p></section>}
-      {aiRevealed && workflow?.ai_result && <section aria-label={t.aiResults} className="rounded-md border border-sky-100 bg-sky-50/60 p-2 text-[13px] text-slate-800">{workflow.ai_result.classification} {workflow.ai_result.confidence}</section>}
+      {aiRevealed && workflow?.ai_result && <section aria-label={t.aiResults} className="rounded-md border border-gs-cyan/30 bg-gs-cyan-soft/60 p-2 text-[13px] text-slate-800">{workflow.ai_result.classification} {workflow.ai_result.confidence}</section>}
     </SectionCard>
   </section>;
 };

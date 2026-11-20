@@ -22,7 +22,7 @@ export function TripStatusRow({ caseDetail, onOpen, className }: { caseDetail: C
   const name = `${pickup} → ${drop}`;
   const route = (
     <>
-      <span aria-hidden="true" className="size-2.5 shrink-0 rounded-full border-2 border-emerald-600" />
+      <span aria-hidden="true" className="size-2.5 shrink-0 rounded-full border-2 border-gs-green" />
       <span className="min-w-0 truncate font-medium text-slate-900">{pickup}</span>
       <ArrowRight aria-hidden="true" size={14} className="block shrink-0 text-slate-400" />
       <span className="min-w-0 truncate font-medium text-slate-900">{drop}</span>
@@ -32,14 +32,14 @@ export function TripStatusRow({ caseDetail, onOpen, className }: { caseDetail: C
   return (
     <div data-testid="trip-status-row" className={cn("flex h-11 min-w-0 flex-nowrap items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-[13px] shadow-xs", className)}>
       {onOpen ? (
-        <button type="button" title={name} aria-label={name} onClick={onOpen} className={cn(routeClass, "rounded text-left hover:text-emerald-800 focus-visible:outline-emerald-600")}>
+        <button type="button" title={name} aria-label={name} onClick={onOpen} className={cn(routeClass, "rounded text-left hover:text-gs-green-ink focus-visible:outline-gs-green")}>
           {route}
         </button>
       ) : (
         <div title={name} className={routeClass}>{route}</div>
       )}
       {trip?.driver_status && (
-        <span title={t.driverStatus} className="shrink-0 rounded-full bg-emerald-700 px-2 py-0.5 text-[11px] font-semibold text-white">
+        <span title={t.driverStatus} className="shrink-0 rounded-full bg-primary px-2 py-0.5 text-[11px] font-semibold text-white">
           {workspaceState(trip.driver_status, locale)}
         </span>
       )}

@@ -88,7 +88,7 @@ function readAssessment(value: unknown): Assessment {
 function Quote({ turn, labels, locale }: { turn: RelayTurn; labels: { agent: string; driver: string }; locale: 'en' | 'vi' }) {
   const time = formatClock(turn.timestamp, locale);
   return (
-    <blockquote className={cn('rounded-md border-l-2 bg-slate-50 px-3 py-2', turn.role === 'driver' ? 'border-emerald-600' : 'border-sky-500')}>
+    <blockquote className={cn('rounded-md border-l-2 bg-slate-50 px-3 py-2', turn.role === 'driver' ? 'border-gs-green' : 'border-gs-cyan')}>
       <p className="text-[11px] font-semibold text-slate-600">
         {turn.role === 'driver' ? labels.driver : labels.agent}
         {time && <> · <time dateTime={turn.timestamp ?? undefined} className="font-mono font-normal">{time}</time></>}
@@ -107,7 +107,7 @@ function AssessmentSection({ icon, tone, title, assessment, emptyBrief, metrics,
       icon={icon}
       tone={tone}
       title={title}
-      right={assessment.signal && <span className={cn('rounded-full px-2.5 py-0.5 text-xs font-semibold', tone === 'violet' ? 'bg-violet-50 text-violet-800' : 'bg-amber-50 text-amber-800')}>{assessment.signal}</span>}
+      right={assessment.signal && <span className={cn('rounded-full px-2.5 py-0.5 text-xs font-semibold', tone === 'violet' ? 'bg-gs-purple-soft text-gs-purple' : 'bg-gs-amber-soft text-gs-amber-ink')}>{assessment.signal}</span>}
       bodyClassName="space-y-3"
     >
       {assessment.brief
@@ -170,16 +170,16 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
   return (
     <div role="tabpanel" id="panel-overview" aria-labelledby="tab-overview" className="space-y-3 rounded-b-lg border-x border-b border-slate-200 bg-slate-50/60 p-3 text-xs">
       {canClaim && onClaim && (
-        <div className="flex items-center justify-between gap-3 rounded-lg border border-amber-200 bg-amber-50 p-3 shadow-2xs">
-          <div className="flex items-center gap-2 text-[13px] font-medium text-amber-900">
-            <Lock aria-hidden="true" size={16} className="block shrink-0 text-amber-700" />
+        <div className="flex items-center justify-between gap-3 rounded-lg border border-gs-amber/30 bg-gs-amber-soft p-3 shadow-2xs">
+          <div className="flex items-center gap-2 text-[13px] font-medium text-gs-amber-ink">
+            <Lock aria-hidden="true" size={16} className="block shrink-0 text-gs-amber-ink" />
             <span>{m.leaseRequired}</span>
           </div>
           <button
             type="button"
             disabled={claimBusy}
             onClick={onClaim}
-            className="shrink-0 rounded-md bg-emerald-700 px-3 py-1.5 text-xs font-semibold text-white shadow-xs transition-colors hover:bg-emerald-800 disabled:opacity-50"
+            className="shrink-0 rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-white shadow-xs transition-colors hover:bg-primary-container disabled:opacity-50"
           >
             {claimBusy ? m.claiming : m.claimCase}
           </button>
@@ -259,11 +259,11 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
         noQuotes={t.noRelay}
       />
       <div className="flex flex-wrap gap-4 pt-1">
-        <button type="button" onClick={() => onTabChange?.('maps')} className="inline-flex items-center gap-1.5 text-[13px] font-medium text-emerald-700 hover:text-emerald-800 hover:underline">
+        <button type="button" onClick={() => onTabChange?.('maps')} className="inline-flex items-center gap-1.5 text-[13px] font-medium text-gs-green-ink hover:text-gs-green-ink hover:underline">
           <MapIcon aria-hidden="true" size={16} className="block" />
           <span>{m.viewMaps}</span>
         </button>
-        <button type="button" onClick={() => onTabChange?.('driver')} className="inline-flex items-center gap-1.5 text-[13px] font-medium text-emerald-700 hover:text-emerald-800 hover:underline">
+        <button type="button" onClick={() => onTabChange?.('driver')} className="inline-flex items-center gap-1.5 text-[13px] font-medium text-gs-green-ink hover:text-gs-green-ink hover:underline">
           <IdCard aria-hidden="true" size={16} className="block" />
           <span>{m.viewDriver}</span>
         </button>
