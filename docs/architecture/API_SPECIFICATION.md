@@ -67,6 +67,26 @@ Road coordinates are WGS84 longitude/latitude even when producer documentation c
   - `technical_dropout`: Network/GPS loss technical guardrail advisory signal marking Disagree (System Error).
 - Ready for automated testing with zero external API dependencies.
 
+## Knowledge base and agent config API (ADR-032)
+
+Prefix `/api/v1`. Roles and lifecycle are in [ADR-032](adr-032-knowledge-base-roles-and-lifecycle.md). `/knowledge/*` needs analyst, fraud_analyst, senior_analyst or admin (formulas are detection logic); `/agent-config` and `/knowledge/registry` also allow `manager`/`reviewer`. Errors: 401 no session, 403 role or four-eyes, 404 unknown/other-org, 409 illegal lifecycle state, 422 validation (`detail` is a string or `{message, errors:[{path, code, message, position?}]}`).
+
+| Method and path | Purpose |
+|---|---|
+| `GET /knowledge/meta`, `GET /knowledge/parameters` | Types/tools/reject reasons; parameter catalogue (unit, source, owner, latency, kind `case|policy`). |
+| `POST /knowledge/formula/validate` `{formula}` | `{ok, errors, warnings, used_params, sample}`: syntax, unknown parameter, unit mismatch, constant division by zero. |
+| `GET /knowledge/objects?type&status&q` | All versions (one row per version). |
+| `POST /knowledge/objects` `{type, code, name, scope, body}` | Create draft v1 (409 if code exists). |
+| `GET|PUT /knowledge/objects/{id}`, `GET /knowledge/objects/{type}/{code}/versions` | Read; edit draft/ready_for_test only. |
+| `POST /knowledge/objects/{id}/{clone,submit,trial,publish,retire,rollback,preview}` | Lifecycle. `publish {override_reason?}` needs approver != author; `retire`/`rollback {reason}`; `preview {case_ids?, params?}`. |
+| `POST /knowledge/similar` `{text, type?}` | Token-overlap similarity over non-retired objects. |
+| `GET /knowledge/registry` | Agents: instruction version, model, tools, memory layers, knowledge types and published counts, kill-switch state. |
+| `GET|POST /knowledge/documents` | Policy document metadata + text; `indexing_status`. |
+| `GET|POST /knowledge/proposals`, `POST /knowledge/proposals/{id}/{accept,edit,reject}` | Review queue; reject needs `reason_code` in `wrong_source|wrong_motive|duplicate|out_of_scope|other`. |
+| `POST /knowledge/seed` | Admin only, idempotent demo content. |
+| `GET /agent-config?scope`, `PUT /agent-config/{key}` `{value, reason, scope}` | Values with bounds/owner/`can_edit`; bounded writes. |
+| `GET /agent-config/history/list?key`, `POST /agent-config/history/{id}/revert`, `POST /agent-config/kill-switch` `{enabled, reason}` | History, revert, kill switch. |
+
 ## Tester API design extension
 
 The proposed canonical Tester namespace is `/test/api/v1`; it is separate from the implemented `/api/v1` contracts above and has no unprefixed alias. See [Tester request/response and event contracts](TESTER_API_SPECIFICATION.md) and [runtime architecture](TESTER_SIMULATION_ARCHITECTURE.md). All operations require authenticated, run-scoped authorization and isolated test infrastructure. These documents specify future implementation, not available endpoints.
