@@ -121,6 +121,7 @@ export function DocumentsPanel({ me }: { me: Me }) {
                             {st === "done" && (
                               <div className="text-[11.5px] text-gs-mute-2" data-testid={`analysis-counts-${d.id}`}>
                                 {t("docs.analysis.proposals")}: <b>{c.proposals ?? 0}</b> · {t("docs.analysis.reuse")} {c.reuse ?? 0} · {t("docs.analysis.extend")} {c.extend ?? 0} · {t("docs.analysis.new")} {c.new ?? 0}
+                                {c.truncated && <div className="text-gs-amber-ink" data-testid={`analysis-truncated-${d.id}`}>{t("docs.analysis.truncated", { done: c.chunks ?? 0, total: c.chunks_total ?? c.chunks ?? 0 })}</div>}
                                 {(c.rejected_citation ?? 0) > 0 && <div className="text-gs-mute">{t("docs.analysis.rejected")}: {c.rejected_citation}</div>}
                               </div>
                             )}

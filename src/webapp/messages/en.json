@@ -799,7 +799,8 @@
         "reuse": "Reuse",
         "extend": "Extend",
         "new": "New",
-        "rejected": "Dropped (bad citation)"
+        "rejected": "Dropped (bad citation)",
+        "truncated": "Truncated ({done}/{total} chunks)"
       },
       "indexing": {
         "not_indexed": "Not indexed",

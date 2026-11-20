@@ -176,8 +176,11 @@ class PolicyAnalysisService:
             text = doc.get("text_excerpt") or ""
             if not text.strip():
                 return self._finish(doc["id"], "failed", counts, "Document has no extractable text; paste the text or upload txt/md/docx.", actor.id)
-            chunks = chunk_text(text)[:MAX_CHUNKS]
+            all_chunks = chunk_text(text)
+            chunks = all_chunks[:MAX_CHUNKS]
             counts["chunks"] = len(chunks)
+            counts["chunks_total"] = len(all_chunks)
+            counts["truncated"] = len(all_chunks) > MAX_CHUNKS
             raw_items: list[dict[str, Any]] = []
             errors: list[str] = []
             for ch in chunks:

@@ -210,6 +210,12 @@ describe("DocumentsPanel analysis", () => {
     expect(screen.getByTestId("analysis-counts-d1")).toHaveTextContent("2");
   });
 
+  it("flags a truncated analysis with chunks done/total", async () => {
+    api.documents.mockResolvedValue({ items: [docRow({ analysis_status: "done", analysis_counts: { proposals: 1, chunks: 12, chunks_total: 20, truncated: true } })] });
+    wrap(<DocumentsPanel me={analyst} />);
+    expect(await screen.findByTestId("analysis-truncated-d1")).toHaveTextContent("12/20");
+  });
+
   it("shows failed status with the error and disables analyze without text", async () => {
     api.documents.mockResolvedValue({ items: [docRow({ analysis_status: "failed", analysis_error: "credentials are not configured", has_text: false })] });
     wrap(<DocumentsPanel me={analyst} />);

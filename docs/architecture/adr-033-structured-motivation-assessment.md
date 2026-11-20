@@ -19,3 +19,10 @@ Motivation existed only as an in-memory `forensic_brief.motivation_assessment` (
 - Additive migration, no change to existing tables. Rollback drops the new table.
 - The legacy `forensic_brief.motivation_assessment` (and the Finalization tab, which reveals it after a preliminary judgment) is unchanged.
 - The structured card is visible on Overview before the preliminary judgment; the earlier anti-anchoring boundary applied only to the legacy narrative (open question for product).
+
+
+## Decision (2026-11-20): Write endpoints require the review claim
+
+- `POST /cases/{id}/motivation/generate`, `PUT /cases/{id}/motivation` and `POST /cases/{id}/motivation/confirm` require the caller to hold the active review lease on the case (same rule as the preliminary judgment), else 409 "An active claim by this analyst is required". Applies to analyst, senior_analyst and admin alike (admin has no bypass for claim-gated writes). Reads unchanged.
+- Webapp: `canWriteMotivation` in the cockpit additionally requires `isLockedByMe`. The card stays visible before the preliminary judgment.
+- Regenerate stays allowed on a confirmed assessment; it creates a new draft version (the confirmed version stays in history).

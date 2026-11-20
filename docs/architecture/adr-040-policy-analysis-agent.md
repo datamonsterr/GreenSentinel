@@ -23,3 +23,9 @@ Zero hallucinated rules reach the queue without a quote that exists in the sourc
 ## Rejected
 
 Auto-publish on high similarity; trusting LLM citations without substring check; a separate `policy_analysis_run` table (YAGNI: last run only on the document).
+
+
+## Decision (2026-11-20): Synchronous run, truncation visible, PDF stays unsupported
+
+- Analysis stays synchronous inside the request. Documents are capped at `MAX_CHUNKS = 12` chunks; `analysis_counts` now records `chunks_total` and `truncated` (true when the cap dropped chunks). The documents panel shows "Đã cắt bớt / Truncated (x/y chunks)" so the analyst knows the tail was not analysed.
+- PDF upload stays rejected with 422 (no new dependency); paste text or upload txt/md/docx.

@@ -182,3 +182,22 @@ def test_extract_text_txt_and_docx():
     assert extract_text("a.docx", buf.getvalue()) == "Điều 1\n\nNội dung"
     with pytest.raises(ValueError):
         extract_text("a.xlsx", b"x")
+
+
+def test_document_over_chunk_cap_is_marked_truncated(setup):
+    from src.services import policy_analysis_service as pas
+
+    store, kb, _ = setup
+    long_text = "\n\n".join(f"Điều {i}. " + ("nội dung chính sách " * 60) for i in range(60))
+    doc = kb.create_document(ANALYST, name="Dài", code="DOC-LONG", text=long_text)
+    total = len(chunk_text(long_text))
+    assert total > pas.MAX_CHUNKS
+    out = svc(kb, {"items": []}).analyze(ANALYST, doc["id"])
+    counts = out["analysis_counts"]
+    assert counts["chunks"] == pas.MAX_CHUNKS and counts["truncated"] is True and counts["chunks_total"] == total
+
+
+def test_short_document_is_not_truncated(setup):
+    _, kb, doc = setup
+    counts = svc(kb, {"items": []}).analyze(ANALYST, doc["id"])["analysis_counts"]
+    assert counts["truncated"] is False and counts["chunks_total"] == counts["chunks"]

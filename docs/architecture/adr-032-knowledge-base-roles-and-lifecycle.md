@@ -79,3 +79,8 @@ No embeddings key exists. `SimilarityScorer` interface with a deterministic `Tok
 - S-D1 consumes `get_published`, `list_published`, `AgentConfigService` getters, `KbService.create_proposal`, and `default_scorer()`.
 - Replay is a stub: no changed-conclusion rate against VH outcomes until closed-case corpora exist (S9 in the gap analysis).
 - Local cases carry few case parameters (`trips_today`, duration); trials of other parameters report `not_computable` honestly.
+
+
+## Decision (2026-11-20): Approvers stay senior_analyst/admin
+
+Publish/approve remains limited to `senior_analyst` and `admin` with author != approver. No broader approver role is introduced.

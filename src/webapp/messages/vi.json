@@ -799,7 +799,8 @@
         "reuse": "Dùng lại",
         "extend": "Mở rộng",
         "new": "Tạo mới",
-        "rejected": "Loại (trích dẫn sai)"
+        "rejected": "Loại (trích dẫn sai)",
+        "truncated": "Đã cắt bớt ({done}/{total} đoạn)"
       },
       "indexing": {
         "not_indexed": "Chưa lập chỉ mục",

@@ -31,7 +31,7 @@ export type PolicyDocument = {
   indexing_status: "not_indexed" | "indexed" | "embeddings_not_configured"; uploaded_by_name: string | null;
   created_at: string; has_text: boolean; used_by: { vi: string; en: string }[];
   analysis_status?: "pending" | "running" | "done" | "failed"; analysis_error?: string | null;
-  analysis_counts?: Partial<Record<"chunks" | "candidates" | "proposals" | "reuse" | "extend" | "new" | "rejected_citation" | "rejected_schema" | "duplicates", number>>;
+  analysis_counts?: Partial<Record<"chunks" | "candidates" | "proposals" | "reuse" | "extend" | "new" | "rejected_citation" | "rejected_schema" | "duplicates" | "chunks_total", number> & { truncated: boolean }>;
   analyzed_at?: string | null;
 };
 export type Proposal = {
