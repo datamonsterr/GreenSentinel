@@ -1075,7 +1075,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
               onClaim={() => void updateLock(selectedCaseId, false)}
               canClaim={canClaim}
               claimBusy={claimBusy}
-              canWriteMotivation={isAnalystAuthorized && !isTerminalCase}
+              canWriteMotivation={isAnalystAuthorized && !isTerminalCase && isLockedByMe}
             />
           )}
           {activeCenterTab === 'overview' && <ExplainSection key={caseDetail.case.id} caseId={caseDetail.case.id} locale={locale} roles={currentAnalyst?.roles ?? (currentAnalyst?.role ? [currentAnalyst.role] : [])} />}

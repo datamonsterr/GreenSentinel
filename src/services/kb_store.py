@@ -52,6 +52,7 @@ class Store(Protocol):
     def principal_name(self, principal_id: str) -> str | None: ...
     def case_params(self, organization_id: str, case_ids: list[str] | None = None, limit: int = 30) -> list[dict[str, Any]]: ...
     def case_info(self, organization_id: str, case_id: str) -> dict[str, Any] | None: ...
+    def mark_driver_answered(self, organization_id: str, case_id: str) -> bool: ...
 
 
 class MemoryStore:
@@ -125,8 +126,18 @@ class MemoryStore:
         for c in self.cases:
             if c["case_id"] == case_id and c.get("organization_id", organization_id) == organization_id:
                 return {"case_id": case_id, "organization_id": organization_id, "driver_id": c.get("driver_id"),
-                        "status": c.get("status", "evidence_requested"), "category": c.get("category")}
+                        "status": c.get("status", "evidence_requested"), "category": c.get("category"),
+                        "dispute_status": c.get("dispute_status")}
         return None
+
+    def mark_driver_answered(self, organization_id: str, case_id: str) -> bool:
+        """evidence_requested + no dispute yet -> dispute_status pending_review. Idempotent, never downgrades."""
+        for c in self.cases:
+            if c["case_id"] == case_id and c.get("organization_id", organization_id) == organization_id:
+                if c.get("status", "evidence_requested") == "evidence_requested" and c.get("dispute_status") in (None, "not_disputed"):
+                    c["dispute_status"] = "pending_review"
+                    return True
+        return False
 
 
 def _norm(v: Any) -> Any:
@@ -247,12 +258,23 @@ class PgStore:
             return None
         with self._connect() as conn, conn.cursor() as cur:
             cur.execute(
-                """SELECT fc.id::text AS case_id, fc.organization_id::text AS organization_id, fc.status,
+                """SELECT fc.id::text AS case_id, fc.organization_id::text AS organization_id, fc.status, fc.dispute_status,
                           fc.suspected_category AS category, ta.driver_id::text AS driver_id
                      FROM app.fraud_cases fc LEFT JOIN app.trip_assignments ta ON ta.id = fc.assignment_id
                     WHERE fc.id = %s::uuid AND fc.organization_id = %s::uuid""",
                 (str(case_id), str(organization_id)))
             return self._row(cur.fetchone())
+
+    def mark_driver_answered(self, organization_id: str, case_id: str) -> bool:
+        if not _UUID.match(str(case_id)):
+            return False
+        with self._connect() as conn, conn.cursor() as cur:
+            cur.execute(
+                """UPDATE app.fraud_cases SET dispute_status = 'pending_review', updated_at = now()
+                    WHERE id = %s::uuid AND organization_id = %s::uuid AND status = 'evidence_requested'
+                      AND (dispute_status IS NULL OR dispute_status = 'not_disputed')""",
+                (str(case_id), str(organization_id)))
+            return cur.rowcount > 0
 
     def case_params(self, organization_id: str, case_ids: list[str] | None = None, limit: int = 30) -> list[dict[str, Any]]:
         """Best-effort parameter values for real cases (fare, duration, trips today, feature-set signals)."""

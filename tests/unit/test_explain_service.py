@@ -526,3 +526,48 @@ def test_agent_config_metrics_reflect_sessions(sim):
     run(sim.svc.confirm_summary(DRIVER, CASE))
     m = sim.cfg.list_config(ADMIN)["metrics"]
     assert m["available"] is True and m["avg_turns"] == 0 and m["pct_help"] == 0
+
+
+# ---- Decision 2026-11-20: submitted explanation hands the case to analysts (dispute_status) ----
+def _dispute(e):
+    return e.store.case_info(ORG, CASE).get("dispute_status")
+
+
+def test_store_mark_driver_answered_is_idempotent_and_never_downgrades():
+    s = MemoryStore(cases=[
+        {"case_id": "a", "organization_id": ORG, "status": "evidence_requested"},
+        {"case_id": "b", "organization_id": ORG, "status": "evidence_requested", "dispute_status": "not_disputed"},
+        {"case_id": "c", "organization_id": ORG, "status": "evidence_requested", "dispute_status": "analyst_escalated"},
+        {"case_id": "d", "organization_id": ORG, "status": "open"},
+    ])
+    assert s.mark_driver_answered(ORG, "a") is True and s.mark_driver_answered(ORG, "a") is False
+    assert s.mark_driver_answered(ORG, "b") is True
+    assert s.mark_driver_answered(ORG, "c") is False and s.case_info(ORG, "c")["dispute_status"] == "analyst_escalated"
+    assert s.mark_driver_answered(ORG, "d") is False and s.case_info(ORG, "d")["dispute_status"] is None
+    assert s.case_info(ORG, "a")["dispute_status"] == "pending_review" and s.case_info(ORG, "a")["status"] == "evidence_requested"
+
+
+def test_fallback_submit_sets_pending_review():
+    e = Env(ScriptedLLM(), enabled=False)
+    run(e.svc.start(DRIVER, CASE, "RealTrip"))
+    assert _dispute(e) is None
+    run(e.svc.submit(DRIVER, CASE, ANSWERS))
+    assert _dispute(e) == "pending_review"
+
+
+def test_lazy_auto_submit_sets_pending_review(sim):
+    run(sim.svc.start(DRIVER, CASE, "RealTrip"))
+    run(sim.svc.submit(DRIVER, CASE, ANSWERS))
+    assert _dispute(sim) is None  # still in the agent loop: not handed over yet
+    sim.advance(minutes=31)
+    run(sim.svc.get_for_driver(DRIVER, CASE))
+    assert _dispute(sim) == "pending_review"
+
+
+def test_end_early_confirm_sets_pending_review(sim):
+    run(sim.svc.start(DRIVER, CASE, "RealTrip"))
+    run(sim.svc.submit(DRIVER, CASE, ANSWERS))
+    run(sim.svc.end(DRIVER, CASE))
+    assert _dispute(sim) is None
+    run(sim.svc.confirm_summary(DRIVER, CASE))
+    assert _dispute(sim) == "pending_review"

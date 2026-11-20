@@ -88,7 +88,7 @@ def client_for():
     case_service._resolve_case_id = lambda cid: cid
     case_service._get_case_detail_data = AsyncMock(
         return_value=SimpleNamespace(trip={}, features={"fare_delta_vnd": 30000}, telemetry_samples=GPS,
-                                     case=SimpleNamespace(trip_id="t1", id="c1"))
+                                     case=SimpleNamespace(trip_id="t1", id="c1"), active_lease={"analyst_id": "p1"})
     )
 
     def make(role):
@@ -97,6 +97,7 @@ def client_for():
         app.dependency_overrides[get_case_service] = lambda: case_service
         return TestClient(app, raise_server_exceptions=False)
 
+    make.detail = case_service._get_case_detail_data
     yield make
     app.dependency_overrides.clear()
 
@@ -152,3 +153,19 @@ def test_analyst_generate_edit_confirm(client_for):
 def test_edit_rejects_unknown_category(client_for):
     r = client_for("analyst").put("/cases/c1/motivation", json={"motive_category": "greed", "confidence": 0.4, "rationale": "x"})
     assert r.status_code == 422
+
+
+@pytest.mark.parametrize("lease", [None, {"analyst_id": "someone-else"}])
+@pytest.mark.parametrize("role", ["analyst", "senior_analyst", "admin"])
+@pytest.mark.parametrize("method,path,body", [
+    ("POST", "/cases/c1/motivation/generate", None),
+    ("PUT", "/cases/c1/motivation", {"motive_category": "unclear", "confidence": 0.4, "rationale": "x"}),
+    ("POST", "/cases/c1/motivation/confirm", {}),
+])
+def test_motivation_writes_require_own_claim(client_for, role, method, path, body, lease):
+    c = client_for(role)
+    detail = client_for.detail.return_value
+    detail.active_lease = lease
+    with patch("src.api.routes.require_case_scope"):
+        r = c.request(method, path, json=body)
+    assert r.status_code == 409, r.text

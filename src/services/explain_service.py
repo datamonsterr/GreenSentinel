@@ -331,6 +331,7 @@ class ExplainService:
                                            "workflow": form.get("workflow")})
         self.store.audit(s["organization_id"], principal.id, "explain.statement.submit", {"session_id": s["id"], "mode": s["mode"]})
         if s["state"] == "submitted":
+            self._hand_over(s)
             self._turn(s, "system", "fallback_submit", payload={"reason": "kill_switch" if not enabled else "mode_fallback"})
             return self.driver_view(s)
         await self._investigate(s)
@@ -706,6 +707,12 @@ class ExplainService:
         self._persist(s, where={"state": expect} if expect else None)
         self.store.audit(s["organization_id"], None, "explain.session.submitted",
                          {"session_id": s["id"], "interrupted": s["session_interrupted"], "inconclusive": s["ai_inconclusive"]})
+        self._hand_over(s)
+
+    def _hand_over(self, s: dict[str, Any]) -> None:
+        """Submitted explanation -> case waits on analysts (dispute_status pending_review; status unchanged)."""
+        if self.store.mark_driver_answered(s["organization_id"], s["case_id"]):
+            self.store.audit(s["organization_id"], None, "explain.case.pending_review", {"case_id": s["case_id"], "session_id": s["id"]})
 
     # ---- views --------------------------------------------------------------------------------
     def driver_view(self, s: dict[str, Any]) -> dict[str, Any]:
