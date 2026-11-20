@@ -209,7 +209,8 @@ for (const isBlockingGuardrail of [false, true]) {
         const stripBottom = strip.getBoundingClientRect().bottom;
         const panelTop = content.getBoundingClientRect().top;
         const notices = Array.from(strip.parentElement!.children).filter(element =>
-          element.getAttribute('role') === 'status' && element.getBoundingClientRect().height > 0 &&
+          // WorkflowStepper (8343b4b) renders as a sibling block between the tab strip and the Overview panel, like the status notices.
+          (element.getAttribute('role') === 'status' || element.getAttribute('data-testid') === 'workflow-stepper') && element.getBoundingClientRect().height > 0 &&
           element.getBoundingClientRect().top >= stripBottom && element.getBoundingClientRect().bottom <= panelTop);
         const noticeBottom = notices.length ? Math.max(...notices.map(element => element.getBoundingClientRect().bottom)) : stripBottom;
         return { gap: panelTop - noticeBottom, buttonHeight: button.getBoundingClientRect().height, stripHeight: strip.getBoundingClientRect().height, fontSize: style.fontSize, iconSize: getComputedStyle(button.querySelector('[aria-hidden="true"]')!).fontSize };
