@@ -148,7 +148,7 @@ export const DriverRelayTab: React.FC<DriverRelayTabProps> = ({
           onChange={(event) => onInputChange(event.target.value)}
           placeholder="Nhập nội dung trao đổi với tài xế…"
           disabled={closed || sending}
-          className="flex-1 h-8 rounded border border-slate-200 bg-slate-50 px-2 text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-gs-green disabled:opacity-50"
+          className="flex-1 h-8 rounded border border-slate-200 bg-slate-50 px-2 text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-primary disabled:opacity-50"
         />
         <button
           type="submit"

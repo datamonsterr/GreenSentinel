@@ -32,7 +32,7 @@ export function TripStatusRow({ caseDetail, onOpen, className }: { caseDetail: C
   return (
     <div data-testid="trip-status-row" className={cn("flex h-11 min-w-0 flex-nowrap items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-[13px] shadow-xs", className)}>
       {onOpen ? (
-        <button type="button" title={name} aria-label={name} onClick={onOpen} className={cn(routeClass, "rounded text-left hover:text-gs-green-ink focus-visible:outline-gs-green")}>
+        <button type="button" title={name} aria-label={name} onClick={onOpen} className={cn(routeClass, "rounded text-left hover:text-primary focus-visible:outline-primary")}>
           {route}
         </button>
       ) : (

@@ -266,7 +266,7 @@ function GroupedToolsRow({ tools }: { tools: ToolTrace[] }) {
           <span
             key={tool.toolCallId}
             aria-label={`Tool ${tool.toolName}, done`}
-            className="inline-flex items-center gap-1 rounded border border-gs-green/30 bg-gs-green-soft px-1.5 py-0.5 text-[10px] text-gs-green-ink"
+            className="inline-flex items-center gap-1 rounded border border-primary/30 bg-gs-cyan-soft px-1.5 py-0.5 text-[10px] text-primary"
           >
             <CheckCircle2Icon aria-hidden="true" className="h-3 w-3 shrink-0" />
             {tool.toolName}
@@ -555,7 +555,7 @@ export function AnalystCopilotPanel({
               href={href}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gs-green-ink underline underline-offset-2 hover:text-gs-green-ink"
+              className="text-primary underline underline-offset-2 hover:text-primary"
               title={title}
             >
               {children}
@@ -596,7 +596,7 @@ export function AnalystCopilotPanel({
                 type="button"
                 onClick={handleClick}
                 title={targetCaseId}
-                className="inline-flex items-center gap-1 font-medium text-gs-green-ink underline underline-offset-2 hover:text-gs-green-ink cursor-pointer"
+                className="inline-flex items-center gap-1 font-medium text-primary underline underline-offset-2 hover:text-primary cursor-pointer"
               >
                 <span>{children}</span>
                 <LinkIcon className="inline h-3 w-3 shrink-0" />
@@ -629,7 +629,7 @@ export function AnalystCopilotPanel({
                 void handleOpenDriver(driverId);
               }}
               title={`${vi ? "Hồ sơ tài xế" : "Driver profile"}: ${driverId}`}
-              className="font-medium text-gs-green-ink underline underline-offset-2 hover:text-gs-green-ink cursor-pointer"
+              className="font-medium text-primary underline underline-offset-2 hover:text-primary cursor-pointer"
             >
               {children}
             </button>
@@ -650,9 +650,9 @@ export function AnalystCopilotPanel({
                 onOpenTrip?.(tripId);
               }}
               title={`${vi ? "Mở chuyến đi" : "Open trip"} ${tripId}`}
-              className="inline-flex items-center gap-1 rounded-full bg-gs-green-soft border border-gs-green/30 px-2 py-0.5 text-[11px] font-medium text-gs-green-ink hover:bg-gs-green-soft transition-colors cursor-pointer"
+              className="inline-flex items-center gap-1 rounded-full bg-gs-cyan-soft border border-primary/30 px-2 py-0.5 text-[11px] font-medium text-primary hover:bg-gs-cyan-soft transition-colors cursor-pointer"
             >
-              <MapPinIcon className="h-3 w-3 shrink-0 text-gs-green-ink" />
+              <MapPinIcon className="h-3 w-3 shrink-0 text-primary" />
               <span>{label}</span>
             </button>
           );
@@ -664,7 +664,7 @@ export function AnalystCopilotPanel({
           return (
             <HoverCard closeDelay={150} openDelay={100}>
               <HoverCardTrigger asChild>
-                <sup className="ml-0.5 cursor-pointer rounded bg-gs-green-soft px-1 py-0.2 text-[9px] font-bold text-gs-green-ink hover:bg-gs-green/20">
+                <sup className="ml-0.5 cursor-pointer rounded bg-gs-cyan-soft px-1 py-0.2 text-[9px] font-bold text-primary hover:bg-primary/20">
                   [{children || citationId}]
                 </sup>
               </HoverCardTrigger>
@@ -679,10 +679,10 @@ export function AnalystCopilotPanel({
                     <div key={i} className="space-y-1">
                       <div className="flex items-center justify-between text-[11px] text-slate-600 font-medium">
                         <span>{c.source}</span>
-                        {c.section && <span className="text-gs-green-ink">{c.section}</span>}
+                        {c.section && <span className="text-primary">{c.section}</span>}
                       </div>
                       {c.content && (
-                        <blockquote className="border-l-2 border-gs-green pl-2 text-[10px] text-slate-600 italic bg-slate-50 p-1.5 rounded">
+                        <blockquote className="border-l-2 border-primary pl-2 text-[10px] text-slate-600 italic bg-slate-50 p-1.5 rounded">
                           {c.content}
                         </blockquote>
                       )}
@@ -848,7 +848,7 @@ export function AnalystCopilotPanel({
               <SourcesContent className="space-y-1.5 pt-1.5">
                 {citations.map((cit, cIdx) => (
                   <div key={cIdx} className="flex items-start gap-1.5 rounded bg-slate-50 border border-slate-200 p-2 text-[10px]">
-                    <BookOpenIcon className="h-3.5 w-3.5 text-gs-green-ink shrink-0 mt-0.5" />
+                    <BookOpenIcon className="h-3.5 w-3.5 text-primary shrink-0 mt-0.5" />
                     <div className="min-w-0 flex-1">
                       <div className="font-medium text-slate-800">
                         {cit.source} {cit.section ? `• ${cit.section}` : ""}
@@ -1100,7 +1100,7 @@ export function AnalystCopilotPanel({
 
               return (
                 <Message key={msg.id} from="assistant" className="!flex !flex-row max-w-full items-start gap-2">
-                  <div className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gs-green-soft text-gs-green-ink" aria-label={vi ? "Trợ lý" : "Assistant"}><BotIcon className="h-3.5 w-3.5" /></div>
+                  <div className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gs-cyan-soft text-primary" aria-label={vi ? "Trợ lý" : "Assistant"}><BotIcon className="h-3.5 w-3.5" /></div>
                   <div className="min-w-0 max-w-[calc(100%-2rem)] flex-1">
                     <MessageContent className="w-full rounded-2xl rounded-tl-md border border-slate-200 bg-slate-50/70 p-3 text-xs">
                       <span className="text-[10px] font-semibold text-slate-500">{vi ? "Trợ lý" : "Assistant"}</span>
@@ -1176,7 +1176,7 @@ export function AnalystCopilotPanel({
                   disabled={!isLockedByMe || status === "submitted" || status === "streaming"}
                   aria-label={vi ? "Gửi tin nhắn" : "Send message"}
                   title={vi ? "Gửi tin nhắn" : "Send message"}
-                  className="size-7 cursor-pointer rounded-md bg-transparent text-gs-green-ink shadow-none hover:bg-transparent hover:text-gs-green-ink disabled:opacity-40"
+                  className="size-7 cursor-pointer rounded-md bg-transparent text-primary shadow-none hover:bg-transparent hover:text-primary disabled:opacity-40"
                 >
                   <SendIcon className="h-3.5 w-3.5" />
                 </Button>
@@ -1211,7 +1211,7 @@ export function AnalystCopilotPanel({
           </DialogHeader>
           {driverLoading ? (
             <div role="status" aria-label={vi ? "Đang tải thẻ điểm" : "Loading scorecard"} className="py-8 text-center text-xs text-slate-500 space-y-2">
-              <Loader size={16} className="animate-spin mx-auto text-gs-green-ink" />
+              <Loader size={16} className="animate-spin mx-auto text-primary" />
               <p>{vi ? "Đang tải hồ sơ tài xế..." : "Loading driver profile…"}</p>
             </div>
           ) : driverError ? (

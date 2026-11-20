@@ -83,7 +83,7 @@ export const WorkflowTab: React.FC<WorkflowTabProps> = ({ caseDetail, caseWorkfl
     <SectionCard aria-label={undefined} icon={Workflow} tone="info" title={t.title} subtitle={!caseDetail.workflow_draft ? t.local : undefined} bodyClassName="space-y-3">
       {!writable && <p className="text-xs text-slate-500">{t.readOnly}</p>}
       <label className="block text-xs font-semibold text-slate-700">{t.draft}
-        <textarea rows={2} maxLength={20000} disabled={!writable || saving} className="mt-1 min-h-16 w-full resize-y rounded-md border border-slate-300 bg-slate-50 p-2 text-[13px] font-normal outline-none focus:border-gs-green focus:ring-2 focus:ring-gs-green/30 disabled:bg-slate-100" aria-label={t.draft} value={draft} onChange={event => { setDraft(event.target.value); setDirty(true); setSaved(false); }} />
+        <textarea rows={2} maxLength={20000} disabled={!writable || saving} className="mt-1 min-h-16 w-full resize-y rounded-md border border-slate-300 bg-slate-50 p-2 text-[13px] font-normal outline-none focus:border-primary focus:ring-2 focus:ring-primary/30 disabled:bg-slate-100" aria-label={t.draft} value={draft} onChange={event => { setDraft(event.target.value); setDirty(true); setSaved(false); }} />
       </label>
       <div className="flex items-center gap-2"><button type="button" onClick={() => void save()} disabled={!writable || saving || draft.length > 20000} className="rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-white hover:bg-primary-container disabled:opacity-50">{saving ? t.saving : t.save}</button>{saved && <span role="status" className="text-xs text-gs-green-ink">{t.saved}</span>}{error && <span role="alert" className="text-xs text-gs-red">{error}</span>}</div>
       <section aria-label={t.timeline}>

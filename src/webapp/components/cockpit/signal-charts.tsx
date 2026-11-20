@@ -36,8 +36,16 @@ function useCopy() {
   return { t: copy[locale], locale };
 }
 
-export function SpeedOverTimeChart({ series, markers, ambientKmh }: { series: SpeedPoint[]; markers: SpeedMarker[]; ambientKmh: number | null }) {
+export function SpeedOverTimeChart({ series: rawSeries, markers, ambientKmh }: { series: SpeedPoint[]; markers: SpeedMarker[]; ambientKmh: number | null }) {
   const { t, locale } = useCopy();
+  // Identical timestamps make recharts emit duplicate tick keys; keep the last sample per timestamp.
+  const series = React.useMemo(() => Array.from(new Map(rawSeries.map(point => [point.time, point])).values()).sort((a, b) => a.time - b.time), [rawSeries]);
+  // Explicit unique ticks: auto ticks over a sub-second span round to duplicates.
+  const ticks = React.useMemo(() => {
+    if (series.length < 2) return undefined;
+    const first = series[0].time, last = series[series.length - 1].time;
+    return Array.from(new Set([0, 1, 2, 3, 4].map(i => Math.round(first + ((last - first) * i) / 4))));
+  }, [series]);
   const config = {
     speed: { label: t.speed, color: "#0fb3c1" },
     ambient: { label: t.ambient, color: "#5a6b78" },
@@ -49,7 +57,7 @@ export function SpeedOverTimeChart({ series, markers, ambientKmh }: { series: Sp
           <ChartContainer config={config} className="aspect-auto h-48 w-full">
             <LineChart data={series} margin={{ top: 8, right: 12, left: -16, bottom: 0 }}>
               <CartesianGrid vertical={false} />
-              <XAxis dataKey="time" type="number" scale="time" domain={["dataMin", "dataMax"]} tickLine={false} axisLine={false} tickMargin={6} minTickGap={40} tickFormatter={(value: number) => formatClock(new Date(value).toISOString(), locale) ?? ""} />
+              <XAxis dataKey="time" type="number" scale="time" domain={["dataMin", "dataMax"]} ticks={ticks} tickLine={false} axisLine={false} tickMargin={6} minTickGap={40} tickFormatter={(value: number) => formatClock(new Date(value).toISOString(), locale) ?? ""} />
               <YAxis tickLine={false} axisLine={false} width={44} />
               <ChartTooltip content={<ChartTooltipContent labelFormatter={(_, payload) => formatClock(new Date(Number(payload?.[0]?.payload?.time)).toISOString(), locale)} />} />
               {ambientKmh !== null && <ReferenceLine y={ambientKmh} stroke="var(--color-ambient)" strokeDasharray="4 4" label={{ value: `${t.ambient} ${ambientKmh} km/h`, position: "insideTopLeft", fontSize: 10, fill: "#5a6b78" }} />}

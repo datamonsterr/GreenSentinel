@@ -847,7 +847,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
               placeholder={m.searchPlaceholder}
               value={searchQuery}
               onChange={e => { setSearchQuery(e.target.value); setHistoryOffset(0); }}
-              className="h-8 w-full rounded-md border border-slate-300 bg-white pl-8 pr-8 text-xs shadow-none outline-none placeholder:text-slate-400 focus:border-gs-green focus:ring-2 focus:ring-gs-green/30"
+              className="h-8 w-full rounded-md border border-slate-300 bg-white pl-8 pr-8 text-xs shadow-none outline-none placeholder:text-slate-400 focus:border-primary focus:ring-2 focus:ring-primary/30"
             />
             <span aria-hidden="true" className="material-symbols-outlined pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 text-sm leading-none text-slate-400">
               search
@@ -868,7 +868,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
               aria-label={m.lockFilter}
               value={lockFilter}
               onChange={e => setLockFilter(e.target.value as Availability)}
-              className={`h-8 ${queueExpanded ? 'w-48' : 'w-full'} rounded-md border border-slate-300 bg-white px-2.5 text-xs text-slate-700 shadow-none outline-none focus:border-gs-green focus:ring-2 focus:ring-gs-green/30`}
+              className={`h-8 ${queueExpanded ? 'w-48' : 'w-full'} rounded-md border border-slate-300 bg-white px-2.5 text-xs text-slate-700 shadow-none outline-none focus:border-primary focus:ring-2 focus:ring-primary/30`}
             >
               <option value="available">{m.availableCases}</option>
               <option value="mine">{m.mine}</option>
@@ -879,7 +879,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
               aria-label={m.historyFilter}
               value={historyStatus}
               onChange={e => { setHistoryStatus(e.target.value); setHistoryOffset(0); }}
-              className="h-8 w-full rounded-md border border-slate-300 bg-white px-2.5 text-xs text-slate-700 shadow-none outline-none focus:border-gs-green focus:ring-2 focus:ring-gs-green/30"
+              className="h-8 w-full rounded-md border border-slate-300 bg-white px-2.5 text-xs text-slate-700 shadow-none outline-none focus:border-primary focus:ring-2 focus:ring-primary/30"
             >
               <option value="">{m.allProcessed}</option>
               <option value="resolved">{m.resolved}</option>
@@ -954,7 +954,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
                   selectCase(item.id);
                 }}
                 className={`relative rounded-md border border-slate-200 border-l-4 p-2 text-xs space-y-1.5 bg-white cursor-pointer ${
-                  item.id === selectedCaseId ? 'bg-gs-green-soft/60 ring-1 ring-gs-green/30' : ''
+                  item.id === selectedCaseId ? 'bg-gs-cyan-soft ring-1 ring-primary/30' : ''
                 } ${
                   item.severity === 'P0' ? 'border-l-red-500' : item.severity === 'P1' ? 'border-l-amber-500' : 'border-l-blue-500'
                 }`}
@@ -971,7 +971,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
                   aria-pressed={item.id === selectedCaseId}
                   aria-label={`${item.severity} · ${item.code} ${item.driverName} ${item.plate}`}
                   onClick={() => selectCase(item.id)}
-                  className="w-full space-y-1 text-left focus-visible:outline-gs-green"
+                  className="w-full space-y-1 text-left focus-visible:outline-primary"
                 >
                   <div className="flex min-h-5 items-center justify-between gap-2">
                     <span className="truncate font-medium leading-5">{item.driverName}</span>

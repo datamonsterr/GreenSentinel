@@ -39,7 +39,7 @@ export function ChatThread({ messages, driverLabel, emptyHint, className, ...res
             <div className={cn("flex max-w-[75%] min-w-0 flex-col gap-1", customer ? "items-end" : "items-start")}>
               <p className={cn(
                 "whitespace-pre-wrap break-words rounded-2xl px-3 py-2 text-[13px] leading-relaxed",
-                customer ? "rounded-br-sm bg-gs-cyan-soft text-gs-ink-2" : "rounded-bl-sm border border-gs-green/30 bg-gs-green-soft/60 text-slate-800",
+                customer ? "rounded-br-sm bg-gs-cyan-soft text-gs-ink-2" : "rounded-bl-sm border border-gs-line-2 bg-white text-slate-800",
               )}>
                 {message.text}
               </p>

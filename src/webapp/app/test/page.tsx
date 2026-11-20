@@ -1445,12 +1445,6 @@ export default function SimulationCockpitPage() {
         </div>
 
         <div className="flex items-center gap-2 shrink-0">
-          <SpeedControl
-            value={speedFactor}
-            onChange={handleSetSpeedFactor}
-            disabled={status === "COMPLETED" || status === "CANCELLED"}
-            className="!p-0 !border-none !bg-transparent shrink-0"
-          />
           {streamState === "reconnecting" && <span role="status" className="text-[11px] text-gs-amber">Đang kết nối lại…</span>}
           {streamState === "error" && runId && <button type="button" onClick={() => connectSSE(runId)} className="text-xs underline">Kết nối lại</button>}
           {status === "RUNNING" && (

@@ -444,12 +444,12 @@ describe("Tester console redesign", () => {
 
     await waitFor(() => expect(postTest).toHaveBeenCalledWith("/runs", expect.any(Object)));
     await screen.findByRole("button", { name: /Tạm dừng/i });
-    expect(screen.getAllByTestId("speed-factor-display").every((display) => display.textContent === "1x")).toBe(true);
+    expect(screen.getByTestId("speed-factor-display").textContent === "1x").toBe(true);
 
-    fireEvent.click(screen.getAllByRole("button", { name: "Tốc độ 5x" })[0]);
+    fireEvent.click(screen.getByRole("button", { name: "Tốc độ 5x" }));
 
     await waitFor(() => expect(controlTestRun).toHaveBeenCalledWith("run-1", "SET_SPEED_FACTOR", { speed_factor: 5 }));
-    expect(screen.getAllByTestId("speed-factor-display").every((display) => display.textContent === "5x")).toBe(true);
+    expect(screen.getByTestId("speed-factor-display").textContent === "5x").toBe(true);
   });
 
   it("resolves numbered waypoints in order with their selected route legs", async () => {

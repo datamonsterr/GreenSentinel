@@ -259,11 +259,11 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
         noQuotes={t.noRelay}
       />
       <div className="flex flex-wrap gap-4 pt-1">
-        <button type="button" onClick={() => onTabChange?.('maps')} className="inline-flex items-center gap-1.5 text-[13px] font-medium text-gs-green-ink hover:text-gs-green-ink hover:underline">
+        <button type="button" onClick={() => onTabChange?.('maps')} className="inline-flex items-center gap-1.5 text-[13px] font-medium text-primary hover:text-primary-container hover:underline">
           <MapIcon aria-hidden="true" size={16} className="block" />
           <span>{m.viewMaps}</span>
         </button>
-        <button type="button" onClick={() => onTabChange?.('driver')} className="inline-flex items-center gap-1.5 text-[13px] font-medium text-gs-green-ink hover:text-gs-green-ink hover:underline">
+        <button type="button" onClick={() => onTabChange?.('driver')} className="inline-flex items-center gap-1.5 text-[13px] font-medium text-primary hover:text-primary-container hover:underline">
           <IdCard aria-hidden="true" size={16} className="block" />
           <span>{m.viewDriver}</span>
         </button>

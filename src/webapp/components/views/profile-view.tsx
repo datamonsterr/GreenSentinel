@@ -420,14 +420,14 @@ export function AnalystProfileView({
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="Search case, driver, plate..."
-                    className="text-xs pl-7 pr-3 py-1.5 rounded border border-slate-300 focus:outline-none focus:ring-1 focus:ring-gs-green w-48 sm:w-60"
+                    className="text-xs pl-7 pr-3 py-1.5 rounded border border-slate-300 focus:outline-none focus:ring-1 focus:ring-primary w-48 sm:w-60"
                   />
                 </div>
 
                 <select
                   value={selectedVerdict}
                   onChange={(e) => setSelectedVerdict(e.target.value)}
-                  className="text-xs px-2.5 py-1.5 rounded border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-gs-green text-slate-700"
+                  className="text-xs px-2.5 py-1.5 rounded border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-primary text-slate-700"
                 >
                   <option value="">All Verdicts</option>
                   <option value="AGREE">Agree</option>

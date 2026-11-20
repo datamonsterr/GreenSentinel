@@ -942,7 +942,7 @@ export function MapLibreView({
 
   const toggleClass = (active: boolean) =>
     active
-      ? "inline-flex h-7 items-center px-2 text-[10px] font-medium rounded-md bg-gs-green-soft text-gs-green-ink border border-gs-green/30 shadow-2xs cursor-pointer"
+      ? "inline-flex h-7 items-center px-2 text-[10px] font-medium rounded-md bg-gs-cyan-soft text-primary border border-primary shadow-2xs cursor-pointer"
       : "inline-flex h-7 items-center px-2 text-[10px] font-medium rounded-md bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors border border-slate-200 cursor-pointer";
 
   return (
@@ -993,11 +993,11 @@ export function MapLibreView({
             }}
             className={`inline-flex h-7 items-center px-2 rounded-md border text-[11px] font-medium gap-1 transition-all cursor-pointer ${
               isFollowingDriver
-                ? "bg-primary text-white border-gs-green shadow-2xs font-semibold"
+                ? "bg-primary text-white border-primary shadow-2xs font-semibold"
                 : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50 disabled:opacity-40"
             }`}
           >
-            <span className={`w-1.5 h-1.5 rounded-full ${isFollowingDriver ? "bg-white animate-ping" : "bg-gs-green"}`} />
+            <span className={`w-1.5 h-1.5 rounded-full ${isFollowingDriver ? "bg-white animate-ping" : "bg-primary"}`} />
             <span>{isFollowingDriver ? messages.followingDriver : messages.followDriver}</span>
           </button>
         </div>
@@ -1030,10 +1030,10 @@ export function MapLibreView({
           {latencyMs != null && (
             <div
               data-testid="gps-latency-indicator"
-              className="inline-flex h-7 items-center gap-1 rounded-md border border-gs-green/30 bg-gs-green-soft px-2 text-[11px] font-mono text-gs-green-ink font-medium"
+              className="inline-flex h-7 items-center gap-1 rounded-md border border-primary/30 bg-gs-cyan-soft px-2 text-[11px] font-mono text-primary font-medium"
               title={messages.gpsTitle}
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-gs-green"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
               <span>{latencyMs}ms</span>
             </div>
           )}
@@ -1293,7 +1293,7 @@ export function MapLibreView({
             className={`absolute top-28 right-2 z-20 bg-white/95 text-slate-800 backdrop-blur-xs rounded border border-slate-200 text-[10px] font-mono pointer-events-auto transition-all duration-200 ${
               isTrafficExpanded
                 ? "p-2.5 max-w-xs space-y-1.5 shadow-md"
-                : "px-2 py-1 max-w-[210px] shadow-2xs hover:border-gs-green/30 cursor-pointer"
+                : "px-2 py-1 max-w-[210px] shadow-2xs hover:border-primary/30 cursor-pointer"
             }`}
           >
             {/* Collapsed Pill Header */}
@@ -1378,7 +1378,7 @@ export function MapLibreView({
             </span>}
             <span
               data-testid="active-timeline-status"
-              className="font-bold text-gs-green-ink bg-gs-green-soft px-2 py-0.5 rounded border border-gs-green/30"
+              className="font-bold text-primary bg-gs-cyan-soft px-2 py-0.5 rounded border border-primary/30"
             >
               {activeMilestone?.title && activeMilestone.type !== "start_match"
                 ? `${activeMilestone.title} (${currentTimeFormatted})`
@@ -1429,7 +1429,7 @@ export function MapLibreView({
               aria-describedby={validGapAlerts.length ? validGapAlerts.map((gap) => `gap-info-${gap.alert_id}`).join(" ") : undefined}
               min={visibleStartSecond} max={visibleEndSecond} step={0.001} value={scrubSecond}
               onChange={(e) => seek(Number(e.target.value))}
-              className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-gs-green relative z-10" />
+              className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-primary relative z-10" />
             {visibleGaps.length > 0 && (
               <div data-testid="timeline-gap-bands" className="absolute inset-x-0 top-1/2 -translate-y-1/2 pointer-events-none z-20">
                 {visibleGaps.map(({ gap, left, width }) => (
@@ -1453,9 +1453,9 @@ export function MapLibreView({
           </div>
           <label className="sr-only" htmlFor="timeline-range-start">{messages.startRange}</label>
           <label className="text-[10px]" htmlFor="timeline-range-start">{locale === "vi" ? "Từ" : "From"}</label>
-          <input id="timeline-range-start" aria-label={messages.startRange} type="range" min={0} max={visibleEndSecond} value={visibleStartSecond} onChange={(e) => setRangeStartSecond(Number(e.target.value))} className="w-24 accent-gs-green" />
+          <input id="timeline-range-start" aria-label={messages.startRange} type="range" min={0} max={visibleEndSecond} value={visibleStartSecond} onChange={(e) => setRangeStartSecond(Number(e.target.value))} className="w-24 accent-primary" />
           <label className="text-[10px]" htmlFor="timeline-range-end">{messages.endRange}</label>
-          <input id="timeline-range-end" aria-label={messages.endRange} type="range" min={visibleStartSecond} max={totalDurationSec} value={visibleEndSecond} onChange={(e) => setRangeEndSecond(Number(e.target.value))} className="w-24 accent-gs-green" />
+          <input id="timeline-range-end" aria-label={messages.endRange} type="range" min={visibleStartSecond} max={totalDurationSec} value={visibleEndSecond} onChange={(e) => setRangeEndSecond(Number(e.target.value))} className="w-24 accent-primary" />
 
           <span
             data-testid="timeline-end-time"
@@ -1487,8 +1487,8 @@ export function MapLibreView({
               </span>
             )}
           </div>
-          <div className="inline-flex min-w-0 min-h-7 items-center gap-1.5 sm:justify-end text-gs-green-ink font-medium">
-            <span className="material-symbols-outlined inline-flex items-center !text-[14px] !leading-none text-gs-green-ink shrink-0">speed</span>
+          <div className="inline-flex min-w-0 min-h-7 items-center gap-1.5 sm:justify-end text-primary font-medium">
+            <span className="material-symbols-outlined inline-flex items-center !text-[14px] !leading-none text-primary shrink-0">speed</span>
             <span data-testid="ambient-traffic-status">
               {messages.ambient} {trafficCorroboration?.public_service?.average_speed_kmh != null ? <strong className="text-slate-800">{`${trafficCorroboration.public_service.average_speed_kmh} km/h`}</strong> : <span className="font-sans font-medium text-slate-500">{messages.noData}</span>}
             </span>

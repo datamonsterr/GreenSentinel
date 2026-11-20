@@ -97,14 +97,14 @@ export function FinalizationTab(props: FinalizationTabProps) {
               <div role="radiogroup" aria-label={m.judgment} className="space-y-1.5 pt-1">
                 {([['Nghi ngờ vi phạm', m.suspected], ['Nghi oan-bất khả kháng', m.noFraud], ['Chưa đủ cơ sở', m.needEvidence]] as Array<[PreliminaryJudgmentChoice, string]>).map(([value, label]) => (
                   <label key={value} className="flex items-center gap-2 cursor-pointer text-slate-800">
-                    <input type="radio" name="preliminary-judgment" value={value} checked={props.choice === value} onChange={() => props.onChoice(value)} disabled={props.savingJudgment || !props.canWrite} className="accent-gs-green" />
+                    <input type="radio" name="preliminary-judgment" value={value} checked={props.choice === value} onChange={() => props.onChoice(value)} disabled={props.savingJudgment || !props.canWrite} className="accent-primary" />
                     <span>{label}</span>
                   </label>
                 ))}
               </div>
               <label className="block text-slate-700 font-medium">
                 {m.judgmentNote}
-                <textarea aria-label={m.judgmentNote} value={props.note} onChange={event => props.onNote(event.target.value)} disabled={props.savingJudgment || !props.canWrite} className="mt-1 min-h-16 w-full rounded-md border border-slate-300 bg-white p-2 text-xs outline-none focus:border-gs-green focus:ring-2 focus:ring-gs-green/30" rows={2} />
+                <textarea aria-label={m.judgmentNote} value={props.note} onChange={event => props.onNote(event.target.value)} disabled={props.savingJudgment || !props.canWrite} className="mt-1 min-h-16 w-full rounded-md border border-slate-300 bg-white p-2 text-xs outline-none focus:border-primary focus:ring-2 focus:ring-primary/30" rows={2} />
               </label>
               <button disabled={!props.choice || props.savingJudgment || !props.canWrite} onClick={props.onSaveJudgment} className="rounded bg-gs-amber hover:bg-gs-amber px-3 py-1.5 text-xs font-medium text-white shadow-xs disabled:opacity-40 transition-colors">{props.savingJudgment ? m.saving : m.saveJudgment}</button>
             </>
@@ -173,21 +173,21 @@ export function FinalizationTab(props: FinalizationTabProps) {
         <legend className="rounded-md bg-gs-blue-soft px-2 py-1 font-semibold text-gs-blue">{m.finalization}</legend>
         <label className="block text-slate-700 font-medium">
           {m.behavior}
-          <textarea aria-label={m.rationale} placeholder={m.rationalePlaceholder} value={props.rationale} onChange={event => props.onRationale(event.target.value)} className="mt-1 min-h-16 w-full rounded-md border border-slate-300 p-2 text-xs outline-none focus:border-gs-green focus:ring-2 focus:ring-gs-green/30" rows={2} />
+          <textarea aria-label={m.rationale} placeholder={m.rationalePlaceholder} value={props.rationale} onChange={event => props.onRationale(event.target.value)} className="mt-1 min-h-16 w-full rounded-md border border-slate-300 p-2 text-xs outline-none focus:border-primary focus:ring-2 focus:ring-primary/30" rows={2} />
         </label>
         <section aria-label={`${m.motivation} ${locale === 'vi' ? 'và' : 'and'} ${m.willingness}`} className="space-y-2 rounded-md border border-slate-200 bg-slate-50/60 p-2.5">
           <label className="block text-slate-700 font-medium">
             {m.motivation}
-            <textarea aria-label={m.motivation} placeholder={m.notAssessed} value={motivation} onChange={event => setMotivation(event.target.value)} className="mt-1 min-h-16 w-full rounded-md border border-slate-300 bg-white p-2 text-xs outline-none focus:border-gs-green focus:ring-2 focus:ring-gs-green/30" rows={2} />
+            <textarea aria-label={m.motivation} placeholder={m.notAssessed} value={motivation} onChange={event => setMotivation(event.target.value)} className="mt-1 min-h-16 w-full rounded-md border border-slate-300 bg-white p-2 text-xs outline-none focus:border-primary focus:ring-2 focus:ring-primary/30" rows={2} />
           </label>
           <label className="block border-t border-slate-200 pt-2 text-slate-700 font-medium">
             {m.willingness}
-            <textarea aria-label={m.willingness} placeholder={m.unknown} value={willingness} onChange={event => setWillingness(event.target.value)} className="mt-1 min-h-16 w-full rounded-md border border-slate-300 bg-white p-2 text-xs outline-none focus:border-gs-green focus:ring-2 focus:ring-gs-green/30" rows={2} />
+            <textarea aria-label={m.willingness} placeholder={m.unknown} value={willingness} onChange={event => setWillingness(event.target.value)} className="mt-1 min-h-16 w-full rounded-md border border-slate-300 bg-white p-2 text-xs outline-none focus:border-primary focus:ring-2 focus:ring-primary/30" rows={2} />
           </label>
         </section>
         <label className="block text-slate-700 font-medium">
           {m.notes}
-          <textarea aria-label={m.notes} value={notes} onChange={event => setNotes(event.target.value)} className="mt-1 min-h-16 w-full rounded-md border border-slate-300 p-2 text-xs outline-none focus:border-gs-green focus:ring-2 focus:ring-gs-green/30" rows={1} />
+          <textarea aria-label={m.notes} value={notes} onChange={event => setNotes(event.target.value)} className="mt-1 min-h-16 w-full rounded-md border border-slate-300 p-2 text-xs outline-none focus:border-primary focus:ring-2 focus:ring-primary/30" rows={1} />
         </label>
         <p className="flex items-center gap-1 text-[10px] text-slate-500" title={m.sourceOnly}>
           <Info aria-hidden="true" size={13} className="block shrink-0 text-slate-400" />
@@ -203,7 +203,7 @@ export function FinalizationTab(props: FinalizationTabProps) {
               <button
                 type="button"
                 onClick={() => setFormOpen(true)}
-                className="underline font-semibold hover:text-gs-amber-ink focus-visible:outline-gs-green"
+                className="underline font-semibold hover:text-gs-amber-ink focus-visible:outline-primary"
               >
                 {m.saveJudgment}
               </button>
