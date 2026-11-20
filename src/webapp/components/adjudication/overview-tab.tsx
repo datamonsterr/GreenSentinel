@@ -7,6 +7,7 @@ import { useLocale } from '@/lib/locale';
 import { workspaceMessages } from '@/lib/workspace-messages';
 import { cn } from '@/lib/utils';
 import { daviScore, finite, mockLocationRatio, motivationEvidence, relayTurns, speedSeries, willingnessEvidence, willingnessMetrics, type RelayTurn } from '@/lib/cockpit-signals';
+import { MotivationCard } from './motivation-card';
 import { EmptyState } from '@/components/cockpit/empty-state';
 import { MetricCard } from '@/components/cockpit/metric-card';
 import { MetricGrid } from '@/components/cockpit/metric-grid';
@@ -32,6 +33,7 @@ interface OverviewTabProps {
   onClaim?: () => void;
   canClaim?: boolean;
   claimBusy?: boolean;
+  canWriteMotivation?: boolean;
 }
 
 const copy = {
@@ -98,7 +100,8 @@ function Quote({ turn, labels, locale }: { turn: RelayTurn; labels: { agent: str
   );
 }
 
-function AssessmentSection({ icon, tone, title, assessment, emptyBrief, metrics, quotes, quoteLabels, evidenceTitle, noQuotes, locale }: {
+function AssessmentSection({ icon, tone, title, assessment, emptyBrief, metrics, quotes, quoteLabels, evidenceTitle, noQuotes, locale, body }: {
+  body?: React.ReactNode;
   icon: typeof BrainCircuit; tone: 'violet' | 'warning'; title: string; assessment: Assessment; emptyBrief: string;
   metrics: React.ReactNode; quotes: RelayTurn[]; quoteLabels: { agent: string; driver: string }; evidenceTitle: string; noQuotes: string; locale: 'en' | 'vi';
 }) {
@@ -110,9 +113,10 @@ function AssessmentSection({ icon, tone, title, assessment, emptyBrief, metrics,
       right={assessment.signal && <span className={cn('rounded-full px-2.5 py-0.5 text-xs font-semibold', tone === 'violet' ? 'bg-gs-purple-soft text-gs-purple' : 'bg-gs-amber-soft text-gs-amber-ink')}>{assessment.signal}</span>}
       bodyClassName="space-y-3"
     >
+      {body}
       {assessment.brief
         ? <p className="text-sm leading-relaxed text-slate-700">{assessment.brief}</p>
-        : <p className="text-sm text-slate-500">{emptyBrief}</p>}
+        : !body && <p className="text-sm text-slate-500">{emptyBrief}</p>}
       {assessment.refs.length > 0 && (
         <div className="flex flex-wrap gap-1.5">
           {assessment.refs.map(ref => <span key={ref} className="rounded border border-slate-200 bg-slate-50 px-1.5 py-0.5 font-mono text-[11px] text-slate-600">{ref}</span>)}
@@ -137,6 +141,7 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
   onClaim,
   canClaim,
   claimBusy,
+  canWriteMotivation = false,
 }) => {
   const { locale } = useLocale();
   const m = workspaceMessages[locale];
@@ -218,6 +223,7 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
         tone="violet"
         title={m.motivation}
         assessment={motivation}
+        body={caseDetail.case?.id ? <MotivationCard caseId={caseDetail.case.id} canWrite={canWriteMotivation} locale={locale} /> : undefined}
         emptyBrief={t.motivationBrief}
         locale={locale}
         metrics={(

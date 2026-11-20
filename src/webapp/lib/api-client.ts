@@ -45,6 +45,9 @@ import {
   UserAccountSettings,
   WorkflowTrace,
   PreliminaryJudgment,
+  CaseMotivationResponse,
+  MotiveCategory,
+  MotivationSignal,
 } from "@/types/schemas";
 import { consumeChatEventStream } from "@/lib/chat-event-stream";
 
@@ -1058,6 +1061,37 @@ export async function saveCaseWorkflowDraft(caseId: string, text: string, expect
   return requestJson<{ text: string; version: number; updated_at?: string | null; updated_by?: string | null }>(
     `${baseUrl}/api/v1/cases/${encodeURIComponent(caseId)}/workflow-draft`,
     { method: "PUT", body: JSON.stringify({ text, ...(expectedVersion == null ? {} : { expected_version: expectedVersion }) }) },
+  );
+}
+
+export async function getCaseMotivation(caseId: string, signal?: AbortSignal) {
+  return requestJson<CaseMotivationResponse>(
+    `${getApiBaseUrl()}/api/v1/cases/${encodeURIComponent(caseId)}/motivation`,
+    { method: "GET", signal },
+  );
+}
+
+export async function generateCaseMotivation(caseId: string) {
+  return requestJson<CaseMotivationResponse>(
+    `${getApiBaseUrl()}/api/v1/cases/${encodeURIComponent(caseId)}/motivation/generate`,
+    { method: "POST" },
+  );
+}
+
+export async function saveCaseMotivation(
+  caseId: string,
+  edit: { motive_category: MotiveCategory; signals: MotivationSignal[]; confidence: number; rationale: string; expected_version?: number },
+) {
+  return requestJson<CaseMotivationResponse>(
+    `${getApiBaseUrl()}/api/v1/cases/${encodeURIComponent(caseId)}/motivation`,
+    { method: "PUT", body: JSON.stringify(edit) },
+  );
+}
+
+export async function confirmCaseMotivation(caseId: string, expectedVersion?: number) {
+  return requestJson<CaseMotivationResponse>(
+    `${getApiBaseUrl()}/api/v1/cases/${encodeURIComponent(caseId)}/motivation/confirm`,
+    { method: "POST", body: JSON.stringify(expectedVersion == null ? {} : { expected_version: expectedVersion }) },
   );
 }
 

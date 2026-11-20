@@ -1057,5 +1057,36 @@ export interface AnalyticsMetricsResponse {
   health: AnalyticsSystemHealth;
 }
 
+export type MotiveCategory = "reward_threshold" | "subsidy_surge" | "fare_inflation" | "platform_fault" | "unclear";
+
+export interface MotivationSignal {
+  code: string;
+  value?: number | string | boolean | null;
+  unit?: string | null;
+  detail?: string | null;
+}
+
+export interface CaseMotivationAssessment {
+  id: string | null;
+  case_id?: string;
+  version: number;
+  motive_category: MotiveCategory;
+  signals: MotivationSignal[];
+  amount_at_stake_vnd: number | null;
+  confidence: number;
+  rationale: string;
+  source: "ai" | "rule" | "analyst";
+  status: "draft" | "confirmed";
+  confirmed_by?: string | null;
+  confirmed_at?: string | null;
+  created_at?: string | null;
+}
+
+export interface CaseMotivationResponse {
+  assessment: CaseMotivationAssessment;
+  persisted: boolean;
+  versions?: Array<{ version: number; source: string; status: string; created_at: string }>;
+}
+
 export * from "./driver-blocks";
 
