@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
 import { setApiTokenProvider, fetchCurrentAnalyst } from "@/lib/api-client";
 import { PortalTopBar } from "@/components/portal/portal-top-bar";
@@ -17,7 +16,6 @@ import { navigationMessages } from '@/lib/navigation-messages';
 type TabKey = "cockpit" | "analytics" | "profile";
 
 export default function WorkplacePage() {
-  const router = useRouter();
   const { locale, setLocale } = useLocale();
   const messages = navigationMessages[locale];
   const e2eAuthBypass = (process.env.NODE_ENV !== "production" || isolatedGisBuild()) && process.env.NEXT_PUBLIC_E2E_TEST === "true";
@@ -81,7 +79,7 @@ export default function WorkplacePage() {
         locale={locale}
         setLocale={setLocale}
         activeTab={activeTab}
-        setActiveTab={(tab) => (tab === "knowledge" ? router.push("/knowledge") : setActiveTab(tab))}
+        setActiveTab={(tab) => (tab === "knowledge" ? window.location.assign("/knowledge") : setActiveTab(tab))}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         analyst={analyst}
