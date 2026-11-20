@@ -263,6 +263,7 @@ sequenceDiagram
 | Queue Lease Synchronization & Multi-Session Concurrency | [ADR-020](adr-020-queue-lease-synchronization.md) | Dual UUID/external-subject principal resolution, 10s background sync, PRD read-only lock notification banner, 409 conflict recovery | Static mount-time queue, unhandled PostgreSQL syntax aborts |
 | Analyst Single-Message Context Reset | [ADR-021](adr-021-analyst-context-reset.md) | Per-message unchecked context reset excludes prior dialogue from model input while preserving durable message audit and case evidence | Database deletion of session messages, frontend-only clearing |
 | Case-less GSupport Chat & Real Agent Reply | [ADR-029](adr-029-caseless-driver-chat-and-real-agent-reply.md) | `run_driver_support_agent` accepts `case_id=None` (`list_my_cases`-driven resolution); SSE stream routes surface the real agent reply instead of a discarded `asyncio.create_task`; non-stream compliance reply unchanged | Making the agent reply authoritative everywhere (breaks NFR-L06-02 compliance-copy tests), awaiting-but-discarding in `process_driver_chat` |
+| Structured Motivation Assessment | [ADR-033](adr-033-structured-motivation-assessment.md) | Versioned `case_motivation_assessments` (category, signals, code-computed amount, confidence, rationale), analyst edit/confirm, Overview card reads the API | Keep in-memory forensic-brief narrative only; LLM-computed amounts |
 
 
 ## Required architecture questions

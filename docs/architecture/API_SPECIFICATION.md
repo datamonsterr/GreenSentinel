@@ -16,6 +16,10 @@ FastAPI exposes typed REST and SSE endpoints. Business logic is strictly contain
 | `GET` | `/api/v1/cases` | None (query: `status`, `priority`, `limit`, `offset`) | `CaseListResponse` | 200 | Analyst queue with server-side filters and priority sort |
 | `GET` | `/api/v1/cases/{id}` | None | `CaseDetailResponse` | 200 / 404 | Complete case dossier: features, route, evidence, guardrails, forensic brief, case policy |
 | `GET` | `/api/v1/cases/{id}/forensic-brief` | None | `ForensicBriefResponse` | 200 / 404 | Objective forensic abnormality summary (no faked data, no verdict) |
+| `GET` | `/api/v1/cases/{id}/motivation` | Read roles | `{assessment, persisted, versions}` | 200 / 404 | Latest persisted structured motivation assessment, else unsaved rule draft (`version: 0`) |
+| `POST` | `/api/v1/cases/{id}/motivation/generate` | analyst, senior_analyst, admin | `{assessment, persisted}` | 200 / 403 / 404 | Rule-based generation (optional validated LLM rationale), saved as a new draft version |
+| `PUT` | `/api/v1/cases/{id}/motivation` | analyst, senior_analyst, admin | `{assessment, persisted}` | 200 / 403 / 409 / 422 | Analyst edit (category, signals, confidence, rationale) saved as a new version; `expected_version` guards races |
+| `POST` | `/api/v1/cases/{id}/motivation/confirm` | analyst, senior_analyst, admin | `{assessment, persisted}` | 200 / 404 / 409 | Confirms the latest draft (audit event `motivation_confirmed`); see ADR-033 |
 | `GET` | `/api/v1/cases/{id}/policy` | None | `CasePolicyResponse` | 200 / 404 | Applicable policy clauses, guardrails, and precedent rules for a specific case |
 | `POST` | `/api/v1/cases/{id}/claim` | `ClaimCaseRequest` | `ClaimCaseResponse` | 200 / 409 | Claim short-lived review lease for analyst |
 | `POST` | `/api/v1/cases/{id}/actions` | `CaseActionRequest` | `CaseActionResponse` | 200 / 400 | Non-terminal review actions: `REQUEST_EVIDENCE`, `DEFER` |

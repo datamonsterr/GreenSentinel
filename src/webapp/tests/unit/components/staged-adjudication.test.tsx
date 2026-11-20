@@ -79,6 +79,7 @@ beforeEach(() => {
     if (path === `${casePath}/agent-session`) return json({ session_id: "session-236", messages: [] });
     if (path === `${casePath}/agent-context`) return json({ prompt_tokens: 100, completion_tokens: 50, total_tokens: 150, context_window: 10000, breakdown: { system: 30, dossier: 40, history: 30, tool_results: 30, query: 20 }, turn_count: 1 });
     if (path === `${casePath}/dispute-dossier`) return json(dossier);
+    if (path === `${casePath}/motivation`) return json({ detail: "No motivation in this fixture" }, 404);
     if (path === `${casePath}/workflow-trace`) return json(null);
     if (path === `${casePath}/workflow`) return json({ status: "ready", closed: false, steps: [], next: null });
     if (path === `${casePath}/driver-scorecard`) return json({ driver_id: "driver-236", past_incidents: [] });

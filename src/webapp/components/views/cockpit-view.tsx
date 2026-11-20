@@ -1070,6 +1070,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
               onClaim={() => void updateLock(selectedCaseId, false)}
               canClaim={canClaim}
               claimBusy={claimBusy}
+              canWriteMotivation={isAnalystAuthorized && !isTerminalCase}
             />
           )}
           <div hidden={activeCenterTab !== 'maps'} inert={activeCenterTab !== 'maps'}>
