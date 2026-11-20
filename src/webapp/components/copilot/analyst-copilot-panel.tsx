@@ -1067,12 +1067,12 @@ export function AnalystCopilotPanel({
                 return (
                   <Message key={msg.id} from="user" className="!flex !flex-row max-w-full items-start justify-end gap-2">
                     <div className="flex min-w-0 max-w-[calc(100%-2rem)] flex-col items-end gap-1">
-                      <MessageContent className="w-fit !rounded-2xl !rounded-tr-md !p-3 text-white !text-white text-[11px]">
-                        <span className="text-[10px] font-semibold text-white/70">{vi ? "Bạn" : "You"}</span>
+                      <MessageContent className="w-fit !rounded-2xl !rounded-tr-md !p-3 !text-gs-ink-2 text-[11px]">
+                        <span className="text-[10px] font-semibold text-gs-mute-2">{vi ? "Bạn" : "You"}</span>
                         {fileParts.length > 0 && (
                           <div className="flex flex-wrap gap-1.5 mb-1.5">
                             {fileParts.map((f, fIdx) => (
-                              <div key={fIdx} className="rounded overflow-hidden border border-slate-700 max-h-36">
+                              <div key={fIdx} className="rounded overflow-hidden border border-gs-line-2 max-h-36">
                                 {f.url && (
                                   <img
                                     src={f.url}
@@ -1081,7 +1081,7 @@ export function AnalystCopilotPanel({
                                   />
                                 )}
                                 {f.filename && (
-                                  <span className="block text-[9px] text-slate-400 font-mono px-1 py-0.5 truncate">
+                                  <span className="block text-[9px] text-gs-mute font-mono px-1 py-0.5 truncate">
                                     {f.filename}
                                   </span>
                                 )}
@@ -1091,9 +1091,9 @@ export function AnalystCopilotPanel({
                         )}
                         <div className="whitespace-pre-wrap break-words [overflow-wrap:anywhere]">{textPart?.text || ""}</div>
                       </MessageContent>
-                      {timeLabel && <time dateTime={validDate?.toISOString()} className="px-1 text-[9px] text-slate-400">{timeLabel}</time>}
+                      {timeLabel && <time dateTime={validDate?.toISOString()} className="px-1 text-[9px] text-gs-mute">{timeLabel}</time>}
                     </div>
-                    <div aria-hidden="true" className="mt-1 flex size-6 shrink-0 items-center justify-center rounded-full bg-slate-100 text-slate-600"><UserIcon className="size-3.5" /></div>
+                    <div aria-hidden="true" className="mt-1 flex size-6 shrink-0 items-center justify-center rounded-full bg-gs-cyan-soft text-primary"><UserIcon className="size-3.5" /></div>
                   </Message>
                 );
               }
@@ -1102,11 +1102,11 @@ export function AnalystCopilotPanel({
                 <Message key={msg.id} from="assistant" className="!flex !flex-row max-w-full items-start gap-2">
                   <div className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gs-cyan-soft text-primary" aria-label={vi ? "Trợ lý" : "Assistant"}><BotIcon className="h-3.5 w-3.5" /></div>
                   <div className="min-w-0 max-w-[calc(100%-2rem)] flex-1">
-                    <MessageContent className="w-full rounded-2xl rounded-tl-md border border-slate-200 bg-slate-50/70 p-3 text-xs">
-                      <span className="text-[10px] font-semibold text-slate-500">{vi ? "Trợ lý" : "Assistant"}</span>
+                    <MessageContent className="w-full rounded-2xl rounded-tl-md border border-gs-line bg-white shadow-xs p-3 text-xs">
+                      <span className="text-[10px] font-semibold text-gs-mute-2">{vi ? "Trợ lý" : "Assistant"}</span>
                       {renderAssistantMessageParts(msg)}
                     </MessageContent>
-                    {timeLabel && <time dateTime={validDate?.toISOString()} className="mt-1 block text-[9px] text-slate-400">{timeLabel}</time>}
+                    {timeLabel && <time dateTime={validDate?.toISOString()} className="mt-1 block text-[9px] text-gs-mute">{timeLabel}</time>}
                   </div>
                 </Message>
               );
@@ -1121,7 +1121,7 @@ export function AnalystCopilotPanel({
 
         {/* Suggestions chips */}
         {suggestions.length > 0 && (
-          <div className="relative z-10 shrink-0 px-2.5 py-1.5 border-t border-slate-100 bg-slate-50/50">
+          <div className="relative z-10 shrink-0 px-2.5 py-1.5 border-t border-gs-line bg-slate-50/50">
             <Suggestions className="gap-1.5">
               {suggestions.map((s, idx) => (
                 <Suggestion
@@ -1130,7 +1130,7 @@ export function AnalystCopilotPanel({
                   onClick={() => {
                     void sendMessage({ text: s.prompt });
                   }}
-                  className="text-[11px] h-6 px-2.5 border-slate-200 hover:bg-slate-100 text-slate-700"
+                  className="text-[11px] h-6 px-2.5 border-gs-cyan/30 bg-white text-gs-ink-2 hover:bg-gs-cyan-soft"
                 >
                   {s.label}
                 </Suggestion>
@@ -1140,7 +1140,7 @@ export function AnalystCopilotPanel({
         )}
 
         {/* Input area */}
-        <div className="relative z-10 p-2 border-t border-slate-200 bg-white shrink-0">
+        <div className="relative z-10 p-2 border-t border-gs-line bg-white shrink-0">
           <PromptInput
             accept="image/png,image/jpeg,image/webp"
             multiple={false}
@@ -1176,7 +1176,7 @@ export function AnalystCopilotPanel({
                   disabled={!isLockedByMe || status === "submitted" || status === "streaming"}
                   aria-label={vi ? "Gửi tin nhắn" : "Send message"}
                   title={vi ? "Gửi tin nhắn" : "Send message"}
-                  className="size-7 cursor-pointer rounded-md bg-transparent text-primary shadow-none hover:bg-transparent hover:text-primary disabled:opacity-40"
+                  className="size-7 cursor-pointer rounded-md bg-primary text-white shadow-none hover:bg-primary-container hover:text-white disabled:opacity-40"
                 >
                   <SendIcon className="h-3.5 w-3.5" />
                 </Button>

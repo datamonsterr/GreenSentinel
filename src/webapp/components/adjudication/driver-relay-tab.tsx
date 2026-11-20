@@ -60,11 +60,11 @@ export const DriverRelayTab: React.FC<DriverRelayTabProps> = ({
   });
   return (
     <div className="flex-1 min-h-0 flex flex-col">
-      <div className="px-3 py-2 border-b border-slate-200 bg-slate-50/70 shrink-0">
+      <div className="px-3 py-2 border-b border-gs-line bg-white shrink-0">
         <p className="text-[11px] font-semibold text-slate-700">
           Kênh trao đổi trực tiếp với tài xế (GSupport)
         </p>
-        <p className="text-[10px] text-slate-500">
+        <p className="text-[10px] text-gs-mute-2">
           Chỉ hiển thị hội thoại tài xế · GSupport · chuyên viên thẩm định
         </p>
       </div>
@@ -80,14 +80,12 @@ export const DriverRelayTab: React.FC<DriverRelayTabProps> = ({
             const analyst = isAnalystTurn(turn);
             const timestamp = turn.created_at ?? turn.timestamp ?? turn.occurred_at;
             const bubbleClass = analyst
-              ? "bg-gs-cyan-soft border border-gs-cyan/30 text-gs-ink-2"
-              : turn.role === "driver" || turn.role === "driver_agent"
-              ? "bg-white border border-gs-line-2 text-gs-ink-2"
+              ? "ml-auto bg-gs-cyan-soft border border-gs-cyan/30 text-gs-ink-2"
               : "bg-white border border-gs-line-2 text-gs-ink-2";
 
             return (
-              <div key={key} className="space-y-0.5">
-                <div className="flex items-center gap-1 text-[9px] text-slate-500 px-1">
+              <div key={key} className={`space-y-0.5 ${analyst ? "flex flex-col items-end" : ""}`}>
+                <div className="flex items-center gap-1 text-[9px] text-gs-mute-2 px-1">
                   {analyst && (
                     <span className="font-semibold text-gs-cyan bg-gs-cyan-soft border border-gs-cyan/30 rounded px-1 py-0.5">
                       [Chuyên viên Thẩm định]
@@ -140,7 +138,7 @@ export const DriverRelayTab: React.FC<DriverRelayTabProps> = ({
           event.preventDefault();
           if (!closed && !sending && input.trim()) onSend();
         }}
-        className="p-2 border-t border-slate-200 bg-white shrink-0 flex items-center gap-1"
+        className="p-2 border-t border-gs-line bg-white shrink-0 flex items-center gap-1"
       >
         <input
           type="text"
@@ -148,7 +146,7 @@ export const DriverRelayTab: React.FC<DriverRelayTabProps> = ({
           onChange={(event) => onInputChange(event.target.value)}
           placeholder="Nhập nội dung trao đổi với tài xế…"
           disabled={closed || sending}
-          className="flex-1 h-8 rounded border border-slate-200 bg-slate-50 px-2 text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-primary disabled:opacity-50"
+          className="flex-1 h-8 rounded border border-gs-line-2 bg-white px-2 text-xs text-gs-ink-2 placeholder:text-gs-mute focus:bg-white focus:outline-none focus:ring-1 focus:ring-primary disabled:opacity-50"
         />
         <button
           type="submit"

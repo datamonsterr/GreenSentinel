@@ -596,11 +596,12 @@ describe("AnalystCopilotPanel Component", () => {
       fireEvent.click(sugg1);
     });
 
-    it("keeps analyst user messages dark with white text", async () => {
+    it("renders analyst user messages on cyan-soft with ink text", async () => {
       render(<AnalystCopilotPanel caseId="case-100" isLockedByMe={true} />);
 
       const message = await screen.findByText("Xin tóm tắt vụ việc");
-      expect(message.parentElement).toHaveClass("!text-white");
+      expect(message.parentElement).toHaveClass("!text-gs-ink-2");
+      expect(message.parentElement).not.toHaveClass("!text-white");
     });
 
     it("renders user bubble with attachment thumbnail when message has file part", async () => {
