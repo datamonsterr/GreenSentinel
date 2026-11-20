@@ -731,8 +731,26 @@
         "name": "Tài liệu",
         "scope": "Phạm vi",
         "indexing": "Lập chỉ mục",
+        "analysis": "Phân tích",
         "usedBy": "Agent dùng",
         "uploaded": "Tải lên"
+      },
+      "analysis": {
+        "run": "Phân tích",
+        "rerun": "Phân tích lại",
+        "running": "Đang phân tích…",
+        "noText": "Tài liệu chưa có văn bản để phân tích.",
+        "status": {
+          "pending": "Chưa phân tích",
+          "running": "Đang phân tích",
+          "done": "Đã phân tích",
+          "failed": "Phân tích lỗi"
+        },
+        "proposals": "Đề xuất",
+        "reuse": "Dùng lại",
+        "extend": "Mở rộng",
+        "new": "Tạo mới",
+        "rejected": "Loại (trích dẫn sai)"
       },
       "indexing": {
         "not_indexed": "Chưa lập chỉ mục",

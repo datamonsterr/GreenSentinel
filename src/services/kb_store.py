@@ -20,7 +20,7 @@ JSON_COLUMNS: dict[str, set[str]] = {
     "kb_object": {"scope", "body", "replay", "history"},
     "agent_config": {"value"},
     "agent_config_history": {"old_value", "new_value"},
-    "kb_policy_document": set(),
+    "kb_policy_document": {"analysis_counts"},
     "kb_proposal": {"payload"},
 }
 _IDENT = re.compile(r"^[a-z_][a-z0-9_]*$")

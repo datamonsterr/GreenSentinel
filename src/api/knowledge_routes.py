@@ -6,6 +6,8 @@
 
 from __future__ import annotations
 
+import base64
+import binascii
 from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException
@@ -15,6 +17,7 @@ from src.api.auth import Principal, require_principal
 from src.services.agent_config_service import DEFINITIONS, AgentConfigService, get_agent_config_service
 from src.services.kb_formula import PARAMETER_CATALOGUE, validate_formula
 from src.services.kb_service import REJECT_REASONS, TOOL_CATALOGUE, TYPES, KbService, get_kb_service
+from src.services.policy_analysis_service import PolicyAnalysisService, extract_text
 
 router = APIRouter(tags=["knowledge"])
 
@@ -77,6 +80,7 @@ class DocumentCreate(BaseModel):
     region: str | None = None
     service: str | None = None
     contract_type: str | None = None
+    content_base64: str | None = None  # docx/pdf bytes; text is extracted server-side
 
 
 class ProposalCreate(BaseModel):
@@ -224,7 +228,20 @@ def list_documents(principal: Principal | None = Depends(require_principal), svc
 
 @router.post("/knowledge/documents", status_code=201)
 def create_document(body: DocumentCreate, principal: Principal | None = Depends(require_principal), svc: KbService = Depends(kb)):
-    return svc.create_document(_actor(principal), **body.model_dump())
+    data = body.model_dump()
+    raw = data.pop("content_base64", None)
+    if raw and not (data.get("text") or "").strip():
+        try:
+            data["text"] = extract_text(data.get("filename") or "", base64.b64decode(raw))
+        except (ValueError, binascii.Error) as e:
+            raise HTTPException(status_code=422, detail=f"Cannot extract text: {e}") from e
+    return svc.create_document(_actor(principal), **data)
+
+
+@router.post("/knowledge/documents/{document_id}/analyze")
+def analyze_document(document_id: str, principal: Principal | None = Depends(require_principal),
+                     svc: KbService = Depends(kb)):
+    return PolicyAnalysisService(svc).analyze(_actor(principal), document_id)
 
 
 # ---- proposals queue ---------------------------------------------------------------------------

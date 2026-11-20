@@ -89,3 +89,20 @@ def test_documents_and_proposals_endpoints(api):
     assert c.post(f"/api/v1/knowledge/proposals/{pid}/reject", json={"reason_code": "bogus"}).status_code == 422
     assert c.post(f"/api/v1/knowledge/proposals/{pid}/accept").json()["object"]["status"] == "ready_for_test"
     assert c.get("/api/v1/knowledge/proposals", params={"status": "accepted"}).json()["items"][0]["id"] == pid
+
+
+def test_analyze_document_route_fails_gracefully_and_gates(api, monkeypatch):
+    import base64
+
+    def boom(*a, **k):
+        raise RuntimeError("openrouter LLM credentials are not configured")
+
+    monkeypatch.setattr("src.services.policy_analysis_service.get_llm", boom)
+    c = api("analyst")
+    body = {"name": "P", "code": "P-1", "filename": "p.md", "content_base64": base64.b64encode("Điều 1. Thưởng mốc".encode()).decode()}
+    doc = c.post("/api/v1/knowledge/documents", json=body).json()
+    out = c.post(f"/api/v1/knowledge/documents/{doc['id']}/analyze")
+    assert out.status_code == 200 and out.json()["analysis_status"] == "failed"
+    listed = c.get("/api/v1/knowledge/documents").json()["items"][0]
+    assert listed["analysis_status"] == "failed" and listed["has_text"] is True
+    assert api("driver").post(f"/api/v1/knowledge/documents/{doc['id']}/analyze").status_code == 403

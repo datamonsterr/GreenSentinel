@@ -30,6 +30,9 @@ export type PolicyDocument = {
   service: string | null; contract_type: string | null; filename: string | null; size_bytes: number;
   indexing_status: "not_indexed" | "indexed" | "embeddings_not_configured"; uploaded_by_name: string | null;
   created_at: string; has_text: boolean; used_by: { vi: string; en: string }[];
+  analysis_status?: "pending" | "running" | "done" | "failed"; analysis_error?: string | null;
+  analysis_counts?: Partial<Record<"chunks" | "candidates" | "proposals" | "reuse" | "extend" | "new" | "rejected_citation" | "rejected_schema" | "duplicates", number>>;
+  analyzed_at?: string | null;
 };
 export type Proposal = {
   id: string; source: string; type: KbType; title: string; payload: Record<string, unknown>; source_excerpt: string | null;
@@ -106,6 +109,7 @@ export const knowledgeApi = {
   registry: () => requestJson<Registry>(`${base()}/knowledge/registry`, json("GET")),
   seed: () => requestJson<{ created: number }>(`${base()}/knowledge/seed`, json("POST")),
   documents: () => requestJson<{ items: PolicyDocument[] }>(`${base()}/knowledge/documents`, json("GET")),
+  analyzeDocument: (id: string) => requestJson<PolicyDocument>(`${base()}/knowledge/documents/${id}/analyze`, json("POST")),
   createDocument: (b: Record<string, unknown>) => requestJson<PolicyDocument>(`${base()}/knowledge/documents`, json("POST", b)),
   proposals: (q: { status?: string; source?: string; type?: string } = {}) => {
     const p = new URLSearchParams();

@@ -731,8 +731,26 @@
         "name": "Document",
         "scope": "Scope",
         "indexing": "Indexing",
+        "analysis": "Analysis",
         "usedBy": "Used by",
         "uploaded": "Uploaded"
+      },
+      "analysis": {
+        "run": "Analyze",
+        "rerun": "Analyze again",
+        "running": "Analyzing…",
+        "noText": "The document has no text to analyze.",
+        "status": {
+          "pending": "Not analyzed",
+          "running": "Analyzing",
+          "done": "Analyzed",
+          "failed": "Analysis failed"
+        },
+        "proposals": "Proposals",
+        "reuse": "Reuse",
+        "extend": "Extend",
+        "new": "New",
+        "rejected": "Dropped (bad citation)"
       },
       "indexing": {
         "not_indexed": "Not indexed",

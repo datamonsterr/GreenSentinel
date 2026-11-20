@@ -10,7 +10,7 @@ const api = vi.hoisted(() => ({
   parameters: vi.fn(), validateFormula: vi.fn(), listObjects: vi.fn(), versions: vi.fn(), create: vi.fn(), update: vi.fn(),
   clone: vi.fn(), submit: vi.fn(), trial: vi.fn(), publish: vi.fn(), retire: vi.fn(), rollback: vi.fn(), preview: vi.fn(),
   similar: vi.fn(), registry: vi.fn(), seed: vi.fn(), documents: vi.fn(), createDocument: vi.fn(), proposals: vi.fn(),
-  acceptProposal: vi.fn(), editProposal: vi.fn(), rejectProposal: vi.fn(), config: vi.fn(), setConfig: vi.fn(), killSwitch: vi.fn(),
+  acceptProposal: vi.fn(), analyzeDocument: vi.fn(), editProposal: vi.fn(), rejectProposal: vi.fn(), config: vi.fn(), setConfig: vi.fn(), killSwitch: vi.fn(),
   configHistory: vi.fn(), revert: vi.fn(), getObject: vi.fn(),
 }));
 vi.mock("@/lib/knowledge-client", async (orig) => ({ ...(await orig<typeof import("@/lib/knowledge-client")>()), knowledgeApi: api }));
@@ -191,6 +191,31 @@ describe("ProposalsPanel", () => {
     fireEvent.change(screen.getByLabelText("Sửa nội dung đề xuất (JSON)."), { target: { value: '{"code":"MOT_X","name":"Y","body":{}}' } });
     fireEvent.click(screen.getByRole("button", { name: "Lưu và chấp nhận" }));
     await waitFor(() => expect(api.editProposal).toHaveBeenCalledWith("p1", { code: "MOT_X", name: "Y", body: {} }));
+  });
+});
+
+const docRow = (over: Record<string, unknown> = {}) => ({ id: "d1", name: "Chính sách thưởng", code: "POL-1", effective_from: null, effective_to: null, region: null,
+  service: null, contract_type: null, filename: "a.txt", size_bytes: 10, indexing_status: "embeddings_not_configured", uploaded_by_name: "Hà",
+  created_at: "2026-11-20T00:00:00Z", has_text: true, used_by: [], analysis_status: "pending", analysis_error: null, analysis_counts: {}, analyzed_at: null, ...over });
+
+describe("DocumentsPanel analysis", () => {
+  it("runs analysis and reloads status with counts", async () => {
+    api.documents.mockResolvedValueOnce({ items: [docRow()] }).mockResolvedValue({ items: [docRow({ analysis_status: "done", analysis_counts: { proposals: 3, reuse: 1, extend: 1, new: 1, rejected_citation: 2 } })] });
+    api.analyzeDocument.mockResolvedValue({});
+    wrap(<DocumentsPanel me={analyst} />);
+    fireEvent.click(await screen.findByRole("button", { name: "Phân tích" }));
+    await waitFor(() => expect(api.analyzeDocument).toHaveBeenCalledWith("d1"));
+    expect(await screen.findByText("Đã phân tích")).toBeInTheDocument();
+    expect(screen.getByTestId("analysis-counts-d1")).toHaveTextContent("3");
+    expect(screen.getByTestId("analysis-counts-d1")).toHaveTextContent("2");
+  });
+
+  it("shows failed status with the error and disables analyze without text", async () => {
+    api.documents.mockResolvedValue({ items: [docRow({ analysis_status: "failed", analysis_error: "credentials are not configured", has_text: false })] });
+    wrap(<DocumentsPanel me={analyst} />);
+    expect(await screen.findByText("Phân tích lỗi")).toBeInTheDocument();
+    expect(screen.getByText("credentials are not configured")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Phân tích lại" })).toBeDisabled();
   });
 });
 

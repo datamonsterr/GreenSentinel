@@ -86,6 +86,7 @@ Prefix `/api/v1`. Roles and lifecycle are in [ADR-032](adr-032-knowledge-base-ro
 | `POST /knowledge/similar` `{text, type?}` | Token-overlap similarity over non-retired objects. |
 | `GET /knowledge/registry` | Agents: instruction version, model, tools, memory layers, knowledge types and published counts, kill-switch state. |
 | `GET|POST /knowledge/documents` | Policy document metadata + text; `indexing_status`. |
+| `POST /knowledge/documents/{id}/analyze` | Policy analysis agent (ADR-040): returns document with `analysis_status` (`done|failed`), `analysis_error`, `analysis_counts`; creates pending proposals; 403 non-analyst, 404 other org, 409 already running. `POST /knowledge/documents` also accepts `content_base64` (docx/pdf). |
 | `GET|POST /knowledge/proposals`, `POST /knowledge/proposals/{id}/{accept,edit,reject}` | Review queue; reject needs `reason_code` in `wrong_source|wrong_motive|duplicate|out_of_scope|other`. |
 | `POST /knowledge/seed` | Admin only, idempotent demo content. |
 | `GET /agent-config?scope`, `PUT /agent-config/{key}` `{value, reason, scope}` | Values with bounds/owner/`can_edit`; bounded writes. |

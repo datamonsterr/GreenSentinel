@@ -460,6 +460,7 @@ class KbService:
             "content_type": content_type, "size_bytes": int(size_bytes or 0), "text_excerpt": (text or "")[:200_000] or None,
             "indexing_status": indexing_status_for_new_document(), "uploaded_by": actor.id,
             "uploaded_by_name": self.store.principal_name(actor.id),
+            "analysis_status": "pending", "analysis_counts": {},
         }
         d = self.store.insert("kb_policy_document", row)
         self.store.audit(actor.organization_id, actor.id, "kb.document.create", {"document_id": d["id"], "code": d["code"]})

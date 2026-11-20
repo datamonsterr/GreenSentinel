@@ -136,8 +136,8 @@ Backend: `tests/unit/{agents,api,services,rag,models,scripts,...}` (pytest), `te
 | Req | Summary | Status | Files / notes |
 |---|---|---|---|
 | US1 policy intake (docx/pdf/xlsx upload or paste, metadata, effective dates, region, service, contract type) | | **missing** | `src/rag/crawler.py`, `chunker.py`, `ingest.py` ingest fixed policy docs; MarkItDown MCP exists in `.agents/mcp_config.json`. No upload API, no storage. `app.policy_versions` could hold metadata but has `action_matrix` not-null and is a fixed POC policy. |
-| US1 extract payout rules with source citation | | **missing** | Needs LLM extraction with page/para quotes; reject if no source. |
-| US1 propose motives / behaviors / reasons; map to existing store (reuse/extend/new + similarity) | | **missing** | Needs `search_knowledge`; embeddings unavailable locally (see risks). |
+| US1 extract payout rules with source citation | | **exists (S-P)** | `policy_analysis_service.py`: LLM extraction, items without a verbatim citation are dropped (ADR-040). |
+| US1 propose motives / behaviors / reasons; map to existing store (reuse/extend/new + similarity) | | **exists (S-P)** | Token-overlap similarity vs published kb (embeddings unavailable); proposals `source=policy_analysis`. |
 | US1 "cần tham số" -> request queue; never invent params; thresholds left as `<NGƯỠNG>` | | **missing** | |
 | US1 analysis report, all drafts, notify on done, policy text treated as data | | **missing** | |
 | US2 single review queue (sources: policy, help answers, case cards, monitoring) with filters | | **missing** | |

@@ -8,6 +8,7 @@ import { Card, Chip, Field, Notice, SectionTitle, areaCls, btn, fmtDate, inputCl
 import type { Tone } from "@/lib/status-tone";
 
 const INDEX_TONE: Record<string, Tone> = { not_indexed: "amber", indexed: "green", embeddings_not_configured: "grey" };
+const ANALYSIS_TONE: Record<string, Tone> = { pending: "grey", running: "amber", done: "green", failed: "red" };
 const TEXT_TYPES = /\.(txt|md|csv|json)$/i;
 const EMPTY = { name: "", code: "", effective_from: "", effective_to: "", region: "", service: "", contract_type: "", text: "" };
 
@@ -20,19 +21,24 @@ export function DocumentsPanel({ me }: { me: Me }) {
   const [error, setError] = useState<{ message: string; fields?: string[] } | null>(null);
   const [okMsg, setOkMsg] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [analyzing, setAnalyzing] = useState<string | null>(null);
   const [simQuery, setSimQuery] = useState("");
   const [sim, setSim] = useState<Awaited<ReturnType<typeof knowledgeApi.similar>>["items"] | null>(null);
+  const [b64, setB64] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const set = (k: keyof typeof EMPTY) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setForm({ ...form, [k]: e.target.value });
   const canUpload = me.roles.some((r) => ["analyst", "fraud_analyst", "senior_analyst", "admin"].includes(r));
 
   const pick = async (f: File | undefined) => {
     if (!f) return;
-    setFile({ name: f.name, type: f.type, size: f.size });
+    setFile({ name: f.name, type: f.type, size: f.size }); setB64(null);
     if (TEXT_TYPES.test(f.name) || f.type.startsWith("text/")) {
       const text = await f.text();
       setForm((cur) => ({ ...cur, text, name: cur.name || f.name.replace(/\.[^.]+$/, "") }));
     } else {
+      const bytes = new Uint8Array(await f.arrayBuffer());
+      let bin = ""; bytes.forEach((b) => { bin += String.fromCharCode(b); });
+      setB64(btoa(bin));
       setForm((cur) => ({ ...cur, name: cur.name || f.name.replace(/\.[^.]+$/, "") }));
     }
   };
@@ -45,10 +51,17 @@ export function DocumentsPanel({ me }: { me: Me }) {
       await knowledgeApi.createDocument({
         ...form, effective_from: form.effective_from || null, effective_to: form.effective_to || null,
         filename: file?.name ?? null, content_type: file?.type ?? "text/plain", size_bytes: file?.size ?? form.text.length,
+        content_base64: b64,
       });
-      setForm(EMPTY); setFile(null); if (fileRef.current) fileRef.current.value = "";
+      setForm(EMPTY); setB64(null); setFile(null); if (fileRef.current) fileRef.current.value = "";
       setOkMsg(t("docs.uploaded")); docs.reload();
     } catch (e) { setError({ message: parseApiError(e).message }); } finally { setBusy(false); }
+  };
+
+  const analyze = async (id: string) => {
+    setAnalyzing(id); setError(null); setOkMsg(null);
+    try { await knowledgeApi.analyzeDocument(id); } catch (e) { setError({ message: parseApiError(e).message }); }
+    finally { setAnalyzing(null); docs.reload(); }
   };
 
   const findSimilar = async () => {
@@ -88,7 +101,7 @@ export function DocumentsPanel({ me }: { me: Me }) {
           <Card className="overflow-x-auto">
             <table className="w-full text-left text-[13px]" data-testid="docs-table">
               <thead className="bg-surface text-[11px] uppercase tracking-wider text-gs-mute"><tr>
-                {["code", "name", "scope", "indexing", "usedBy", "uploaded"].map((c) => <th key={c} className="px-3 py-2 font-semibold">{t(`docs.col.${c}`)}</th>)}</tr></thead>
+                {["code", "name", "scope", "indexing", "analysis", "usedBy", "uploaded"].map((c) => <th key={c} className="px-3 py-2 font-semibold">{t(`docs.col.${c}`)}</th>)}</tr></thead>
               <tbody>
                 {(docs.data?.items ?? []).map((d) => (
                   <tr key={d.id} className="border-t border-gs-line align-top">
@@ -98,12 +111,35 @@ export function DocumentsPanel({ me }: { me: Me }) {
                     <td className="px-3 py-2 text-[12px] text-gs-mute-2">{[d.region, d.service, d.contract_type].filter(Boolean).join(" · ") || "—"}
                       <div className="text-gs-mute">{d.effective_from ?? "—"} → {d.effective_to ?? "—"}</div></td>
                     <td className="px-3 py-2"><Chip tone={INDEX_TONE[d.indexing_status]} title={t(`docs.indexingHint.${d.indexing_status}`)}>{t(`docs.indexing.${d.indexing_status}`)}</Chip></td>
+                    <td className="px-3 py-2">
+                      {(() => {
+                        const st = analyzing === d.id ? "running" : (d.analysis_status ?? "pending");
+                        const c = d.analysis_counts ?? {};
+                        return (
+                          <div className="space-y-1.5" data-testid={`analysis-${d.id}`}>
+                            <Chip tone={ANALYSIS_TONE[st]}>{t(`docs.analysis.status.${st}`)}</Chip>
+                            {st === "done" && (
+                              <div className="text-[11.5px] text-gs-mute-2" data-testid={`analysis-counts-${d.id}`}>
+                                {t("docs.analysis.proposals")}: <b>{c.proposals ?? 0}</b> · {t("docs.analysis.reuse")} {c.reuse ?? 0} · {t("docs.analysis.extend")} {c.extend ?? 0} · {t("docs.analysis.new")} {c.new ?? 0}
+                                {(c.rejected_citation ?? 0) > 0 && <div className="text-gs-mute">{t("docs.analysis.rejected")}: {c.rejected_citation}</div>}
+                              </div>
+                            )}
+                            {st === "failed" && d.analysis_error && <div className="max-w-[220px] text-[11.5px] text-red-700">{d.analysis_error}</div>}
+                            {canUpload && (
+                              <button type="button" className={btn.secondary} disabled={analyzing !== null || !d.has_text} title={d.has_text ? undefined : t("docs.analysis.noText")} onClick={() => analyze(d.id)}>
+                                {analyzing === d.id ? t("docs.analysis.running") : t(d.analysis_status && d.analysis_status !== "pending" ? "docs.analysis.rerun" : "docs.analysis.run")}
+                              </button>
+                            )}
+                          </div>
+                        );
+                      })()}
+                    </td>
                     <td className="px-3 py-2 text-[12px] text-gs-mute-2">{d.used_by.map((a) => (locale === "vi" ? a.vi : a.en)).join(", ") || "—"}</td>
                     <td className="px-3 py-2 text-[12px] text-gs-mute">{d.uploaded_by_name ?? "—"}<div>{fmtDate(d.created_at, locale)}</div></td>
                   </tr>
                 ))}
                 {(docs.data?.items ?? []).length === 0 && !docs.loading && (
-                  <tr><td colSpan={6} className="px-3 py-10 text-center text-[13px] text-gs-mute-2">{t("docs.empty")}</td></tr>
+                  <tr><td colSpan={7} className="px-3 py-10 text-center text-[13px] text-gs-mute-2">{t("docs.empty")}</td></tr>
                 )}
               </tbody>
             </table>
