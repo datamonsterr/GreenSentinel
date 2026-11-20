@@ -9,6 +9,7 @@ a disabled kill switch skips the agent entirely (static form only).
 
 from __future__ import annotations
 
+import logging
 import re
 from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
@@ -47,6 +48,8 @@ FEEDBACK_ERROR_TYPES = ("wrong_facts", "wrong_reasoning", "missing_question", "r
 ANALYST_ROLES = frozenset({"analyst", "senior_analyst", "fraud_analyst", "admin", "reviewer", "ops_director", "marketplace_director", "manager"})
 FEEDBACK_ROLES = frozenset({"analyst", "senior_analyst", "fraud_analyst", "admin", "reviewer", "manager"})
 MAX_ITER = 4  # tool/help hops inside one advance
+logger = logging.getLogger(__name__)
+SWEEP_MIN_INTERVAL_S = 60  # help-count poll triggers sweep(org) at most once per org per minute
 HELP_AFTER_TURNS = 3  # M: low confidence only triggers help after this many answered turns
 WAIT_MESSAGE = "Mình cần kiểm tra thêm thông tin, bạn chờ mình một chút nhé."
 CLOSE_MESSAGE = "Mình đã ghi nhận thông tin, mình sẽ gửi cho vận hành xem xét."
@@ -78,6 +81,7 @@ class ExplainService:
         self._llm = llm
         self.now = now or (lambda: datetime.now(UTC))
         self._help: HelpRequestService | None = None
+        self._last_sweep: dict[str, datetime] = {}
         self.fallback_llm = DeterministicExplainLLM()
 
     # ---- wiring -------------------------------------------------------------------------------
@@ -284,6 +288,19 @@ class ExplainService:
             n += int(before != s["state"])
         return n
 
+    async def sweep_throttled(self, org: str, min_interval_s: int = SWEEP_MIN_INTERVAL_S) -> int:
+        """Sweep at most once per `min_interval_s` per org (in-process); failures never break the caller."""
+        now = self.now()
+        last = self._last_sweep.get(org)
+        if last is not None and (now - last).total_seconds() < min_interval_s:
+            return 0
+        self._last_sweep[org] = now
+        try:
+            return await self.sweep(org)
+        except Exception:  # noqa: BLE001 - best-effort side effect of a polled endpoint
+            logger.warning("explain sweep failed for org %s", org, exc_info=True)
+            return 0
+
     # ---- draft + submit -----------------------------------------------------------------------
     def _load_own(self, principal: Any, case_id: str) -> dict[str, Any]:
         self._own_case(principal, case_id)
@@ -396,6 +413,7 @@ class ExplainService:
         else:
             s["state"] = "submitted"
             self._persist(s)
+            self._hand_over(s)
 
     def _round(self, s: dict[str, Any], no: int, source: str, out: AssessmentOut) -> dict[str, Any]:
         m = s["memory"]
@@ -821,6 +839,7 @@ class ExplainService:
 
     async def help_count(self, actor: Any) -> dict[str, int]:
         self.help.require_vh(actor)
+        await self.sweep_throttled(actor.organization_id)
         await self._expired(self.help.expire_lazy(actor.organization_id))
         return self.help.counts(actor.organization_id, expire=False)
 

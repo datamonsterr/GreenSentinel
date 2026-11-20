@@ -274,7 +274,9 @@ class PgStore:
                     WHERE id = %s::uuid AND organization_id = %s::uuid AND status = 'evidence_requested'
                       AND (dispute_status IS NULL OR dispute_status = 'not_disputed')""",
                 (str(case_id), str(organization_id)))
-            return cur.rowcount > 0
+            changed = cur.rowcount > 0
+            conn.commit()
+        return changed
 
     def case_params(self, organization_id: str, case_ids: list[str] | None = None, limit: int = 30) -> list[dict[str, Any]]:
         """Best-effort parameter values for real cases (fare, duration, trips today, feature-set signals)."""

@@ -571,3 +571,45 @@ def test_end_early_confirm_sets_pending_review(sim):
     assert _dispute(sim) is None
     run(sim.svc.confirm_summary(DRIVER, CASE))
     assert _dispute(sim) == "pending_review"
+
+
+def test_missing_internal_straight_to_vh_sets_pending_review():
+    llm = ScriptedLLM(assess=[AssessmentOut(state="missing_internal", missing_internal=["cần VH"], confidence=0.2)])
+    e = Env(llm)
+    run(e.svc.start(DRIVER, CASE, "Other"))
+    run(e.svc.submit(DRIVER, CASE, {"detail": "Tôi muốn gặp trực tiếp VH"}))
+    assert _dispute(e) == "pending_review"
+
+
+def test_help_count_triggers_sweep_throttled_per_org(sim):
+    calls = []
+
+    async def fake_sweep(org):
+        calls.append(org)
+        return 0
+
+    sim.svc.sweep = fake_sweep
+    run(sim.svc.help_count(ANALYST))
+    run(sim.svc.help_count(ANALYST))
+    assert calls == [ORG]
+    sim.advance(seconds=59)
+    run(sim.svc.help_count(ANALYST))
+    assert calls == [ORG]
+    sim.advance(seconds=2)
+    run(sim.svc.help_count(ANALYST))
+    assert calls == [ORG, ORG]
+
+
+def test_help_count_sweep_auto_submits_idle_session_and_survives_sweep_errors(sim):
+    run(sim.svc.start(DRIVER, CASE, "RealTrip"))
+    run(sim.svc.submit(DRIVER, CASE, ANSWERS))
+    sim.advance(minutes=31)
+    run(sim.svc.help_count(ANALYST))
+    assert _dispute(sim) == "pending_review"
+
+    async def boom(org):
+        raise RuntimeError("x")
+
+    sim.svc.sweep = boom
+    sim.advance(minutes=5)
+    assert run(sim.svc.help_count(ANALYST))["total"] == 0
