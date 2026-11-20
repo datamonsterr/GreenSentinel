@@ -34,7 +34,7 @@ export default async function RootPage() {
   let userId: string | null;
   let getToken: () => Promise<string | null>;
   try {
-    const session = await auth();
+    const session = await auth({ treatPendingAsSignedOut: false });
     userId = session.userId;
     getToken = session.getToken;
   } catch {

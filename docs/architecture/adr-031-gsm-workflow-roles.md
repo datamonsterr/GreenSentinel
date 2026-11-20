@@ -38,3 +38,7 @@ Status: accepted · Scope: roles, case statuses, Overview stepper. Reference: GS
 ## Gaps
 
 OPS role, POST_CHECK, fine-threshold routing (reference skips director steps for small cases), notifications to next actor, and UI for non-analyst roles beyond the Overview stepper.
+
+## Addendum: read-only case access (workflow roles)
+
+`reviewer`, `ops_director` and `marketplace_director` may call the read-only case endpoints the workspace needs (`CASE_READ_ROLES` in `src/api/routes.py`: list, history, detail, forensic-brief, driver-scorecard, policy, agent-context/session GET, dispute-dossier, workflow-draft GET, workflow-trace GET, workflow GET). All writes (claim/release, actions, preliminary-assessment, adjudicate, drafts, delegate-inquiry, precedents, copilot) stay analyst/admin-only. `GET /cases?awaiting=me` returns the caller's step queue (`report_issued` / `need_ops_dir_approved` / `need_mkp_dir_approved`); leases are ignored for these roles. `GET /cases/{id}/workflow` now returns `actions`. Org-less principals (Clerk `pending` session, DB principal) are admitted by the webapp (`treatPendingAsSignedOut: false`, `taskUrls`).

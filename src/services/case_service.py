@@ -1123,6 +1123,11 @@ class CaseService:
             "auto_dismissed",
             "driver_disputed",
             "pending_analyst_review",
+            "report_issued",
+            "report_confirmed",
+            "need_ops_dir_approved",
+            "need_mkp_dir_approved",
+            "completed",
         }
         if status is not None and status.strip().lower() not in allowed_statuses:
             raise HTTPException(status_code=400, detail="Invalid status filter")

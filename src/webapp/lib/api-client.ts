@@ -705,9 +705,9 @@ export async function getApiHealth(): Promise<HealthResponse> {
   return requestJson<HealthResponse>(url, { method: "GET" });
 }
 
-export async function fetchCurrentAnalyst(): Promise<{id:string;name:string;role:string;organization_id?:string}> {
+export async function fetchCurrentAnalyst(): Promise<{id:string;name:string;role:string;roles:string[];organization_id?:string}> {
   const principal = await requestJson<{id:string;display_name:string;roles:string[];organization_id?:string}>(`${getApiBaseUrl()}/api/v1/me`, {method:"GET"});
-  return {id:principal.id,name:principal.display_name,role:principal.roles[0] || "analyst",organization_id:principal.organization_id};
+  return {id:principal.id,name:principal.display_name,role:principal.roles[0] || "analyst",roles:principal.roles,organization_id:principal.organization_id};
 }
 
 export async function fetchObservabilitySummary(): Promise<ObservabilitySummary> {

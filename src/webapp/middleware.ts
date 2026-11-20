@@ -7,7 +7,8 @@ import { primaryRoleFor } from './lib/role-routing';
 const authenticated = clerkMiddleware(async (auth, request) => {
   const area = protectedArea(request.nextUrl.pathname);
   if (!area) return NextResponse.next();
-  const session = await auth();
+  // Org-less workflow roles (DB principal, no Clerk org) hold a `pending` session; the backend resolves them, so keep them in.
+  const session = await auth({ treatPendingAsSignedOut: false });
   if (!session.userId) {
     const url = new URL('/sign-in', request.url);
     url.searchParams.set('redirect_url', request.url);

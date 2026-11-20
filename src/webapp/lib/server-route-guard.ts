@@ -5,7 +5,7 @@ import { authorizedArea, authorizedDriverCase, localTestAuthentication, type Pro
 
 export async function requirePageAccess(area: ProtectedArea): Promise<void> {
   if (localTestAuthentication()) return;
-  const session = await auth();
+  const session = await auth({ treatPendingAsSignedOut: false });
   if (!session.userId) redirect('/sign-in');
   const token = await session.getToken();
   if (!token || !await authorizedArea(token, area)) notFound();
@@ -13,7 +13,7 @@ export async function requirePageAccess(area: ProtectedArea): Promise<void> {
 
 export async function requireDriverCaseAccess(caseId: string): Promise<void> {
   if (localTestAuthentication()) return;
-  const session = await auth();
+  const session = await auth({ treatPendingAsSignedOut: false });
   if (!session.userId) redirect('/sign-in');
   const token = await session.getToken();
   if (!token || !await authorizedDriverCase(token, caseId)) notFound();

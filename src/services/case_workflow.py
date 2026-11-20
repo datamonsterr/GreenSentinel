@@ -118,6 +118,22 @@ def build_stepper(
 WORKFLOW_ROLES = frozenset({"reviewer", "ops_director", "marketplace_director"})
 
 
+# role -> the status in which the case awaits that role's approval step
+AWAITING_STATUS = {
+    "reviewer": "report_issued",
+    "ops_director": "need_ops_dir_approved",
+    "marketplace_director": "need_mkp_dir_approved",
+}
+
+def awaiting_status(roles: frozenset[str] | set[str]) -> str | None:
+    """Queue status for a pure workflow-role principal; None for analysts/admins."""
+    if set(roles) & {"admin", "analyst", "fraud_analyst", "senior_analyst"}:
+        return None
+    for r, st in AWAITING_STATUS.items():
+        if r in roles:
+            return st
+    return None
+
 def allowed_actions(status: str | None, roles: frozenset[str] | set[str]) -> list[str]:
     """Workflow actions the caller may take on a case in `status` (drives UI buttons)."""
     return [a for a, t in TRANSITIONS.items() if t.from_status == (status or "") and set(roles) & {"admin", *t.roles}]

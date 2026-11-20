@@ -20,7 +20,7 @@ export default function WorkplacePage() {
   const e2eAuthBypass = (process.env.NODE_ENV !== "production" || isolatedGisBuild()) && process.env.NEXT_PUBLIC_E2E_TEST === "true";
   // The E2E build omits ClerkProvider; the static env branch keeps production auth unchanged.
   // eslint-disable-next-line react-hooks/rules-of-hooks
-  const clerkAuth = e2eAuthBypass ? { getToken: async () => null, isLoaded: true } : useAuth();
+  const clerkAuth = e2eAuthBypass ? { getToken: async () => null, isLoaded: true } : useAuth({ treatPendingAsSignedOut: false }); // org-less workflow roles hold a pending Clerk session
   const getToken = e2eAuthBypass ? async () => null : clerkAuth.getToken;
   const isLoaded = e2eAuthBypass || clerkAuth.isLoaded;
   const [apiReady, setApiReady] = useState(false);
