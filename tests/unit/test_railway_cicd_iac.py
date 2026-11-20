@@ -8,19 +8,9 @@ denied" for every signed-in user on 2026-10-15.
 
 import pathlib
 
-import yaml
-
 
 def _read(p):
     return pathlib.Path(p).read_text()
-
-
-def _jobs():
-    return yaml.safe_load(_read(".github/workflows/deploy-railway.yml"))["jobs"]
-
-
-def _job(name):
-    return yaml.safe_dump(_jobs()[name])
 
 
 def test_code_deploy_helper_waits_for_success():

@@ -9,15 +9,17 @@ ROOT_DIR = Path(__file__).resolve().parent.parent.parent.parent
 
 
 def test_workflows_no_implicit_mock_seed():
-    """Ensure deploy-railway.yml workflow has no implicit mock seed executions or misleading labels."""
-    workflow_path = ROOT_DIR / ".github" / "workflows" / "deploy-railway.yml"
-    assert workflow_path.exists(), f"{workflow_path} must exist"
-    content = workflow_path.read_text(encoding="utf-8")
-
-    assert "seed_driver_mock_supabase.py" not in content, "seed_driver_mock_supabase.py found in deploy-railway.yml"
-    assert "Small Model & Mock Setup" not in content, (
-        "Misleading 'Small Model & Mock Setup' label found in deploy-railway.yml"
-    )
+    """Ensure no workflow has implicit mock seed executions or misleading labels."""
+    workflows = sorted((ROOT_DIR / ".github" / "workflows").glob("*.yml"))
+    assert workflows, "no workflows found"
+    for workflow_path in workflows:
+        content = workflow_path.read_text(encoding="utf-8")
+        assert "seed_driver_mock_supabase.py" not in content, (
+            f"seed_driver_mock_supabase.py found in {workflow_path.name}"
+        )
+        assert "Small Model & Mock Setup" not in content, (
+            f"Misleading 'Small Model & Mock Setup' label found in {workflow_path.name}"
+        )
 
 
 def test_default_migration_never_invokes_seed_or_enrich():
