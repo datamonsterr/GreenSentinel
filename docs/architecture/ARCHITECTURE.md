@@ -109,6 +109,7 @@ graph TB
   - `POST /api/v1/telemetry/ingest`: Ingestion of raw vehicle telemetry points with idempotent envelope validation.
   - `POST /api/v1/policy/chat/stream`: SSE token-streaming conversational policy RAG.
   - `/api/v1/knowledge/*` and `/api/v1/agent-config/*`: KSGL knowledge studio, release gate, proposals queue, policy documents, agent registry, agent config + kill switch ([ADR-032](adr-032-knowledge-base-roles-and-lifecycle.md)); portal route `/knowledge` for analyst/admin.
+  - `/api/v1/driver/cases/{id}/explain/*`, `/api/v1/cases/{id}/explain*` and `/api/v1/explain/help-requests*`: driver explanation agent v2 sessions (typed form, bounded agent loop, assessment rounds, statement versions, help queue, structured VH feedback), see [ADR-034](adr-034-driver-explanation-session.md); legacy chat and statement routes unchanged.
   - *(Inherited V2 / merged PR #40)* Driver REST/SSE intake is [historical baseline](POC_DESIGN.md#5-inherited-http-api-surface-not-new-release-scope). New driver/mobile/appeal product development is deferred.
 - **Validation**: Strict Pydantic V2 models (`src/models/schemas.py`) enforcing schema versioning, coordinate ranges, and non-empty rationale constraints ($\ge 10$ characters).
 
@@ -266,6 +267,7 @@ sequenceDiagram
 | Case-less GSupport Chat & Real Agent Reply | [ADR-029](adr-029-caseless-driver-chat-and-real-agent-reply.md) | `run_driver_support_agent` accepts `case_id=None` (`list_my_cases`-driven resolution); SSE stream routes surface the real agent reply instead of a discarded `asyncio.create_task`; non-stream compliance reply unchanged | Making the agent reply authoritative everywhere (breaks NFR-L06-02 compliance-copy tests), awaiting-but-discarding in `process_driver_chat` |
 | Knowledge Base, Agent Config, Roles & Lifecycle | [ADR-032](adr-032-knowledge-base-roles-and-lifecycle.md) | Generic versioned `kb_object` (motive/behavior/scenario/workflow/parameter), draft→ready_for_test→trial→published→retired with author≠approver publish, safe AST formula evaluator, DB-backed `agent_config` with PO bounds/history/kill switch, proposals queue; routes `/knowledge`, `/agent-config`; token-overlap similarity (no embeddings) | One table per type, `eval` formulas, new DB roles, pgvector now |
 | Structured Motivation Assessment | [ADR-033](adr-033-structured-motivation-assessment.md) | Versioned `case_motivation_assessments` (category, signals, code-computed amount, confidence, rationale), analyst edit/confirm, Overview card reads the API | Keep in-memory forensic-brief narrative only; LLM-computed amounts |
+| Driver Explanation Agent v2 Session | [ADR-034](adr-034-driver-explanation-session.md) | One `explain_session` per case with immutable `statement_version`s, 4-state `assessment_round`s, bounded think→tool→observe→ask loop (N_max), code-computed tools over published knowledge with provenance, output guard, help queue with ceiling/lazy expiry, structured VH feedback; LLM output pydantic-validated with deterministic fallback, kill switch → static form | Extending the free-form GSupport chat, LLM-computed numbers, auto-changing case status |
 
 
 ## Required architecture questions
