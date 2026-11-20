@@ -93,6 +93,9 @@ from src.services.role_routing import primary_role_for, resolve_initial_route
 
 router = APIRouter()
 
+# Read-only case access (list/detail/evidence/workflow). Writes stay analyst-only (ADR-031).
+CASE_READ_ROLES = ("analyst", "senior_analyst", "admin", *sorted(case_workflow.WORKFLOW_ROLES))
+
 
 @router.get("/health", response_model=HealthResponse)
 async def api_health(
@@ -361,12 +364,20 @@ async def list_cases(
     priority: str | None = Query(default=None),
     search: str | None = Query(default=None, max_length=100),
     availability: str = Query(default="available", pattern="^(available|mine|all)$"),
+    awaiting: str | None = Query(default=None, pattern="^me$"),
     limit: int = Query(default=50, ge=1, le=200),
     offset: int = Query(default=0, ge=0),
     case_service: CaseService = Depends(get_case_service),
     principal: Principal | None = Depends(require_principal),
 ) -> CaseListResponse:
-    require_role(principal, "analyst", "senior_analyst", "admin")
+    require_role(principal, *CASE_READ_ROLES)
+    wf_status = case_workflow.awaiting_status(principal.roles) if principal else None
+    if awaiting == "me":
+        if wf_status is None:
+            raise HTTPException(status_code=400, detail="awaiting=me requires a workflow role or admin")
+        status = wf_status
+    if awaiting == "me" or (principal and case_workflow.is_workflow_only(principal.roles)):
+        availability = "all"  # step queues ignore review leases
     return await case_service.list_cases(
         status=status,
         priority=priority,
@@ -392,7 +403,7 @@ async def list_case_history(
     case_service: CaseService = Depends(get_case_service),
     principal: Principal | None = Depends(require_principal),
 ) -> CaseListResponse:
-    require_role(principal, "analyst", "senior_analyst", "admin", "driver")
+    require_role(principal, *CASE_READ_ROLES, "driver")
     driver_id = (
         principal.driver_id if principal and "driver" in principal.roles and "analyst" not in principal.roles else None
     )
@@ -416,7 +427,7 @@ async def get_case_detail(
     case_service: CaseService = Depends(get_case_service),
     principal: Principal | None = Depends(require_principal),
 ) -> CaseDetailResponse:
-    require_role(principal, "analyst", "senior_analyst", "admin")
+    require_role(principal, *CASE_READ_ROLES)
     return await case_service.get_case_detail(id, organization_id=principal.organization_id if principal else None)
 
 
@@ -426,7 +437,7 @@ async def get_case_forensic_brief(
     case_service: CaseService = Depends(get_case_service),
     principal: Principal | None = Depends(require_principal),
 ) -> ForensicBriefResponse:
-    require_role(principal, "analyst", "senior_analyst", "admin")
+    require_role(principal, *CASE_READ_ROLES)
     return await case_service.get_forensic_brief(id, organization_id=principal.organization_id if principal else None)
 
 
@@ -439,7 +450,7 @@ async def get_driver_scorecard_route(
     """Live 90-day driver scorecard replacing the retired hash mock (issue #100)."""
     from src.services.driver_service import get_driver_scorecard
 
-    require_role(principal, "analyst", "senior_analyst", "admin")
+    require_role(principal, *CASE_READ_ROLES)
     return await get_driver_scorecard(
         driver_id,
         organization_id=principal.organization_id if principal else None,
@@ -456,7 +467,7 @@ async def get_case_driver_scorecard_route(
     """Case alias resolving the case driver before returning the live scorecard."""
     from src.services.driver_service import get_case_driver_scorecard
 
-    require_role(principal, "analyst", "senior_analyst", "admin")
+    require_role(principal, *CASE_READ_ROLES)
     if principal:
         require_case_scope(case_service, id, principal.organization_id)
     return await get_case_driver_scorecard(
@@ -473,7 +484,7 @@ async def get_case_policy(
     case_service: CaseService = Depends(get_case_service),
     principal: Principal | None = Depends(require_principal),
 ) -> CasePolicyResponse:
-    require_role(principal, "analyst", "senior_analyst", "admin")
+    require_role(principal, *CASE_READ_ROLES)
     return await case_service.get_case_policy(
         id,
         query=query,
@@ -592,16 +603,18 @@ async def get_case_workflow(
     case_service: CaseService = Depends(get_case_service),
     principal: Principal | None = Depends(require_principal),
 ) -> dict[str, Any]:
-    require_role(principal, "analyst", "senior_analyst", "admin", "reviewer", "ops_director", "marketplace_director")
+    require_role(principal, *CASE_READ_ROLES)
     if principal is None:
         raise HTTPException(status_code=401, detail="Authentication required")
     require_case_scope(case_service, id, principal.organization_id)
-    return await asyncio.to_thread(
+    out = await asyncio.to_thread(
         case_workflow.load_stepper,
         case_service._get_db_connection,
         case_service._resolve_case_id(id),
         principal.organization_id,
     )
+    out["actions"] = case_workflow.allowed_actions(out["status"], principal.roles)
+    return out
 
 
 @router.post("/cases/{id}/workflow/{action}")
@@ -700,7 +713,7 @@ async def get_case_agent_context(
     case_service: CaseService = Depends(get_case_service),
     principal: Principal | None = Depends(require_principal),
 ) -> dict[str, Any]:
-    require_role(principal, "analyst", "senior_analyst", "admin")
+    require_role(principal, *CASE_READ_ROLES)
     if principal:
         require_case_scope(case_service, id, principal.organization_id)
     from src.services.agent_runtime import get_agent_context
@@ -728,7 +741,7 @@ async def get_case_agent_session(
     case_service: CaseService = Depends(get_case_service),
     principal: Principal | None = Depends(require_principal),
 ) -> dict:
-    require_role(principal, "analyst", "senior_analyst", "admin")
+    require_role(principal, *CASE_READ_ROLES)
     return await case_service.get_case_agent_session(
         id,
         organization_id=principal.organization_id if principal else None,
@@ -1298,7 +1311,7 @@ async def get_dispute_dossier_route(
     principal: Principal | None = Depends(require_principal),
 ) -> DisputeDossierResponse:
     """Retrieve compiled dispute dossier with corroboration, precedents, and transcript."""
-    require_role(principal, "analyst", "senior_analyst", "admin")
+    require_role(principal, *CASE_READ_ROLES)
     if principal:
         require_case_scope(case_service, case_id, principal.organization_id)
     return await dispute_service.get_dispute_dossier(case_id)
@@ -1313,7 +1326,7 @@ async def get_workflow_draft_route(
     case_service: CaseService = Depends(get_case_service),
     principal: Principal | None = Depends(require_principal),
 ) -> WorkflowDraftResponse:
-    require_role(principal, "analyst", "senior_analyst", "admin")
+    require_role(principal, *CASE_READ_ROLES)
     return await case_service.get_workflow_draft(
         case_id, organization_id=principal.organization_id if principal else None
     )
@@ -1343,7 +1356,7 @@ async def get_case_workflow_trace_route(
     principal: Principal | None = Depends(require_principal),
 ) -> WorkflowTrace:
     """Retrieve synthesized workflow trace for a case."""
-    require_role(principal, "analyst", "senior_analyst", "admin")
+    require_role(principal, *CASE_READ_ROLES)
     if principal:
         require_case_scope(case_service, case_id, principal.organization_id)
     return await asyncio.to_thread(

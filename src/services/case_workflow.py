@@ -51,7 +51,7 @@ NEXT_ACTOR_TEXT: dict[str, tuple[str, str]] = {
     "REPORT_ISSUED": ("KSCL", "Depot (KSCL) xác nhận biên bản"),
     "REPORT_CONFIRMED": ("OPS_DIR", "Giám đốc vận hành duyệt"),
     "NEED_OPS_DIR_APPROVED": ("OPS_DIR", "Giám đốc vận hành duyệt"),
-    "NEED_MKP_DIR_APPROVED": ("MKP_DIR", "Giám đốc Marketplace duyệt"),
+    "NEED_MKP_DIR_APPROVED": ("MKP_DIR", "Admin (Giám đốc Marketplace) duyệt"),
 }
 
 
@@ -73,7 +73,7 @@ TRANSITIONS: dict[str, Transition] = {
         "need_ops_dir_approved", "need_mkp_dir_approved", "NEED_OPS_DIR_APPROVED", "OPS_DIR", ("ops_director",)
     ),
     "approve-marketplace": Transition(
-        "need_mkp_dir_approved", "completed", "NEED_MKP_DIR_APPROVED", "MKP_DIR", ("marketplace_director",)
+        "need_mkp_dir_approved", "completed", "NEED_MKP_DIR_APPROVED", "MKP_DIR", ("marketplace_director",)  # admin acts as MKP director
     ),
 }
 
@@ -117,6 +117,29 @@ def build_stepper(
 
 WORKFLOW_ROLES = frozenset({"reviewer", "ops_director", "marketplace_director"})
 
+
+# role -> the status in which the case awaits that role's approval step
+AWAITING_STATUS = {
+    "reviewer": "report_issued",
+    "ops_director": "need_ops_dir_approved",
+    "marketplace_director": "need_mkp_dir_approved",
+}
+
+def is_workflow_only(roles: frozenset[str] | set[str]) -> bool:
+    """True for principals holding a workflow role but no analyst/admin role (read-only case access)."""
+    r = set(roles)
+    return bool(r & WORKFLOW_ROLES) and not r & {"admin", "analyst", "fraud_analyst", "senior_analyst"}
+
+def awaiting_status(roles: frozenset[str] | set[str]) -> str | None:
+    """Step queue for the caller. Admin is the MKP director (last step); analysts have none."""
+    if "admin" in roles:
+        return "need_mkp_dir_approved"
+    if set(roles) & {"analyst", "fraud_analyst", "senior_analyst"}:
+        return None
+    for r, st in AWAITING_STATUS.items():
+        if r in roles:
+            return st
+    return None
 
 def allowed_actions(status: str | None, roles: frozenset[str] | set[str]) -> list[str]:
     """Workflow actions the caller may take on a case in `status` (drives UI buttons)."""

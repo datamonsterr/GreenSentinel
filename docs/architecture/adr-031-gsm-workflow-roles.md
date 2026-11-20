@@ -38,3 +38,13 @@ Status: accepted · Scope: roles, case statuses, Overview stepper. Reference: GS
 ## Gaps
 
 OPS role, POST_CHECK, fine-threshold routing (reference skips director steps for small cases), notifications to next actor, and UI for non-analyst roles beyond the Overview stepper.
+
+## Addendum: read-only case access (workflow roles)
+
+`reviewer` and `ops_director` (and the retained, unused `marketplace_director`) may call the read-only case endpoints the workspace needs (`CASE_READ_ROLES` in `src/api/routes.py`: list, history, detail, forensic-brief, driver-scorecard, policy, agent-context/session GET, dispute-dossier, workflow-draft GET, workflow-trace GET, workflow GET). All writes (claim/release, actions, preliminary-assessment, adjudicate, drafts, delegate-inquiry, precedents, copilot) stay analyst/admin-only.
+
+**Admin is the MKP director.** The final step (`need_mkp_dir_approved` → `completed`, `approve-marketplace`) is performed by `admin`; the stepper keeps the "MKP DIR" step and `MKP_DIR` chip, labelled "Admin". No separate marketplace-director account is needed.
+
+`GET /cases?awaiting=me` returns the caller's step queue: reviewer → `report_issued`, ops_director → `need_ops_dir_approved`, admin → `need_mkp_dir_approved` (400 for analysts). Step queues ignore review leases. Admin keeps the normal analyst queue by default and gets an "Awaiting me" toggle. `GET /cases/{id}/workflow` returns `actions`.
+
+**Adjudication outcome contract.** The API speaks `AGREE`/`DISAGREE`; `app.adjudications.outcome` is constrained to `dismiss/approve/reject/warn/fine/suspend` (migration `20261003220000`). `case_service.db_outcome/api_outcome` translate (`AGREE`↔`approve`, `DISAGREE`↔`dismiss`). Previously the insert wrote `agree`/`disagree` and failed the constraint on any migrated database.

@@ -52,7 +52,8 @@ export function WorkflowStepperView({
                 {s.state === "done" ? "✓" : i + 1}
               </span>
               <span className={`mt-1 text-[11px] leading-tight ${s.state === "pending" ? "text-gs-mute" : "font-semibold text-gs-ink"}`}>{s.label}</span>
-              <span className="mt-1 rounded-full px-1.5 py-px text-[10px] font-bold" style={{ background: role.bg, color: role.fg }}>{role.label}</span>
+              <span className="mt-1 rounded-full px-1.5 py-px text-[10px] font-bold" style={{ background: role.bg, color: role.fg }} title={s.actor_role === "MKP_DIR" ? "Admin" : undefined}>{role.label}</span>
+              {s.actor_role === "MKP_DIR" && <span className="text-[10px] text-gs-mute">Admin</span>}
               {s.state === "done" && s.completed_at && <span className="mt-0.5 text-[10px] text-gs-mute">{fmt(s.completed_at, locale)}</span>}
             </li>
           );

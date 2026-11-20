@@ -21,6 +21,7 @@ import {
 import { CaseDetailResponse, DisputeDossierResponse, WorkflowTrace, PreliminaryJudgmentChoice, PrecedentSimilarityMatch } from "@/types/schemas";
 import { CenterPanelTabs, CenterTabType } from "@/components/adjudication/center-panel-tabs";
 import { useLocale } from "@/lib/locale";
+import { awaitingStatusFor, isWorkflowOnly } from "@/lib/workflow-roles";
 import { WorkflowStepper } from "@/components/cockpit/workflow-stepper";
 import { workspaceMessages } from "@/lib/workspace-messages";
 import { savedWorkspaceJudgment } from "@/lib/workspace-data";
@@ -140,7 +141,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
   const caseDetailRef = useRef(caseDetail);
   caseDetailRef.current = caseDetail;
   const caseDetailCacheRef = useRef<Map<string, CaseDetailResponse>>(new Map());
-  const [currentAnalyst, setCurrentAnalyst] = useState<{id:string; name:string; role:string} | null>(null);
+  const [currentAnalyst, setCurrentAnalyst] = useState<{id:string; name:string; role:string; roles?:string[]} | null>(null);
   const currentAnalystRef = useRef(currentAnalyst);
   currentAnalystRef.current = currentAnalyst;
   const [loading, setLoading] = useState(true);
@@ -156,6 +157,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
     const qs = withQueueExpanded(window.location.search, next);
     window.history.replaceState(null, '', `${window.location.pathname}${qs ? `?${qs}` : ''}${window.location.hash}`);
   }, []);
+  const queueDefaultedRef = useRef(false);
   const [rationale, setRationale] = useState('');
   const [ownershipBusy, setOwnershipBusy] = useState<Record<string, 'claim' | 'release'>>({});
   const ownershipPending = useRef(new Set<string>());
@@ -263,6 +265,11 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
         ]);
         if (!isMountedRef.current) return false;
         setCurrentAnalyst(analyst);
+        const awaiting = isWorkflowOnly(analyst.roles ?? analyst.role) ? awaitingStatusFor(analyst.roles ?? analyst.role) : null;
+        if (awaiting && !queueDefaultedRef.current) {
+          queueDefaultedRef.current = true;
+          setFacets(f => ({ ...f, statuses: [awaiting] }));
+        }
         let mapped: CaseItem[] = res.items.map(item => {
           const leaseExpiresAt = item.active_lease_expires_at ? Date.parse(item.active_lease_expires_at) : 0;
           const isLeaseActive = !Number.isNaN(leaseExpiresAt) && leaseExpiresAt > Date.now();
@@ -642,6 +649,8 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
 
   const chatPlaceholder = !selectedCaseId
     ? "Ask Agents about this case…"
+    : isWorkflowOnly(currentAnalyst?.roles ?? currentAnalyst?.role)
+    ? m.copilotReadOnly
     : isTerminalCase
     ? "Case is resolved. Chat is closed."
     : isLockedByOther
@@ -688,6 +697,8 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
       if (isMountedRef.current) setOwnershipBusy(previous => { const next = { ...previous }; delete next[caseId]; return next; });
     }
   };
+  const awaitingStatus = awaitingStatusFor(currentAnalyst?.roles ?? currentAnalyst?.role);
+  const workflowOnly = isWorkflowOnly(currentAnalyst?.roles ?? currentAnalyst?.role);
   const isAnalystAuthorized = Boolean(
     currentAnalyst &&
     ['analyst', 'fraud_analyst', 'senior_analyst', 'admin'].includes(currentAnalyst.role?.toLowerCase() || '')
@@ -781,6 +792,12 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
   const qt = queueText[locale];
   const queueFilters: QueueFilters = { ...facets, search: searchQuery, availability: lockFilter };
   const visibleCases = queueTab === 'active' ? applyFilters(cases, queueFilters) : cases;
+  const firstVisibleId = visibleCases[0]?.id;
+  const selectionVisible = visibleCases.some(c => c.id === selectedCaseId);
+  useEffect(() => {
+    // Workflow roles filter client-side: keep the open case inside their visible queue.
+    if (workflowOnly && queueTab === 'active' && firstVisibleId && !selectionVisible) selectCase(firstVisibleId);
+  }, [workflowOnly, queueTab, firstVisibleId, selectionVisible]); // eslint-disable-line react-hooks/exhaustive-deps
   const rowInfo = (item: CaseItem) => {
     const detail = caseDetail?.case.id === item.id ? caseDetail : ownership[item.id];
     const activeLease = detail?.active_lease;
@@ -863,7 +880,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
               </button>
             )}
           </div>
-          {queueTab === 'active' ? (
+          {queueTab === 'active' ? (workflowOnly ? null :
             <select
               aria-label={m.lockFilter}
               value={lockFilter}
@@ -887,6 +904,13 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
               <option value="auto_dismissed">{m.autoDismissed}</option>
             </select>
           )}
+          {queueTab === 'active' && awaitingStatus && <div role="group" data-testid="awaiting-toggle" className="flex shrink-0 gap-1 text-[11px] font-semibold">
+            {[{ key: 'me', label: m.awaitingMe, on: facets.statuses.length === 1 && facets.statuses[0] === awaitingStatus, n: cases.filter(c => (c.status ?? '').toLowerCase() === awaitingStatus).length, statuses: [awaitingStatus] },
+              { key: 'all', label: m.allCases, on: facets.statuses.length === 0, n: cases.length, statuses: [] as string[] }].map(t => (
+              <button key={t.key} type="button" aria-pressed={t.on} onClick={() => setFacets(f => ({ ...f, statuses: t.statuses }))}
+                className={`rounded-full border px-2.5 py-1 ${t.on ? 'border-gs-cyan bg-gs-cyan text-white' : 'border-gs-line-2 bg-white text-gs-ink-2'}`}>{t.label} ({t.n})</button>
+            ))}
+          </div>}
           {queueTab === 'active' && <div className={queueExpanded ? 'min-w-0 flex-1' : ''}>
             <QueueFilterBar filters={queueFilters} onChange={next => setFacets({ statuses: next.statuses, priority: next.priority, category: next.category, assignee: next.assignee, from: next.from, to: next.to })} rows={cases} locale={locale} expanded={queueExpanded} />
           </div>}
@@ -916,7 +940,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
                       <td className="px-3 py-2 tabular-nums text-slate-600">{item.sla}</td>
                       <td className="px-3 py-2">
                         {archived ? <span data-testid="terminal-status-badge">{m.archived}</span> : (
-                          <button title={mine ? m.releaseCase : m.claimCase} aria-label={busy === 'claim' ? m.claiming : busy === 'release' ? m.releasing : other ? m.ownedOther : mine ? m.release : m.claim} disabled={Boolean(busy) || other || !isAnalystAuthorized} onClick={() => void updateLock(item.id, mine)} className={`inline-flex h-7 min-w-[4.5rem] items-center justify-center rounded-md px-2 text-[11px] font-semibold disabled:bg-slate-300 disabled:text-slate-700 disabled:opacity-100 ${mine ? 'border border-gs-line-2 bg-white text-gs-ink-2 hover:bg-gs-line' : 'bg-primary text-white hover:bg-primary-container'}`}>{busy === 'claim' ? m.claiming : busy === 'release' ? m.releasing : other ? m.ownedOther : mine ? m.release : m.claim}</button>
+                          workflowOnly ? null : <button title={mine ? m.releaseCase : m.claimCase} aria-label={busy === 'claim' ? m.claiming : busy === 'release' ? m.releasing : other ? m.ownedOther : mine ? m.release : m.claim} disabled={Boolean(busy) || other || !isAnalystAuthorized} onClick={() => void updateLock(item.id, mine)} className={`inline-flex h-7 min-w-[4.5rem] items-center justify-center rounded-md px-2 text-[11px] font-semibold disabled:bg-slate-300 disabled:text-slate-700 disabled:opacity-100 ${mine ? 'border border-gs-line-2 bg-white text-gs-ink-2 hover:bg-gs-line' : 'bg-primary text-white hover:bg-primary-container'}`}>{busy === 'claim' ? m.claiming : busy === 'release' ? m.releasing : other ? m.ownedOther : mine ? m.release : m.claim}</button>
                         )}
                         {ownershipErrors[item.id] && <p role="alert" className="text-gs-red">{ownershipErrors[item.id]}</p>}
                       </td>
@@ -981,7 +1005,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
                 <div className="flex min-w-0 items-center justify-between gap-2">
                   <span className="min-w-0 flex-1 truncate text-slate-500" title={item.district}>{item.district}</span>
                   {archived ? <span data-testid="terminal-status-badge">{m.archived} · {item.status}</span> : <>
-                    <button title={mine ? m.releaseCase : m.claimCase} aria-label={busy === 'claim' ? m.claiming : busy === 'release' ? m.releasing : other ? m.ownedOther : mine ? m.release : m.claim} disabled={Boolean(busy) || other || !isAnalystAuthorized} onClick={() => void updateLock(item.id, mine)} className={`inline-flex h-7 min-w-[4.5rem] items-center justify-center rounded-md px-2 text-[11px] font-semibold disabled:bg-slate-300 disabled:text-slate-700 disabled:opacity-100 ${mine ? 'border border-gs-line-2 bg-white text-gs-ink-2 hover:bg-gs-line' : 'bg-primary text-white hover:bg-primary-container'}`}>{busy === 'claim' ? m.claiming : busy === 'release' ? m.releasing : other ? m.ownedOther : mine ? m.release : m.claim}</button>
+                    {!workflowOnly && <button title={mine ? m.releaseCase : m.claimCase} aria-label={busy === 'claim' ? m.claiming : busy === 'release' ? m.releasing : other ? m.ownedOther : mine ? m.release : m.claim} disabled={Boolean(busy) || other || !isAnalystAuthorized} onClick={() => void updateLock(item.id, mine)} className={`inline-flex h-7 min-w-[4.5rem] items-center justify-center rounded-md px-2 text-[11px] font-semibold disabled:bg-slate-300 disabled:text-slate-700 disabled:opacity-100 ${mine ? 'border border-gs-line-2 bg-white text-gs-ink-2 hover:bg-gs-line' : 'bg-primary text-white hover:bg-primary-container'}`}>{busy === 'claim' ? m.claiming : busy === 'release' ? m.releasing : other ? m.ownedOther : mine ? m.release : m.claim}</button>}
                   </>}
                 </div>
                 {ownershipErrors[item.id] && <p role="alert" className="text-gs-red">{ownershipErrors[item.id]}</p>}
@@ -1023,6 +1047,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
         {caseDetail && <div hidden={detailLoading || Boolean(detailError) || caseDetail.case.id !== selectedCaseId} inert={detailLoading || Boolean(detailError) || caseDetail.case.id !== selectedCaseId} className={`${detailLoading || Boolean(detailError) || caseDetail.case.id !== selectedCaseId ? 'hidden' : 'flex'} flex-col flex-1 min-h-0`}>
         <div className="relative flex-1 min-h-0 overflow-y-auto p-2.5">
           <CenterPanelTabs activeTab={activeCenterTab} onTabChange={setActiveCenterTab} />
+          {workflowOnly && <p role="status" data-testid="workflow-readonly-hint" className="my-2 rounded border border-gs-cyan/30 bg-gs-cyan-soft p-2 text-xs text-gs-ink">{m.workflowReadOnly}</p>}
           {isLockedByOther && <p role="status" aria-label={m.readOnly} className="my-2 rounded border border-gs-amber/30 bg-gs-amber-soft p-2 text-xs text-gs-amber-ink">{m.readOnly}</p>}
           {feedbackMessage && <div className="my-2 flex items-center gap-2">
             <p role={feedbackError ? 'alert' : 'status'} className={`text-xs ${feedbackError ? 'text-gs-red' : 'text-gs-green-ink'}`}>{feedbackMessage}</p>

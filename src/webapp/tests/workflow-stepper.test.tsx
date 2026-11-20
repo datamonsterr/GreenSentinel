@@ -28,6 +28,13 @@ describe('WorkflowStepperView', () => {
     expect(container.querySelector('[data-step="REVIEWED"]')?.textContent).toMatch(/\d/);
   });
 
+  it('shows Admin as the actor of the MKP DIR step', () => {
+    const { container } = render(<WorkflowStepperView workflow={wf(6)} locale="vi" />);
+    const step = container.querySelector('[data-step="NEED_MKP_DIR_APPROVED"]')!;
+    expect(step).toHaveTextContent('MKP_DIR');
+    expect(step).toHaveTextContent('Admin');
+    expect(step.querySelector('[title="Admin"]')).not.toBeNull();
+  });
   it('shows action button only when backend allows it', () => {
     const onAction = vi.fn();
     const { rerender } = render(<WorkflowStepperView workflow={wf(3)} locale="en" onAction={onAction} />);
