@@ -48,11 +48,11 @@ function validResponse(value: unknown): CaseMotivationResponse | null {
 }
 
 /** Remounts per case so state never leaks between cases. */
-export function MotivationCard(props: { caseId: string; canWrite: boolean; locale: 'en' | 'vi' }) {
+export function MotivationCard(props: { caseId: string; canWrite: boolean; locale: 'en' | 'vi'; fallbackAmountVnd?: number | null }) {
   return <MotivationCardBody key={props.caseId} {...props} />;
 }
 
-function MotivationCardBody({ caseId, canWrite, locale }: { caseId: string; canWrite: boolean; locale: 'en' | 'vi' }) {
+function MotivationCardBody({ caseId, canWrite, locale, fallbackAmountVnd }: { caseId: string; canWrite: boolean; locale: 'en' | 'vi'; fallbackAmountVnd?: number | null }) {
   const t = copy[locale];
   const [data, setData] = React.useState<CaseMotivationResponse | null>(null);
   const [error, setError] = React.useState<string | null>(null);
@@ -139,7 +139,7 @@ function MotivationCardBody({ caseId, canWrite, locale }: { caseId: string; canW
           <div className="grid grid-cols-2 gap-3">
             <div>
               <div className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">{t.amount}</div>
-              <div className="text-base font-bold tabular-nums text-slate-900">{a.amount_at_stake_vnd == null ? '—' : `${a.amount_at_stake_vnd.toLocaleString(locale === 'vi' ? 'vi-VN' : 'en-US')} ₫`}</div>
+              <div className="text-base font-bold tabular-nums text-slate-900">{(a.amount_at_stake_vnd ?? fallbackAmountVnd) == null ? '—' : `${(a.amount_at_stake_vnd ?? fallbackAmountVnd as number).toLocaleString(locale === 'vi' ? 'vi-VN' : 'en-US')} ₫`}</div>
             </div>
             <div>
               <div className="text-[11px] font-semibold uppercase tracking-wide text-slate-500">{t.confidence}</div>

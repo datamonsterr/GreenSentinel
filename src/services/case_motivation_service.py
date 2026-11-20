@@ -127,6 +127,10 @@ def build_structured_assessment(
         amount = amount or bonus
     elif fare is not None and fare > 0 and abnormal:
         category = "fare_inflation"
+    if not amount:
+        # Same facts the overview shows as "fare at stake" / "bonus at stake".
+        stake = (_num((trip or {}).get("fare_amount_vnd")) or 0.0) + bonus
+        amount = stake if stake > 0 else None
     strong = sum(s.code in ("mock_location", "fare_delta", "surge_capture", "subsidy", "bonus", "platform_incident") for s in signals)
     confidence = 0.2 if category == "unclear" else min(0.85, round(0.35 + 0.1 * strong + (0.1 if mock else 0), 3))
     return MotivationDraft(

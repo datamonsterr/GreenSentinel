@@ -118,7 +118,7 @@ export function HelpQueuePanel({ locale, open, onClose, onChanged, onOpenCase }:
     <aside role="dialog" aria-label={m.title} data-testid="help-queue-panel"
       className="fixed right-0 top-16 z-40 flex h-[calc(100vh-4rem)] w-full max-w-md flex-col border-l border-gs-line-2 bg-background shadow-lg">
       <header className="flex items-center gap-2 border-b border-gs-line bg-white px-4 py-3">
-        <span className="material-symbols-outlined text-[20px] text-gs-purple">support_agent</span>
+        <span className="material-symbols-outlined text-[20px] text-primary">support_agent</span>
         <h2 className="flex-1 text-sm font-bold text-gs-ink">{m.title}</h2>
         <button type="button" onClick={() => setRev((r) => r + 1)} className="rounded border border-gs-line-2 bg-white px-2 py-1 text-[11px] hover:bg-background">{m.refresh}</button>
         <button type="button" onClick={onClose} aria-label={m.close} className="rounded p-1 text-gs-mute hover:bg-gs-cyan-soft">

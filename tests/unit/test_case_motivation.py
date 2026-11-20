@@ -45,6 +45,13 @@ def test_bonus_with_abnormality_is_reward_threshold():
     assert d.motive_category == "reward_threshold" and d.amount_at_stake_vnd == 50000
 
 
+def test_amount_falls_back_to_trip_fare_and_bonus_when_no_delta():
+    d = _build(trip={"fare_amount_vnd": 85000})
+    assert d.amount_at_stake_vnd == 85000
+    d = _build(trip={"fare_amount_vnd": 85000, "bonus_amount_vnd": 5000}, telemetry=[{"gps_state": "valid"}])
+    assert d.amount_at_stake_vnd == 90000
+
+
 def test_fare_delta_with_mock_is_fare_inflation():
     d = _build(features={"fare_delta_vnd": 30000})
     assert d.motive_category == "fare_inflation" and d.amount_at_stake_vnd == 30000

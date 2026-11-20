@@ -990,7 +990,10 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
                     <span className="font-semibold shrink-0">{item.severity} ·</span>
                     <CopyId id={item.id} label={m.caseId} displayId={item.code} />
                   </div>
-                  {item.sla !== '—' && <span className="text-slate-500 tabular-nums shrink-0">{item.sla}</span>}
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <CaseStatusChip status={detail?.case.status || item.status} locale={locale} testId="queue-card-status" />
+                    {item.sla !== '—' && <span className="text-slate-500 tabular-nums">{item.sla}</span>}
+                  </div>
                 </div>
                 <button
                   type="button"

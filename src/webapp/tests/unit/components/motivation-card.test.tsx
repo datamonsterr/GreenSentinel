@@ -32,6 +32,12 @@ describe('MotivationCard', () => {
     expect(screen.queryByText(/Not assessed/)).not.toBeInTheDocument();
   });
 
+  it('falls back to trip amount when amount_at_stake_vnd is null', async () => {
+    api.getCaseMotivation.mockResolvedValue(saved({ amount_at_stake_vnd: null }));
+    render(<MotivationCard caseId="c1" canWrite locale="en" fallbackAmountVnd={85000} />);
+    expect(await screen.findByText(/85,000 ₫/)).toBeInTheDocument();
+  });
+
   it('renders Vietnamese labels', async () => {
     api.getCaseMotivation.mockResolvedValue(saved({ status: 'confirmed' }));
     render(<MotivationCard caseId="c1" canWrite locale="vi" />);

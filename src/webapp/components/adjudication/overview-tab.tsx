@@ -223,7 +223,7 @@ export const OverviewTab: React.FC<OverviewTabProps> = ({
         tone="violet"
         title={m.motivation}
         assessment={motivation}
-        body={caseDetail.case?.id ? <MotivationCard caseId={caseDetail.case.id} canWrite={canWriteMotivation} locale={locale} /> : undefined}
+        body={caseDetail.case?.id ? <MotivationCard caseId={caseDetail.case.id} canWrite={canWriteMotivation} locale={locale} fallbackAmountVnd={(finite(trip?.fare_amount_vnd) ?? 0) + (finite(trip?.bonus_amount_vnd) ?? 0) || null} /> : undefined}
         emptyBrief={t.motivationBrief}
         locale={locale}
         metrics={(
