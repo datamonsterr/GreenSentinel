@@ -146,11 +146,19 @@ class AgentConfigService:
                 "is_default": not rows, "updated_at": rows[0]["updated_at"] if rows else None,
                 "can_edit": _can_edit(actor.roles, key, kill_switch=key == "explain_agent_enabled"),
             })
-        return {"items": items, "metrics": self._metrics()}
+        return {"items": items, "metrics": self._metrics(org)}
 
-    def _metrics(self) -> dict[str, Any]:
-        # Placeholders until explanation sessions exist (S-D1 fills these in).
-        return {"window_days": 30, "avg_turns": None, "pct_exhausted": None, "pct_help": None, "available": False}
+    def _metrics(self, org: str) -> dict[str, Any]:
+        """30-day explanation session metrics (S-D1): average answered turns, share ending at N_max, share that asked VH for help."""
+        out: dict[str, Any] = {"window_days": 30, "avg_turns": None, "pct_exhausted": None, "pct_help": None, "available": False}
+        rows = [r for r in self.store.find("explain_session", {"organization_id": org, "mode": "agent"}) if r["state"] == "submitted"]
+        if not rows:
+            return out
+        n = len(rows)
+        out.update({"avg_turns": round(sum(r["turns_used"] for r in rows) / n, 2),
+                    "pct_exhausted": round(100 * sum(1 for r in rows if r["ai_inconclusive"]) / n, 1),
+                    "pct_help": round(100 * sum(1 for r in rows if r["asked_for_help"]) / n, 1), "available": True, "sessions": n})
+        return out
 
     def history(self, actor: Any, key: str | None = None, limit: int = 100) -> list[dict[str, Any]]:
         self._require_read(actor)
