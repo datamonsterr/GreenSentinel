@@ -107,10 +107,10 @@ describe('AI Anomaly Scoring & Error Type UI Display', () => {
     expect(screen.getByText(/stationary_duration_over_180s/)).toBeInTheDocument();
   });
   it.each([
-    ['assessment fraction', 'ERR-ASSESS', 0.876, 'ERR-CASE', 71, 'ERR-ASSESS (88%)', 'bg-amber-50'],
-    ['assessment percentage', 'ERR-ASSESS', 94, 'ERR-CASE', 71, 'ERR-ASSESS (94%)', 'bg-emerald-50'],
+    ['assessment fraction', 'ERR-ASSESS', 0.876, 'ERR-CASE', 71, 'ERR-ASSESS (88%)', 'bg-gs-amber-soft'],
+    ['assessment percentage', 'ERR-ASSESS', 94, 'ERR-CASE', 71, 'ERR-ASSESS (94%)', 'bg-gs-green-soft'],
     ['assessment zero', 'ERR-ASSESS', 0, 'ERR-CASE', 71, 'ERR-ASSESS (0%)', 'bg-white'],
-    ['case fallback', null, null, 'ERR-CASE', 0.73, 'ERR-CASE (73%)', 'bg-amber-50'],
+    ['case fallback', null, null, 'ERR-CASE', 0.73, 'ERR-CASE (73%)', 'bg-gs-amber-soft'],
     ['queue fallback', null, null, null, null, 'Unavailable', ''],
   ] as const)('preserves %s in gated Finalization', async (_name, category, confidence, caseCategory, caseConfidence, expected, color) => {
     vi.mocked(api.fetchCaseDetail).mockResolvedValue({

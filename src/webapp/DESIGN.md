@@ -10,8 +10,9 @@ Shared building blocks live in `components/cockpit/`. Pure data derivations live
 ## Tokens
 
 - **Font:** Inter for UI text, JetBrains Mono (`font-mono`) for IDs, plates, codes and timestamps.
-- **Primary:** emerald (`emerald-700` `#047857`) for active state, primary buttons and the "Active"
-  badge.
+- **Primary:** theme cyan (`primary` `#0fb3c1`, hover `primary-container`) for active state, primary
+  buttons and the "Active" badge. See *Colour palette rules* below; this section's Tailwind palette
+  names are superseded by theme tokens.
 - **Surfaces:** white cards on a `slate-50` panel wash, with a 1px `slate-200` border, `rounded-lg`
   (8px) corners and `shadow-xs`. Never stack heavy shadows.
 - **Text:** `slate-900` for values and titles, `slate-500` for labels and captions.
@@ -111,3 +112,15 @@ Shared building blocks live in `components/cockpit/`. Pure data derivations live
   - Right (1/3): the event timeline. Each status's dot and segment takes its tone color, with a
     timestamp and a chip for the time spent until the next status. Cancel events are highlighted
     red.
+
+## Colour palette rules (portal cyan theme)
+
+Never use Tailwind palette classes (`emerald|green|red|rose|lime|teal|amber|orange|yellow|blue|indigo|violet|purple|sky|cyan|pink|fuchsia-NNN`) or literal hex in portal components. Use tokens from `app/globals.css`.
+
+- **Primary actions** (Claim, Save, Submit, Send, active tab/toggle): `bg-primary text-white hover:bg-primary-container`. Secondary: white + `border-gs-line-2`. Icon buttons: ghost.
+- **Release / unclaim / cancel:** neutral outline, never red. Red (`gs-red`, `gs-red-soft`) only for destructive or error states.
+- **Status/tags/priority:** tone chips via `statusTone()` / `caseStatusTone()` (`.gs-tone .t-*`). amber = pending/needs action, cyan = in review/info, green = resolved/confirmed only, red = violation/error, orange = escalated/awaiting approval, purple = report/AI, grey = closed.
+- **Chat bubbles:** own side cyan-soft or navy `#16273b` + white text; other side white card with line border.
+- **Accents:** success `gs-green`/`gs-green-soft`/`gs-green-ink` (text), warning `gs-amber`/`gs-amber-ink`, error `gs-red`, info `gs-cyan`/`gs-blue`, AI `gs-purple`, escalated `gs-orange`. Opacity variants (`border-gs-green/30`) for borders.
+- **Map/chart hex** (maplibre paint cannot read CSS vars): use the theme hex values: cyan `#0fb3c1`, blue `#2f6fe0`, green `#22a45d`, amber `#c99616`, orange `#c8601e`, red `#e0484b`, purple `#7b3ed6`, ink `#1c2733`.
+- **Neutral greys:** `slate-*` utilities remain for neutral surfaces/text (documented exception; not part of the status palette). Driver app keeps its own `.driver-scope` theme.

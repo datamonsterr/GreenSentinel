@@ -38,7 +38,7 @@ export function CopyId({ id, label, displayId }: { id: string; label: string; di
       onClick={(event) => { event.stopPropagation(); void copy(); }}
       title={id}
       aria-label={`${label}: ${id}`}
-      className="inline-flex min-w-0 max-w-36 shrink-0 items-center gap-1 rounded-md border border-slate-200 bg-slate-50 px-1.5 py-0.5 font-mono text-[11px] leading-4 text-slate-700 hover:bg-emerald-50 focus-visible:outline-emerald-600"
+      className="inline-flex min-w-0 max-w-36 shrink-0 items-center gap-1 rounded-md border border-slate-200 bg-slate-50 px-1.5 py-0.5 font-mono text-[11px] leading-4 text-slate-700 hover:bg-gs-green-soft focus-visible:outline-gs-green"
     >
       {showsHash && <span aria-hidden="true" className="shrink-0 text-slate-400">#</span>}
       <span className="truncate">{short}</span>

@@ -747,16 +747,16 @@ export function MapLibreView({
       map.setPaintProperty(layerId, "line-width", width);
       map.setPaintProperty(layerId, "line-color", color);
     };
-    line("pickup-route", derivedPickupRoute, "#2563eb", showRoute && !hasSegments);
-    line("destination-route", derivedDestinationRoute, "#7c3aed", showRoute && !hasSegments);
-    line("driver-trajectory", derivedBreadcrumbs, "#ea580c", showBreadcrumbs && !hasSegments, 4.5, breadcrumbSegments);
+    line("pickup-route", derivedPickupRoute, "#2f6fe0", showRoute && !hasSegments);
+    line("destination-route", derivedDestinationRoute, "#7b3ed6", showRoute && !hasSegments);
+    line("driver-trajectory", derivedBreadcrumbs, "#c8601e", showBreadcrumbs && !hasSegments, 4.5, breadcrumbSegments);
     const observations = { type: "FeatureCollection", features: observedBreadcrumbs.map((s) => ({
       type: "Feature", properties: { recorded_at: s.recorded_at }, geometry: { type: "Point", coordinates: s.position.coordinates },
     })) };
     if (map.getSource("driver-observations-source")) map.getSource("driver-observations-source").setData(observations);
     else map.addSource("driver-observations-source", { type: "geojson", data: observations });
     if (!map.getLayer("driver-observations")) map.addLayer({ id: "driver-observations", type: "circle", source: "driver-observations-source",
-      paint: { "circle-radius": 2, "circle-color": "#ea580c", "circle-stroke-width": 1, "circle-stroke-color": "#ffffff" } });
+      paint: { "circle-radius": 2, "circle-color": "#c8601e", "circle-stroke-width": 1, "circle-stroke-color": "#ffffff" } });
     map.setLayoutProperty("driver-observations", "visibility", showBreadcrumbs ? "visible" : "none");
     const gapData = { type: "FeatureCollection", features: gapEndpoints.map(({ alert, role, coordinate }) => ({
       type: "Feature", properties: { alert_id: alert.alert_id, gap_role: role, start_time: alert.start_time, end_time: alert.end_time, gap_duration_s: alert.gap_duration_s, reason: alert.reason },
@@ -765,19 +765,19 @@ export function MapLibreView({
     if (map.getSource("gap-warnings-source")) map.getSource("gap-warnings-source").setData(gapData);
     else map.addSource("gap-warnings-source", { type: "geojson", data: gapData });
     if (!map.getLayer("gap-warnings")) map.addLayer({ id: "gap-warnings", type: "circle", source: "gap-warnings-source", paint: {
-      "circle-radius": 7, "circle-color": "rgba(220, 38, 38, 0.2)", "circle-stroke-color": "#dc2626", "circle-stroke-width": 2,
+      "circle-radius": 7, "circle-color": "rgba(224, 72, 75, 0.2)", "circle-stroke-color": "#e0484b", "circle-stroke-width": 2,
     } });
     for (const route of candidateRoutes) {
       line(`candidate-${route.id}`, route.coordinates, route.color, showRoute, inspectedRouteId === route.id ? 6 : 3.5);
     }
     const points: Array<{ point: { longitude: number; latitude: number }; kind: string; color: string; label?: string; timestamp?: string; playback_mode?: string; vehicle_kind?: string }> = [
-      ...(initialDriverPos ? [{ point: initialDriverPos, kind: "initial", color: "#4338ca", label: initialDriverPos.label || "Khởi hành" }] : []),
-      ...(activeCustomer ? [{ point: activeCustomer, kind: "pickup", color: "#059669", label: activeCustomer.label || "Điểm đón khách" }] : []),
-      ...(destinationPos ? [{ point: destinationPos, kind: "destination", color: "#7c3aed", label: destinationPos.label || "Đích đến" }] : []),
-      ...(activeDriver ? [{ point: activeDriver, kind: "driver", color: "#059669", label: activeDriver.status || "", playback_mode: playback?.mode ?? "observed", vehicle_kind: vehicleKind(vehicleType) }] : []),
-      ...(activeStall ? [{ point: activeStall, kind: "stall", color: "#dc2626" }] : []),
-      ...(showHotspots ? activeHotspots.map((point) => ({ point, kind: "hotspot", color: "#d97706" })) : []),
-      ...anomalyMilestones.map((m) => ({ point: { longitude: m.lon, latitude: m.lat }, kind: "anomaly", color: "#dc2626", timestamp: m.timestamp, label: `${m.title} (${m.timestamp.slice(11, 19)})` })),
+      ...(initialDriverPos ? [{ point: initialDriverPos, kind: "initial", color: "#2f6fe0", label: initialDriverPos.label || "Khởi hành" }] : []),
+      ...(activeCustomer ? [{ point: activeCustomer, kind: "pickup", color: "#22a45d", label: activeCustomer.label || "Điểm đón khách" }] : []),
+      ...(destinationPos ? [{ point: destinationPos, kind: "destination", color: "#7b3ed6", label: destinationPos.label || "Đích đến" }] : []),
+      ...(activeDriver ? [{ point: activeDriver, kind: "driver", color: "#22a45d", label: activeDriver.status || "", playback_mode: playback?.mode ?? "observed", vehicle_kind: vehicleKind(vehicleType) }] : []),
+      ...(activeStall ? [{ point: activeStall, kind: "stall", color: "#e0484b" }] : []),
+      ...(showHotspots ? activeHotspots.map((point) => ({ point, kind: "hotspot", color: "#c99616" })) : []),
+      ...anomalyMilestones.map((m) => ({ point: { longitude: m.lon, latitude: m.lat }, kind: "anomaly", color: "#e0484b", timestamp: m.timestamp, label: `${m.title} (${m.timestamp.slice(11, 19)})` })),
     ];
     const pointData = { type: "FeatureCollection", features: points.map(({ point, ...properties }) => ({
       type: "Feature", properties,
@@ -804,7 +804,7 @@ export function MapLibreView({
           ([[0, -32], [32, 0], [0, 32], [-32, 0], [0, -64], [64, 0]] as [number, number][]).find((candidate) => !overlaps(candidate)) ?? [0, -64];
       }
       if (projected) occupied.push({ x: projected.x + offset[0], y: projected.y + offset[1], radius });
-      const leader = offset[0] || offset[1] ? `<svg aria-hidden="true" width="24" height="24" style="position:absolute;left:0;top:0;overflow:visible;z-index:-1"><line x1="12" y1="12" x2="${12 - offset[0]}" y2="${12 - offset[1]}" stroke="#565e74" stroke-width="1" stroke-dasharray="3 2"/></svg>` : "";
+      const leader = offset[0] || offset[1] ? `<svg aria-hidden="true" width="24" height="24" style="position:absolute;left:0;top:0;overflow:visible;z-index:-1"><line x1="12" y1="12" x2="${12 - offset[0]}" y2="${12 - offset[1]}" stroke="#5a6b78" stroke-width="1" stroke-dasharray="3 2"/></svg>` : "";
       const svg = markerSvg(role, vehicleType) + leader;
       let entry = checkpointMarkersRef.current.get(kind);
       if (!entry) {
@@ -861,7 +861,7 @@ export function MapLibreView({
     } });
     if (!map.getLayer("trip-point-labels")) map.addLayer({ id: "trip-point-labels", type: "symbol", source: "trip-points-source", filter: ["!=", ["get", "kind"], "driver"], layout: {
       "text-field": ["coalesce", ["get", "label"], ""], "text-size": 11, "text-offset": [0, -1.5],
-    }, paint: { "text-color": "#0f172a", "text-halo-color": "#ffffff", "text-halo-width": 1 } });
+    }, paint: { "text-color": "#1c2733", "text-halo-color": "#ffffff", "text-halo-width": 1 } });
 
     // Waypoint numbered markers in MapLibre
     const currentWaypointIds = activeWaypoints.map((w) => w.id);
@@ -874,7 +874,7 @@ export function MapLibreView({
     if (markerConstructorRef.current) {
       activeWaypoints.forEach((wp, idx) => {
         const num = idx + 1;
-        const html = `<div style="width:22px;height:22px;border-radius:50%;background:#f59e0b;color:#ffffff;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:11px;border:2px solid #ffffff;box-shadow:0 1px 3px rgba(0,0,0,0.3);">${num}</div>`;
+        const html = `<div style="width:22px;height:22px;border-radius:50%;background:#c99616;color:#ffffff;display:flex;align-items:center;justify-content:center;font-weight:bold;font-size:11px;border:2px solid #ffffff;box-shadow:0 1px 3px rgba(0,0,0,0.3);">${num}</div>`;
         let entry = waypointMarkersRef.current.get(wp.id);
         if (!entry) {
           const element = document.createElement("div");
@@ -915,13 +915,13 @@ export function MapLibreView({
           id: "proximity-circle-fill",
           type: "fill",
           source: "proximity-circle-source",
-          paint: { "fill-color": "#3b82f6", "fill-opacity": 0.08 },
+          paint: { "fill-color": "#2f6fe0", "fill-opacity": 0.08 },
         });
         map.addLayer({
           id: "proximity-circle-stroke",
           type: "line",
           source: "proximity-circle-source",
-          paint: { "line-color": "#2563eb", "line-width": 1.5, "line-dasharray": [3, 2] },
+          paint: { "line-color": "#2f6fe0", "line-width": 1.5, "line-dasharray": [3, 2] },
         });
       }
     } else {
@@ -942,7 +942,7 @@ export function MapLibreView({
 
   const toggleClass = (active: boolean) =>
     active
-      ? "inline-flex h-7 items-center px-2 text-[10px] font-medium rounded-md bg-emerald-50 text-emerald-700 border border-emerald-300 shadow-2xs cursor-pointer"
+      ? "inline-flex h-7 items-center px-2 text-[10px] font-medium rounded-md bg-gs-green-soft text-gs-green-ink border border-gs-green/30 shadow-2xs cursor-pointer"
       : "inline-flex h-7 items-center px-2 text-[10px] font-medium rounded-md bg-slate-100 text-slate-600 hover:bg-slate-200 transition-colors border border-slate-200 cursor-pointer";
 
   return (
@@ -955,15 +955,15 @@ export function MapLibreView({
         <div
           data-testid="data-missingness-alert-banner"
           title={missingnessAlerts[0].reason}
-          className="bg-amber-50 border-b border-amber-200 px-3 py-1.5 flex items-center justify-between text-[11px] text-amber-900 font-mono"
+          className="bg-gs-amber-soft border-b border-gs-amber/30 px-3 py-1.5 flex items-center justify-between text-[11px] text-gs-amber-ink font-mono"
         >
           <div className="flex items-center gap-1.5">
-            <span className="text-amber-700 font-bold">{messages.dataGap}</span>
+            <span className="text-gs-amber-ink font-bold">{messages.dataGap}</span>
             <span>
               {Number(missingnessAlerts[0].gap_duration_s)}s
             </span>
           </div>
-          <span className="text-[10px] text-amber-800 bg-white px-1.5 py-0.5 rounded border border-amber-200 font-semibold shadow-2xs">
+          <span className="text-[10px] text-gs-amber-ink bg-white px-1.5 py-0.5 rounded border border-gs-amber/30 font-semibold shadow-2xs">
             {missingnessAlerts[0].start_time.slice(11, 19)} - {missingnessAlerts[0].end_time.slice(11, 19)}
           </span>
         </div>
@@ -993,11 +993,11 @@ export function MapLibreView({
             }}
             className={`inline-flex h-7 items-center px-2 rounded-md border text-[11px] font-medium gap-1 transition-all cursor-pointer ${
               isFollowingDriver
-                ? "bg-emerald-700 text-white border-emerald-800 shadow-2xs font-semibold"
+                ? "bg-primary text-white border-gs-green shadow-2xs font-semibold"
                 : "bg-white text-slate-700 border-slate-200 hover:bg-slate-50 disabled:opacity-40"
             }`}
           >
-            <span className={`w-1.5 h-1.5 rounded-full ${isFollowingDriver ? "bg-white animate-ping" : "bg-emerald-500"}`} />
+            <span className={`w-1.5 h-1.5 rounded-full ${isFollowingDriver ? "bg-white animate-ping" : "bg-gs-green"}`} />
             <span>{isFollowingDriver ? messages.followingDriver : messages.followDriver}</span>
           </button>
         </div>
@@ -1013,7 +1013,7 @@ export function MapLibreView({
                 onMouseEnter={() => setInspectedRouteId(r.id)}
                 className={`px-2 py-0.5 text-[10px] font-medium rounded flex items-center gap-1 transition-all cursor-pointer ${
                   inspectedRouteId === r.id
-                    ? "bg-emerald-700 text-white shadow-2xs font-semibold"
+                    ? "bg-primary text-white shadow-2xs font-semibold"
                     : "bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200"
                 }`}
               >
@@ -1030,10 +1030,10 @@ export function MapLibreView({
           {latencyMs != null && (
             <div
               data-testid="gps-latency-indicator"
-              className="inline-flex h-7 items-center gap-1 rounded-md border border-emerald-200 bg-emerald-50 px-2 text-[11px] font-mono text-emerald-700 font-medium"
+              className="inline-flex h-7 items-center gap-1 rounded-md border border-gs-green/30 bg-gs-green-soft px-2 text-[11px] font-mono text-gs-green-ink font-medium"
               title={messages.gpsTitle}
             >
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+              <span className="w-1.5 h-1.5 rounded-full bg-gs-green"></span>
               <span>{latencyMs}ms</span>
             </div>
           )}
@@ -1134,7 +1134,7 @@ export function MapLibreView({
                 className="absolute inset-0 bg-slate-100 flex flex-col items-center justify-center z-10 select-none transition-opacity duration-300 pointer-events-none"
               >
                 <div className="flex items-center gap-2 text-[11px] text-slate-500 font-mono bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-2xs">
-                  <span className="w-2 h-2 rounded-full bg-emerald-600 animate-ping" />
+                  <span className="w-2 h-2 rounded-full bg-primary animate-ping" />
                   <span>{messages.loadingMap}</span>
                 </div>
               </div>
@@ -1154,10 +1154,10 @@ export function MapLibreView({
             viewBox="0 0 700 250"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <rect fill="#f8fafc" height="250" width="700" x="0" y="0"></rect>
+            <rect fill="#f4f6f8" height="250" width="700" x="0" y="0"></rect>
             {showHotspots && activeHotspots.map((point, i) => (
               <g key={i} data-testid="hotspot-indicator" transform={transformFor(point)}>
-                <circle r="20" fill="#f59e0b" fillOpacity="0.15" stroke="#d97706" />
+                <circle r="20" fill="#c99616" fillOpacity="0.15" stroke="#c99616" />
                 <title>{point.label || "Hotspot"}</title>
               </g>
             ))}
@@ -1168,33 +1168,33 @@ export function MapLibreView({
               </g>
             ))}
             {showRoute && derivedPickupRoute.length > 1 && (
-              <g data-testid="pickup-route"><path d={pathFor(derivedPickupRoute)} stroke="#2563eb" strokeWidth="3.5" /></g>
+              <g data-testid="pickup-route"><path d={pathFor(derivedPickupRoute)} stroke="#2f6fe0" strokeWidth="3.5" /></g>
             )}
             {showRoute && derivedDestinationRoute.length > 1 && (
-              <g data-testid="destination-route"><path d={pathFor(derivedDestinationRoute)} stroke="#7c3aed" strokeWidth="3.5" /></g>
+              <g data-testid="destination-route"><path d={pathFor(derivedDestinationRoute)} stroke="#7b3ed6" strokeWidth="3.5" /></g>
             )}
             {showBreadcrumbs && observedBreadcrumbCount > 0 && (
               <g data-testid="driver-trajectory" data-point-count={observedBreadcrumbCount}>
-                {breadcrumbSegments.map((segment, i) => <path key={i} d={pathFor(segment)} stroke="#ea580c" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />)}
+                {breadcrumbSegments.map((segment, i) => <path key={i} d={pathFor(segment)} stroke="#c8601e" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />)}
               </g>
             )}
-            {showBreadcrumbs && observedBreadcrumbs.map((s, i) => <circle key={i} data-testid="observed-gps-fix" cx={project(s.position.coordinates[0], s.position.coordinates[1]).x} cy={project(s.position.coordinates[0], s.position.coordinates[1]).y} r="2" fill="#ea580c"><title>{s.recorded_at}</title></circle>)}
+            {showBreadcrumbs && observedBreadcrumbs.map((s, i) => <circle key={i} data-testid="observed-gps-fix" cx={project(s.position.coordinates[0], s.position.coordinates[1]).x} cy={project(s.position.coordinates[0], s.position.coordinates[1]).y} r="2" fill="#c8601e"><title>{s.recorded_at}</title></circle>)}
             {initialDriverPos && <g data-testid="driver-initial-marker" transform={transformFor(initialDriverPos)}><g transform="translate(-12,-12)"><CheckpointIcon role="initial" /></g><title>{initialDriverPos.label || "Khởi hành"}</title></g>}
             {activeCustomer && <g data-testid="customer-pickup-marker" transform={transformFor(activeCustomer)}><g transform="translate(-12,-12)"><CheckpointIcon role="pickup" /></g><title>{activeCustomer.label || "Điểm đón khách"}</title></g>}
             {destinationPos && <g data-testid="destination-marker" transform={transformFor(destinationPos)}><g transform="translate(-12,-12)"><CheckpointIcon role="destination" /></g><title>{destinationPos.label || "Đích đến"}</title></g>}
             {activeDriver && <g data-testid="driver-vehicle-marker" data-longitude={activeDriver.longitude} data-latitude={activeDriver.latitude} data-playback-mode={playback?.mode ?? "observed"} transform={transformFor(activeDriver)}>
               <g transform="translate(-14,-14)"><CheckpointIcon role="driver" vehicleType={vehicleType} /></g>
-              <text data-testid="trip-status-badge" x="10" y="-12" fill="#0f172a" fontSize="9">{activeDriver.status || "—"}</text>
+              <text data-testid="trip-status-badge" x="10" y="-12" fill="#1c2733" fontSize="9">{activeDriver.status || "—"}</text>
             </g>}
             {activeStall && <g data-testid="stall-point-indicator" transform={transformFor(activeStall)}>
-              <circle r="8" fill="#dc2626" /><title>{activeStall.label || `${activeStall.duration_seconds}s Stall`} | DAVI alert</title>
+              <circle r="8" fill="#e0484b" /><title>{activeStall.label || `${activeStall.duration_seconds}s Stall`} | DAVI alert</title>
             </g>}
             {anomalyMilestones.map((m) => <g key={m.id} data-testid={`anomaly-${m.id}`} data-longitude={m.lon} data-latitude={m.lat} data-timestamp={m.timestamp} transform={transformFor({ longitude: m.lon, latitude: m.lat })}>
-              <circle r="7" fill="#dc2626" stroke="#fff" /><title>{m.title} ({m.timestamp})</title>
+              <circle r="7" fill="#e0484b" stroke="#fff" /><title>{m.title} ({m.timestamp})</title>
             </g>)}
             {gapEndpoints.map((endpoint) => (
               <g key={endpoint.key} data-testid="gap-warning-marker" transform={transformFor({ longitude: endpoint.coordinate[0], latitude: endpoint.coordinate[1] })}>
-                <circle r="7" fill="rgba(220, 38, 38, 0.2)" stroke="#dc2626" strokeWidth="2" strokeDasharray="3 2" />
+                <circle r="7" fill="rgba(224, 72, 75, 0.2)" stroke="#e0484b" strokeWidth="2" strokeDasharray="3 2" />
                 <title>{endpoint.tooltip}</title>
               </g>
             ))}
@@ -1205,9 +1205,9 @@ export function MapLibreView({
                   cx={project(proximityCircle.center.longitude, proximityCircle.center.latitude).x}
                   cy={project(proximityCircle.center.longitude, proximityCircle.center.latitude).y}
                   r="45"
-                  fill="#3b82f6"
+                  fill="#2f6fe0"
                   fillOpacity="0.08"
-                  stroke="#2563eb"
+                  stroke="#2f6fe0"
                   strokeWidth="1.5"
                   strokeDasharray="4 2"
                 />
@@ -1220,7 +1220,7 @@ export function MapLibreView({
                 data-testid={`waypoint-marker-${i + 1}`}
                 transform={transformFor({ latitude: wp.lat, longitude: wp.lon })}
               >
-                <circle r="11" fill="#f59e0b" stroke="#ffffff" strokeWidth="2" />
+                <circle r="11" fill="#c99616" stroke="#ffffff" strokeWidth="2" />
                 <text textAnchor="middle" dy="4" fill="#ffffff" fontSize="10" fontWeight="bold">
                   {i + 1}
                 </text>
@@ -1244,7 +1244,7 @@ export function MapLibreView({
                 {inspectedRoute.name}
               </span>
               <div className="flex items-center gap-1">
-                <span className="text-[10px] bg-blue-50 text-blue-700 px-1 rounded border border-blue-200">
+                <span className="text-[10px] bg-gs-blue-soft text-gs-blue px-1 rounded border border-gs-blue/30">
                   Rank #{inspectedRoute.rank}
                 </span>
                 <button
@@ -1265,7 +1265,7 @@ export function MapLibreView({
                 {messages.duration} <strong className="text-slate-900">{Math.round(inspectedRoute.duration_s / 60)} min</strong>
               </div>
               <div>
-                DAVI: <strong className={inspectedRoute.davi < 0 ? "text-red-600" : "text-emerald-700"}>
+                DAVI: <strong className={inspectedRoute.davi < 0 ? "text-gs-red" : "text-gs-green-ink"}>
                   {inspectedRoute.davi >= 0 ? `+${inspectedRoute.davi}` : inspectedRoute.davi}
                 </strong>
               </div>
@@ -1276,7 +1276,7 @@ export function MapLibreView({
                 {messages.signals} <strong className="text-slate-900">{inspectedRoute.traffic_signals_count}</strong>
               </div>
               <div>
-                Mật độ: <strong className={inspectedRoute.congestion_level === "clear" ? "text-emerald-700" : "text-amber-700"}>
+                Mật độ: <strong className={inspectedRoute.congestion_level === "clear" ? "text-gs-green-ink" : "text-gs-amber-ink"}>
                   {inspectedRoute.congestion_level === "clear" ? messages.clear : messages.congested}
                 </strong>
               </div>
@@ -1293,7 +1293,7 @@ export function MapLibreView({
             className={`absolute top-28 right-2 z-20 bg-white/95 text-slate-800 backdrop-blur-xs rounded border border-slate-200 text-[10px] font-mono pointer-events-auto transition-all duration-200 ${
               isTrafficExpanded
                 ? "p-2.5 max-w-xs space-y-1.5 shadow-md"
-                : "px-2 py-1 max-w-[210px] shadow-2xs hover:border-emerald-300 cursor-pointer"
+                : "px-2 py-1 max-w-[210px] shadow-2xs hover:border-gs-green/30 cursor-pointer"
             }`}
           >
             {/* Collapsed Pill Header */}
@@ -1303,14 +1303,14 @@ export function MapLibreView({
                   <span>🔍</span>
                   <span>{messages.corroboration} {(trafficCorroboration.peer_drivers ?? []).length} {locale === "vi" ? "xe" : "vehicles"}</span>
                 </span>
-                <span className="text-[9px] bg-amber-50 text-amber-800 px-1 py-0.5 rounded border border-amber-200 font-bold">
+                <span className="text-[9px] bg-gs-amber-soft text-gs-amber-ink px-1 py-0.5 rounded border border-gs-amber/30 font-bold">
                   {trafficCorroboration.verdict === "refuted" ? messages.refuted : trafficCorroboration.verdict === "corroborated" ? messages.corroborated : messages.insufficientData}
                 </span>
               </div>
             ) : (
               /* Expanded Full Header */
               <div className="flex items-center justify-between border-b border-slate-100 pb-1">
-                <span className="font-bold text-amber-800 flex items-center gap-1">
+                <span className="font-bold text-gs-amber-ink flex items-center gap-1">
                   <span>🔍</span>
                   <span>{messages.multiDriverCorroboration}</span>
                 </span>
@@ -1328,17 +1328,17 @@ export function MapLibreView({
                 </div>
               ) : null}
               <div className="bg-slate-50 p-1.5 rounded border border-slate-100 space-y-1">
-                <div className="text-red-700">
+                <div className="text-gs-red">
                   • {messages.suspectDriver} <strong className="font-bold">{trafficCorroboration.suspect_driver?.speed_kmh} km/h</strong> ({locale === "vi" ? "Dừng" : "Stopped"} {trafficCorroboration.suspect_driver?.stall_duration_s}s)
                 </div>
-                <div className="text-emerald-700">
+                <div className="text-gs-green-ink">
                   • {messages.publicService} ({trafficCorroboration.public_service?.provider}): <strong className="font-bold">{trafficCorroboration.public_service?.average_speed_kmh} km/h</strong> ({trafficCorroboration.public_service?.congestion === "clear" ? messages.clear : messages.congested})
                 </div>
                 <div className="text-slate-700">
                   • {messages.peerDrivers} {(trafficCorroboration.peer_drivers ?? []).map((p) => `${p.vehicle_plate}: ${Number(p.speed_kmh).toFixed(1)} km/h`).join(", ")}
                 </div>
               </div>
-              <div className="text-[10px] text-amber-900 font-bold bg-amber-50 p-1 rounded border border-amber-200">
+              <div className="text-[10px] text-gs-amber-ink font-bold bg-gs-amber-soft p-1 rounded border border-gs-amber/30">
                 ⚖️ {messages.conclusion} {trafficCorroboration.verdict_detail}
               </div>
             </div>
@@ -1358,7 +1358,7 @@ export function MapLibreView({
               type="button"
               disabled={totalDurationSec === 0}
               onClick={() => { if (!isPlaying && scrubSecond >= visibleEndSecond) setCurrentSecondOffset(visibleStartSecond); setIsPlaying((prev) => !prev); }}
-              className="px-2.5 py-0.5 bg-emerald-700 hover:bg-emerald-800 text-white font-semibold rounded text-[10px] flex items-center gap-1 transition-colors cursor-pointer shadow-2xs"
+              className="px-2.5 py-0.5 bg-primary hover:bg-primary-container text-white font-semibold rounded text-[10px] flex items-center gap-1 transition-colors cursor-pointer shadow-2xs"
             >
                 <span>{isPlaying ? `⏸ ${messages.pause}` : `▶ ${messages.replay}`}</span>
             </button>
@@ -1378,7 +1378,7 @@ export function MapLibreView({
             </span>}
             <span
               data-testid="active-timeline-status"
-              className="font-bold text-emerald-900 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200"
+              className="font-bold text-gs-green-ink bg-gs-green-soft px-2 py-0.5 rounded border border-gs-green/30"
             >
               {activeMilestone?.title && activeMilestone.type !== "start_match"
                 ? `${activeMilestone.title} (${currentTimeFormatted})`
@@ -1392,7 +1392,7 @@ export function MapLibreView({
                 {validGapAlerts.map((gap) => (
                   <span key={gap.alert_id} id={`gap-info-${gap.alert_id}`} data-testid="timeline-gap-tooltip"
                     title={gapExplanation(gap)}
-                    className="min-w-0 max-w-full text-red-700 bg-red-50 px-1.5 py-0.5 rounded border border-red-200 font-medium">
+                    className="min-w-0 max-w-full text-gs-red bg-gs-red-soft px-1.5 py-0.5 rounded border border-gs-red/30 font-medium">
                     <span className="sm:sr-only">
                       {gap.start_time.slice(11, 19)}–{gap.end_time.slice(11, 19)} · {Number(gap.gap_duration_s)}s
                     </span>
@@ -1407,7 +1407,7 @@ export function MapLibreView({
               {messages.position} <strong className="text-slate-800">{activeDriver ? `${activeDriver.latitude.toFixed(4)}, ${activeDriver.longitude.toFixed(4)}` : "—"}</strong>
             </span>
             <span className="inline-flex min-h-7 items-center gap-1">
-              DAVI: {(activeMilestone?.davi ?? activeStall?.davi_score ?? daviScore) == null ? <span className="font-sans font-medium text-slate-500">{messages.noData}</span> : <strong className={(activeMilestone?.davi ?? activeStall?.davi_score ?? daviScore)! < 0 ? "text-red-600" : "text-emerald-700"}>
+              DAVI: {(activeMilestone?.davi ?? activeStall?.davi_score ?? daviScore) == null ? <span className="font-sans font-medium text-slate-500">{messages.noData}</span> : <strong className={(activeMilestone?.davi ?? activeStall?.davi_score ?? daviScore)! < 0 ? "text-gs-red" : "text-gs-green-ink"}>
                 {activeMilestone?.davi ?? activeStall?.davi_score ?? daviScore}
               </strong>}
             </span>
@@ -1429,13 +1429,13 @@ export function MapLibreView({
               aria-describedby={validGapAlerts.length ? validGapAlerts.map((gap) => `gap-info-${gap.alert_id}`).join(" ") : undefined}
               min={visibleStartSecond} max={visibleEndSecond} step={0.001} value={scrubSecond}
               onChange={(e) => seek(Number(e.target.value))}
-              className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-600 relative z-10" />
+              className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-gs-green relative z-10" />
             {visibleGaps.length > 0 && (
               <div data-testid="timeline-gap-bands" className="absolute inset-x-0 top-1/2 -translate-y-1/2 pointer-events-none z-20">
                 {visibleGaps.map(({ gap, left, width }) => (
                   <span key={gap.alert_id} data-testid="timeline-gap-band" role="img"
                     aria-label={`Mất dữ liệu GPS ${Number(gap.gap_duration_s)}s từ ${gap.start_time.slice(11, 19)} đến ${gap.end_time.slice(11, 19)} · ${gap.reason}`}
-                    style={{ left: `${left}%`, width: `${width}%`, background: "repeating-linear-gradient(45deg, rgba(220, 38, 38, 0.2), rgba(220, 38, 38, 0.2) 4px, rgba(220, 38, 38, 0.1) 4px, rgba(220, 38, 38, 0.1) 8px)", borderTop: "2px dashed #dc2626", borderBottom: "2px dashed #dc2626" }}
+                    style={{ left: `${left}%`, width: `${width}%`, background: "repeating-linear-gradient(45deg, rgba(224, 72, 75, 0.2), rgba(224, 72, 75, 0.2) 4px, rgba(224, 72, 75, 0.1) 4px, rgba(224, 72, 75, 0.1) 8px)", borderTop: "2px dashed #e0484b", borderBottom: "2px dashed #e0484b" }}
                     className="absolute top-1/2 -translate-y-1/2 h-2" />
                 ))}
               </div>
@@ -1447,15 +1447,15 @@ export function MapLibreView({
                 return <span key={milestone.id} role="img" data-testid={`milestone-${milestone.type}`}
                   aria-label={`${milestone.title || 'Điểm bắt đầu'} (${milestone.timestamp})`}
                   style={{ left: `${pct}%` }}
-                  className={`absolute -translate-x-1/2 -translate-y-1/2 w-0.5 h-3 rounded-full ring-1 ring-white ${milestone.is_anomaly ? 'bg-red-600' : milestone.type === 'pickup' ? 'bg-emerald-700' : milestone.type === 'dropoff_destination' ? 'bg-purple-700' : 'bg-slate-700'}`} />;
+                  className={`absolute -translate-x-1/2 -translate-y-1/2 w-0.5 h-3 rounded-full ring-1 ring-white ${milestone.is_anomaly ? 'bg-gs-red' : milestone.type === 'pickup' ? 'bg-primary' : milestone.type === 'dropoff_destination' ? 'bg-gs-purple' : 'bg-slate-700'}`} />;
               })}
             </div>
           </div>
           <label className="sr-only" htmlFor="timeline-range-start">{messages.startRange}</label>
           <label className="text-[10px]" htmlFor="timeline-range-start">{locale === "vi" ? "Từ" : "From"}</label>
-          <input id="timeline-range-start" aria-label={messages.startRange} type="range" min={0} max={visibleEndSecond} value={visibleStartSecond} onChange={(e) => setRangeStartSecond(Number(e.target.value))} className="w-24 accent-emerald-600" />
+          <input id="timeline-range-start" aria-label={messages.startRange} type="range" min={0} max={visibleEndSecond} value={visibleStartSecond} onChange={(e) => setRangeStartSecond(Number(e.target.value))} className="w-24 accent-gs-green" />
           <label className="text-[10px]" htmlFor="timeline-range-end">{messages.endRange}</label>
-          <input id="timeline-range-end" aria-label={messages.endRange} type="range" min={visibleStartSecond} max={totalDurationSec} value={visibleEndSecond} onChange={(e) => setRangeEndSecond(Number(e.target.value))} className="w-24 accent-emerald-600" />
+          <input id="timeline-range-end" aria-label={messages.endRange} type="range" min={visibleStartSecond} max={totalDurationSec} value={visibleEndSecond} onChange={(e) => setRangeEndSecond(Number(e.target.value))} className="w-24 accent-gs-green" />
 
           <span
             data-testid="timeline-end-time"
@@ -1471,10 +1471,10 @@ export function MapLibreView({
       {showKinematicFooter && (
         <div className="items-center p-2 bg-slate-50 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-3 gap-2 text-[11px] font-mono select-none">
           <div className="inline-flex min-w-0 min-h-7 items-center gap-1.5">
-            <span aria-hidden="true" className={`w-2 h-2 rounded-full shrink-0 ${footerStallSeconds == null ? "bg-slate-300" : "bg-red-500 animate-pulse"}`}></span>
+            <span aria-hidden="true" className={`w-2 h-2 rounded-full shrink-0 ${footerStallSeconds == null ? "bg-slate-300" : "bg-gs-red animate-pulse"}`}></span>
             <span className="text-slate-500">{messages.stallPoint}</span>
             {footerStallSeconds == null ? <span className="font-sans font-medium text-slate-500">{messages.noData}</span> : (
-              <span data-testid="footer-stall-point" className="font-bold text-red-600 bg-red-50 px-1 py-0.5 rounded border border-red-200">
+              <span data-testid="footer-stall-point" className="font-bold text-gs-red bg-gs-red-soft px-1 py-0.5 rounded border border-gs-red/30">
                 {`${footerStallSeconds}s Stall`}
               </span>
             )}
@@ -1482,13 +1482,13 @@ export function MapLibreView({
           <div className="inline-flex min-w-0 min-h-7 items-center gap-1.5">
             <span className="text-slate-500">{messages.daviDrift}</span>
             {footerDavi == null ? <span className="font-sans font-medium text-slate-500">{messages.noData}</span> : (
-              <span data-testid="footer-davi-drift" className="font-bold text-amber-700 bg-amber-50 px-1 py-0.5 rounded border border-amber-200">
+              <span data-testid="footer-davi-drift" className="font-bold text-gs-amber-ink bg-gs-amber-soft px-1 py-0.5 rounded border border-gs-amber/30">
                 {footerDavi}
               </span>
             )}
           </div>
-          <div className="inline-flex min-w-0 min-h-7 items-center gap-1.5 sm:justify-end text-emerald-700 font-medium">
-            <span className="material-symbols-outlined inline-flex items-center !text-[14px] !leading-none text-emerald-600 shrink-0">speed</span>
+          <div className="inline-flex min-w-0 min-h-7 items-center gap-1.5 sm:justify-end text-gs-green-ink font-medium">
+            <span className="material-symbols-outlined inline-flex items-center !text-[14px] !leading-none text-gs-green-ink shrink-0">speed</span>
             <span data-testid="ambient-traffic-status">
               {messages.ambient} {trafficCorroboration?.public_service?.average_speed_kmh != null ? <strong className="text-slate-800">{`${trafficCorroboration.public_service.average_speed_kmh} km/h`}</strong> : <span className="font-sans font-medium text-slate-500">{messages.noData}</span>}
             </span>

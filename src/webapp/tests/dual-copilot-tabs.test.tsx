@@ -326,7 +326,7 @@ describe("#193 dual-tab copilot drawer", () => {
     });
     const relay = await openDriverRelay(userEvent.setup());
     expect(relay.getByText("Trả lời từ phiên tài xế.")).toBeVisible();
-    expect(relay.getByText("Trả lời từ phiên tài xế.")).toHaveClass("bg-emerald-600");
+    expect(relay.getByText("Trả lời từ phiên tài xế.")).toHaveClass("border-gs-line-2");
     const time = new Date("2026-10-14T03:45:00Z").toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
     expect(relay.getByText(`• ${time}`)).toBeVisible();
     expect(relay.getByText("Xin bổ sung chứng từ.")).toBeVisible();

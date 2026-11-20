@@ -34,7 +34,7 @@ describe("Driver profile dashboard", () => {
     expect(screen.getByTitle("Vehicle plate")).toHaveClass("font-mono");
     expect(screen.getByText("VF e34")).toBeVisible();
     expect(screen.getByText("TV")).toBeVisible();
-    expect(screen.getByText("Active")).toHaveClass("text-emerald-800");
+    expect(screen.getByText("Active")).toHaveClass("text-gs-green-ink");
     expect(screen.getByText("Tôi đợi khách tại điểm đón.")).toBeVisible();
     for (const [label, expected] of [["Average rating", "4.9"], ["Acceptance rate", "92%"], ["Cancellation rate", "8%"], ["Total trips", "850"]]) {
       expect(value(label, expected)).toHaveClass("font-bold", "tabular-nums");
@@ -44,7 +44,7 @@ describe("Driver profile dashboard", () => {
 
   it.each([8, 0.08])("colors cancellation %s red after percentage normalization", cancellation_rate => {
     show({ cancellation_rate });
-    expect(value("Cancellation rate", "8%")).toHaveClass("text-red-700");
+    expect(value("Cancellation rate", "8%")).toHaveClass("text-gs-red");
   });
 
   it.each([92, 0.92])("keeps healthy acceptance %s uncolored after percentage normalization (color only for severity)", acceptance_rate => {
@@ -54,18 +54,18 @@ describe("Driver profile dashboard", () => {
 
   it.each([84, 0.84])("colors low acceptance %s amber", acceptance_rate => {
     show({ acceptance_rate });
-    expect(value("Acceptance rate", "84%")).toHaveClass("text-amber-700");
+    expect(value("Acceptance rate", "84%")).toHaveClass("text-gs-amber-ink");
   });
 
   it("respects exact rate thresholds and valid zero values", () => {
     show({ acceptance_rate: 85, cancellation_rate: 5, rating: 0, total_trips: 0 });
-    expect(value("Acceptance rate", "85%")).not.toHaveClass("text-amber-700");
-    expect(value("Cancellation rate", "5%")).not.toHaveClass("text-red-700");
+    expect(value("Acceptance rate", "85%")).not.toHaveClass("text-gs-amber-ink");
+    expect(value("Cancellation rate", "5%")).not.toHaveClass("text-gs-red");
     expect(value("Average rating", "0")).not.toHaveClass("text-slate-500");
     expect(value("Total trips", "0")).not.toHaveClass("text-slate-500");
   });
 
-  it.each([[0, "bg-emerald-600"], [39, "bg-emerald-600"], [40, "bg-amber-500"], [69, "bg-amber-500"], [70, "bg-red-600"], [100, "bg-red-600"]])("exposes risk %s with its semantic progress band", (risk, color) => {
+  it.each([[0, "bg-gs-green"], [39, "bg-gs-green"], [40, "bg-gs-amber"], [69, "bg-gs-amber"], [70, "bg-gs-red"], [100, "bg-gs-red"]])("exposes risk %s with its semantic progress band", (risk, color) => {
     show({}, { ...scorecard, repeat_offense_risk_score: Number(risk) });
     const progress = screen.getByRole("progressbar", { name: "Repeat-offense risk" });
     expect(progress).toHaveAttribute("aria-valuemin", "0");
@@ -101,7 +101,7 @@ describe("Driver profile dashboard", () => {
     expect(value("Tổng số chuyến", "850")).toBeVisible();
     expect(screen.getByText("Lịch sử tài xế")).toBeVisible();
     expect(screen.getByRole("progressbar", { name: "Rủi ro tái phạm" })).toHaveAttribute("aria-valuenow", "75");
-    expect(screen.getByText("Đình chỉ")).toHaveClass("text-red-800");
+    expect(screen.getByText("Đình chỉ")).toHaveClass("text-gs-red");
     expect(screen.getByText("22 tháng")).toBeVisible();
     expect(screen.getByText("Tôi đợi khách tại điểm đón.")).toBeVisible();
   });

@@ -78,8 +78,8 @@ interface StatProps {
 }
 
 function outcomeTone(status: string): string {
-  if (["penalized", "fine", "fined", "warned"].includes(status)) return "border-amber-200 bg-amber-50 text-amber-800";
-  if (["suspended", "suspend"].includes(status)) return "border-red-200 bg-red-50 text-red-800";
+  if (["penalized", "fine", "fined", "warned"].includes(status)) return "border-gs-amber/30 bg-gs-amber-soft text-gs-amber-ink";
+  if (["suspended", "suspend"].includes(status)) return "border-gs-red/30 bg-gs-red-soft text-gs-red";
   return "border-slate-200 bg-slate-100 text-slate-700";
 }
 
@@ -117,9 +117,9 @@ export const DriverInfoTab: React.FC<DriverInfoTabProps> = ({ caseDetail, active
   const plate = trip?.vehicle_plate || trip?.plate || activeCase?.vehicle_plate || record?.vehicle_plate;
   const vehicle = trip?.vehicle_model || trip?.vehicle_type;
   const status = String(trip?.driver_status || trip?.status || "unknown").toLowerCase();
-  const statusTone = status === "suspended" ? "border-red-200 bg-red-100 text-red-800"
-    : status === "under_review" ? "border-amber-200 bg-amber-100 text-amber-800"
-    : ["active", "completed"].includes(status) ? "border-emerald-200 bg-emerald-100 text-emerald-800"
+  const statusTone = status === "suspended" ? "border-gs-red/30 bg-gs-red-soft text-gs-red"
+    : status === "under_review" ? "border-gs-amber/30 bg-gs-amber-soft text-gs-amber-ink"
+    : ["active", "completed"].includes(status) ? "border-gs-green/30 bg-gs-green-soft text-gs-green-ink"
     : "border-slate-200 bg-slate-100 text-slate-700";
   const rating = finiteNumber(trip?.rating);
   const acceptance = tripPercentage(trip?.acceptance_rate);
@@ -132,7 +132,7 @@ export const DriverInfoTab: React.FC<DriverInfoTabProps> = ({ caseDetail, active
     { label: t.trips, value: format(trips), icon: Route, tone: "info" },
   ];
   const risk = finiteNumber(history?.repeat_offense_risk_score);
-  const riskTone = risk !== null && risk < LOW_REPEAT_RISK ? "bg-emerald-600" : risk !== null && risk < HIGH_REPEAT_RISK ? "bg-amber-500" : "bg-red-600";
+  const riskTone = risk !== null && risk < LOW_REPEAT_RISK ? "bg-gs-green" : risk !== null && risk < HIGH_REPEAT_RISK ? "bg-gs-amber" : "bg-gs-red";
   const historyStats: Array<StatProps & { raw: number | null; suffix: string }> = [
     { label: t.violationShort, title: t.violation, raw: finiteNumber(history?.violation_ratio_90d), suffix: "%", value: null, icon: TriangleAlert, tone: "warning" },
     { label: t.finedShort, title: t.fined, raw: finiteNumber(history?.fined_ratio), suffix: "%", value: null, icon: Receipt, tone: "violet" },
@@ -144,10 +144,10 @@ export const DriverInfoTab: React.FC<DriverInfoTabProps> = ({ caseDetail, active
   return (
     <div role="tabpanel" id="panel-driver" aria-labelledby="tab-driver" className="space-y-3 rounded-b-lg border-x border-b border-slate-200 bg-slate-50/60 px-2.5 pb-3 text-xs">
       <Card className="overflow-hidden">
-        <CardHeader className="bg-indigo-50/70 p-4">
+        <CardHeader className="bg-gs-blue-soft/70 p-4">
           <h2 className="sr-only">{t.title}</h2>
           <div className="flex items-center gap-3">
-            <Avatar className="size-12 bg-indigo-100 text-lg text-indigo-700" aria-hidden="true">
+            <Avatar className="size-12 bg-gs-blue-soft text-lg text-gs-blue" aria-hidden="true">
               <AvatarFallback>{initials(String(name || ""))}</AvatarFallback>
             </Avatar>
             <div className="min-w-0">
@@ -160,8 +160,8 @@ export const DriverInfoTab: React.FC<DriverInfoTabProps> = ({ caseDetail, active
               </div>
             </div>
           </div>
-          <blockquote aria-label={t.statement} className="mt-3 flex gap-2 rounded-lg border border-indigo-100 bg-white/70 p-3 text-slate-700">
-            <Quote aria-hidden="true" size={18} className="mt-0.5 block shrink-0 text-indigo-600" />
+          <blockquote aria-label={t.statement} className="mt-3 flex gap-2 rounded-lg border border-gs-blue/30 bg-white/70 p-3 text-slate-700">
+            <Quote aria-hidden="true" size={18} className="mt-0.5 block shrink-0 text-gs-blue" />
             <p className="min-w-0 whitespace-pre-wrap break-words text-sm italic leading-relaxed">{show(trip?.driver_statement)}</p>
           </blockquote>
         </CardHeader>
@@ -180,7 +180,7 @@ export const DriverInfoTab: React.FC<DriverInfoTabProps> = ({ caseDetail, active
           </div>
         </CardHeader>
         <CardContent className="space-y-3 p-3">
-          {error ? <p role="alert" className="text-rose-700">{error}</p> : loading ? <p role="status" className="text-slate-500">{t.loading}</p> : (
+          {error ? <p role="alert" className="text-gs-red">{error}</p> : loading ? <p role="status" className="text-slate-500">{t.loading}</p> : (
             <>
               <MetricGrid>
                 {historyStats.map(stat => (

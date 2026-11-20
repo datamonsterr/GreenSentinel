@@ -86,7 +86,7 @@ describe("MetricCard", () => {
     const { rerender } = render(<MetricCard icon={Activity} label="DAVI" value="0.19" />);
     expect(screen.getByText("0.19").className).not.toMatch(/text-(red|amber|emerald)-/);
     rerender(<MetricCard icon={Activity} label="DAVI" value="0.19" severity="danger" />);
-    expect(screen.getByText("0.19").className).toMatch(/text-red-/);
+    expect(screen.getByText("0.19").className).toMatch(/text-gs-red/);
   });
 });
 

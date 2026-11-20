@@ -80,16 +80,16 @@ export const DriverRelayTab: React.FC<DriverRelayTabProps> = ({
             const analyst = isAnalystTurn(turn);
             const timestamp = turn.created_at ?? turn.timestamp ?? turn.occurred_at;
             const bubbleClass = analyst
-              ? "bg-indigo-50 border border-indigo-200 text-indigo-950"
+              ? "bg-gs-cyan-soft border border-gs-cyan/30 text-gs-ink-2"
               : turn.role === "driver" || turn.role === "driver_agent"
-              ? "bg-emerald-600 text-white"
-              : "bg-white border border-slate-200 text-slate-800";
+              ? "bg-white border border-gs-line-2 text-gs-ink-2"
+              : "bg-white border border-gs-line-2 text-gs-ink-2";
 
             return (
               <div key={key} className="space-y-0.5">
                 <div className="flex items-center gap-1 text-[9px] text-slate-500 px-1">
                   {analyst && (
-                    <span className="font-semibold text-indigo-700 bg-indigo-50 border border-indigo-200 rounded px-1 py-0.5">
+                    <span className="font-semibold text-gs-cyan bg-gs-cyan-soft border border-gs-cyan/30 rounded px-1 py-0.5">
                       [Chuyên viên Thẩm định]
                     </span>
                   )}
@@ -112,14 +112,14 @@ export const DriverRelayTab: React.FC<DriverRelayTabProps> = ({
       {error && (
         <div
           role="alert"
-          className="mx-2.5 mb-1 flex items-center justify-between gap-2 rounded border border-rose-200 bg-rose-50 px-2 py-1.5 text-[11px] text-rose-700"
+          className="mx-2.5 mb-1 flex items-center justify-between gap-2 rounded border border-gs-red/30 bg-gs-red-soft px-2 py-1.5 text-[11px] text-gs-red"
         >
           <span>{error}</span>
           <button
             type="button"
             onClick={onRetry}
             disabled={closed || sending}
-            className="shrink-0 rounded border border-rose-300 bg-white px-2 py-0.5 font-medium text-rose-700 hover:bg-rose-100"
+            className="shrink-0 rounded border border-gs-red/30 bg-white px-2 py-0.5 font-medium text-gs-red hover:bg-gs-red-soft"
           >
             Thử lại
           </button>
@@ -148,14 +148,14 @@ export const DriverRelayTab: React.FC<DriverRelayTabProps> = ({
           onChange={(event) => onInputChange(event.target.value)}
           placeholder="Nhập nội dung trao đổi với tài xế…"
           disabled={closed || sending}
-          className="flex-1 h-8 rounded border border-slate-200 bg-slate-50 px-2 text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-emerald-600 disabled:opacity-50"
+          className="flex-1 h-8 rounded border border-slate-200 bg-slate-50 px-2 text-xs text-slate-800 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-1 focus:ring-gs-green disabled:opacity-50"
         />
         <button
           type="submit"
           disabled={closed || sending || !input.trim()}
           aria-label="Gửi"
           title="Gửi yêu cầu tới tài xế"
-          className="rounded bg-emerald-600 p-1.5 text-white transition-colors hover:bg-emerald-700 disabled:opacity-40"
+          className="rounded bg-primary p-1.5 text-white transition-colors hover:bg-primary-container disabled:opacity-40"
         >
           <span aria-hidden="true" className="material-symbols-outlined text-[14px]">send</span>
         </button>

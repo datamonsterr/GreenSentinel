@@ -39,8 +39,8 @@ function useCopy() {
 export function SpeedOverTimeChart({ series, markers, ambientKmh }: { series: SpeedPoint[]; markers: SpeedMarker[]; ambientKmh: number | null }) {
   const { t, locale } = useCopy();
   const config = {
-    speed: { label: t.speed, color: "#047857" },
-    ambient: { label: t.ambient, color: "#64748b" },
+    speed: { label: t.speed, color: "#0fb3c1" },
+    ambient: { label: t.ambient, color: "#5a6b78" },
   } satisfies ChartConfig;
   return (
     <SectionCard icon={TrendingUp} tone="success" title={t.speedTitle} subtitle={t.speedSub} headingLevel={3}>
@@ -52,18 +52,18 @@ export function SpeedOverTimeChart({ series, markers, ambientKmh }: { series: Sp
               <XAxis dataKey="time" type="number" scale="time" domain={["dataMin", "dataMax"]} tickLine={false} axisLine={false} tickMargin={6} minTickGap={40} tickFormatter={(value: number) => formatClock(new Date(value).toISOString(), locale) ?? ""} />
               <YAxis tickLine={false} axisLine={false} width={44} />
               <ChartTooltip content={<ChartTooltipContent labelFormatter={(_, payload) => formatClock(new Date(Number(payload?.[0]?.payload?.time)).toISOString(), locale)} />} />
-              {ambientKmh !== null && <ReferenceLine y={ambientKmh} stroke="var(--color-ambient)" strokeDasharray="4 4" label={{ value: `${t.ambient} ${ambientKmh} km/h`, position: "insideTopLeft", fontSize: 10, fill: "#64748b" }} />}
+              {ambientKmh !== null && <ReferenceLine y={ambientKmh} stroke="var(--color-ambient)" strokeDasharray="4 4" label={{ value: `${t.ambient} ${ambientKmh} km/h`, position: "insideTopLeft", fontSize: 10, fill: "#5a6b78" }} />}
               <Line dataKey="speed" type="monotone" stroke="var(--color-speed)" strokeWidth={2} dot={false} isAnimationActive={false} />
               {markers.map((marker, index) => (
-                <ReferenceDot key={`${marker.kind}-${index}`} x={marker.time} y={marker.speed} r={5} fill={marker.kind === "stop" ? "#dc2626" : "#f59e0b"} stroke="#fff" />
+                <ReferenceDot key={`${marker.kind}-${index}`} x={marker.time} y={marker.speed} r={5} fill={marker.kind === "stop" ? "#e0484b" : "#c99616"} stroke="#fff" />
               ))}
             </LineChart>
           </ChartContainer>
           <div className="mt-2 flex flex-wrap gap-3 text-[11px] text-slate-600">
-            <span className="inline-flex items-center gap-1"><span aria-hidden="true" className="h-0.5 w-3 bg-emerald-700" />{t.speed}</span>
+            <span className="inline-flex items-center gap-1"><span aria-hidden="true" className="h-0.5 w-3 bg-primary" />{t.speed}</span>
             {ambientKmh !== null && <span className="inline-flex items-center gap-1"><span aria-hidden="true" className="h-0 w-3 border-t border-dashed border-slate-500" />{t.ambient}</span>}
-            {markers.some(marker => marker.kind === "stop") && <span className="inline-flex items-center gap-1"><span aria-hidden="true" className="size-2 rounded-full bg-red-600" />{t.stop}</span>}
-            {markers.some(marker => marker.kind === "davi") && <span className="inline-flex items-center gap-1"><span aria-hidden="true" className="size-2 rounded-full bg-amber-500" />{t.davi}</span>}
+            {markers.some(marker => marker.kind === "stop") && <span className="inline-flex items-center gap-1"><span aria-hidden="true" className="size-2 rounded-full bg-gs-red" />{t.stop}</span>}
+            {markers.some(marker => marker.kind === "davi") && <span className="inline-flex items-center gap-1"><span aria-hidden="true" className="size-2 rounded-full bg-gs-amber" />{t.davi}</span>}
           </div>
         </>
       )}
@@ -73,14 +73,14 @@ export function SpeedOverTimeChart({ series, markers, ambientKmh }: { series: Sp
 
 /** Display bands for the gauge arc only; they are not a verdict threshold. */
 function daviColor(score: number): string {
-  if (score < 0.3) return "#dc2626";
-  if (score < 0.6) return "#f59e0b";
-  return "#059669";
+  if (score < 0.3) return "#e0484b";
+  if (score < 0.6) return "#c99616";
+  return "#22a45d";
 }
 
 export function DaviGauge({ score }: { score: number | null }) {
   const { t, locale } = useCopy();
-  const config = { score: { label: t.daviTitle, color: score === null ? "#94a3b8" : daviColor(score) } } satisfies ChartConfig;
+  const config = { score: { label: t.daviTitle, color: score === null ? "#8794a2" : daviColor(score) } } satisfies ChartConfig;
   return (
     <SectionCard icon={Compass} tone="violet" title={t.daviTitle} subtitle={t.daviSub} headingLevel={3}>
       {score === null ? <EmptyState compact icon={Compass} hint={t.daviEmpty} /> : (
@@ -89,7 +89,7 @@ export function DaviGauge({ score }: { score: number | null }) {
             <PieChart>
               <Pie data={[{ value: (score + 1) / 2 }, { value: 1 - (score + 1) / 2 }]} dataKey="value" startAngle={180} endAngle={0} cx="50%" cy="85%" innerRadius="95%" outerRadius="130%" stroke="none" isAnimationActive={false}>
                 <Cell fill="var(--color-score)" />
-                <Cell fill="#e2e8f0" />
+                <Cell fill="#e2e7ec" />
               </Pie>
             </PieChart>
           </ChartContainer>
@@ -105,7 +105,7 @@ export function DaviGauge({ score }: { score: number | null }) {
 export function SpeedComparisonBars({ rows }: { rows: SpeedComparison[] }) {
   const { t } = useCopy();
   const labels: Record<SpeedComparison["key"], string> = { trip: t.trip, ambient: t.provider, peers: t.peers };
-  const colors: Record<SpeedComparison["key"], string> = { trip: "#047857", ambient: "#64748b", peers: "#0284c7" };
+  const colors: Record<SpeedComparison["key"], string> = { trip: "#0fb3c1", ambient: "#5a6b78", peers: "#2f6fe0" };
   const data = rows.map(row => ({ ...row, label: labels[row.key], fill: colors[row.key] }));
   const config = { speed: { label: "km/h" } } satisfies ChartConfig;
   return (
@@ -116,7 +116,7 @@ export function SpeedComparisonBars({ rows }: { rows: SpeedComparison[] }) {
             <XAxis type="number" hide />
             <YAxis type="category" dataKey="label" tickLine={false} axisLine={false} width={120} />
             <ChartTooltip cursor={false} content={<ChartTooltipContent hideLabel />} />
-            <Bar dataKey="speed" radius={4} isAnimationActive={false} label={{ position: "right", fontSize: 12, fontWeight: 700, fill: "#0f172a", formatter: (value: number) => `${value} km/h` }}>
+            <Bar dataKey="speed" radius={4} isAnimationActive={false} label={{ position: "right", fontSize: 12, fontWeight: 700, fill: "#1c2733", formatter: (value: number) => `${value} km/h` }}>
               {data.map(row => <Cell key={row.key} fill={row.fill} />)}
             </Bar>
           </BarChart>
@@ -128,7 +128,7 @@ export function SpeedComparisonBars({ rows }: { rows: SpeedComparison[] }) {
 
 export function MockLocationDonut({ ratio }: { ratio: MockRatio | null }) {
   const { t } = useCopy();
-  const config = { flagged: { label: t.flagged, color: "#dc2626" }, clean: { label: t.clean, color: "#cbd5e1" } } satisfies ChartConfig;
+  const config = { flagged: { label: t.flagged, color: "#e0484b" }, clean: { label: t.clean, color: "#c8d0d8" } } satisfies ChartConfig;
   return (
     <SectionCard icon={LocateOff} tone="danger" title={t.mockTitle} subtitle={t.mockSub} headingLevel={3}>
       {ratio === null ? <EmptyState compact icon={LocateOff} hint={t.mockEmpty} /> : (
@@ -142,12 +142,12 @@ export function MockLocationDonut({ ratio }: { ratio: MockRatio | null }) {
                 </Pie>
               </PieChart>
             </ChartContainer>
-            <span className={`absolute inset-0 flex items-center justify-center text-xl font-bold tabular-nums ${ratio.flagged ? "text-red-700" : "text-slate-900"}`}>
+            <span className={`absolute inset-0 flex items-center justify-center text-xl font-bold tabular-nums ${ratio.flagged ? "text-gs-red" : "text-slate-900"}`}>
               {Math.round(ratio.ratio * 100)}%
             </span>
           </div>
           <dl className="space-y-1 text-[13px]">
-            <div className="flex items-center gap-2"><span aria-hidden="true" className="size-2.5 rounded-full bg-red-600" /><dt className="text-slate-600">{t.flagged}</dt><dd className="font-bold tabular-nums text-slate-900">{ratio.flagged}</dd></div>
+            <div className="flex items-center gap-2"><span aria-hidden="true" className="size-2.5 rounded-full bg-gs-red" /><dt className="text-slate-600">{t.flagged}</dt><dd className="font-bold tabular-nums text-slate-900">{ratio.flagged}</dd></div>
             <div className="flex items-center gap-2"><span aria-hidden="true" className="size-2.5 rounded-full bg-slate-300" /><dt className="text-slate-600">{t.clean}</dt><dd className="font-bold tabular-nums text-slate-900">{ratio.total - ratio.flagged}</dd></div>
           </dl>
           <p className="self-end text-[11px] text-slate-500">{ratio.total} {t.samples}</p>

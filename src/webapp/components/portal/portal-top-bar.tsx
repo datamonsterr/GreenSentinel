@@ -97,7 +97,7 @@ export function PortalTopBar(props: {
       </div>
 
       <div className="flex min-w-0 shrink-0 items-center justify-end gap-3 sm:gap-4">
-        <span className="hidden whitespace-nowrap text-[13px] text-[#4a5765] xl:inline" suppressHydrationWarning>{clock}</span>
+        <span className="hidden whitespace-nowrap text-[13px] text-[#3a4552] xl:inline" suppressHydrationWarning>{clock}</span>
         <div role="group" aria-label={messages.languages} className="flex shrink-0 items-center gap-0.5 rounded-lg border border-gs-line-2 p-0.5 text-xs">
           {(["en", "vi"] as const).map((language) => (
             <button

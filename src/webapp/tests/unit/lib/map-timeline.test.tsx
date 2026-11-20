@@ -181,8 +181,8 @@ describe("MapLibreView - Map Full Features (TDD)", () => {
 
     const actualRoute = screen.getByTestId("driver-trajectory");
     expect(actualRoute).toBeInTheDocument();
-    // Actual route path element uses #ea580c (orange) stroke
+    // Actual route path element uses #c8601e (orange) stroke
     const path = actualRoute.querySelector("path");
-    expect(path).toHaveAttribute("stroke", "#ea580c");
+    expect(path).toHaveAttribute("stroke", "#c8601e");
   });
 });

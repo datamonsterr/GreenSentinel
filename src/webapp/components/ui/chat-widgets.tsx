@@ -33,7 +33,7 @@ export function DriverCardWidget({
     <div className="my-2 overflow-hidden rounded-lg border border-slate-200 bg-white shadow-xs">
       <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/80 px-3 py-2">
         <div className="flex items-center gap-2">
-          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-emerald-100 text-emerald-800 font-semibold text-xs">
+          <div className="flex h-7 w-7 items-center justify-center rounded-full bg-gs-green-soft text-gs-green-ink font-semibold text-xs">
             {data.full_name ? data.full_name[0] : "D"}
           </div>
           <div>
@@ -48,10 +48,10 @@ export function DriverCardWidget({
         <span
           className={`rounded px-1.5 py-0.5 text-[9px] font-semibold uppercase ${
             isSuspended
-              ? "bg-rose-100 text-rose-700"
+              ? "bg-gs-red-soft text-gs-red"
               : isInvestigating
-              ? "bg-amber-100 text-amber-700"
-              : "bg-emerald-100 text-emerald-700"
+              ? "bg-gs-amber-soft text-gs-amber-ink"
+              : "bg-gs-green-soft text-gs-green-ink"
           }`}
         >
           {data.account_status || "ACTIVE"}
@@ -72,7 +72,7 @@ export function DriverCardWidget({
         {data.rating !== undefined && (
           <div className="space-y-0.5">
             <span className="text-[10px] text-slate-400">Đánh giá</span>
-            <div className="flex items-center gap-1 font-medium text-amber-600">
+            <div className="flex items-center gap-1 font-medium text-gs-amber-ink">
               <span className="material-symbols-outlined text-[12px]">star</span>
               <span>{data.rating}</span>
               {data.total_trips && (
@@ -135,7 +135,7 @@ export function ChoiceSelectorWidget({
     <div className="my-2 rounded-lg border border-slate-200 bg-white p-2.5 shadow-xs space-y-2">
       {data.title && (
         <div className="flex items-center gap-1.5 font-semibold text-xs text-slate-800">
-          <span className="material-symbols-outlined text-[14px] text-emerald-600">
+          <span className="material-symbols-outlined text-[14px] text-gs-green-ink">
             checklist
           </span>
           <span>{data.title}</span>
@@ -157,13 +157,13 @@ export function ChoiceSelectorWidget({
               }}
               className={`w-full text-left rounded border px-2.5 py-1.5 text-xs transition-colors flex items-start gap-2 ${
                 isSelected
-                  ? "border-emerald-600 bg-emerald-50 text-emerald-950 font-medium"
+                  ? "border-gs-green bg-gs-green-soft text-gs-green-ink font-medium"
                   : "border-slate-200 bg-slate-50 hover:bg-slate-100 text-slate-800"
               }`}
             >
               <span
                 className={`mt-0.5 material-symbols-outlined text-[13px] ${
-                  isSelected ? "text-emerald-600" : "text-slate-400"
+                  isSelected ? "text-gs-green-ink" : "text-slate-400"
                 }`}
               >
                 {isSelected ? "check_circle" : "radio_button_unchecked"}
@@ -220,7 +220,7 @@ export function ListSelectorWidget({
     <div className="my-2 rounded-lg border border-slate-200 bg-white p-2.5 shadow-xs space-y-2">
       <div className="flex items-center justify-between border-b border-slate-100 pb-1.5">
         <div className="flex items-center gap-1.5 font-semibold text-xs text-slate-800">
-          <span className="material-symbols-outlined text-[14px] text-indigo-600">
+          <span className="material-symbols-outlined text-[14px] text-gs-blue">
             format_list_bulleted
           </span>
           <span>
@@ -229,15 +229,15 @@ export function ListSelectorWidget({
           </span>
         </div>
         {data.multi_driver_sharing_flag && (
-          <span className="rounded bg-rose-100 px-1.5 py-0.5 text-[9px] font-bold text-rose-700">
+          <span className="rounded bg-gs-red-soft px-1.5 py-0.5 text-[9px] font-bold text-gs-red">
             CẢNH BÁO TRÁO XE
           </span>
         )}
       </div>
 
       {data.risk_summary && (
-        <div className="rounded bg-amber-50 border border-amber-200/60 p-1.5 text-[10px] text-amber-800 flex items-center gap-1.5">
-          <span className="material-symbols-outlined text-[12px] text-amber-600">
+        <div className="rounded bg-gs-amber-soft border border-gs-amber/30 p-1.5 text-[10px] text-gs-amber-ink flex items-center gap-1.5">
+          <span className="material-symbols-outlined text-[12px] text-gs-amber-ink">
             warning
           </span>
           <span>{data.risk_summary}</span>
@@ -253,7 +253,7 @@ export function ListSelectorWidget({
               onClick={() => {
                 if (item.case_id && onSelectCase) onSelectCase(item.case_id);
               }}
-              className="flex items-center justify-between rounded border border-slate-100 bg-slate-50/70 p-2 text-xs hover:border-emerald-300 hover:bg-emerald-50/50 cursor-pointer transition-colors"
+              className="flex items-center justify-between rounded border border-slate-100 bg-slate-50/70 p-2 text-xs hover:border-gs-green/30 hover:bg-gs-green-soft/50 cursor-pointer transition-colors"
             >
               <div className="space-y-0.5 min-w-0">
                 <div className="flex items-center gap-1 font-mono font-medium text-[11px] text-slate-800">
@@ -262,7 +262,7 @@ export function ListSelectorWidget({
                   </span>
                   <span>{caseRef}</span>
                   {item.priority && (
-                    <span className="rounded bg-rose-100 px-1 text-[9px] font-bold text-rose-700">
+                    <span className="rounded bg-gs-red-soft px-1 text-[9px] font-bold text-gs-red">
                       {item.priority}
                     </span>
                   )}
@@ -304,17 +304,17 @@ export function TicketPreviewWidget({ data }: { data: TicketData }) {
   const fine = data.fine_amount_vnd ? `${data.fine_amount_vnd.toLocaleString()} VNĐ` : "0 VNĐ";
 
   return (
-    <div className="my-2 overflow-hidden rounded-lg border-2 border-dashed border-rose-300 bg-rose-50/30 p-3 shadow-xs space-y-2">
-      <div className="flex items-center justify-between border-b border-rose-200/80 pb-2">
+    <div className="my-2 overflow-hidden rounded-lg border-2 border-dashed border-gs-red/30 bg-gs-red-soft/30 p-3 shadow-xs space-y-2">
+      <div className="flex items-center justify-between border-b border-gs-red/30 pb-2">
         <div className="flex items-center gap-1.5">
-          <span className="material-symbols-outlined text-rose-600 text-[16px]">
+          <span className="material-symbols-outlined text-gs-red text-[16px]">
             receipt_long
           </span>
-          <span className="font-bold text-xs uppercase tracking-wide text-rose-900">
+          <span className="font-bold text-xs uppercase tracking-wide text-gs-red">
             Biên bản xử phạt hành vi vi phạm
           </span>
         </div>
-        <span className="font-mono text-[10px] font-bold text-rose-700 bg-rose-100 px-1.5 py-0.5 rounded">
+        <span className="font-mono text-[10px] font-bold text-gs-red bg-gs-red-soft px-1.5 py-0.5 rounded">
           {data.ticket_id}
         </span>
       </div>
@@ -326,22 +326,22 @@ export function TicketPreviewWidget({ data }: { data: TicketData }) {
         </div>
         <div>
           <span className="text-[10px] text-slate-500">Hành vi vi phạm:</span>
-          <div className="font-bold text-rose-700">{data.violation_code}</div>
+          <div className="font-bold text-gs-red">{data.violation_code}</div>
         </div>
         <div>
           <span className="text-[10px] text-slate-500">Mức phạt tiền:</span>
-          <div className="font-mono font-bold text-emerald-800">{fine}</div>
+          <div className="font-mono font-bold text-gs-green-ink">{fine}</div>
         </div>
         <div>
           <span className="text-[10px] text-slate-500">Chế tài đình chỉ:</span>
-          <div className="font-semibold text-amber-800">
+          <div className="font-semibold text-gs-amber-ink">
             {data.suspension_hours ? `Tạm khóa ${data.suspension_hours} giờ` : "Không tạm khóa"}
           </div>
         </div>
       </div>
 
       {(data.reason || data.rationale) && (
-        <div className="rounded bg-white/80 p-2 text-[10px] border border-rose-100 text-slate-700">
+        <div className="rounded bg-white/80 p-2 text-[10px] border border-gs-red/30 text-slate-700">
           <span className="font-semibold text-slate-800">Lý do chế tài:</span>{" "}
           {data.reason || data.rationale}
         </div>
@@ -349,7 +349,7 @@ export function TicketPreviewWidget({ data }: { data: TicketData }) {
 
       <div className="flex items-center justify-between pt-1 text-[9px] text-slate-500">
         <span>Căn cứ: {data.policy_clause || "Quy chế vận hành GreenSM 2026"}</span>
-        <span className="font-medium text-emerald-700 flex items-center gap-0.5">
+        <span className="font-medium text-gs-green-ink flex items-center gap-0.5">
           <span className="material-symbols-outlined text-[10px]">verified</span>
           Đã ký điện tử & ghi log
         </span>
@@ -377,14 +377,14 @@ export function WeatherWidget({ data }: { data: WeatherData }) {
     <div className="my-2 rounded-lg border border-slate-200 bg-white p-2.5 shadow-xs space-y-2">
       <div className="flex items-center justify-between border-b border-slate-100 pb-1.5">
         <div className="flex items-center gap-1.5 font-semibold text-xs text-slate-800">
-          <span className="material-symbols-outlined text-[15px] text-sky-500">
+          <span className="material-symbols-outlined text-[15px] text-gs-cyan">
             partly_cloudy_day
           </span>
           <span>Thời tiết thực địa (Open-Meteo Live)</span>
         </div>
         <span
           className={`rounded px-1.5 py-0.5 text-[9px] font-bold uppercase ${
-            isFM ? "bg-emerald-100 text-emerald-800" : "bg-slate-100 text-slate-600"
+            isFM ? "bg-gs-green-soft text-gs-green-ink" : "bg-slate-100 text-slate-600"
           }`}
         >
           {isFM ? "Miễn trừ Điều 12.2" : "Bình thường"}
@@ -392,17 +392,17 @@ export function WeatherWidget({ data }: { data: WeatherData }) {
       </div>
 
       <div className="grid grid-cols-3 gap-2 text-center text-[11px]">
-        <div className="rounded bg-sky-50/50 p-1.5 border border-sky-100">
+        <div className="rounded bg-gs-cyan-soft/50 p-1.5 border border-gs-cyan/30">
           <div className="text-[10px] text-slate-500">Nhiệt độ</div>
-          <div className="font-mono font-bold text-sky-900">{data.temperature_c ?? 28}°C</div>
+          <div className="font-mono font-bold text-gs-cyan">{data.temperature_c ?? 28}°C</div>
         </div>
-        <div className="rounded bg-sky-50/50 p-1.5 border border-sky-100">
+        <div className="rounded bg-gs-cyan-soft/50 p-1.5 border border-gs-cyan/30">
           <div className="text-[10px] text-slate-500">Lượng mưa</div>
-          <div className="font-mono font-bold text-sky-900">{data.precipitation_mm ?? 0} mm</div>
+          <div className="font-mono font-bold text-gs-cyan">{data.precipitation_mm ?? 0} mm</div>
         </div>
-        <div className="rounded bg-sky-50/50 p-1.5 border border-sky-100">
+        <div className="rounded bg-gs-cyan-soft/50 p-1.5 border border-gs-cyan/30">
           <div className="text-[10px] text-slate-500">Tốc độ gió</div>
-          <div className="font-mono font-bold text-sky-900">{data.wind_speed_kmh ?? 10} km/h</div>
+          <div className="font-mono font-bold text-gs-cyan">{data.wind_speed_kmh ?? 10} km/h</div>
         </div>
       </div>
 
@@ -417,7 +417,7 @@ export function WeatherWidget({ data }: { data: WeatherData }) {
         <div
           className={`rounded p-1.5 text-[10px] border ${
             isFM
-              ? "bg-emerald-50 border-emerald-200 text-emerald-800 font-medium"
+              ? "bg-gs-green-soft border-gs-green/30 text-gs-green-ink font-medium"
               : "bg-slate-50 border-slate-200 text-slate-600"
           }`}
         >
@@ -447,14 +447,14 @@ export function TrafficWidget({ data }: { data: TrafficData }) {
     <div className="my-2 rounded-lg border border-slate-200 bg-white p-2.5 shadow-xs space-y-2">
       <div className="flex items-center justify-between border-b border-slate-100 pb-1.5">
         <div className="flex items-center gap-1.5 font-semibold text-xs text-slate-800">
-          <span className="material-symbols-outlined text-[15px] text-amber-500">
+          <span className="material-symbols-outlined text-[15px] text-gs-amber">
             traffic
           </span>
           <span>Đối soát giao thông hành trình (OSRM)</span>
         </div>
         <span
           className={`rounded px-1.5 py-0.5 text-[9px] font-bold uppercase ${
-            isCongested ? "bg-amber-100 text-amber-800" : "bg-emerald-100 text-emerald-800"
+            isCongested ? "bg-gs-amber-soft text-gs-amber-ink" : "bg-gs-green-soft text-gs-green-ink"
           }`}
         >
           {data.congestion_level || "clear"}
@@ -480,8 +480,8 @@ export function TrafficWidget({ data }: { data: TrafficData }) {
         <div
           className={`rounded p-1.5 text-[10px] border ${
             isCongested
-              ? "bg-amber-50 border-amber-200 text-amber-900 font-medium"
-              : "bg-emerald-50 border-emerald-200 text-emerald-900 font-medium"
+              ? "bg-gs-amber-soft border-gs-amber/30 text-gs-amber-ink font-medium"
+              : "bg-gs-green-soft border-gs-green/30 text-gs-green-ink font-medium"
           }`}
         >
           {data.verdict}

@@ -7,29 +7,29 @@ export type Tone = SignalTone;
 
 export const toneTile: Record<Tone, string> = {
   neutral: "bg-slate-100 text-slate-600",
-  success: "bg-emerald-50 text-emerald-700",
-  warning: "bg-amber-50 text-amber-700",
-  danger: "bg-red-50 text-red-700",
-  info: "bg-sky-50 text-sky-700",
-  violet: "bg-violet-50 text-violet-700",
+  success: "bg-gs-green-soft text-gs-green-ink",
+  warning: "bg-gs-amber-soft text-gs-amber-ink",
+  danger: "bg-gs-red-soft text-gs-red",
+  info: "bg-gs-cyan-soft text-gs-cyan",
+  violet: "bg-gs-purple-soft text-gs-purple",
 };
 
 export const toneText: Record<Tone, string> = {
   neutral: "text-slate-900",
-  success: "text-emerald-700",
-  warning: "text-amber-700",
-  danger: "text-red-700",
-  info: "text-sky-700",
-  violet: "text-violet-700",
+  success: "text-gs-green-ink",
+  warning: "text-gs-amber-ink",
+  danger: "text-gs-red",
+  info: "text-gs-cyan",
+  violet: "text-gs-purple",
 };
 
 export const toneDot: Record<Tone, string> = {
   neutral: "bg-slate-400",
-  success: "bg-emerald-600",
-  warning: "bg-amber-500",
-  danger: "bg-red-600",
-  info: "bg-sky-600",
-  violet: "bg-violet-600",
+  success: "bg-primary",
+  warning: "bg-gs-amber",
+  danger: "bg-gs-red",
+  info: "bg-gs-cyan",
+  violet: "bg-gs-purple",
 };
 
 const sizes = {

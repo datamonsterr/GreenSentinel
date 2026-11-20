@@ -8,7 +8,7 @@ import {
   type QueueFilters, type QueueRow,
 } from "@/lib/case-queue";
 
-const field = "h-8 rounded-md border border-slate-300 bg-white px-2 text-xs text-slate-700 outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100";
+const field = "h-8 rounded-md border border-slate-300 bg-white px-2 text-xs text-slate-700 outline-none focus:border-gs-cyan focus:ring-2 focus:ring-gs-cyan/30";
 
 interface Props {
   filters: QueueFilters;
@@ -57,7 +57,7 @@ function Facets({ filters, onChange, rows, locale, inline }: Omit<Props, "expand
           <input type="date" aria-label={t.to} value={filters.to} onChange={e => set({ to: e.target.value })} className={field} />
         </label>
         {activeFilterCount(filters) > 0 && (
-          <button type="button" onClick={() => onChange({ ...EMPTY_FILTERS, search: filters.search, availability: filters.availability })} className="text-[11px] font-semibold text-cyan-700 hover:underline">
+          <button type="button" onClick={() => onChange({ ...EMPTY_FILTERS, search: filters.search, availability: filters.availability })} className="text-[11px] font-semibold text-gs-cyan hover:underline">
             {t.clear}
           </button>
         )}

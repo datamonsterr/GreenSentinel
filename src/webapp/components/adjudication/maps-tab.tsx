@@ -60,7 +60,7 @@ function CollapsibleSection({ icon, tone, title, summary, open, onToggle, childr
   return (
     <section aria-label={title} className="rounded-lg border border-slate-200 bg-white shadow-xs">
       <div className="flex min-w-0 items-center gap-2 pr-3">
-        <button type="button" aria-expanded={open} onClick={onToggle} className="flex min-w-0 flex-1 items-center gap-3 rounded-lg p-3 text-left hover:bg-slate-50 focus-visible:outline-emerald-600">
+        <button type="button" aria-expanded={open} onClick={onToggle} className="flex min-w-0 flex-1 items-center gap-3 rounded-lg p-3 text-left hover:bg-slate-50 focus-visible:outline-gs-green">
           <IconTile icon={icon} tone={tone} />
           <span className="min-w-0 flex-1 truncate text-sm font-semibold text-slate-900">{title}</span>
           <Chevron aria-hidden="true" size={18} className="block shrink-0 text-slate-400" />

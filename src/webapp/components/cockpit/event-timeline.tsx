@@ -25,7 +25,7 @@ export function EventTimeline({ events, className }: { events: TimelineEvent[]; 
           <li key={event.id} data-highlight={event.highlight ? "true" : undefined} className="relative flex gap-3 pb-4 last:pb-0">
             {!last && <span aria-hidden="true" className={cn("absolute left-[7px] top-4 bottom-0 w-0.5 rounded-full opacity-60", toneDot[event.tone])} />}
             <span aria-hidden="true" className={cn("relative mt-0.5 size-4 shrink-0 rounded-full ring-4 ring-white", toneDot[event.tone])} />
-            <div className={cn("min-w-0 flex-1 rounded-md", event.highlight && event.tone === "danger" && "-mx-1 -mt-1 bg-red-50 px-1 pt-1 pb-1")}>
+            <div className={cn("min-w-0 flex-1 rounded-md", event.highlight && event.tone === "danger" && "-mx-1 -mt-1 bg-gs-red-soft px-1 pt-1 pb-1")}>
               <div className="flex min-w-0 items-start justify-between gap-2">
                 <p className={cn("min-w-0 break-words text-[13px] font-semibold leading-snug", event.highlight ? toneText[event.tone] : "text-slate-900")}>{event.label}</p>
                 {duration !== null && (

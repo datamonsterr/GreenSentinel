@@ -57,7 +57,7 @@ export function CaseLevelFacts({ caseDetail }: { caseDetail: CaseDetailResponse 
       { label: m.status, value: c.status ? workspaceState(c.status, locale) : null },
       { label: m.priority, value: c.priority ? `${c.priority}${typeof c.priority_score === "number" ? ` · ${c.priority_score}` : ""}` : null },
       { label: m.assignee, value: c.assigned_analyst_name ?? m.unassigned },
-      { label: m.sla, value: sla == null ? null : sla === 0 ? <span className="text-red-700">{m.overdue}</span> : formatDuration(sla) },
+      { label: m.sla, value: sla == null ? null : sla === 0 ? <span className="text-gs-red">{m.overdue}</span> : formatDuration(sla) },
       { label: m.policy, value: policy?.policy_version },
       { label: m.action, value: action ? String(action) : null },
     ]} />

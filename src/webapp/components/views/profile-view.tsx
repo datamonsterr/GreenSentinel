@@ -161,13 +161,13 @@ export function AnalystProfileView({
       {/* 1. Header */}
       <div className="flex items-center justify-between border-b pb-3">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-sm border border-emerald-200">
+          <div className="w-9 h-9 rounded-full bg-gs-green-soft text-gs-green-ink flex items-center justify-center font-bold text-sm border border-gs-green/30">
             {name ? name.slice(0, 2).toUpperCase() : "AN"}
           </div>
           <div>
             <div className="flex items-center gap-2">
               <h1 className="text-sm font-bold text-slate-900">{name || "Analyst Profile"}</h1>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase bg-emerald-100 text-emerald-800 border border-emerald-200">
+              <span className="px-2 py-0.5 rounded-full text-[10px] font-semibold uppercase bg-gs-green-soft text-gs-green-ink border border-gs-green/30">
                 {role}
               </span>
             </div>
@@ -186,13 +186,13 @@ export function AnalystProfileView({
       </div>
 
       {error ? (
-        <div className="space-y-2 p-3 bg-red-50 border border-red-200 rounded">
-          <p role="alert" className="text-xs text-red-700">
+        <div className="space-y-2 p-3 bg-gs-red-soft border border-gs-red/30 rounded">
+          <p role="alert" className="text-xs text-gs-red">
             {error}
           </p>
           <button
             onClick={() => setRevision((v) => v + 1)}
-            className="text-xs border border-red-300 rounded px-3 py-1 bg-white hover:bg-red-50"
+            className="text-xs border border-gs-red/30 rounded px-3 py-1 bg-white hover:bg-gs-red-soft"
           >
             Retry
           </button>
@@ -203,19 +203,19 @@ export function AnalystProfileView({
           {activeLease ? (
             <div
               data-testid="active-review-banner"
-              className="p-3.5 bg-gradient-to-r from-emerald-50 via-teal-50 to-slate-50 border border-emerald-200 rounded-lg flex flex-wrap items-center justify-between gap-3 shadow-xs"
+              className="p-3.5 bg-gradient-to-r from-gs-green-soft via-gs-green-soft to-slate-50 border border-gs-green/30 rounded-lg flex flex-wrap items-center justify-between gap-3 shadow-xs"
             >
               <div className="flex items-center gap-3">
                 <span className="flex h-3 w-3 relative">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-gs-green opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-3 w-3 bg-gs-green"></span>
                 </span>
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="text-xs font-bold text-slate-900">
                       {activeLease.case_code}
                     </span>
-                    <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-200">
+                    <span className="px-1.5 py-0.5 rounded text-[10px] font-bold bg-gs-red-soft text-gs-red border border-gs-red/30">
                       {activeLease.severity} CRITICAL
                     </span>
                     <span className="text-[11px] font-medium text-slate-600">
@@ -224,10 +224,10 @@ export function AnalystProfileView({
                     </span>
                   </div>
                   <div className="text-[11px] text-slate-500 flex items-center gap-1.5 mt-0.5">
-                    <span className="material-symbols-outlined text-[13px] text-amber-600">
+                    <span className="material-symbols-outlined text-[13px] text-gs-amber-ink">
                       timer
                     </span>
-                    <span className="font-mono font-semibold text-amber-700">{countdownStr}</span>
+                    <span className="font-mono font-semibold text-gs-amber-ink">{countdownStr}</span>
                     <span>· Exclusive adjudication lease active</span>
                   </div>
                 </div>
@@ -235,7 +235,7 @@ export function AnalystProfileView({
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => onResumeCase?.(activeLease.case_id)}
-                  className="text-xs font-semibold px-3 py-1.5 rounded bg-emerald-600 hover:bg-emerald-700 text-white flex items-center gap-1 shadow-sm transition"
+                  className="text-xs font-semibold px-3 py-1.5 rounded bg-primary hover:bg-primary-container text-white flex items-center gap-1 shadow-sm transition"
                 >
                   <span>Resume Case</span>
                   <span>→</span>
@@ -295,7 +295,7 @@ export function AnalystProfileView({
                 <span className="text-2xl font-bold text-slate-900">
                   {metrics.today_decisions_count}
                 </span>
-                <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                <span className="text-[10px] font-semibold text-gs-green-ink bg-gs-green-soft px-1.5 py-0.5 rounded border border-gs-green/30">
                   +5% quota
                 </span>
               </div>
@@ -310,7 +310,7 @@ export function AnalystProfileView({
                     ? `${metrics.average_mttr_seconds}s`
                     : "31.8s"}
                 </span>
-                <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                <span className="text-[10px] font-semibold text-gs-green-ink bg-gs-green-soft px-1.5 py-0.5 rounded border border-gs-green/30">
                   &lt; 45s target
                 </span>
               </div>
@@ -325,7 +325,7 @@ export function AnalystProfileView({
                     ? `${metrics.quality_overturn_pct}%`
                     : "N/A"}
                 </span>
-                <span className="text-[10px] font-semibold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                <span className="text-[10px] font-semibold text-gs-green-ink bg-gs-green-soft px-1.5 py-0.5 rounded border border-gs-green/30">
                   &lt; 3% benchmark
                 </span>
               </div>
@@ -338,7 +338,7 @@ export function AnalystProfileView({
                 <span className="text-2xl font-bold text-slate-900">
                   {metrics.thirty_day_decisions_count.toLocaleString()}
                 </span>
-                <span className="text-[10px] font-semibold text-indigo-700 bg-indigo-50 px-1.5 py-0.5 rounded border border-indigo-200">
+                <span className="text-[10px] font-semibold text-gs-blue bg-gs-blue-soft px-1.5 py-0.5 rounded border border-gs-blue/30">
                   100% HITL
                 </span>
               </div>
@@ -350,7 +350,7 @@ export function AnalystProfileView({
           <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg">
             <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-2 mb-2">
               <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                <span className="material-symbols-outlined text-[15px] text-emerald-700">
+                <span className="material-symbols-outlined text-[15px] text-gs-green-ink">
                   gavel
                 </span>
                 <span>Governance Limits &amp; Delegated Authority</span>
@@ -386,7 +386,7 @@ export function AnalystProfileView({
               </div>
               <div>
                 <span className="text-slate-400 text-[10px] block">Model Agreement</span>
-                <span className="font-semibold text-emerald-700">
+                <span className="font-semibold text-gs-green-ink">
                   {metrics.model_agreement_pct !== null && metrics.model_agreement_pct !== undefined
                     ? `${metrics.model_agreement_pct}%`
                     : "N/A"}
@@ -400,7 +400,7 @@ export function AnalystProfileView({
             <div className="p-3.5 border-b border-slate-200 flex flex-wrap items-center justify-between gap-3 bg-slate-50/50">
               <div>
                 <h3 className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-[15px] text-indigo-600">
+                  <span className="material-symbols-outlined text-[15px] text-gs-blue">
                     history_edu
                   </span>
                   <span>Verdict Audit Trail</span>
@@ -420,14 +420,14 @@ export function AnalystProfileView({
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     placeholder="Search case, driver, plate..."
-                    className="text-xs pl-7 pr-3 py-1.5 rounded border border-slate-300 focus:outline-none focus:ring-1 focus:ring-emerald-500 w-48 sm:w-60"
+                    className="text-xs pl-7 pr-3 py-1.5 rounded border border-slate-300 focus:outline-none focus:ring-1 focus:ring-gs-green w-48 sm:w-60"
                   />
                 </div>
 
                 <select
                   value={selectedVerdict}
                   onChange={(e) => setSelectedVerdict(e.target.value)}
-                  className="text-xs px-2.5 py-1.5 rounded border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-emerald-500 text-slate-700"
+                  className="text-xs px-2.5 py-1.5 rounded border border-slate-300 bg-white focus:outline-none focus:ring-1 focus:ring-gs-green text-slate-700"
                 >
                   <option value="">All Verdicts</option>
                   <option value="AGREE">Agree</option>
@@ -464,9 +464,9 @@ export function AnalystProfileView({
                       const verdict = item.verdict.toUpperCase();
                       let badgeClass = "bg-slate-100 text-slate-700 border-slate-200";
                       if (verdict === "AGREE") {
-                        badgeClass = "bg-rose-50 text-rose-700 border-rose-200";
+                        badgeClass = "bg-gs-red-soft text-gs-red border-gs-red/30";
                       } else if (verdict === "DISAGREE") {
-                        badgeClass = "bg-emerald-50 text-emerald-700 border-emerald-200";
+                        badgeClass = "bg-gs-green-soft text-gs-green-ink border-gs-green/30";
                       }
 
                       return (

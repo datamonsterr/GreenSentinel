@@ -796,7 +796,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
   const openFromTable = (id: string) => { selectCase(id); setExpanded(false); };
 
   if (loading) return <WorkspaceLoading message={m.loadingWorkspace} />;
-  if (queueError) return <div className="m-auto p-6 text-center space-y-3"><p role="alert" className="text-sm text-red-700">{queueError}</p><button onClick={()=>{setLoading(true);void handleManualRefresh();}} className="rounded border px-3 py-1 text-sm">{m.retry}</button></div>;
+  if (queueError) return <div className="m-auto p-6 text-center space-y-3"><p role="alert" className="text-sm text-gs-red">{queueError}</p><button onClick={()=>{setLoading(true);void handleManualRefresh();}} className="rounded border px-3 py-1 text-sm">{m.retry}</button></div>;
   return (
     <div className="flex-1 flex flex-col lg:flex-row h-full min-h-0 overflow-auto lg:overflow-hidden bg-slate-50 text-slate-900">
       <section aria-label={m.triage} className={`w-full min-w-0 shrink-0 ${queueExpanded ? 'lg:flex-1' : 'lg:w-[22%]'} lg:shrink-0 border-r border-slate-200 flex flex-col ${queueExpanded ? 'lg:max-h-none' : 'max-h-64'} lg:max-h-none lg:h-full min-h-0 bg-white`}>
@@ -835,7 +835,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
               aria-expanded={queueExpanded}
               title={queueExpanded ? qt.collapse : qt.expand}
               onClick={() => setExpanded(!queueExpanded)}
-              className="rounded px-1.5 py-0.5 text-sm font-bold text-cyan-700 hover:bg-cyan-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-600"
+              className="rounded px-1.5 py-0.5 text-sm font-bold text-gs-cyan hover:bg-gs-cyan-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-gs-cyan"
             >{queueExpanded ? '<<' : '>>'}</button>
           </div>
         </div>
@@ -847,7 +847,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
               placeholder={m.searchPlaceholder}
               value={searchQuery}
               onChange={e => { setSearchQuery(e.target.value); setHistoryOffset(0); }}
-              className="h-8 w-full rounded-md border border-slate-300 bg-white pl-8 pr-8 text-xs shadow-none outline-none placeholder:text-slate-400 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+              className="h-8 w-full rounded-md border border-slate-300 bg-white pl-8 pr-8 text-xs shadow-none outline-none placeholder:text-slate-400 focus:border-gs-green focus:ring-2 focus:ring-gs-green/30"
             />
             <span aria-hidden="true" className="material-symbols-outlined pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 text-sm leading-none text-slate-400">
               search
@@ -868,7 +868,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
               aria-label={m.lockFilter}
               value={lockFilter}
               onChange={e => setLockFilter(e.target.value as Availability)}
-              className={`h-8 ${queueExpanded ? 'w-48' : 'w-full'} rounded-md border border-slate-300 bg-white px-2.5 text-xs text-slate-700 shadow-none outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100`}
+              className={`h-8 ${queueExpanded ? 'w-48' : 'w-full'} rounded-md border border-slate-300 bg-white px-2.5 text-xs text-slate-700 shadow-none outline-none focus:border-gs-green focus:ring-2 focus:ring-gs-green/30`}
             >
               <option value="available">{m.availableCases}</option>
               <option value="mine">{m.mine}</option>
@@ -879,7 +879,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
               aria-label={m.historyFilter}
               value={historyStatus}
               onChange={e => { setHistoryStatus(e.target.value); setHistoryOffset(0); }}
-              className="h-8 w-full rounded-md border border-slate-300 bg-white px-2.5 text-xs text-slate-700 shadow-none outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-100"
+              className="h-8 w-full rounded-md border border-slate-300 bg-white px-2.5 text-xs text-slate-700 shadow-none outline-none focus:border-gs-green focus:ring-2 focus:ring-gs-green/30"
             >
               <option value="">{m.allProcessed}</option>
               <option value="resolved">{m.resolved}</option>
@@ -902,10 +902,10 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
                 {visibleCases.map(item => {
                   const { mine, other, archived, busy } = rowInfo(item);
                   return (
-                    <tr key={item.id} onClick={(e) => { if (!(e.target as HTMLElement).closest('button')) openFromTable(item.id); }} className={`cursor-pointer border-b border-slate-100 hover:bg-cyan-50/50 ${item.id === selectedCaseId ? 'bg-cyan-50/70' : ''}`}>
+                    <tr key={item.id} onClick={(e) => { if (!(e.target as HTMLElement).closest('button')) openFromTable(item.id); }} className={`cursor-pointer border-b border-slate-100 hover:bg-gs-cyan-soft/50 ${item.id === selectedCaseId ? 'bg-gs-cyan-soft/70' : ''}`}>
                       <td className="px-3 py-2 font-mono text-[11px]">{item.code}</td>
                       <td className="px-3 py-2">
-                        <button type="button" aria-label={`${item.severity} · ${item.code} ${item.driverName} ${item.plate}`} onClick={() => openFromTable(item.id)} className="max-w-[12rem] truncate text-left font-medium hover:underline focus-visible:outline-cyan-700">{item.driverName}</button>
+                        <button type="button" aria-label={`${item.severity} · ${item.code} ${item.driverName} ${item.plate}`} onClick={() => openFromTable(item.id)} className="max-w-[12rem] truncate text-left font-medium hover:underline focus-visible:outline-gs-cyan">{item.driverName}</button>
                       </td>
                       <td className="px-3 py-2 text-slate-600">{item.plate}</td>
                       <td className="px-3 py-2 text-slate-600">{item.category || '—'}</td>
@@ -916,9 +916,9 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
                       <td className="px-3 py-2 tabular-nums text-slate-600">{item.sla}</td>
                       <td className="px-3 py-2">
                         {archived ? <span data-testid="terminal-status-badge">{m.archived}</span> : (
-                          <button title={mine ? m.releaseCase : m.claimCase} aria-label={busy === 'claim' ? m.claiming : busy === 'release' ? m.releasing : other ? m.ownedOther : mine ? m.release : m.claim} disabled={Boolean(busy) || other || !isAnalystAuthorized} onClick={() => void updateLock(item.id, mine)} className={`inline-flex h-7 min-w-[4.5rem] items-center justify-center rounded-md px-2 text-[11px] font-semibold text-white disabled:bg-slate-300 disabled:text-slate-700 disabled:opacity-100 ${mine ? 'bg-red-600 hover:bg-red-700' : 'bg-emerald-600 hover:bg-emerald-700'}`}>{busy === 'claim' ? m.claiming : busy === 'release' ? m.releasing : other ? m.ownedOther : mine ? m.release : m.claim}</button>
+                          <button title={mine ? m.releaseCase : m.claimCase} aria-label={busy === 'claim' ? m.claiming : busy === 'release' ? m.releasing : other ? m.ownedOther : mine ? m.release : m.claim} disabled={Boolean(busy) || other || !isAnalystAuthorized} onClick={() => void updateLock(item.id, mine)} className={`inline-flex h-7 min-w-[4.5rem] items-center justify-center rounded-md px-2 text-[11px] font-semibold disabled:bg-slate-300 disabled:text-slate-700 disabled:opacity-100 ${mine ? 'border border-gs-line-2 bg-white text-gs-ink-2 hover:bg-gs-line' : 'bg-primary text-white hover:bg-primary-container'}`}>{busy === 'claim' ? m.claiming : busy === 'release' ? m.releasing : other ? m.ownedOther : mine ? m.release : m.claim}</button>
                         )}
-                        {ownershipErrors[item.id] && <p role="alert" className="text-red-800">{ownershipErrors[item.id]}</p>}
+                        {ownershipErrors[item.id] && <p role="alert" className="text-gs-red">{ownershipErrors[item.id]}</p>}
                       </td>
                     </tr>
                   );
@@ -954,7 +954,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
                   selectCase(item.id);
                 }}
                 className={`relative rounded-md border border-slate-200 border-l-4 p-2 text-xs space-y-1.5 bg-white cursor-pointer ${
-                  item.id === selectedCaseId ? 'bg-emerald-50/60 ring-1 ring-emerald-300' : ''
+                  item.id === selectedCaseId ? 'bg-gs-green-soft/60 ring-1 ring-gs-green/30' : ''
                 } ${
                   item.severity === 'P0' ? 'border-l-red-500' : item.severity === 'P1' ? 'border-l-amber-500' : 'border-l-blue-500'
                 }`}
@@ -971,7 +971,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
                   aria-pressed={item.id === selectedCaseId}
                   aria-label={`${item.severity} · ${item.code} ${item.driverName} ${item.plate}`}
                   onClick={() => selectCase(item.id)}
-                  className="w-full space-y-1 text-left focus-visible:outline-emerald-700"
+                  className="w-full space-y-1 text-left focus-visible:outline-gs-green"
                 >
                   <div className="flex min-h-5 items-center justify-between gap-2">
                     <span className="truncate font-medium leading-5">{item.driverName}</span>
@@ -981,10 +981,10 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
                 <div className="flex min-w-0 items-center justify-between gap-2">
                   <span className="min-w-0 flex-1 truncate text-slate-500" title={item.district}>{item.district}</span>
                   {archived ? <span data-testid="terminal-status-badge">{m.archived} · {item.status}</span> : <>
-                    <button title={mine ? m.releaseCase : m.claimCase} aria-label={busy === 'claim' ? m.claiming : busy === 'release' ? m.releasing : other ? m.ownedOther : mine ? m.release : m.claim} disabled={Boolean(busy) || other || !isAnalystAuthorized} onClick={() => void updateLock(item.id, mine)} className={`inline-flex h-7 min-w-[4.5rem] items-center justify-center rounded-md px-2 text-[11px] font-semibold text-white disabled:bg-slate-300 disabled:text-slate-700 disabled:opacity-100 ${mine ? 'bg-red-600 hover:bg-red-700' : 'bg-emerald-600 hover:bg-emerald-700'}`}>{busy === 'claim' ? m.claiming : busy === 'release' ? m.releasing : other ? m.ownedOther : mine ? m.release : m.claim}</button>
+                    <button title={mine ? m.releaseCase : m.claimCase} aria-label={busy === 'claim' ? m.claiming : busy === 'release' ? m.releasing : other ? m.ownedOther : mine ? m.release : m.claim} disabled={Boolean(busy) || other || !isAnalystAuthorized} onClick={() => void updateLock(item.id, mine)} className={`inline-flex h-7 min-w-[4.5rem] items-center justify-center rounded-md px-2 text-[11px] font-semibold disabled:bg-slate-300 disabled:text-slate-700 disabled:opacity-100 ${mine ? 'border border-gs-line-2 bg-white text-gs-ink-2 hover:bg-gs-line' : 'bg-primary text-white hover:bg-primary-container'}`}>{busy === 'claim' ? m.claiming : busy === 'release' ? m.releasing : other ? m.ownedOther : mine ? m.release : m.claim}</button>
                   </>}
                 </div>
-                {ownershipErrors[item.id] && <p role="alert" className="text-red-800">{ownershipErrors[item.id]}</p>}
+                {ownershipErrors[item.id] && <p role="alert" className="text-gs-red">{ownershipErrors[item.id]}</p>}
               </article>
             );
           })}
@@ -1019,21 +1019,21 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
       {queueExpanded ? null : !activeCase ? <div className="flex-1 m-auto p-6 text-center text-sm text-slate-500">{m.selectCase}</div> : <>
       <section aria-label={m.workspace} className="w-full min-w-0 shrink-0 lg:w-[50%] lg:shrink-0 border-r border-slate-200 flex flex-col min-h-[70vh] lg:min-h-0 lg:h-full bg-white">
         {detailLoading && <WorkspaceLoading message={m.loadingCase} />}
-        {detailError && <div className="m-auto p-6 text-center space-y-3"><p role="alert" className="text-sm text-red-700">{detailError}</p><button onClick={()=>setDetailRevision(v=>v+1)} className="border rounded px-3 py-1 text-sm">{m.retryCase}</button></div>}
+        {detailError && <div className="m-auto p-6 text-center space-y-3"><p role="alert" className="text-sm text-gs-red">{detailError}</p><button onClick={()=>setDetailRevision(v=>v+1)} className="border rounded px-3 py-1 text-sm">{m.retryCase}</button></div>}
         {caseDetail && <div hidden={detailLoading || Boolean(detailError) || caseDetail.case.id !== selectedCaseId} inert={detailLoading || Boolean(detailError) || caseDetail.case.id !== selectedCaseId} className={`${detailLoading || Boolean(detailError) || caseDetail.case.id !== selectedCaseId ? 'hidden' : 'flex'} flex-col flex-1 min-h-0`}>
         <div className="relative flex-1 min-h-0 overflow-y-auto p-2.5">
           <CenterPanelTabs activeTab={activeCenterTab} onTabChange={setActiveCenterTab} />
-          {isLockedByOther && <p role="status" aria-label={m.readOnly} className="my-2 rounded border border-amber-200 bg-amber-50 p-2 text-xs text-amber-900">{m.readOnly}</p>}
+          {isLockedByOther && <p role="status" aria-label={m.readOnly} className="my-2 rounded border border-gs-amber/30 bg-gs-amber-soft p-2 text-xs text-gs-amber-ink">{m.readOnly}</p>}
           {feedbackMessage && <div className="my-2 flex items-center gap-2">
-            <p role={feedbackError ? 'alert' : 'status'} className={`text-xs ${feedbackError ? 'text-red-700' : 'text-emerald-800'}`}>{feedbackMessage}</p>
+            <p role={feedbackError ? 'alert' : 'status'} className={`text-xs ${feedbackError ? 'text-gs-red' : 'text-gs-green-ink'}`}>{feedbackMessage}</p>
             {feedbackError && failedDecision?.caseId === selectedCaseId && failedDecision.selectionVersion === selectionVersionRef.current && <button
               type="button"
               disabled={isSubmitting || !isLockedByMe || !isAnalystAuthorized || detailLoading || Boolean(detailError) || isTerminalCase}
               onClick={() => void handleSubmitDecision(failedDecision.action, failedDecision.rationale)}
-              className="rounded border border-red-700 px-2 py-0.5 text-xs text-red-800 hover:bg-red-50 disabled:opacity-50"
+              className="rounded border border-gs-red px-2 py-0.5 text-xs text-gs-red hover:bg-gs-red-soft disabled:opacity-50"
             >{m.retry}</button>}
           </div>}
-          {caseDetail.guardrails?.is_blocking && <p role="status" className="rounded bg-amber-50 p-2 text-xs text-amber-900">{m.incomplete}</p>}
+          {caseDetail.guardrails?.is_blocking && <p role="status" className="rounded bg-gs-amber-soft p-2 text-xs text-gs-amber-ink">{m.incomplete}</p>}
           {activeCenterTab === 'overview' && <WorkflowStepper caseId={caseDetail.case.id} locale={locale} refreshKey={caseDetail.case.status} />}
           {activeCenterTab === 'overview' && (
             <OverviewTab

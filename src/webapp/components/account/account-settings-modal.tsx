@@ -64,13 +64,13 @@ export function AccountSettingsModal({ isOpen, onClose }: AccountSettingsModalPr
   const getRoleBadge = (role: string) => {
     switch (role) {
       case "admin":
-        return "bg-purple-100 text-purple-800 border-purple-200";
+        return "bg-gs-purple-soft text-gs-purple border-gs-purple/30";
       case "driver":
-        return "bg-amber-100 text-amber-800 border-amber-200";
+        return "bg-gs-amber-soft text-gs-amber-ink border-gs-amber/30";
       case "fraud_analyst":
       case "analyst":
       default:
-        return "bg-emerald-100 text-emerald-800 border-emerald-200";
+        return "bg-gs-green-soft text-gs-green-ink border-gs-green/30";
     }
   };
 
@@ -99,7 +99,7 @@ export function AccountSettingsModal({ isOpen, onClose }: AccountSettingsModalPr
         {/* Header */}
         <div className="px-5 py-3 border-b border-slate-200 flex items-center justify-between bg-slate-50">
           <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-emerald-600 text-[20px]">manage_accounts</span>
+            <span className="material-symbols-outlined text-gs-green-ink text-[20px]">manage_accounts</span>
             <h2 id="account-settings-title" className="text-sm font-semibold text-slate-800">
               Account Settings &amp; Permissions
             </h2>
@@ -120,8 +120,8 @@ export function AccountSettingsModal({ isOpen, onClose }: AccountSettingsModalPr
               role="alert"
               className={`p-2.5 rounded border text-xs ${
                 message.includes("success") || message.includes("updated")
-                  ? "bg-emerald-50 border-emerald-200 text-emerald-800"
-                  : "bg-red-50 border-red-200 text-red-700"
+                  ? "bg-gs-green-soft border-gs-green/30 text-gs-green-ink"
+                  : "bg-gs-red-soft border-gs-red/30 text-gs-red"
               }`}
             >
               {message}
@@ -158,12 +158,12 @@ export function AccountSettingsModal({ isOpen, onClose }: AccountSettingsModalPr
                     value={displayName}
                     onChange={(e) => setDisplayName(e.target.value)}
                     placeholder="Enter display name"
-                    className="flex-1 h-7 px-2 border rounded bg-white text-xs border-slate-300 focus:outline-none focus:border-emerald-600"
+                    className="flex-1 h-7 px-2 border rounded bg-white text-xs border-slate-300 focus:outline-none focus:border-gs-green"
                   />
                   <button
                     type="submit"
                     disabled={savingName || !displayName.trim()}
-                    className="h-7 px-3 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-50 text-white rounded font-medium text-xs transition-colors"
+                    className="h-7 px-3 bg-primary hover:bg-primary-container disabled:opacity-50 text-white rounded font-medium text-xs transition-colors"
                   >
                     {savingName ? "Saving…" : "Save Name"}
                   </button>
@@ -177,7 +177,7 @@ export function AccountSettingsModal({ isOpen, onClose }: AccountSettingsModalPr
                   <div
                     className={`p-2.5 rounded border text-[11px] ${
                       settings.roles.includes("fraud_analyst") || settings.roles.includes("analyst")
-                        ? "bg-emerald-50/60 border-emerald-300 text-emerald-950 font-medium"
+                        ? "bg-gs-green-soft/60 border-gs-green/30 text-gs-green-ink font-medium"
                         : "bg-slate-50 border-slate-200 text-slate-500"
                     }`}
                   >
@@ -190,7 +190,7 @@ export function AccountSettingsModal({ isOpen, onClose }: AccountSettingsModalPr
                   <div
                     className={`p-2.5 rounded border text-[11px] ${
                       settings.roles.includes("admin")
-                        ? "bg-purple-50/60 border-purple-300 text-purple-950 font-medium"
+                        ? "bg-gs-purple-soft/60 border-gs-purple/30 text-gs-purple font-medium"
                         : "bg-slate-50 border-slate-200 text-slate-500"
                     }`}
                   >
@@ -203,7 +203,7 @@ export function AccountSettingsModal({ isOpen, onClose }: AccountSettingsModalPr
                   <div
                     className={`p-2.5 rounded border text-[11px] ${
                       settings.roles.includes("driver")
-                        ? "bg-amber-50/60 border-amber-300 text-amber-950 font-medium"
+                        ? "bg-gs-amber-soft/60 border-gs-amber/30 text-gs-amber-ink font-medium"
                         : "bg-slate-50 border-slate-200 text-slate-500"
                     }`}
                   >
@@ -216,7 +216,7 @@ export function AccountSettingsModal({ isOpen, onClose }: AccountSettingsModalPr
               </div>
             </>
           ) : (
-            <p className="text-red-600">Unable to load account settings.</p>
+            <p className="text-gs-red">Unable to load account settings.</p>
           )}
         </div>
 

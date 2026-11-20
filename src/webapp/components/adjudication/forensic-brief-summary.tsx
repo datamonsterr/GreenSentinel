@@ -9,12 +9,12 @@ const intentLabels = {
 export function ForensicBriefSummary({ brief }: { brief?: ForensicBriefResponse | null }) {
   const assessment = brief?.motivation_assessment;
   return (
-    <section aria-label="Forensic Brief" className="bg-white border border-indigo-200 rounded-lg p-3 shadow-xs">
+    <section aria-label="Forensic Brief" className="bg-white border border-gs-blue/30 rounded-lg p-3 shadow-xs">
       <h3 className="text-xs font-semibold text-slate-800">Forensic Brief</h3>
       {brief?.summary_text && <p className="mt-2 text-[11px] text-slate-600 leading-relaxed">{brief.summary_text}</p>}
       <div aria-label="Đánh giá động cơ tài xế" className="mt-3 border-t border-slate-100 pt-3">
         <h4 className="text-xs font-semibold text-slate-800">Động cơ tài xế</h4>
-        <p className="mt-1 text-[11px] font-semibold text-indigo-700">{assessment ? intentLabels[assessment.intent_profile] : "Chưa có đánh giá động cơ"}</p>
+        <p className="mt-1 text-[11px] font-semibold text-gs-blue">{assessment ? intentLabels[assessment.intent_profile] : "Chưa có đánh giá động cơ"}</p>
         <p className="mt-2 text-[11px] text-slate-700 leading-relaxed whitespace-pre-line">
           {assessment?.natural_vietnamese_narrative || "Chưa có đánh giá động cơ cho hồ sơ này."}
         </p>

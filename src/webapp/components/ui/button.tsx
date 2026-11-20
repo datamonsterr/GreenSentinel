@@ -17,8 +17,8 @@ const buttonVariants = cva(
           "bg-surface-container text-on-surface shadow-xs hover:bg-surface-container-high",
         ghost: "hover:bg-surface-container hover:text-on-surface",
         link: "text-primary underline-offset-4 hover:underline",
-        emerald: "bg-emerald-600 hover:bg-emerald-700 text-white shadow-xs",
-        amber: "bg-amber-500 hover:bg-amber-600 text-white shadow-xs",
+        emerald: "bg-primary hover:bg-primary-container text-white shadow-xs",
+        amber: "bg-gs-amber hover:bg-gs-amber text-white shadow-xs",
       },
       size: {
         default: "h-8 px-3 py-1.5",
