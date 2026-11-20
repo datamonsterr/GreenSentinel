@@ -69,6 +69,8 @@ def extract_text(filename: str, content: bytes) -> str:
     if name.endswith(".docx"):
         try:
             with zipfile.ZipFile(io.BytesIO(content)) as z:
+                if z.getinfo("word/document.xml").file_size > 50_000_000:  # zip-bomb guard
+                    raise ValueError("document.xml too large")
                 root = ET.fromstring(z.read("word/document.xml"))
         except (zipfile.BadZipFile, KeyError, ET.ParseError) as e:
             raise ValueError(f"Cannot read docx: {e}") from e

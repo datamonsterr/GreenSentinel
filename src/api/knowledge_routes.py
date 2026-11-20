@@ -80,7 +80,7 @@ class DocumentCreate(BaseModel):
     region: str | None = None
     service: str | None = None
     contract_type: str | None = None
-    content_base64: str | None = None  # docx/pdf bytes; text is extracted server-side
+    content_base64: str | None = Field(default=None, max_length=14_000_000)  # docx/pdf bytes; text is extracted server-side
 
 
 class ProposalCreate(BaseModel):
