@@ -139,7 +139,7 @@ describe("Cockpit Precedent Workflow & Jev Similarity Integration", () => {
     vi.mocked(api.fetchCurrentAnalyst).mockResolvedValue({
       id: "analyst-001",
       name: "Chuyên viên Thẩm định",
-      role: "analyst",
+      role: "analyst", roles: ["analyst"],
     });
     vi.mocked(api.fetchAgentSession).mockResolvedValue({
       session_id: "session-p-1",

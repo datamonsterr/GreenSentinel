@@ -144,7 +144,7 @@ describe("Cockpit View Integration - Driver Dispute Synthesis & A2A Delegation",
     vi.clearAllMocks();
     vi.mocked(api.fetchCases).mockResolvedValue({ items: [caseItem], total: 1, limit: 50, offset: 0 });
     vi.mocked(api.fetchCaseDetail).mockResolvedValue(caseDetail as any);
-    vi.mocked(api.fetchCurrentAnalyst).mockResolvedValue({ id: "analyst-007", name: "Trần Chuyên Viên", role: "analyst" });
+    vi.mocked(api.fetchCurrentAnalyst).mockResolvedValue({ id: "analyst-007", name: "Trần Chuyên Viên", role: "analyst", roles: ["analyst"] });
     vi.mocked(api.fetchAgentSession).mockResolvedValue({ session_id: "sess-1", messages: [] });
     vi.mocked(api.getDisputeDossier).mockResolvedValue(mockDossier);
     vi.mocked(api.delegateAnalystInquiry).mockResolvedValue({ status: "inquiry_delegated", case_id: "case-cockpit-1" });

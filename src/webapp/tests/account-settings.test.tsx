@@ -40,7 +40,7 @@ describe('Account Settings & RBAC UI', () => {
     vi.spyOn(api, 'fetchCurrentAnalyst').mockResolvedValue({
       id: 'analyst-001',
       name: 'Lê Minh Tuấn',
-      role: 'fraud_analyst',
+      role: 'fraud_analyst', roles: ["fraud_analyst"],
     });
   });
 

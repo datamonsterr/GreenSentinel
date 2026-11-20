@@ -67,7 +67,7 @@ describe('Analyst Claim Control & Visibility (#573 Item 1)', () => {
     vi.mocked(api.fetchCurrentAnalyst).mockResolvedValue({
       id: signedInAnalystId,
       name: 'Signed-In Analyst',
-      role: 'fraud_analyst',
+      role: 'fraud_analyst', roles: ["fraud_analyst"],
     });
     vi.mocked(api.claimCase).mockResolvedValue({ case_id: caseId } as any);
     vi.mocked(api.fetchAgentSession).mockResolvedValue({ session_id: 'session-573', messages: [] });

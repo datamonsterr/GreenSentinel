@@ -31,7 +31,7 @@ beforeEach(() => {
   const first = { id: "case-one", driver_name: "First driver", vehicle_plate: "30A-12345", priority: "P1", priority_score: 1, status: "ready", version: 1 };
   const second = { ...first, id: "case-two", driver_name: "Second driver" };
   vi.mocked(api.fetchCases).mockResolvedValue({ items: [first, second], total: 2, limit: 50, offset: 0 });
-  vi.mocked(api.fetchCurrentAnalyst).mockResolvedValue({ id: "analyst-test", name: "Analyst", role: "analyst" });
+  vi.mocked(api.fetchCurrentAnalyst).mockResolvedValue({ id: "analyst-test", name: "Analyst", role: "analyst", roles: ["analyst"] });
   vi.mocked(api.fetchCaseDetail).mockResolvedValue({ case: second, active_lease: { analyst_id: "analyst-test", expires_at: "2099-01-01" }, preliminary_judgment: null, trip: {}, conversation: [{ role: "driver", text: "Original Driver evidence", occurred_at: "2026-10-15T00:00:00Z" }] });
   vi.mocked(api.fetchForensicBrief).mockResolvedValue({ case_id: "case-two", generated_at: "2026-10-15T00:00:00Z", abnormalities: [], abnormality_count: 0, evidence_sources: [], summary_text: "" });
   vi.mocked(api.fetchCasePolicy).mockResolvedValue({ case_id: "case-two", action_matrix: {}, applicable_action_rule: {}, clauses: [], related_policies: [], source: "unit fixture" });

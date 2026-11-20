@@ -78,7 +78,7 @@ beforeEach(() => {
     offset: 0,
   });
   vi.mocked(api.fetchCaseDetail).mockResolvedValue(mockDetailWithAssessment);
-  vi.mocked(api.fetchCurrentAnalyst).mockResolvedValue({ id: 'analyst-1', name: 'Analyst Test', role: 'analyst' });
+  vi.mocked(api.fetchCurrentAnalyst).mockResolvedValue({ id: 'analyst-1', name: 'Analyst Test', role: 'analyst', roles: ["analyst"] });
   vi.mocked(api.fetchAgentSession).mockResolvedValue({ session_id: 'session-1', messages: [] });
 });
 afterEach(() => cleanup());

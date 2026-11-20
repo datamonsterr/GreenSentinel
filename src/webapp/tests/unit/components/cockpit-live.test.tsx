@@ -105,7 +105,7 @@ it('retains a selected case across a failed manual queue refresh and retry', asy
  fireEvent.click(screen.getByRole('button',{name:'Retry'}));
  await waitFor(() => expect(screen.getByRole('button',{name:/#e-second/})).toHaveAttribute('aria-pressed','true'));
 });
-beforeEach(() => { vi.clearAllMocks(); vi.mocked(api.fetchCases).mockResolvedValue({items:[item],total:1,limit:50,offset:0}); vi.mocked(api.fetchCaseDetail).mockResolvedValue(detail); vi.mocked(api.fetchCurrentAnalyst).mockResolvedValue({id:'analyst-real',name:'Analyst',role:'analyst'}); vi.mocked(api.fetchAgentSession).mockResolvedValue({session_id:'session-empty',messages:[]}); vi.mocked(api.getDisputeDossier).mockResolvedValue(null as any); vi.mocked(api.getCaseWorkflowTrace).mockResolvedValue(null as any); });
+beforeEach(() => { vi.clearAllMocks(); vi.mocked(api.fetchCases).mockResolvedValue({items:[item],total:1,limit:50,offset:0}); vi.mocked(api.fetchCaseDetail).mockResolvedValue(detail); vi.mocked(api.fetchCurrentAnalyst).mockResolvedValue({id:'analyst-real',name:'Analyst',role:'analyst', roles: ["analyst"]}); vi.mocked(api.fetchAgentSession).mockResolvedValue({session_id:'session-empty',messages:[]}); vi.mocked(api.getDisputeDossier).mockResolvedValue(null as any); vi.mocked(api.getCaseWorkflowTrace).mockResolvedValue(null as any); });
 describe('API cockpit', () => {
  it('shows loading without a seeded case before API resolves', () => {
   vi.mocked(api.fetchCases).mockReturnValue(new Promise(() => {})); render(<CockpitWorkspaceView />);

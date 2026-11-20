@@ -59,7 +59,7 @@ const mockDetailEnriched = {
 beforeEach(() => {
   vi.clearAllMocks();
   vi.mocked(api.fetchCases).mockResolvedValue({ items: [mockCaseItem], total: 1, limit: 50, offset: 0 });
-  vi.mocked(api.fetchCurrentAnalyst).mockResolvedValue({ id: 'analyst-1', name: 'Analyst Test', role: 'analyst' });
+  vi.mocked(api.fetchCurrentAnalyst).mockResolvedValue({ id: 'analyst-1', name: 'Analyst Test', role: 'analyst', roles: ["analyst"] });
   vi.mocked(api.fetchAgentSession).mockResolvedValue({ session_id: 'session-1', messages: [] });
 });
 afterEach(() => cleanup());
