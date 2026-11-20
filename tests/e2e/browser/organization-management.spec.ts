@@ -396,7 +396,7 @@ test('successful empty responses have explicit empty states', async ({ page }) =
   await expect(page.getByText('Invitations unavailable', { exact: true })).toHaveCount(0);
 });
 
-test('desktop content is centered and capped at 1120px with the green primary action', async ({ page }, testInfo) => {
+test('desktop content is centered and capped at 1120px with the cyan primary action', async ({ page }, testInfo) => {
   await page.setViewportSize({ width: 1600, height: 1100 });
   await installOrganizationFixtures(page);
   await openOrganization(page);
@@ -405,7 +405,7 @@ test('desktop content is centered and capped at 1120px with the green primary ac
   expect(box).not.toBeNull();
   expect(box!.width).toBeLessThanOrEqual(1120);
   expect(Math.abs(box!.x - (1600 - box!.width) / 2)).toBeLessThanOrEqual(1);
-  await expect(page.getByRole('button', { name: 'Invite user', exact: true })).toHaveCSS('background-color', 'rgb(0, 105, 72)');
+  await expect(page.getByRole('button', { name: 'Invite user', exact: true })).toHaveCSS('background-color', 'rgb(15, 179, 193)'); // Button bg-primary -> --color-primary #0fb3c1 (globals.css @theme, cyan portal theme 0303331)
   await capture(page, testInfo, 'actual-app-desktop-1600.png');
 });
 
