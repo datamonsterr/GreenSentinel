@@ -15,13 +15,22 @@ from collections.abc import Callable
 from datetime import UTC, datetime
 from typing import Any, Protocol
 
-TABLES = {"kb_object", "agent_config", "agent_config_history", "kb_policy_document", "kb_proposal"}
+EXPLAIN_TABLES = {"explain_session", "statement_version", "assessment_round", "explain_turn", "help_request", "vh_feedback"}
+TABLES = {"kb_object", "agent_config", "agent_config_history", "kb_policy_document", "kb_proposal"} | EXPLAIN_TABLES
+UPDATED_AT_TABLES = ("kb_object", "agent_config", "explain_session", "help_request")
 JSON_COLUMNS: dict[str, set[str]] = {
     "kb_object": {"scope", "body", "replay", "history"},
     "agent_config": {"value"},
     "agent_config_history": {"old_value", "new_value"},
     "kb_policy_document": set(),
     "kb_proposal": {"payload"},
+    "explain_session": {"form_schema", "answers", "plan", "memory", "provenance", "open_points"},
+    "statement_version": {"content"},
+    "assessment_round": {"matched_evidence", "contradictions", "open_points", "missing_internal", "suggested_questions",
+                         "motive", "provenance"},
+    "explain_turn": {"payload"},
+    "help_request": {"facts", "options", "reply_facts"},
+    "vh_feedback": {"error_types"},
 }
 _IDENT = re.compile(r"^[a-z_][a-z0-9_]*$")
 _UUID = re.compile(r"^[0-9a-fA-F-]{36}$")
@@ -42,6 +51,7 @@ class Store(Protocol):
               result: str = "accepted") -> None: ...
     def principal_name(self, principal_id: str) -> str | None: ...
     def case_params(self, organization_id: str, case_ids: list[str] | None = None, limit: int = 30) -> list[dict[str, Any]]: ...
+    def case_info(self, organization_id: str, case_id: str) -> dict[str, Any] | None: ...
 
 
 class MemoryStore:
@@ -59,7 +69,7 @@ class MemoryStore:
         r = copy.deepcopy(row)
         r.setdefault("id", str(uuid.uuid4()))
         r.setdefault("created_at", self._stamp())
-        if table in ("kb_object", "agent_config"):
+        if table in UPDATED_AT_TABLES:
             r.setdefault("updated_at", r["created_at"])
         if table == "kb_object":
             for t in self.tables["kb_object"].values():
@@ -95,7 +105,7 @@ class MemoryStore:
         if r is None or not self._match(r, where or {}):
             return None
         r.update(copy.deepcopy(patch))
-        if "updated_at" in r or table in ("kb_object", "agent_config"):
+        if "updated_at" in r or table in UPDATED_AT_TABLES:
             r["updated_at"] = self._stamp()
         return copy.deepcopy(r)
 
@@ -110,6 +120,13 @@ class MemoryStore:
     def case_params(self, organization_id: str, case_ids: list[str] | None = None, limit: int = 30) -> list[dict[str, Any]]:
         rows = [c for c in self.cases if not case_ids or c["case_id"] in case_ids]
         return copy.deepcopy(rows[:limit])
+
+    def case_info(self, organization_id: str, case_id: str) -> dict[str, Any] | None:
+        for c in self.cases:
+            if c["case_id"] == case_id and c.get("organization_id", organization_id) == organization_id:
+                return {"case_id": case_id, "organization_id": organization_id, "driver_id": c.get("driver_id"),
+                        "status": c.get("status", "evidence_requested"), "category": c.get("category")}
+        return None
 
 
 def _norm(v: Any) -> Any:
@@ -194,7 +211,7 @@ class PgStore:
         self._check(table, *patch)
         sets = [f"{c} = %s" for c in patch]
         vals = [self._adapt(table, c, v) for c, v in patch.items()]
-        if table in ("kb_object", "agent_config"):
+        if table in UPDATED_AT_TABLES and "updated_at" not in patch:
             sets.append("updated_at = now()")
         w, wparams = self._where(table, where)
         sql = f"UPDATE app.{table} SET {', '.join(sets)} WHERE id = %s::uuid" + (w.replace(" WHERE ", " AND ") if w else "") + " RETURNING *"
@@ -224,6 +241,18 @@ class PgStore:
             cur.execute("SELECT display_name FROM app.principals WHERE id = %s::uuid", (str(principal_id),))
             r = cur.fetchone()
             return r["display_name"] if r else None
+
+    def case_info(self, organization_id: str, case_id: str) -> dict[str, Any] | None:
+        if not _UUID.match(str(case_id)):
+            return None
+        with self._connect() as conn, conn.cursor() as cur:
+            cur.execute(
+                """SELECT fc.id::text AS case_id, fc.organization_id::text AS organization_id, fc.status,
+                          fc.suspected_category AS category, ta.driver_id::text AS driver_id
+                     FROM app.fraud_cases fc LEFT JOIN app.trip_assignments ta ON ta.id = fc.assignment_id
+                    WHERE fc.id = %s::uuid AND fc.organization_id = %s::uuid""",
+                (str(case_id), str(organization_id)))
+            return self._row(cur.fetchone())
 
     def case_params(self, organization_id: str, case_ids: list[str] | None = None, limit: int = 30) -> list[dict[str, Any]]:
         """Best-effort parameter values for real cases (fare, duration, trips today, feature-set signals)."""
