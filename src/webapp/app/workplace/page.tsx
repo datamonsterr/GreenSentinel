@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
 import { setApiTokenProvider, fetchCurrentAnalyst } from "@/lib/api-client";
 import { PortalTopBar } from "@/components/portal/portal-top-bar";
+import { canAuthor } from "@/lib/knowledge-ui";
 import { CockpitWorkspaceView } from "@/components/views/cockpit-view";
 import { AnalyticsDashboardView } from "@/components/views/analytics-view";
 import { AnalystProfileView } from "@/components/views/profile-view";
@@ -15,6 +17,7 @@ import { navigationMessages } from '@/lib/navigation-messages';
 type TabKey = "cockpit" | "analytics" | "profile";
 
 export default function WorkplacePage() {
+  const router = useRouter();
   const { locale, setLocale } = useLocale();
   const messages = navigationMessages[locale];
   const e2eAuthBypass = (process.env.NODE_ENV !== "production" || isolatedGisBuild()) && process.env.NEXT_PUBLIC_E2E_TEST === "true";
@@ -26,12 +29,14 @@ export default function WorkplacePage() {
   const [apiReady, setApiReady] = useState(false);
   const [activeTab, setActiveTab] = useState<TabKey>("cockpit");
   const [searchQuery, setSearchQuery] = useState("");
-  const [analyst, setAnalyst] = useState<{ name: string; role: string } | null>(null);
+  const [analyst, setAnalyst] = useState<{ name: string; role: string; roles: string[] } | null>(null);
   const [urlCaseId, setUrlCaseId] = useState<string | undefined>(undefined);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
+      const tab = params.get("tab");
+      if (tab === "cockpit" || tab === "analytics" || tab === "profile") setActiveTab(tab);
       const cid = params.get("caseId") || params.get("case_id");
       if (cid) setUrlCaseId(cid);
     }
@@ -76,11 +81,12 @@ export default function WorkplacePage() {
         locale={locale}
         setLocale={setLocale}
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        setActiveTab={(tab) => (tab === "knowledge" ? router.push("/knowledge") : setActiveTab(tab))}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         analyst={analyst}
         e2eAuthBypass={e2eAuthBypass}
+        canOpenKnowledge={canAuthor(analyst?.roles ?? [])}
       />
 
       {/* Tab Contents */}
