@@ -92,6 +92,27 @@ Prefix `/api/v1`. Roles and lifecycle are in [ADR-032](adr-032-knowledge-base-ro
 | `GET /agent-config?scope`, `PUT /agent-config/{key}` `{value, reason, scope}` | Values with bounds/owner/`can_edit`; bounded writes. |
 | `GET /agent-config/history/list?key`, `POST /agent-config/history/{id}/revert`, `POST /agent-config/kill-switch` `{enabled, reason}` | History, revert, kill switch. |
 
+## Driver explanation agent v2 API (ADR-034)
+
+Prefix `/api/v1`. Driver routes need role `driver` and the driver's own case (otherwise 404). Analyst and help routes need analyst-family or VH roles (403 otherwise). Errors: 409 wrong state (`detail.code` is `not_asking`, `waiting_for_help`, `no_pending_question`, `not_in_summary`, `edit_limit`), 422 `{code:"form_invalid", missing:[fieldId], invalid:[{field, code}]}`.
+
+**Driver session view** (every driver endpoint returns it): `{session_id, case_id, state: draft|investigating|asking|summary|submitted, ui_status: form|checking|chat|summary|submitted, mode: agent|fallback, reason, form: {reason, form_version, has_question_set, fields:[{id, label:{vi,en}, type: text|time|location|choice|amount|photo|ticket, required, options?:[{value,label}]}], answers:{id:value}}, messages:[{seq, role: agent|driver, kind, text, at, is_summary}], current_question:{seq,text}|null, waiting_for_help, can_end, summary|null, edits_left, status_text:{vi,en}|null, submitted_at, last_interaction_at, idle_timeout_minutes}`.
+
+| Method and path | Purpose |
+|---|---|
+| `POST /driver/cases/{id}/explain/start` `{reason}` | Reason in `NotDone|RealTrip|Tech|Customer|Other`; creates the session or, in `draft`, rebuilds the form. Kill switch off -> `mode: fallback` (no dynamic questions, no agent). |
+| `GET /driver/cases/{id}/explain` | Current view; lazily resolves help replies/expiry and the T-minute auto-submit. |
+| `PUT /driver/cases/{id}/explain/draft` `{answers}` | Save draft answers (unknown ids ignored). |
+| `POST /driver/cases/{id}/explain/submit` `{answers}` | Validate required/typed fields, store statement v1, investigate, assess round 1; `asking` or `submitted`. |
+| `POST /driver/cases/{id}/explain/answer` `{text, attachments?, ticket_code?}` | Answer the current question (409 `waiting_for_help` while VH is consulted). |
+| `POST /driver/cases/{id}/explain/end` | End early -> `summary`. |
+| `POST /driver/cases/{id}/explain/summary/edit` `{text}` / `.../summary/confirm` | Edit (<= `edit_limit`) / confirm -> round 2, `submitted`. |
+| `GET /cases/{id}/explain` | Analyst view: `{session, flags{6}, form, statement_versions[], rounds[], transcript[], provenance[{type,code,version,tool,turn_seq,at}], similar_scenarios[<=3], plan, open_points, suggestion{round,state,reason_code,confidence,motive,suggested_questions,turns_used,n_max}, help_requests[], feedback[]}`. |
+| `POST /cases/{id}/explain/feedback` `{verdict: agree|disagree, error_types[], comment}` | `disagree` needs >= 1 of `wrong_facts|wrong_reasoning|missing_question|redundant_or_tone|missing_tool_source|wrong_scenario_or_workflow`. |
+| `GET /explain/help-requests?status=open,claimed`, `GET .../count` | Queue (oldest first) with `counts{open,claimed,total}`; count is the badge. |
+| `GET /explain/help-requests/{id}`, `POST .../{id}/claim`, `POST .../{id}/reply` `{text, facts[]}` | Detail with transcript; exclusive claim (409); reply continues the agent and creates a pending knowledge proposal. |
+| `GET /explain/meta` | Error types, assessment states, flag names. |
+
 ## Tester API design extension
 
 The proposed canonical Tester namespace is `/test/api/v1`; it is separate from the implemented `/api/v1` contracts above and has no unprefixed alias. See [Tester request/response and event contracts](TESTER_API_SPECIFICATION.md) and [runtime architecture](TESTER_SIMULATION_ARCHITECTURE.md). All operations require authenticated, run-scoped authorization and isolated test infrastructure. These documents specify future implementation, not available endpoints.
