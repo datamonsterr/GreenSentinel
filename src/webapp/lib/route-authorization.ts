@@ -1,6 +1,6 @@
 /** Server-side route policy. Application roles come exclusively from the API database. */
 import { isolatedGisBuild } from './isolated-gis-build';
-export type ProtectedArea = 'driver' | 'workplace' | 'workspace' | 'organization' | 'test';
+export type ProtectedArea = 'driver' | 'workplace' | 'workspace' | 'organization' | 'knowledge' | 'test';
 
 export function localTestAuthentication(): boolean {
   return (process.env.NODE_ENV !== 'production' || isolatedGisBuild())
@@ -12,6 +12,7 @@ export function protectedArea(pathname: string): ProtectedArea | null {
   if (/^\/test(?:\/|$)/.test(pathname)) return 'test';
   if (/^\/driver(?:\/|$)/.test(pathname)) return 'driver';
   if (/^\/organization(?:\/|$)/.test(pathname)) return 'organization';
+  if (/^\/knowledge(?:\/|$)/.test(pathname)) return 'knowledge';
   if (/^\/workspace(?:\/|$)/.test(pathname)) return 'workspace';
   if (/^\/(?:workplace|dashboard|analytics|profile)(?:\/|$)/.test(pathname)) return 'workplace';
   return null;
@@ -81,6 +82,9 @@ function roleAllows(principal: { organization_id?: unknown; roles?: unknown }, a
   }
   if (area === 'driver') {
     return principal.roles.includes('admin') || principal.roles.includes('driver');
+  }
+  if (area === 'knowledge') {
+    return principal.roles.some((role: string) => ['analyst', 'fraud_analyst', 'senior_analyst', 'admin'].includes(role));
   }
   if (area === 'organization') {
     return principal.roles.includes('admin');

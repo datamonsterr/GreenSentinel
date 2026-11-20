@@ -551,5 +551,336 @@
       "submitted": "Submitted",
       "pending_analyst_review": "Pending analyst review"
     }
+  },
+  "knowledge": {
+    "nav": {
+      "label": "Knowledge sections",
+      "section": "Knowledge & Agent",
+      "store": "Knowledge base",
+      "documents": "Policy documents",
+      "agents": "Agents",
+      "config": "Configuration",
+      "proposals": "Review queue"
+    },
+    "types": {
+      "parameter": "Parameter",
+      "motive": "Motive",
+      "behavior": "Behavior",
+      "scenario": "Scenario",
+      "workflow": "Workflow"
+    },
+    "status": {
+      "draft": "Draft",
+      "ready_for_test": "Ready for test",
+      "trial": "Trial",
+      "published": "Published",
+      "retired": "Retired"
+    },
+    "scope": {
+      "region": "Region",
+      "service": "Service",
+      "contract_type": "Contract type",
+      "policy": "Policy",
+      "rule": "Rule"
+    },
+    "store": {
+      "title": "Knowledge base",
+      "hint": "Versioned motives, behaviors, scenarios and workflows. The driver agent reads only published versions.",
+      "new": "New object",
+      "filterType": "Filter by type",
+      "filterStatus": "Filter by status",
+      "all": "All",
+      "allStatuses": "All statuses",
+      "search": "Search code or name",
+      "empty": "No knowledge objects yet.",
+      "seed": "Load demo data",
+      "seeded": "Demo data loaded ({n} items created).",
+      "col": {
+        "code": "Code",
+        "name": "Name",
+        "type": "Type",
+        "version": "Ver.",
+        "status": "Status",
+        "author": "Author",
+        "updated": "Updated"
+      }
+    },
+    "editor": {
+      "formula": "Benefit formula",
+      "condition": "Detection condition",
+      "formulaOk": "Formula is valid",
+      "sample": "sample result",
+      "formulaInvalid": "Fix the formula before submitting for testing.",
+      "usedParams": "Parameters used",
+      "catalogue": "Parameter catalogue (click to insert)",
+      "beneficiary": "Beneficiary",
+      "policy": "Related policy",
+      "formulaHint": "Excel style, e.g. =IF(trips_today+1>=milestone_trips, milestone_bonus_vnd-trip_cost_vnd, 0)",
+      "thresholdLabel": "Threshold placeholder",
+      "description": "Description",
+      "signals": "Signals (parameter codes)",
+      "signalsHint": "Comma separated catalogue parameters.",
+      "conditionHint": "Boolean expression, e.g. =stationary_duration_s>=300",
+      "sourceRule": "Source rule",
+      "motive_code": "Motive code",
+      "behavior_code": "Behavior code",
+      "workflow_code": "Workflow code",
+      "reason": "Explanation reason",
+      "askFirst": "Ask-first questions",
+      "askFirstHint": "One question per line, shown in the explanation form.",
+      "steps": "Question steps",
+      "stepQuestion": "Sample question",
+      "stepBranch": "Branch on answer",
+      "stepTool": "Tool",
+      "noTool": "No tool",
+      "removeStep": "Remove step",
+      "addStep": "Add step",
+      "stopCondition": "Stop condition",
+      "helpCondition": "Help condition",
+      "name": "Name",
+      "unit": "Unit",
+      "source": "Data source",
+      "owner": "Owner",
+      "latency": "Latency",
+      "newTitle": "New knowledge object",
+      "author": "Author",
+      "approver": "Approver",
+      "close": "Close editor",
+      "readOnly": "This version can no longer be edited. Clone it to create a new version.",
+      "readOnlyRetired": "Retired version, read only.",
+      "type": "Type",
+      "code": "Code",
+      "scope": "Scope",
+      "submitted": "Submitted for testing.",
+      "saved": "Saved.",
+      "trialStarted": "Trial run finished.",
+      "published": "Published.",
+      "retired": "Retired.",
+      "rolledBack": "Rolled back to the previous version.",
+      "cloned": "New draft version created.",
+      "reasonLabel": "Reason",
+      "reasonPlaceholder": "Reason (min 3 characters)",
+      "confirm": "Confirm",
+      "cancel": "Cancel",
+      "overrideLabel": "Override reason",
+      "overridePlaceholder": "Trial gate failed: override reason (min 10 characters)",
+      "fourEyesAuthor": "Four-eyes: you authored this version, a second approver must publish it.",
+      "fourEyesRole": "Only a senior analyst or admin can approve a release.",
+      "save": "Save draft",
+      "submit": "Submit for testing",
+      "startTrial": "Run trial",
+      "publish": "Publish",
+      "rollback": "Roll back",
+      "clone": "New version",
+      "retire": "Retire"
+    },
+    "replay": {
+      "title": "Trial replay report",
+      "hint": "Counts over recent real cases, without contacting any driver.",
+      "cases_total": "Cases",
+      "matched": "Matched",
+      "changed_scenario": "Changed vs live",
+      "not_computable": "Not computable",
+      "est_turns": "Est. turns",
+      "gatePassed": "Gate passed (≥ {pct}% computable)",
+      "gateFailed": "Gate failed (< {pct}% computable)",
+      "override": "Override reason"
+    },
+    "preview": {
+      "title": "Preview on real cases",
+      "hint": "Values per case with the parameters used. * = policy constant assumed from the catalogue.",
+      "run": "Preview",
+      "case": "Case",
+      "value": "Result",
+      "params": "Parameters",
+      "notComputable": "Not computable",
+      "matched": "Matches",
+      "notMatched": "No match",
+      "assumedNote": "Policy constant assumed from the catalogue sample value."
+    },
+    "versions": {
+      "title": "Versions"
+    },
+    "history": {
+      "title": "Change history"
+    },
+    "docs": {
+      "title": "Policy documents",
+      "hint": "Upload payout policies for the analysis agent. Document text is treated as data, never as instructions.",
+      "upload": "Upload policy",
+      "name": "Policy name",
+      "code": "Policy code",
+      "from": "Effective from",
+      "to": "Effective to",
+      "region": "Region",
+      "service": "Service",
+      "contract": "Driver contract type",
+      "file": "File",
+      "fileHint": "Text files are read in the browser; docx, pdf and xlsx are recorded as metadata.",
+      "paste": "Or paste the content",
+      "missing": "Missing",
+      "field": {
+        "name": "name",
+        "code": "code",
+        "file_or_text": "file or text"
+      },
+      "submit": "Upload",
+      "uploaded": "Policy document uploaded.",
+      "col": {
+        "code": "Code",
+        "name": "Document",
+        "scope": "Scope",
+        "indexing": "Indexing",
+        "usedBy": "Used by",
+        "uploaded": "Uploaded"
+      },
+      "indexing": {
+        "not_indexed": "Not indexed",
+        "indexed": "Indexed",
+        "embeddings_not_configured": "Embeddings not configured"
+      },
+      "indexingHint": {
+        "not_indexed": "Waiting for indexing",
+        "indexed": "Searchable by meaning",
+        "embeddings_not_configured": "No embeddings key: similarity falls back to token overlap"
+      },
+      "empty": "No policy documents yet.",
+      "similarTitle": "Find similar knowledge",
+      "similarHint": "Token-overlap similarity against existing objects (no embeddings).",
+      "similarPlaceholder": "Describe a motive or behavior",
+      "similarRun": "Find",
+      "similarNone": "No similar object found."
+    },
+    "agents": {
+      "title": "Agents",
+      "hint": "Which agent uses which knowledge, instruction version, model, tools and memory layers.",
+      "planned": "Planned",
+      "active": "Active",
+      "enabled": "Enabled",
+      "disabled": "Disabled (kill switch)",
+      "instruction": "Instruction",
+      "model": "Model",
+      "reads": "Reads",
+      "readsValue": {
+        "published": "Published versions only"
+      },
+      "knowledge": "Knowledge used",
+      "policyDocs": "Policy documents",
+      "tools": "Tools",
+      "memory": "Memory layers",
+      "layer": {
+        "session": "Session",
+        "knowledge_base": "Knowledge base",
+        "proposal_queue": "Proposal queue"
+      }
+    },
+    "config": {
+      "title": "Agent configuration",
+      "hint": "Limits are bounded by the product owner. Changes apply to new sessions; the kill switch applies immediately.",
+      "saved": "{key} saved.",
+      "ownerHint": "Who owns this setting",
+      "owner": {
+        "VH": "Operations",
+        "KSGL": "Fraud control"
+      },
+      "default": "Default",
+      "bounds": "bounds {min} to {max}",
+      "reason": "Reason for the change",
+      "save": "Save",
+      "outOfBounds": "Allowed range is {min} to {max}.",
+      "killTitle": "Kill switch: explanation agent v2",
+      "killOn": "Agent v2 on",
+      "killOff": "Agent v2 off (static form)",
+      "killHint": "Off falls back to the existing static explanation form and chat. It is off by default.",
+      "killNoRight": "Only a lead or admin can use the kill switch.",
+      "turnOn": "Turn on",
+      "turnOff": "Turn off",
+      "killOnDone": "Agent v2 turned on.",
+      "killOffDone": "Agent v2 turned off.",
+      "revertPrompt": "Reason for reverting",
+      "revert": "Revert",
+      "reverted": "Reverted to the previous value.",
+      "metric": {
+        "avg_turns": "Average turns",
+        "pct_exhausted": "% sessions out of turns",
+        "pct_help": "% help requests"
+      },
+      "metricWindow": "last {days} days",
+      "metricPending": "no sessions yet",
+      "group": {
+        "limits": "Question limits",
+        "help": "Help requests",
+        "thresholds": "Thresholds and memory"
+      },
+      "historyTitle": "Change history",
+      "col": {
+        "when": "When",
+        "key": "Setting",
+        "change": "Change",
+        "kind": "Kind",
+        "who": "Who",
+        "reason": "Reason"
+      },
+      "kind": {
+        "change": "Change",
+        "revert": "Revert",
+        "kill_switch": "Kill switch"
+      },
+      "noHistory": "No changes recorded yet."
+    },
+    "proposals": {
+      "title": "Review queue",
+      "hint": "Proposals from policy analysis, help replies, closed cases and monitoring. Accept and edit only reach Ready for test; publishing needs a second reviewer.",
+      "badJson": "The edited proposal is not valid JSON.",
+      "edited": "Edited and moved to Ready for test.",
+      "accepted": "Accepted and moved to Ready for test.",
+      "rejected": "Proposal rejected.",
+      "source": {
+        "policy_analysis": "Policy analysis",
+        "help_reply": "Help reply",
+        "closed_case": "Closed case",
+        "monitoring": "Monitoring",
+        "manual": "Manual"
+      },
+      "mapping": {
+        "reuse": "Reuse",
+        "extend": "Extend",
+        "new": "New"
+      },
+      "similarity": "similarity",
+      "status": {
+        "pending": "Pending",
+        "accepted": "Accepted",
+        "edited": "Edited",
+        "rejected": "Rejected"
+      },
+      "sourceCol": "Source",
+      "proposalCol": "Proposal",
+      "noSource": "No source excerpt.",
+      "by": "Proposed by",
+      "rejectedWith": "Rejected",
+      "reason": {
+        "wrong_source": "Wrong source",
+        "wrong_motive": "Wrong motive",
+        "duplicate": "Duplicate",
+        "out_of_scope": "Out of scope",
+        "other": "Other"
+      },
+      "editHint": "Edit the proposal payload (JSON).",
+      "saveEdit": "Save and accept",
+      "reasonLabel": "Reject reason",
+      "reasonPick": "Pick a reason",
+      "note": "Note",
+      "confirmReject": "Reject",
+      "accept": "Accept",
+      "edit": "Edit",
+      "reject": "Reject",
+      "filterStatus": "Filter by status",
+      "allStatuses": "All statuses",
+      "filterSource": "Filter by source",
+      "allSources": "All sources",
+      "filterType": "Filter by type",
+      "empty": "Nothing to review."
+    }
   }
 }

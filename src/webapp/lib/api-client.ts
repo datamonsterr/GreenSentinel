@@ -206,7 +206,8 @@ export async function requestJson<T>(url: string, options?: RequestInit, timeout
       try {
         const errBody = await response.json();
         if (errBody && typeof errBody === "object") {
-          errorDetail = errBody.detail || errBody.message || JSON.stringify(errBody);
+          const detail = errBody.detail || errBody.message;
+          errorDetail = detail === undefined ? JSON.stringify(errBody) : typeof detail === "string" ? detail : JSON.stringify(detail);
         }
       } catch {
         // Non-JSON errors retain the HTTP status text.

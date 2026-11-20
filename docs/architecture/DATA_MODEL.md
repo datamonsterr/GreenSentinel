@@ -162,3 +162,14 @@ Migration indexes cover driver assignment time, telemetry assignment/time, inges
 | Three simulations | `simulation_runs`, `ingest_events`, `simulation_labels` with intentional DIC, gridlock, and dropout scenarios. |
 
 The architecture decision is [`adr-002-relational-spatial-event-schema.md`](adr-002-relational-spatial-event-schema.md). Runtime design is in [`POC_DESIGN.md`](POC_DESIGN.md).
+
+## Knowledge base and agent config (ADR-032, migration `20261120110000_kb_objects_and_agent_config.sql`)
+
+| Table | Notes |
+|---|---|
+| `kb_object` | One row per version of a `parameter|motive|behavior|scenario|workflow`. `status` draft, ready_for_test, trial, published, retired; `body`/`scope`/`replay`/`history` jsonb; author and approver; partial unique index keeps one `published` row per `(organization_id, type, code)`. |
+| `agent_config`, `agent_config_history` | Per-org values by `key` and `scope` (`global` or `rule:<code>`); history keeps old/new value, reason, kind (`change|revert|kill_switch`) and actor. Bounds are code constants. |
+| `kb_policy_document` | Upload metadata, text excerpt, `indexing_status` (`not_indexed|indexed|embeddings_not_configured`). |
+| `kb_proposal` | Review queue rows from analysis/help/closed case/monitoring/manual with mapping `reuse|extend|new`, similarity, decision and reason. |
+
+Audit rows go to `audit_events` (`kb.*`, `agent_config.*`). The `kb_` prefix avoids the existing `workflow_*` analyst tables.
