@@ -250,6 +250,20 @@ def _iso_or_none(value: Any) -> str | None:
     return value.isoformat() if isinstance(value, datetime) else (str(value) if value else None)
 
 
+# app.adjudications.outcome is constrained to dismiss/approve/reject/warn/fine/suspend
+# (db/migrations/20261003220000_*). The API contract is AGREE/DISAGREE, so translate at the DB boundary.
+_API_TO_DB_OUTCOME = {"AGREE": "approve", "DISAGREE": "dismiss"}
+_DB_TO_API_OUTCOME = {"approve": "AGREE", "dismiss": "DISAGREE"}
+
+
+def db_outcome(api_value: str) -> str:
+    return _API_TO_DB_OUTCOME[api_value.upper()]
+
+
+def api_outcome(db_value: str) -> str:
+    return _DB_TO_API_OUTCOME.get(str(db_value).lower(), db_value)
+
+
 class CaseService:
     """Service handling fraud cases, telemetry, simulations, leases, and adjudication.
 
@@ -3094,7 +3108,7 @@ class CaseService:
                     if adj_row:
                         adjudication_info = {
                             "id": str(adj_row["id"]),
-                            "outcome": adj_row["outcome"],
+                            "outcome": api_outcome(adj_row["outcome"]),
                             "rationale": adj_row["rationale"],
                             "analyst_id": str(adj_row["analyst_id"]),
                             "approved_at": adj_row["approved_at"].isoformat()
@@ -4973,7 +4987,7 @@ class CaseService:
                             snap_id,
                             policy_id,
                             analyst_uuid,
-                            req.outcome.lower(),
+                            db_outcome(req.outcome),
                             req.rationale,
                             True,
                             uuid4(),

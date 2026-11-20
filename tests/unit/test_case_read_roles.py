@@ -90,9 +90,31 @@ def test_awaiting_me_rejected_for_analyst(client_for):
     assert c.get("/cases?awaiting=me").status_code == 400
 
 
-def test_awaiting_status_none_for_admin_and_analyst():
-    assert awaiting_status({"admin", "reviewer"}) is None
-    assert awaiting_status({"analyst"}) is None
+def test_awaiting_status_admin_is_mkp_director_analyst_none():
+    assert awaiting_status({"admin", "analyst", "fraud_analyst", "driver"}) == "need_mkp_dir_approved"
+    assert awaiting_status({"analyst", "fraud_analyst"}) is None
+
+
+def test_admin_awaiting_me_is_mkp_queue_and_keeps_analyst_access(client_for):
+    from src.api.auth import Principal
+
+    c, svc = client_for("admin")
+    app.dependency_overrides[require_principal] = lambda: Principal(
+        id="p1", organization_id="org1", roles=frozenset({"admin", "analyst", "fraud_analyst", "driver"})
+    )
+    assert c.get("/cases?awaiting=me").status_code == 200
+    kw = svc.list_cases.call_args.kwargs
+    assert kw["status"] == "need_mkp_dir_approved" and kw["availability"] == "all"
+    assert c.get("/cases").status_code == 200
+    assert svc.list_cases.call_args.kwargs["availability"] == "available"  # normal analyst queue unchanged
+
+
+def test_admin_approves_marketplace_step():
+    from src.services.case_workflow import allowed_actions, authorize
+
+    assert authorize("approve-marketplace", {"admin"}).to_status == "completed"
+    assert allowed_actions("need_mkp_dir_approved", {"admin", "analyst"}) == ["approve-marketplace"]
+
 
 
 @pytest.mark.parametrize(

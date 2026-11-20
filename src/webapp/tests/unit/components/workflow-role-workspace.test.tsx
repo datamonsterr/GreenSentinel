@@ -3,7 +3,7 @@ import { cleanup, render, screen, waitFor, within } from '@testing-library/react
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, expect, it, vi } from 'vitest';
 import { CockpitWorkspaceView } from '@/components/views/cockpit-view';
-import { awaitingStatusFor } from '@/lib/workflow-roles';
+import { awaitingStatusFor, isWorkflowOnly } from '@/lib/workflow-roles';
 
 const json = (value: unknown, status = 200) => new Response(JSON.stringify(value), { status, headers: { 'Content-Type': 'application/json' } });
 const ids = ['36900000-0000-4000-8000-000000000001', '36900000-0000-4000-8000-000000000002'];
@@ -34,7 +34,9 @@ it('maps workflow roles to their awaiting status; analysts/admins get none', () 
   expect(awaitingStatusFor('ops_director')).toBe('need_ops_dir_approved');
   expect(awaitingStatusFor(['marketplace_director'])).toBe('need_mkp_dir_approved');
   expect(awaitingStatusFor(['analyst'])).toBeNull();
-  expect(awaitingStatusFor(['admin', 'reviewer'])).toBeNull();
+  expect(awaitingStatusFor(['admin', 'analyst'])).toBe('need_mkp_dir_approved');
+  expect(isWorkflowOnly(['reviewer'])).toBe(true);
+  expect(isWorkflowOnly(['admin', 'reviewer'])).toBe(false);
 });
 
 it('reviewer: queue defaults to awaiting cases, no Claim button, read-only hint, can switch to all', async () => {
@@ -55,5 +57,14 @@ it('analyst keeps Claim and sees no workflow toggle or hint', async () => {
   render(<CockpitWorkspaceView />);
   await waitFor(() => expect(screen.getAllByRole('button', { name: /^(Claim|Nhận)$/ }).length).toBeGreaterThan(0));
   expect(screen.queryByTestId('awaiting-toggle')).not.toBeInTheDocument();
+  expect(screen.queryByTestId('workflow-readonly-hint')).not.toBeInTheDocument();
+});
+
+it('admin keeps Claim, gets an Awaiting-me toggle for the MKP step, no read-only hint', async () => {
+  roles = ['admin', 'analyst'];
+  render(<CockpitWorkspaceView />);
+  const toggle = await screen.findByTestId('awaiting-toggle');
+  await waitFor(() => expect(screen.getAllByRole('button', { name: /^(Claim|Nhận)$/ }).length).toBeGreaterThan(0));
+  expect(within(toggle).getByRole('button', { pressed: true })).toHaveTextContent(/All cases|Tất cả/); // default stays the full analyst queue
   expect(screen.queryByTestId('workflow-readonly-hint')).not.toBeInTheDocument();
 });

@@ -374,10 +374,10 @@ async def list_cases(
     wf_status = case_workflow.awaiting_status(principal.roles) if principal else None
     if awaiting == "me":
         if wf_status is None:
-            raise HTTPException(status_code=400, detail="awaiting=me requires a workflow role")
+            raise HTTPException(status_code=400, detail="awaiting=me requires a workflow role or admin")
         status = wf_status
-    if wf_status is not None:
-        availability = "all"  # workflow roles never claim; leases are irrelevant
+    if awaiting == "me" or (principal and case_workflow.is_workflow_only(principal.roles)):
+        availability = "all"  # step queues ignore review leases
     return await case_service.list_cases(
         status=status,
         priority=priority,
