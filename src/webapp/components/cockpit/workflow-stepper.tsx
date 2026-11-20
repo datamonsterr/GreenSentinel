@@ -88,6 +88,6 @@ export function WorkflowStepper({ caseId, locale, refreshKey }: { caseId: string
     setBusy(true);
     try { const w = await advanceCaseWorkflow(caseId, a); if (!Array.isArray(w?.steps)) throw new Error("bad workflow payload"); setWf(w); setFailed(false); } catch { setFailed(true); } finally { setBusy(false); }
   }, [caseId]);
-  if (!wf) return failed ? <p data-testid="workflow-error" className="mb-1 text-xs text-gs-mute">{L[locale].err}</p> : null;
+  if (!wf) return failed ? <p data-testid="workflow-error" className="mb-3 text-xs text-gs-mute">{L[locale].err}</p> : null;
   return <WorkflowStepperView workflow={wf} locale={locale} busy={busy} onAction={act} />;
 }
