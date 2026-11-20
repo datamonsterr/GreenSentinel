@@ -28,6 +28,16 @@ describe('WorkflowStepperView', () => {
     expect(container.querySelector('[data-step="REVIEWED"]')?.textContent).toMatch(/\d/);
   });
 
+  it('renders a skipped explain step as not applicable, not done', () => {
+    const w = wf(2);
+    w.steps[0] = { ...w.steps[0], state: 'skipped', completed_at: null };
+    const { container } = render(<WorkflowStepperView workflow={w} locale="en" />);
+    const step = container.querySelector('[data-step="NEED_TO_EXPLAIN"]')!;
+    expect(step.getAttribute('data-state')).toBe('skipped');
+    expect(step).toHaveTextContent('Not applicable');
+    expect(step.textContent).not.toMatch(/\d{2}:\d{2}/);
+  });
+
   it('shows Admin as the actor of the MKP DIR step', () => {
     const { container } = render(<WorkflowStepperView workflow={wf(6)} locale="vi" />);
     const step = container.querySelector('[data-step="NEED_MKP_DIR_APPROVED"]')!;

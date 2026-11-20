@@ -23,7 +23,8 @@ def test_existing_review_statuses_are_under_review(st):
 def test_completed_all_done_with_timestamp_and_no_next():
     ts = datetime(2026, 1, 1, tzinfo=UTC)
     out = build_stepper("completed", [{"step": "REPORT_CONFIRMED", "created_at": ts}])
-    assert all(s["state"] == "done" for s in out["steps"])
+    # driver was never asked to explain -> that step is skipped, not done
+    assert all(s["state"] == "done" for s in out["steps"] if s["key"] != "NEED_TO_EXPLAIN")
     assert next(s for s in out["steps"] if s["key"] == "REPORT_CONFIRMED")["completed_at"] == ts
     assert out["next"] is None
 

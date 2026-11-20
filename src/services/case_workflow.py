@@ -26,23 +26,31 @@ STEPS: list[tuple[str, str, str]] = [
 ]
 STEP_KEYS = [s[0] for s in STEPS]
 
-# our status -> index of the *current* step. Unlisted -> None (no stepper position).
+# our status -> the *current* step. Unlisted -> None (no stepper position).
 STATUS_STEP: dict[str, str] = {
     "evidence_requested": "NEED_TO_EXPLAIN",
-    "driver_disputed": "NEED_TO_EXPLAIN",
+    "driver_disputed": "UNDER_REVIEW",  # driver already submitted; analyst reviews the explanation
     "ingested": "UNDER_REVIEW",
     "processing": "UNDER_REVIEW",
     "ready": "UNDER_REVIEW",
     "in_review": "UNDER_REVIEW",
     "escalated": "UNDER_REVIEW",
     "pending_analyst_review": "UNDER_REVIEW",
+    "pending_driver_confirmation": "NEED_TO_EXPLAIN",  # driver asked to confirm/explain
+    "driver_confirmed_resolution": "REVIEWED",
     "resolved": "REVIEWED",
+    "suspended": "REVIEWED",  # sanction outcome of an adjudicated case
     "report_issued": "REPORT_ISSUED",
     "report_confirmed": "REPORT_CONFIRMED",
     "need_ops_dir_approved": "NEED_OPS_DIR_APPROVED",
     "need_mkp_dir_approved": "NEED_MKP_DIR_APPROVED",
     "completed": "COMPLETED",
 }
+CLOSED_STATUSES = frozenset({"auto_dismissed", "dismissed", "closed"})
+# dispute_status values meaning the driver has already answered (case waits on analysts)
+DRIVER_ANSWERED = frozenset({"in_dispute", "pending_review", "analyst_escalated"})
+# statuses where the driver was asked / has answered, even without a timestamp row
+EXPLAIN_STATUSES = frozenset({"evidence_requested", "driver_disputed", "pending_driver_confirmation"})
 
 NEXT_ACTOR_TEXT: dict[str, tuple[str, str]] = {
     "NEED_TO_EXPLAIN": ("TX", "Tài xế giải trình"),
@@ -53,6 +61,7 @@ NEXT_ACTOR_TEXT: dict[str, tuple[str, str]] = {
     "NEED_OPS_DIR_APPROVED": ("OPS_DIR", "Giám đốc vận hành duyệt"),
     "NEED_MKP_DIR_APPROVED": ("MKP_DIR", "Admin (Giám đốc Marketplace) duyệt"),
 }
+NEXT_ACTOR_DRIVER_ANSWERED = ("KSGL", "Kiểm soát gian lận xem xét giải trình của tài xế")
 
 
 @dataclass(frozen=True)
@@ -79,22 +88,38 @@ TRANSITIONS: dict[str, Transition] = {
 
 
 def build_stepper(
-    status: str | None, events: list[dict[str, Any]], created_at: datetime | None = None
+    status: str | None,
+    events: list[dict[str, Any]],
+    created_at: datetime | None = None,
+    dispute_status: str | None = None,
+    timestamps: dict[str, datetime] | None = None,
 ) -> dict[str, Any]:
-    """Stepper payload: per-step state (done/current/pending) + next actor."""
+    """Stepper payload: per-step state (done/current/pending/skipped) + next actor.
+
+    `timestamps` carries step times from sources other than workflow events
+    (driver submission / evidence request -> NEED_TO_EXPLAIN, first review action -> UNDER_REVIEW,
+    adjudication -> REVIEWED). `created_at` is accepted for compatibility but never used as a step time.
+    """
     status = (status or "").lower()
-    current_key = STATUS_STEP.get(status)
-    closed = status in {"auto_dismissed", "dismissed"}
+    dispute = (dispute_status or "").lower()
+    closed = status in CLOSED_STATUSES
+    current_key = None if closed else STATUS_STEP.get(status)
+    if status == "evidence_requested" and dispute in DRIVER_ANSWERED:
+        current_key = "UNDER_REVIEW"
     cur = STEP_KEYS.index(current_key) if current_key else -1
-    done_at = {e["step"]: e["created_at"] for e in events}
-    if created_at:
-        done_at.setdefault("NEED_TO_EXPLAIN", created_at)
+    done_at = dict(timestamps or {})
+    done_at.update({e["step"]: e["created_at"] for e in events})
+    explained = (
+        "NEED_TO_EXPLAIN" in done_at
+        or status in EXPLAIN_STATUSES
+        or dispute not in ("", "not_disputed")
+    )
     steps = []
     for i, (key, actor, label) in enumerate(STEPS):
-        if status == "completed" or (cur >= 0 and i < cur):
-            state = "done"
+        if cur >= 0 and i < cur:
+            state = "done" if key != "NEED_TO_EXPLAIN" or explained else "skipped"
         elif i == cur:
-            state = "current"
+            state = "done" if status == "completed" else "current"
         else:
             state = "pending"
         steps.append(
@@ -106,7 +131,11 @@ def build_stepper(
                 "completed_at": done_at.get(key) if state == "done" else None,
             }
         )
-    nxt = None if closed or status == "completed" or not current_key else NEXT_ACTOR_TEXT.get(current_key)
+    nxt = None
+    if current_key and status != "completed":
+        nxt = NEXT_ACTOR_TEXT.get(current_key)
+        if current_key == "UNDER_REVIEW" and (status == "driver_disputed" or dispute in DRIVER_ANSWERED):
+            nxt = NEXT_ACTOR_DRIVER_ANSWERED
     return {
         "status": status,
         "closed": closed,
@@ -163,7 +192,7 @@ def load_stepper(conn_factory: Callable[[], Any], case_id: str, organization_id:
         with conn.cursor() as cur:
             cur.execute("SET search_path = app, extensions, public;")
             cur.execute(
-                "SELECT status, created_at FROM app.fraud_cases WHERE id::text = %s AND organization_id::text = %s",
+                "SELECT status, dispute_status, created_at FROM app.fraud_cases WHERE id::text = %s AND organization_id::text = %s",
                 (case_id, organization_id),
             )
             row = cur.fetchone()
@@ -174,6 +203,15 @@ def load_stepper(conn_factory: Callable[[], Any], case_id: str, organization_id:
                 (case_id,),
             )
             adj = cur.fetchone()
+            cur.execute(
+                """SELECT
+                     (SELECT max(received_at) FROM app.driver_submissions WHERE case_id::text = %s) AS driver_at,
+                     (SELECT min(created_at) FROM app.review_actions
+                        WHERE case_id::text = %s AND action = 'request_evidence') AS asked_at,
+                     (SELECT min(created_at) FROM app.review_actions WHERE case_id::text = %s) AS review_at""",
+                (case_id, case_id, case_id),
+            )
+            tsr = cur.fetchone() or {}
             cur.execute(
                 """SELECT e.step, e.created_at, e.actor_role, p.display_name
                    FROM app.case_workflow_events e LEFT JOIN app.principals p ON p.id = e.actor_id
@@ -202,7 +240,14 @@ def load_stepper(conn_factory: Callable[[], Any], case_id: str, organization_id:
             events.append(
                 {"step": "REVIEWED", "created_at": adj["approved_at"], "actor_role": "KSGL", "actor_name": None}
             )
-        out = build_stepper(row["status"], events, row["created_at"])
+        ts: dict[str, datetime] = {}
+        explain_at = tsr.get("driver_at") or tsr.get("asked_at")
+        if explain_at:
+            ts["NEED_TO_EXPLAIN"] = explain_at
+        review_at = tsr.get("review_at") or (adj["approved_at"] if adj else None)
+        if review_at:
+            ts["UNDER_REVIEW"] = review_at
+        out = build_stepper(row["status"], events, row["created_at"], row.get("dispute_status"), ts)
         for s in out["steps"]:
             ev = next((e for e in events if e["step"] == s["key"]), None)
             s["actor_name"] = ev["actor_name"] if ev and s["state"] == "done" else None
