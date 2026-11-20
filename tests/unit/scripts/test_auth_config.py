@@ -8,7 +8,9 @@ from scripts.auth_config import authorized_parties_for, validate_authorized_part
 
 
 def test_authorized_parties_are_explicit_per_environment():
-    assert authorized_parties_for("production") == ("https://green-sentinel.vercel.app,https://greensentinel.vercel.app")
+    assert authorized_parties_for("production") == (
+        "https://green-sentinel.vercel.app,https://greensentinel.vercel.app"
+    )
     assert authorized_parties_for("dev") == (
         "https://green-sentinel-dev.vercel.app,https://dev.green-sentinel.vercel.app,https://dev-green-sentinel.vercel.app,http://localhost:3000,http://127.0.0.1:3000,http://localhost:3100,http://127.0.0.1:3100"
     )

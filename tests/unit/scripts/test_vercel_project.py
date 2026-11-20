@@ -315,7 +315,10 @@ def test_wait_retries_transient_get_failures_within_deadline(failure, capsys):
 def test_alias_never_blindly_retries_failed_mutation(failure, capsys):
     api = VercelAPI(READY, failure, {"alias": "green-sentinel-dev.vercel.app"})
     assert (
-        vercel_project.main(["alias", "preview.vercel.app", "green-sentinel-dev.vercel.app"], environ=SETTINGS, opener=api) == 1
+        vercel_project.main(
+            ["alias", "preview.vercel.app", "green-sentinel-dev.vercel.app"], environ=SETTINGS, opener=api
+        )
+        == 1
     )
     assert [request.get_method() for request, _ in api.requests] == ["GET", "POST"]
     captured = capsys.readouterr()
@@ -347,7 +350,9 @@ def test_check_rejects_malformed_response_without_leaking_body(response, capsys)
 def test_alias_conflict_succeeds_only_when_exact_deployment_owns_alias(aliases, code, capsys):
     api = VercelAPI(READY, http_failure(409), aliases)
     assert (
-        vercel_project.main(["alias", "preview.vercel.app", "green-sentinel-dev.vercel.app"], environ=SETTINGS, opener=api)
+        vercel_project.main(
+            ["alias", "preview.vercel.app", "green-sentinel-dev.vercel.app"], environ=SETTINGS, opener=api
+        )
         == code
     )
     assert [request.get_method() for request, _ in api.requests] == ["GET", "POST", "GET"]

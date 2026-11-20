@@ -45,7 +45,9 @@ def make_trace_identity(
 ) -> dict[str, str]:
     trace_id = uuid5(NAMESPACE_URL, f"greensentinel:{case_id}:{run_id}").hex
     root_span_id = uuid5(NAMESPACE_URL, f"greensentinel:{trace_id}:agent").hex[:16]
-    span_id = root_span_id if span_role == "agent" else uuid5(NAMESPACE_URL, f"greensentinel:{trace_id}:{span_role}").hex[:16]
+    span_id = (
+        root_span_id if span_role == "agent" else uuid5(NAMESPACE_URL, f"greensentinel:{trace_id}:{span_role}").hex[:16]
+    )
     identity = {
         "request_id": request_id,
         "run_id": run_id,
@@ -83,7 +85,9 @@ def _trace_scope(identity: dict[str, Any], *, name: str, run_type: Literal["chai
             tracing_context(
                 enabled=True,
                 client=client,
-                project_name=os.getenv("LANGSMITH_PROJECT", os.getenv("LANGCHAIN_PROJECT", "greensentinel-agent-runtime")),
+                project_name=os.getenv(
+                    "LANGSMITH_PROJECT", os.getenv("LANGCHAIN_PROJECT", "greensentinel-agent-runtime")
+                ),
             )
         )
         run = stack.enter_context(

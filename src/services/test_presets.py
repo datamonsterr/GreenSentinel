@@ -647,8 +647,12 @@ def materialize_preset_simulation_input(
     # Map persisted identities through organization namespace to prevent cross-tenant collision
     mapped_trip_id = str(uuid5(NAMESPACE_URL, f"greensentinel:test-console:trip:{org_uuid}:{src_trip_id}"))
     mapped_driver_id = str(uuid5(NAMESPACE_URL, f"greensentinel:test-console:actor:{org_uuid}:driver:{src_driver_id}"))
-    mapped_passenger_id = str(uuid5(NAMESPACE_URL, f"greensentinel:test-console:actor:{org_uuid}:passenger:{src_passenger_id}"))
-    mapped_vehicle_id = str(uuid5(NAMESPACE_URL, f"greensentinel:test-console:actor:{org_uuid}:vehicle:{src_vehicle_id}"))
+    mapped_passenger_id = str(
+        uuid5(NAMESPACE_URL, f"greensentinel:test-console:actor:{org_uuid}:passenger:{src_passenger_id}")
+    )
+    mapped_vehicle_id = str(
+        uuid5(NAMESPACE_URL, f"greensentinel:test-console:actor:{org_uuid}:vehicle:{src_vehicle_id}")
+    )
 
     driver_profile = dict(record.get("driver_profile") or {})
     driver_profile["organization_id"] = org_uuid

@@ -25,7 +25,11 @@ WRITE = [
     ("POST", "/cases/c1/claim", {"analyst_id": "p1"}),
     ("POST", "/cases/c1/release", {"analyst_id": "p1"}),
     ("POST", "/cases/c1/actions", {"action_type": "REQUEST_EVIDENCE", "analyst_id": "p1"}),
-    ("POST", "/cases/c1/adjudicate", {"outcome": "AGREE", "analyst_id": "p1", "rationale": "long enough rationale", "expected_case_version": 1}),
+    (
+        "POST",
+        "/cases/c1/adjudicate",
+        {"outcome": "AGREE", "analyst_id": "p1", "rationale": "long enough rationale", "expected_case_version": 1},
+    ),
     ("POST", "/cases/c1/preliminary-assessment", {"analyst_id": "p1", "judgment": "Chưa đủ cơ sở"}),
     ("PUT", "/cases/c1/workflow-draft", {"text": "x"}),
     ("POST", "/cases/c1/delegate-inquiry", {"instruction": "x"}),
@@ -69,7 +73,11 @@ def test_workflow_roles_forbidden_on_writes(client_for, role, method, path, body
 
 @pytest.mark.parametrize(
     ("role", "status"),
-    [("reviewer", "report_issued"), ("ops_director", "need_ops_dir_approved"), ("marketplace_director", "need_mkp_dir_approved")],
+    [
+        ("reviewer", "report_issued"),
+        ("ops_director", "need_ops_dir_approved"),
+        ("marketplace_director", "need_mkp_dir_approved"),
+    ],
 )
 def test_awaiting_me_filters_to_role_status_and_ignores_leases(client_for, role, status):
     c, svc = client_for(role)
@@ -116,10 +124,13 @@ def test_admin_approves_marketplace_step():
     assert allowed_actions("need_mkp_dir_approved", {"admin", "analyst"}) == ["approve-marketplace"]
 
 
-
 @pytest.mark.parametrize(
     ("role", "status", "action"),
-    [("reviewer", "report_issued", "confirm-report"), ("ops_director", "need_ops_dir_approved", "approve-ops"), ("marketplace_director", "need_mkp_dir_approved", "approve-marketplace")],
+    [
+        ("reviewer", "report_issued", "confirm-report"),
+        ("ops_director", "need_ops_dir_approved", "approve-ops"),
+        ("marketplace_director", "need_mkp_dir_approved", "approve-marketplace"),
+    ],
 )
 def test_workflow_get_returns_role_actions(client_for, monkeypatch, role, status, action):
     from src.services import case_workflow
