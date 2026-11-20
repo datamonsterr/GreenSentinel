@@ -176,9 +176,9 @@ export function TripPipeline({
                     ? "border-primary bg-primary/5 ring-2 ring-primary/30 shadow-xs"
                     : isDone
                     ? isCancelled
-                      ? "border-rose-300 bg-rose-50/50 hover:bg-rose-50"
-                      : "border-emerald-300 bg-emerald-50/40 hover:bg-emerald-50"
-                    : "border-outline-variant/60 bg-white hover:bg-slate-50"
+                      ? "border-gs-red/40 bg-gs-red-soft hover:bg-gs-red-soft"
+                      : "border-gs-green/40 bg-gs-green-soft hover:bg-gs-green-soft"
+                    : "border-outline-variant/60 bg-white hover:bg-surface-container-low"
                 }`}
               >
                 {/* Header: step number & state icon */}
@@ -187,51 +187,51 @@ export function TripPipeline({
                     <span
                       className={`w-4 h-4 rounded-full text-[10px] font-bold flex items-center justify-center shrink-0 ${
                         isCurrent
-                          ? "bg-primary text-white"
+                          ? "bg-gs-green text-white"
                           : isDone
                           ? isCancelled
-                            ? "bg-rose-600 text-white"
-                            : "bg-emerald-600 text-white"
-                          : "bg-slate-200 text-slate-600"
+                            ? "bg-gs-red text-white"
+                            : "bg-gs-green text-white"
+                          : "bg-surface-container-high text-gs-mute-2"
                       }`}
                     >
                       {idx + 1}
                     </span>
-                    <span className="font-bold text-xs truncate text-slate-800">
+                    <span className="font-bold text-xs truncate text-foreground">
                       {isCancelled ? "Đã hủy" : config.name}
                     </span>
                   </div>
 
                   <div className="shrink-0">
                     {isCancelled ? (
-                      <XCircle className="w-4 h-4 text-rose-600" />
+                      <XCircle className="w-4 h-4 text-gs-red" />
                     ) : isDone ? (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                      <CheckCircle2 className="w-4 h-4 text-gs-green" />
                     ) : isCurrent ? (
                       <Clock className="w-4 h-4 text-primary animate-spin" />
                     ) : (
-                      <Circle className="w-4 h-4 text-slate-300" />
+                      <Circle className="w-4 h-4 text-gs-mute" />
                     )}
                   </div>
                 </div>
 
                 {/* Body: description */}
-                <p className="text-[11px] text-slate-600 line-clamp-2 min-h-[30px]" title={desc}>
+                <p className="text-[11px] text-gs-mute-2 line-clamp-2 min-h-[30px]" title={desc}>
                   {desc}
                 </p>
 
                 {/* Footer: timestamp */}
-                <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 pt-1 border-t border-slate-100 w-full">
+                <div className="flex items-center justify-between text-[10px] font-mono text-gs-mute-2 pt-1 border-t border-gs-line-2 w-full">
                   <span>{formatTime(stage.occurred_at)}</span>
                   <span
                     className={`px-1.5 py-0.2 rounded text-[9px] font-semibold uppercase ${
                       isCancelled
-                        ? "bg-rose-100 text-rose-800"
+                        ? "bg-gs-red-soft text-gs-red"
                         : isDone
-                        ? "bg-emerald-100 text-emerald-800"
+                        ? "bg-gs-green-soft text-gs-green"
                         : isCurrent
                         ? "bg-primary/20 text-primary"
-                        : "bg-slate-100 text-slate-500"
+                        : "bg-surface-container text-gs-mute-2"
                     }`}
                   >
                     {isCancelled ? "cancelled" : stage.state}
@@ -240,7 +240,7 @@ export function TripPipeline({
               </button>
 
               {idx < resolvedStages.length - 1 && (
-                <div className="px-1 text-slate-300 shrink-0">
+                <div className="px-1 text-gs-mute shrink-0">
                   <ChevronRight className="w-4 h-4" />
                 </div>
               )}
@@ -259,14 +259,14 @@ export function TripPipeline({
           <div className="flex items-center justify-between border-b border-outline-variant/30 pb-1.5">
             <div className="flex items-center gap-2">
               <Info className="w-4 h-4 text-primary" />
-              <span className="font-bold text-slate-800 text-sm">
+              <span className="font-bold text-foreground text-sm">
                 Giai đoạn {selectedStage.index + 1}: {selectedStage.config.name}
               </span>
               <span
                 className={`px-1.5 py-0.5 rounded text-[10px] font-bold uppercase ${
                   selectedStage.stage.state === "done"
-                    ? "bg-emerald-100 text-emerald-800"
-                    : "bg-slate-100 text-slate-600"
+                    ? "bg-gs-green-soft text-gs-green"
+                    : "bg-surface-container text-gs-mute-2"
                 }`}
               >
                 {selectedStage.stage.state}
@@ -276,7 +276,7 @@ export function TripPipeline({
               type="button"
               onClick={() => setSelectedStage(null)}
               aria-label="Đóng chi tiết"
-              className="p-1 text-slate-400 hover:text-slate-600 rounded cursor-pointer"
+              className="p-1 text-gs-mute hover:text-gs-mute-2 rounded cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
@@ -284,14 +284,14 @@ export function TripPipeline({
 
           <div className="grid grid-cols-2 gap-2 text-[11px]">
             <div>
-              <span className="text-slate-500 block">Thời gian ghi nhận:</span>
-              <span className="font-mono font-semibold text-slate-700">
+              <span className="text-gs-mute-2 block">Thời gian ghi nhận:</span>
+              <span className="font-mono font-semibold text-gs-ink-2">
                 {selectedStage.stage.occurred_at || "Chưa có"}
               </span>
             </div>
             <div>
-              <span className="text-slate-500 block">Mô tả hệ thống:</span>
-              <span className="text-slate-700">
+              <span className="text-gs-mute-2 block">Mô tả hệ thống:</span>
+              <span className="text-gs-ink-2">
                 {getStageDescription(selectedStage.stage, selectedStage.config)}
               </span>
             </div>
@@ -299,12 +299,12 @@ export function TripPipeline({
 
           {selectedStage.stage.detail && (
             <div className="space-y-1">
-              <span className="text-slate-500 text-[10px] uppercase font-bold tracking-wider">
+              <span className="text-gs-mute-2 text-[10px] uppercase font-bold tracking-wider">
                 Chi tiết dữ liệu (Backend detail):
               </span>
               <pre
                 data-testid="stage-detail-json"
-                className="p-2 bg-slate-50 border border-slate-200 rounded font-mono text-[10px] overflow-x-auto max-h-40"
+                className="p-2 bg-surface-container-low border border-gs-line-2 rounded font-mono text-[10px] overflow-x-auto max-h-40"
               >
                 {typeof selectedStage.stage.detail === "object"
                   ? JSON.stringify(selectedStage.stage.detail, null, 2)

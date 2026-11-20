@@ -105,25 +105,25 @@ export function HistoryTable({ runs }: HistoryTableProps) {
     switch (source) {
       case "manual":
         return (
-          <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-blue-50 text-blue-700 border border-blue-200">
+          <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-gs-blue-soft text-gs-blue border border-gs-blue/30">
             Thủ công
           </span>
         );
       case "preset":
         return (
-          <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-purple-50 text-purple-700 border border-purple-200">
+          <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-gs-purple-soft text-gs-purple border border-gs-purple/30">
             Mẫu có sẵn
           </span>
         );
       case "preset_batch":
         return (
-          <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-amber-50 text-amber-700 border border-amber-200">
+          <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-gs-amber-soft text-gs-amber border border-gs-amber/40">
             Lô mẫu
           </span>
         );
       default:
         return (
-          <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-slate-50 text-slate-600 border border-slate-200">
+          <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-surface-container-low text-gs-mute-2 border border-gs-line-2">
             {source || "—"}
           </span>
         );
@@ -133,20 +133,20 @@ export function HistoryTable({ runs }: HistoryTableProps) {
   const getCorrectnessPill = (predicted?: string | null, expected?: string | null) => {
     if (expected == null || expected === "") {
       return (
-        <span className="px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-slate-100 text-slate-600 border border-slate-200">
+        <span className="px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-surface-container text-gs-mute-2 border border-gs-line-2">
           Chưa có nhãn
         </span>
       );
     }
     if (predicted === expected) {
       return (
-        <span className="px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+        <span className="px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-gs-green-soft text-gs-green border border-gs-green/40">
           Khớp
         </span>
       );
     }
     return (
-      <span className="px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-rose-50 text-rose-700 border border-rose-200">
+      <span className="px-1.5 py-0.5 rounded-full text-[10px] font-semibold bg-gs-red-soft text-gs-red border border-gs-red/40">
         Lệch
       </span>
     );
@@ -159,7 +159,7 @@ export function HistoryTable({ runs }: HistoryTableProps) {
         data-testid="history-summary-header"
         className="p-3 bg-surface-container-lowest border border-outline-variant/60 rounded-lg text-xs space-y-2 shadow-xs"
       >
-        <div className="flex flex-wrap items-center gap-4 text-slate-700">
+        <div className="flex flex-wrap items-center gap-4 text-gs-ink-2">
           <div>
             <span className="text-secondary">Tổng số: </span>
             <span data-testid="summary-total" className="font-bold text-on-surface">
@@ -174,13 +174,13 @@ export function HistoryTable({ runs }: HistoryTableProps) {
           </div>
           <div>
             <span className="text-secondary">Độ chính xác: </span>
-            <span data-testid="summary-accuracy" className="font-bold text-emerald-600">
+            <span data-testid="summary-accuracy" className="font-bold text-gs-green">
               {summary.accuracy.toFixed(1)}%
             </span>
           </div>
           <div>
             <span className="text-secondary">Khớp: </span>
-            <span data-testid="summary-matches" className="font-bold text-emerald-600">
+            <span data-testid="summary-matches" className="font-bold text-gs-green">
               {summary.matches}
             </span>
           </div>
@@ -188,7 +188,7 @@ export function HistoryTable({ runs }: HistoryTableProps) {
             <span className="text-secondary">Lệch nhãn: </span>
             <span
               data-testid="summary-mismatches"
-              className={`font-bold ${summary.mismatches > 0 ? "text-rose-600" : "text-slate-600"}`}
+              className={`font-bold ${summary.mismatches > 0 ? "text-gs-red" : "text-gs-mute-2"}`}
             >
               {summary.mismatches}
             </span>
@@ -201,7 +201,7 @@ export function HistoryTable({ runs }: HistoryTableProps) {
             {Object.entries(summary.perClass).map(([cls, count]) => (
               <span
                 key={cls}
-                className="px-1.5 py-0.5 bg-slate-100 rounded text-slate-700 font-mono text-[10px]"
+                className="px-1.5 py-0.5 bg-surface-container rounded text-gs-ink-2 font-mono text-[10px]"
               >
                 {cls}: <strong>{count}</strong>
               </span>
@@ -251,7 +251,7 @@ export function HistoryTable({ runs }: HistoryTableProps) {
         </div>
 
         <div className="flex items-center gap-1.5 ml-auto">
-          <label className="flex items-center gap-1 text-[11px] text-slate-700 cursor-pointer select-none">
+          <label className="flex items-center gap-1 text-[11px] text-gs-ink-2 cursor-pointer select-none">
             <input
               type="checkbox"
               checked={mismatchesOnly}
@@ -304,7 +304,7 @@ export function HistoryTable({ runs }: HistoryTableProps) {
                           type="button"
                           onClick={() => toggleRow(run.id)}
                           aria-label={`Chi tiết chuyến ${titleOrTrip}`}
-                          className="p-1 rounded hover:bg-surface-container text-slate-500"
+                          className="p-1 rounded hover:bg-surface-container text-gs-mute-2"
                         >
                           {isExpanded ? (
                             <ChevronDown className="w-3.5 h-3.5" />
@@ -322,9 +322,9 @@ export function HistoryTable({ runs }: HistoryTableProps) {
                         {getSourceBadge(run.source)}
                       </td>
 
-                      <td className="py-2 px-2 whitespace-nowrap text-slate-700">
+                      <td className="py-2 px-2 whitespace-nowrap text-gs-ink-2">
                         <div>{run.driver_name || "—"}</div>
-                        <div className="text-[11px] font-mono text-slate-500">{run.license_plate || "—"}</div>
+                        <div className="text-[11px] font-mono text-gs-mute-2">{run.license_plate || "—"}</div>
                       </td>
 
                       <td className="py-2 px-2 whitespace-nowrap font-mono text-[11px]">
@@ -337,7 +337,7 @@ export function HistoryTable({ runs }: HistoryTableProps) {
                             <ExternalLink className="w-3 h-3" />
                           </Link>
                         ) : (
-                          <span className="text-slate-500">{run.case_id || "—"}</span>
+                          <span className="text-gs-mute-2">{run.case_id || "—"}</span>
                         )}
                       </td>
 
@@ -345,17 +345,17 @@ export function HistoryTable({ runs }: HistoryTableProps) {
                         <div
                           data-testid="route-flow"
                           title={fullRoute}
-                          className="truncate text-[11px] text-slate-600 cursor-help"
+                          className="truncate text-[11px] text-gs-mute-2 cursor-help"
                         >
                           <span>{run.origin_address || "—"}</span>
-                          <span className="text-slate-400 mx-1">→</span>
+                          <span className="text-gs-mute mx-1">→</span>
                           <span>{run.pickup_address || "—"}</span>
-                          <span className="text-slate-400 mx-1">→</span>
+                          <span className="text-gs-mute mx-1">→</span>
                           <span>{run.destination_address || "—"}</span>
                         </div>
                       </td>
 
-                      <td className="py-2 px-2 whitespace-nowrap text-slate-700">
+                      <td className="py-2 px-2 whitespace-nowrap text-gs-ink-2">
                         {STATUS_LABELS[run.status] || run.status}
                       </td>
 
@@ -363,7 +363,7 @@ export function HistoryTable({ runs }: HistoryTableProps) {
                         {run.predicted_label || "—"}
                       </td>
 
-                      <td className="py-2 px-2 whitespace-nowrap font-mono text-[11px] text-slate-600">
+                      <td className="py-2 px-2 whitespace-nowrap font-mono text-[11px] text-gs-mute-2">
                         {run.expected_label || "—"}
                       </td>
 
@@ -371,7 +371,7 @@ export function HistoryTable({ runs }: HistoryTableProps) {
                         {getCorrectnessPill(run.predicted_label, run.expected_label)}
                       </td>
 
-                      <td className="py-2 px-2 whitespace-nowrap font-mono text-[11px] text-slate-600">
+                      <td className="py-2 px-2 whitespace-nowrap font-mono text-[11px] text-gs-mute-2">
                         {run.error_type || "—"}
                       </td>
 
@@ -385,19 +385,19 @@ export function HistoryTable({ runs }: HistoryTableProps) {
                     {/* Expandable details row */}
                     {isExpanded && (
                       <tr className="bg-surface-container-low/30 border-b border-outline-variant/30">
-                        <td colSpan={12} className="p-3 text-[11px] text-slate-700">
+                        <td colSpan={12} className="p-3 text-[11px] text-gs-ink-2">
                           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                             <div className="space-y-1">
                               <div className="font-semibold text-secondary">Thời gian</div>
                               <div>
                                 Tạo lúc:{" "}
-                                <span className="font-mono text-slate-600">
+                                <span className="font-mono text-gs-mute-2">
                                   {new Date(run.created_at).toLocaleString()}
                                 </span>
                               </div>
                               <div>
                                 Hoàn tất lúc:{" "}
-                                <span className="font-mono text-slate-600">
+                                <span className="font-mono text-gs-mute-2">
                                   {run.completed_at
                                     ? new Date(run.completed_at).toLocaleString()
                                     : "—"}
@@ -409,7 +409,7 @@ export function HistoryTable({ runs }: HistoryTableProps) {
                               <div className="font-semibold text-secondary">Thông tin huỷ chuyến</div>
                               <div>
                                 Người huỷ:{" "}
-                                <span data-testid="cancel-actor-detail" className="text-slate-600">
+                                <span data-testid="cancel-actor-detail" className="text-gs-mute-2">
                                   {run.cancellation_actor === "driver"
                                     ? "Tài xế"
                                     : run.cancellation_actor === "customer"
@@ -419,7 +419,7 @@ export function HistoryTable({ runs }: HistoryTableProps) {
                               </div>
                               <div>
                                 Lý do huỷ:{" "}
-                                <span className="text-slate-600">
+                                <span className="text-gs-mute-2">
                                   {run.cancellation_reason || "—"}
                                 </span>
                               </div>
@@ -428,15 +428,15 @@ export function HistoryTable({ runs }: HistoryTableProps) {
                             <div className="space-y-1">
                               <div className="font-semibold text-secondary">Lộ trình đầy đủ</div>
                               <div>
-                                <span className="text-slate-500">Điểm xuất phát: </span>
+                                <span className="text-gs-mute-2">Điểm xuất phát: </span>
                                 {run.origin_address || "—"}
                               </div>
                               <div>
-                                <span className="text-slate-500">Điểm đón khách: </span>
+                                <span className="text-gs-mute-2">Điểm đón khách: </span>
                                 {run.pickup_address || "—"}
                               </div>
                               <div>
-                                <span className="text-slate-500">Điểm đến: </span>
+                                <span className="text-gs-mute-2">Điểm đến: </span>
                                 {run.destination_address || "—"}
                               </div>
                             </div>

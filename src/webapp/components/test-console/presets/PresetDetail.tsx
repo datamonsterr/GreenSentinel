@@ -133,11 +133,11 @@ export function PresetDetail({
               {preset.title}
             </h2>
             {!preset.available ? (
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-amber-100 text-amber-800">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-gs-amber-soft text-gs-amber">
                 Tạm chưa mở
               </span>
             ) : (
-              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 flex items-center gap-1">
+              <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-primary-fixed text-on-primary-fixed flex items-center gap-1">
                 <CheckCircle2 className="w-3 h-3" /> Sẵn sàng
               </span>
             )}
@@ -149,7 +149,7 @@ export function PresetDetail({
           </div>
           <p className="text-xs text-secondary">{preset.description}</p>
           {!preset.available && preset.unavailable_reason && (
-            <p className="text-xs text-amber-700 italic">{preset.unavailable_reason}</p>
+            <p className="text-xs text-gs-amber italic">{preset.unavailable_reason}</p>
           )}
         </div>
 
@@ -277,7 +277,7 @@ export function PresetDetail({
               <div className="text-[10px] uppercase font-bold text-secondary mb-1 flex items-center gap-1">
                 <ShieldAlert className="w-3 h-3" /> Trạng thái kiểm định
               </div>
-              <div className="text-xs font-semibold text-emerald-700">
+              <div className="text-xs font-semibold text-on-primary-fixed">
                 Đã chuẩn hóa tọa độ &amp; vi phạm
               </div>
             </div>
@@ -353,10 +353,10 @@ export function PresetDetail({
                           <span
                             className={`px-1.5 py-0.5 rounded text-[10px] ${
                               trip.label === "no_violation"
-                                ? "bg-emerald-100 text-emerald-800"
+                                ? "bg-primary-fixed text-on-primary-fixed"
                                 : trip.label === "insufficient_evidence"
-                                ? "bg-amber-100 text-amber-800"
-                                : "bg-rose-100 text-rose-800"
+                                ? "bg-gs-amber-soft text-gs-amber"
+                                : "bg-gs-red-soft text-gs-red"
                             }`}
                           >
                             {trip.label}
@@ -430,19 +430,19 @@ export function PresetDetail({
                     {/* High-level count pills with hover tooltips per UI guidelines */}
                     <div className="flex flex-wrap gap-2 text-xs">
                       <span
-                        className="px-2.5 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-800 font-semibold cursor-help"
+                        className="px-2.5 py-1 rounded-full bg-gs-red-soft border border-gs-red/40 text-gs-red font-semibold cursor-help"
                         title="Tổng số chuyến bị phát hiện gian lận quy định"
                       >
                         Gian lận: {dist.by_label.fraud} ({((dist.by_label.fraud / totalRecords) * 100).toFixed(1)}%)
                       </span>
                       <span
-                        className="px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 font-semibold cursor-help"
+                        className="px-2.5 py-1 rounded-full bg-primary-fixed border border-primary-fixed-dim text-on-primary-fixed font-semibold cursor-help"
                         title="Chuyến đi hoàn toàn bình thường, không có dấu hiệu vi phạm"
                       >
                         Không vi phạm: {dist.by_label.no_violation} ({((dist.by_label.no_violation / totalRecords) * 100).toFixed(1)}%)
                       </span>
                       <span
-                        className="px-2.5 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-800 font-semibold cursor-help"
+                        className="px-2.5 py-1 rounded-full bg-gs-amber-soft border border-gs-amber/40 text-gs-amber font-semibold cursor-help"
                         title="Không đủ chứng cứ số hoặc tín hiệu viễn trắc để kết luận"
                       >
                         Thiếu bằng chứng: {dist.by_label.insufficient_evidence} ({((dist.by_label.insufficient_evidence / totalRecords) * 100).toFixed(1)}%)

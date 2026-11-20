@@ -26,7 +26,7 @@ export function SpeedControl({
       className={`flex flex-col gap-1.5 p-2 bg-white border border-outline-variant/60 rounded ${className}`}
     >
       <div className="flex items-center justify-between text-xs">
-        <span className="font-semibold text-slate-700 flex items-center gap-1">
+        <span className="font-semibold text-gs-ink-2 flex items-center gap-1">
           <Gauge className="w-3.5 h-3.5 text-primary" />
           <span>Tốc độ mô phỏng</span>
         </span>
@@ -48,7 +48,7 @@ export function SpeedControl({
           disabled={disabled}
           aria-label="Thanh trượt tốc độ mô phỏng"
           onChange={(e) => onChange(Number(e.target.value))}
-          className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-primary disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full h-1.5 bg-surface-container-high rounded-lg appearance-none cursor-pointer accent-primary disabled:opacity-50 disabled:cursor-not-allowed"
         />
       </div>
 
@@ -66,7 +66,7 @@ export function SpeedControl({
                 className={`px-2 py-0.5 text-[11px] font-bold rounded border transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
                   isActive
                     ? "bg-primary text-white border-primary shadow-2xs"
-                    : "bg-surface-container-lowest text-secondary border-outline-variant/60 hover:bg-slate-50"
+                    : "bg-surface-container-lowest text-secondary border-outline-variant/60 hover:bg-surface-container-low"
                 }`}
               >
                 {factor}x
@@ -74,7 +74,7 @@ export function SpeedControl({
             );
           })}
         </div>
-        <span className="text-[10px] text-slate-400 font-mono">1x - 20x</span>
+        <span className="text-[10px] text-gs-mute font-mono">1x - 20x</span>
       </div>
     </div>
   );

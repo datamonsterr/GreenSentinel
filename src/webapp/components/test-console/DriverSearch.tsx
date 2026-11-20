@@ -91,19 +91,19 @@ export function DriverSearch({
       {selectedDriver ? (
         <div
           data-testid="selected-driver-card"
-          className="flex items-center justify-between p-2 bg-emerald-50 border border-emerald-300 rounded text-xs"
+          className="flex items-center justify-between p-2 bg-primary-fixed border border-primary-fixed-dim rounded text-xs"
         >
           <div className="flex items-center gap-2 min-w-0">
-            <UserCheck className="w-4 h-4 text-emerald-700 shrink-0" />
+            <UserCheck className="w-4 h-4 text-on-primary-fixed shrink-0" />
             <div className="min-w-0">
-              <div className="font-bold text-emerald-950 truncate">
+              <div className="font-bold text-on-primary-fixed truncate">
                 {selectedDriver.display_name}
               </div>
-              <div className="text-[11px] text-emerald-800 font-mono truncate">
+              <div className="text-[11px] text-on-primary-fixed font-mono truncate">
                 {selectedDriver.email}
               </div>
               {selectedDriver.license_plate && (
-                <div className="text-[10px] text-emerald-700">
+                <div className="text-[10px] text-on-primary-fixed">
                   Biển số: {selectedDriver.license_plate}
                 </div>
               )}
@@ -122,7 +122,7 @@ export function DriverSearch({
               }}
               aria-label="Đổi tài xế"
               title="Đổi tài xế khác"
-              className="p-1 text-emerald-700 hover:text-rose-600 hover:bg-rose-50 rounded transition cursor-pointer"
+              className="p-1 text-on-primary-fixed hover:text-gs-red hover:bg-gs-red-soft rounded transition cursor-pointer"
             >
               <X className="w-4 h-4" />
             </button>
@@ -131,8 +131,8 @@ export function DriverSearch({
       ) : (
         /* Driver Search Input */
         <div className="relative">
-          <div className="flex items-center border border-slate-300 rounded bg-white px-2 h-8 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
-            <Search className="w-3.5 h-3.5 text-slate-400 shrink-0 mr-1.5" />
+          <div className="flex items-center border border-gs-line-2 rounded bg-white px-2 h-8 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary">
+            <Search className="w-3.5 h-3.5 text-gs-mute shrink-0 mr-1.5" />
             <input
               type="text"
               value={query}
@@ -150,7 +150,7 @@ export function DriverSearch({
                   setHasSearched(false);
                 }
               }}
-              className="w-full text-xs text-slate-800 placeholder:text-slate-400 bg-transparent focus:outline-none disabled:cursor-not-allowed"
+              className="w-full text-xs text-foreground placeholder:text-gs-mute bg-transparent focus:outline-none disabled:cursor-not-allowed"
             />
             {loading && <Loader2 className="w-3.5 h-3.5 text-primary animate-spin shrink-0" />}
             {query && !loading && (
@@ -164,7 +164,7 @@ export function DriverSearch({
                   setHasSearched(false);
                 }}
                 aria-label="Xóa nội dung tìm kiếm"
-                className="text-slate-400 hover:text-slate-600 p-0.5"
+                className="text-gs-mute hover:text-gs-mute-2 p-0.5"
               >
                 <X className="w-3 h-3" />
               </button>
@@ -175,12 +175,12 @@ export function DriverSearch({
           {isOpen && (query.trim().length >= 3 || results.length > 0) && (
             <div
               data-testid="driver-search-results"
-              className="absolute left-0 right-0 top-full mt-1 bg-white border border-slate-200 rounded-md shadow-lg max-h-48 overflow-y-auto z-40 text-xs"
+              className="absolute left-0 right-0 top-full mt-1 bg-white border border-gs-line-2 rounded-md shadow-lg max-h-48 overflow-y-auto z-40 text-xs"
             >
               {error && (
                 <div
                   data-testid="driver-search-error"
-                  className="p-2 text-rose-600 flex items-center gap-1.5 text-[11px]"
+                  className="p-2 text-gs-red flex items-center gap-1.5 text-[11px]"
                 >
                   <AlertCircle className="w-3.5 h-3.5 shrink-0" />
                   <span>{error}</span>
@@ -190,14 +190,14 @@ export function DriverSearch({
               {!error && results.length === 0 && hasSearched && (
                 <div
                   data-testid="driver-search-empty"
-                  className="p-2 text-slate-500 text-center italic text-[11px]"
+                  className="p-2 text-gs-mute-2 text-center italic text-[11px]"
                 >
                   Không tìm thấy tài xế Clerk nào phù hợp.
                 </div>
               )}
 
               {results.length > 0 && (
-                <ul className="py-1 divide-y divide-slate-100" role="listbox">
+                <ul className="py-1 divide-y divide-gs-line" role="listbox">
                   {results.map((driver) => (
                     <li key={driver.driver_id} role="option" aria-selected="false">
                       <button
@@ -207,18 +207,18 @@ export function DriverSearch({
                           setIsOpen(false);
                           setQuery("");
                         }}
-                        className="w-full text-left px-2.5 py-1.5 hover:bg-slate-50 flex items-center justify-between cursor-pointer"
+                        className="w-full text-left px-2.5 py-1.5 hover:bg-surface-container-low flex items-center justify-between cursor-pointer"
                       >
                         <div className="min-w-0 pr-2">
-                          <div className="font-semibold text-slate-900 truncate">
+                          <div className="font-semibold text-foreground truncate">
                             {driver.display_name}
                           </div>
-                          <div className="text-[10px] text-slate-500 font-mono truncate">
+                          <div className="text-[10px] text-gs-mute-2 font-mono truncate">
                             {driver.email}
                           </div>
                         </div>
                         {driver.license_plate && (
-                          <span className="text-[10px] px-1.5 py-0.5 bg-slate-100 rounded text-slate-600 shrink-0">
+                          <span className="text-[10px] px-1.5 py-0.5 bg-surface-container rounded text-gs-mute-2 shrink-0">
                             {driver.license_plate}
                           </span>
                         )}

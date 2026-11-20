@@ -85,7 +85,7 @@ export function ChapterTripEnds({ reducedMotion }: ChapterTripEndsProps) {
                 style={{
                   backgroundSize: "20px 20px",
                   backgroundImage:
-                    "linear-gradient(to right, #6d7a72 1px, transparent 1px), linear-gradient(to bottom, #6d7a72 1px, transparent 1px)",
+                    "linear-gradient(to right, #8794a2 1px, transparent 1px), linear-gradient(to bottom, #8794a2 1px, transparent 1px)",
                 }}
               />
 
@@ -99,7 +99,7 @@ export function ChapterTripEnds({ reducedMotion }: ChapterTripEndsProps) {
                 <path
                   d={plannedPathD}
                   fill="none"
-                  stroke="#0058be"
+                  stroke="#0fb3c1"
                   strokeWidth="3"
                   strokeDasharray="6 4"
                 />
@@ -110,7 +110,7 @@ export function ChapterTripEnds({ reducedMotion }: ChapterTripEndsProps) {
                   id="gps-actual-path"
                   d={actualGpsPathD}
                   fill="none"
-                  stroke="#ba1a1a"
+                  stroke="#e0484b"
                   strokeWidth="3.5"
                   strokeLinecap="round"
                   style={{
@@ -120,19 +120,19 @@ export function ChapterTripEnds({ reducedMotion }: ChapterTripEndsProps) {
                 />
 
                 {/* Breadcrumbs on detour */}
-                <circle cx="160" cy="205" r="4" fill="#ba1a1a" />
-                <circle cx="210" cy="215" r="4" fill="#ba1a1a" />
-                <circle cx="260" cy="210" r="4" fill="#ba1a1a" />
+                <circle cx="160" cy="205" r="4" fill="#e0484b" />
+                <circle cx="210" cy="215" r="4" fill="#e0484b" />
+                <circle cx="260" cy="210" r="4" fill="#e0484b" />
 
                 {/* Origin Pin */}
                 <g transform="translate(40, 180)">
-                  <circle r="6" fill="#006948" />
+                  <circle r="6" fill="#22a45d" />
                   <circle r="2.5" fill="#ffffff" />
                 </g>
 
                 {/* Destination Pin */}
                 <g transform="translate(480, 50)">
-                  <circle r="6" fill="#0058be" />
+                  <circle r="6" fill="#0fb3c1" />
                   <circle r="2.5" fill="#ffffff" />
                 </g>
               </svg>

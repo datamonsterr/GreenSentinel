@@ -212,19 +212,19 @@ export function ChapterAnalystDecides({
 
         {/* UI Frame Right: Workplace Cockpit Frame */}
         <div className="lg:col-span-8">
-          <Card className="p-3 shadow-sm space-y-2 bg-slate-50/50 border border-slate-300">
+          <Card className="p-3 shadow-sm space-y-2 bg-surface-container-low/50 border border-gs-line-2">
             {/* Top Toolbar matching real Workplace */}
-            <div className="flex items-center justify-between border-b border-slate-200 pb-2 px-1">
+            <div className="flex items-center justify-between border-b border-gs-line-2 pb-2 px-1">
               <div className="flex items-center gap-2">
-                <div className="w-5 h-5 rounded bg-emerald-600 flex items-center justify-center text-white">
+                <div className="w-5 h-5 rounded bg-primary flex items-center justify-center text-white">
                   <span className="material-symbols-outlined !text-[13px] text-white" aria-hidden="true">
                     shield
                   </span>
                 </div>
-                <span className="text-xs font-bold text-slate-800">
+                <span className="text-xs font-bold text-foreground">
                   Triage Queue · Fraud Analyst Workplace
                 </span>
-                <span className="text-[10px] font-mono text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.2 rounded font-semibold">
+                <span className="text-[10px] font-mono text-on-primary-fixed bg-primary-fixed border border-primary-fixed-dim px-1.5 py-0.2 rounded font-semibold">
                   2 cases active
                 </span>
               </div>
@@ -236,9 +236,9 @@ export function ChapterAnalystDecides({
             {/* Workplace Tri-Pane Composition */}
             <div className="grid grid-cols-1 md:grid-cols-12 gap-2 text-xs">
               {/* Left Column (3 cols): Triage Queue */}
-              <div className="md:col-span-3 border border-slate-200 rounded p-1.5 bg-white space-y-1.5">
-                <div className="flex items-center justify-between text-[10px] font-mono text-slate-500 px-1 pb-1 border-b border-slate-200">
-                  <span className="uppercase font-bold text-slate-700">Triage Queue</span>
+              <div className="md:col-span-3 border border-gs-line-2 rounded p-1.5 bg-white space-y-1.5">
+                <div className="flex items-center justify-between text-[10px] font-mono text-gs-mute-2 px-1 pb-1 border-b border-gs-line-2">
+                  <span className="uppercase font-bold text-gs-ink-2">Triage Queue</span>
                   <span>{DEMO_CASES.length} cases</span>
                 </div>
 
@@ -254,11 +254,11 @@ export function ChapterAnalystDecides({
                         aria-selected={isSelected}
                         onClick={() => handleSelectCase(idx)}
                         className={`w-full text-left p-1.5 rounded border-l-4 border transition-colors cursor-pointer text-xs space-y-1 focus-visible:outline-2 focus-visible:outline-primary ${
-                          isP0 ? "border-l-red-500" : "border-l-blue-500"
+                          isP0 ? "border-l-gs-red" : "border-l-gs-blue"
                         } ${
                           isSelected
-                            ? "bg-emerald-50 ring-1 ring-emerald-300 border-emerald-300"
-                            : "bg-white border-slate-200 hover:bg-slate-50"
+                            ? "bg-primary-fixed ring-1 ring-primary-fixed-dim border-primary-fixed-dim"
+                            : "bg-white border-gs-line-2 hover:bg-surface-container-low"
                         }`}
                       >
                         <div className="flex items-center justify-between">
@@ -266,31 +266,31 @@ export function ChapterAnalystDecides({
                             <span
                               className={`text-[9px] px-1 py-0.2 rounded font-mono font-bold uppercase ${
                                 isP0
-                                  ? "bg-red-100 text-red-700"
-                                  : "bg-blue-100 text-blue-700"
+                                  ? "bg-gs-red-soft text-gs-red"
+                                  : "bg-gs-blue-soft text-gs-blue"
                               }`}
                             >
                               {item.priority}
                             </span>
-                            <span className="font-mono font-bold text-slate-900 text-[11px]">
+                            <span className="font-mono font-bold text-foreground text-[11px]">
                               {item.code}
                             </span>
                           </div>
-                          <span className="text-[10px] font-mono text-slate-500">
+                          <span className="text-[10px] font-mono text-gs-mute-2">
                             {idx === 0 ? "08:16" : "08:45"}
                           </span>
                         </div>
                         <div className="flex justify-between gap-1 text-[11px]">
-                          <span className="font-medium text-slate-800 truncate">
+                          <span className="font-medium text-foreground truncate">
                             {item.driverName}
                           </span>
-                          <span className="text-slate-500 font-mono text-[10px] shrink-0">
+                          <span className="text-gs-mute-2 font-mono text-[10px] shrink-0">
                             {item.plate}
                           </span>
                         </div>
-                        <div className="flex items-center justify-between text-[10px] text-slate-500 pt-0.5 border-t border-slate-100">
+                        <div className="flex items-center justify-between text-[10px] text-gs-mute-2 pt-0.5 border-t border-gs-line-2">
                           <span className="truncate">{item.pickup.split(" ")[0]}</span>
-                          <span className="font-mono text-[9px] px-1 rounded bg-slate-100 text-slate-700">
+                          <span className="font-mono text-[9px] px-1 rounded bg-surface-container text-gs-ink-2">
                             {item.stallDurationS > 0 ? `Stall ${item.stallDurationS}s` : "corridor ok"}
                           </span>
                         </div>
@@ -301,47 +301,47 @@ export function ChapterAnalystDecides({
               </div>
 
               {/* Center Column (5 cols): Case Center Workspace */}
-              <div className="md:col-span-5 border border-slate-200 rounded p-2 bg-white flex flex-col justify-between space-y-2 min-w-0">
+              <div className="md:col-span-5 border border-gs-line-2 rounded p-2 bg-white flex flex-col justify-between space-y-2 min-w-0">
                 <div className="space-y-2">
                   {/* Center Header with case id, red "P0 CRITICAL" chip and driver row */}
-                  <div role="group" aria-label="Case header" className="border-b border-slate-200 pb-2 space-y-1.5">
+                  <div role="group" aria-label="Case header" className="border-b border-gs-line-2 pb-2 space-y-1.5">
                     <div className="flex items-center justify-between gap-1">
                       <div className="flex items-center gap-1.5">
-                        <span className="font-mono font-bold text-sm text-slate-900">
+                        <span className="font-mono font-bold text-sm text-foreground">
                           {currentCase.code}
                         </span>
                         {currentCase.priority === "P0" ? (
-                          <span className="px-1.5 py-0.5 rounded font-mono font-bold text-[9px] uppercase tracking-wider bg-red-600 text-white">
+                          <span className="px-1.5 py-0.5 rounded font-mono font-bold text-[9px] uppercase tracking-wider bg-gs-red text-white">
                             P0 CRITICAL
                           </span>
                         ) : (
-                          <span className="px-1.5 py-0.5 rounded font-mono font-bold text-[9px] uppercase tracking-wider bg-blue-100 text-blue-800">
+                          <span className="px-1.5 py-0.5 rounded font-mono font-bold text-[9px] uppercase tracking-wider bg-gs-blue-soft text-gs-blue">
                             P2 NORMAL
                           </span>
                         )}
                       </div>
-                      <span className="text-[10px] font-mono text-slate-500">
+                      <span className="text-[10px] font-mono text-gs-mute-2">
                         SLA: 00:28 / 00:45s
                       </span>
                     </div>
 
                     {/* Driver Row */}
                     <div className="flex items-center gap-2">
-                      <div className="relative w-8 h-8 rounded-full bg-slate-100 border border-slate-300 flex items-center justify-center font-bold text-xs text-slate-700 shrink-0">
+                      <div className="relative w-8 h-8 rounded-full bg-surface-container border border-gs-line-2 flex items-center justify-center font-bold text-xs text-gs-ink-2 shrink-0">
                         {currentCase.driverName.split(" ").map((n) => n[0]).slice(0, 2).join("")}
-                        <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 border border-white" />
+                        <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-gs-green border border-white" />
                       </div>
                       <div className="min-w-0 flex-1 leading-tight">
                         <div className="flex items-center gap-1.5 flex-wrap">
-                          <span className="font-bold text-slate-900 text-xs truncate">
+                          <span className="font-bold text-foreground text-xs truncate">
                             {currentCase.driverName}
                           </span>
-                          <span className="font-mono text-[10px] px-1 py-0.2 rounded bg-slate-100 text-slate-700 border border-slate-200">
+                          <span className="font-mono text-[10px] px-1 py-0.2 rounded bg-surface-container text-gs-ink-2 border border-gs-line-2">
                             {currentCase.plate}
                           </span>
                         </div>
-                        <div className="flex items-center gap-1 text-[10px] text-slate-500 mt-0.5">
-                          <span className="text-amber-600 font-semibold">★ 4.85</span>
+                        <div className="flex items-center gap-1 text-[10px] text-gs-mute-2 mt-0.5">
+                          <span className="text-gs-amber font-semibold">★ 4.85</span>
                           <span>·</span>
                           <span>94.2% Nhận</span>
                           <span>·</span>
@@ -355,7 +355,7 @@ export function ChapterAnalystDecides({
                   <nav
                     role="tablist"
                     aria-label="Center Panel Views"
-                    className="flex items-center gap-1 p-0.5 bg-slate-100 rounded border border-slate-200 w-full min-w-0 overflow-x-auto"
+                    className="flex items-center gap-1 p-0.5 bg-surface-container rounded border border-gs-line-2 w-full min-w-0 overflow-x-auto"
                   >
                     {[
                       { id: "overview" as const, label: "Overview", icon: "dashboard" },
@@ -373,11 +373,11 @@ export function ChapterAnalystDecides({
                           onClick={() => setActiveTab(tab.id)}
                           className={`flex-1 shrink-0 flex items-center justify-center gap-1 py-1 px-1.5 rounded text-[11px] font-medium transition-colors whitespace-nowrap cursor-pointer ${
                             isActive
-                              ? "bg-white text-emerald-950 font-bold shadow-xs border border-slate-200"
-                              : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/60 border border-transparent"
+                              ? "bg-white text-on-primary-fixed font-bold shadow-xs border border-gs-line-2"
+                              : "text-gs-mute-2 hover:text-foreground hover:bg-surface-container-high border border-transparent"
                           }`}
                         >
-                          <span className={`material-symbols-outlined !text-[13px] shrink-0 ${isActive ? "text-emerald-700" : "text-slate-400"}`} aria-hidden="true">
+                          <span className={`material-symbols-outlined !text-[13px] shrink-0 ${isActive ? "text-on-primary-fixed" : "text-gs-mute"}`} aria-hidden="true">
                             {tab.icon}
                           </span>
                           <span>{tab.label}</span>
@@ -387,9 +387,9 @@ export function ChapterAnalystDecides({
                   </nav>
 
                   {/* Telemetry / Map View */}
-                  <div className="relative h-20 bg-slate-50 rounded border border-slate-200 overflow-hidden">
+                  <div className="relative h-20 bg-surface-container-low rounded border border-gs-line-2 overflow-hidden">
                     <svg viewBox="0 0 240 80" className="w-full h-full">
-                      <path d="M 0 40 L 240 40 M 120 0 L 120 80" stroke="#e2e8f0" strokeWidth="1" strokeDasharray="3 3" />
+                      <path d="M 0 40 L 240 40 M 120 0 L 120 80" stroke="#e2e7ec" strokeWidth="1" strokeDasharray="3 3" />
                       <path
                         d={
                           currentCase.priority === "P0"
@@ -397,56 +397,56 @@ export function ChapterAnalystDecides({
                             : "M 20 60 C 80 50, 160 35, 220 20"
                         }
                         fill="none"
-                        stroke={currentCase.priority === "P0" ? "#dc2626" : "#059669"}
+                        stroke={currentCase.priority === "P0" ? "#e0484b" : "#22a45d"}
                         strokeWidth="2.5"
                       />
-                      <circle cx="20" cy="60" r="3" fill="#059669" />
-                      <circle cx="220" cy="20" r="3" fill="#0284c7" />
+                      <circle cx="20" cy="60" r="3" fill="#22a45d" />
+                      <circle cx="220" cy="20" r="3" fill="#0fb3c1" />
                     </svg>
-                    <div className="absolute bottom-1 left-1.5 bg-white/90 border border-slate-200 text-[9px] px-1 rounded font-mono text-slate-600">
+                    <div className="absolute bottom-1 left-1.5 bg-white/90 border border-gs-line-2 text-[9px] px-1 rounded font-mono text-gs-mute-2">
                       {currentCase.priority === "P0" ? "Detour + 210s stall" : "Normal corridor flow"}
                     </div>
                   </div>
                 </div>
 
                 {/* Bottom Action Bar: Dismiss, Request evidence, Warn, Fine, Suspend 24h, Escalate */}
-                <div className="space-y-1.5 pt-2 border-t border-slate-200">
-                  <div className="text-[10px] font-mono text-slate-500 font-bold uppercase">
+                <div className="space-y-1.5 pt-2 border-t border-gs-line-2">
+                  <div className="text-[10px] font-mono text-gs-mute-2 font-bold uppercase">
                     Actions
                   </div>
                   <div className="flex flex-wrap gap-1">
                     <button
                       type="button"
                       onClick={() => handleAction("Dismiss")}
-                      className="px-2 py-0.5 rounded border border-slate-300 bg-white hover:bg-slate-50 text-[10px] text-slate-700 font-medium cursor-pointer"
+                      className="px-2 py-0.5 rounded border border-gs-line-2 bg-white hover:bg-surface-container-low text-[10px] text-gs-ink-2 font-medium cursor-pointer"
                     >
                       Dismiss
                     </button>
                     <button
                       type="button"
                       onClick={() => handleAction("Request evidence")}
-                      className="px-2 py-0.5 rounded border border-slate-300 bg-white hover:bg-slate-50 text-[10px] text-slate-700 font-medium cursor-pointer"
+                      className="px-2 py-0.5 rounded border border-gs-line-2 bg-white hover:bg-surface-container-low text-[10px] text-gs-ink-2 font-medium cursor-pointer"
                     >
                       Request evidence
                     </button>
                     <button
                       type="button"
                       onClick={() => handleAction("Warn")}
-                      className="px-2 py-0.5 rounded border border-slate-300 bg-white hover:bg-slate-50 text-[10px] text-slate-700 font-medium cursor-pointer"
+                      className="px-2 py-0.5 rounded border border-gs-line-2 bg-white hover:bg-surface-container-low text-[10px] text-gs-ink-2 font-medium cursor-pointer"
                     >
                       Warn
                     </button>
                     <button
                       type="button"
                       onClick={() => handleAction("Fine")}
-                      className="px-2 py-0.5 rounded border border-slate-300 bg-white hover:bg-slate-50 text-[10px] text-slate-700 font-medium cursor-pointer"
+                      className="px-2 py-0.5 rounded border border-gs-line-2 bg-white hover:bg-surface-container-low text-[10px] text-gs-ink-2 font-medium cursor-pointer"
                     >
                       Fine
                     </button>
                     <button
                       type="button"
                       onClick={() => handleAction("Suspend 24h")}
-                      className="px-2 py-0.5 rounded bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-[10px] flex items-center gap-0.5 cursor-pointer"
+                      className="px-2 py-0.5 rounded bg-primary hover:bg-primary-container text-white font-semibold text-[10px] flex items-center gap-0.5 cursor-pointer"
                     >
                       <span className="material-symbols-outlined !text-[11px]">check</span>
                       Suspend 24h
@@ -454,7 +454,7 @@ export function ChapterAnalystDecides({
                     <button
                       type="button"
                       onClick={() => handleAction("Escalate")}
-                      className="px-2 py-0.5 rounded border border-amber-400 bg-amber-50 hover:bg-amber-100 text-amber-800 text-[10px] font-medium cursor-pointer"
+                      className="px-2 py-0.5 rounded border border-gs-amber/40 bg-gs-amber-soft hover:bg-gs-amber-soft text-gs-amber text-[10px] font-medium cursor-pointer"
                     >
                       Escalate
                     </button>
@@ -485,46 +485,46 @@ export function ChapterAnalystDecides({
               </div>
 
               {/* Right Column (4 cols): AI Policy Copilot Panel */}
-              <div className="md:col-span-4 border border-slate-200 rounded p-2 bg-slate-50 flex flex-col justify-between space-y-2">
+              <div className="md:col-span-4 border border-gs-line-2 rounded p-2 bg-surface-container-low flex flex-col justify-between space-y-2">
                 <div className="space-y-2">
                   {/* Copilot Header */}
-                  <div className="flex items-center justify-between pb-1.5 border-b border-slate-200">
+                  <div className="flex items-center justify-between pb-1.5 border-b border-gs-line-2">
                     <div className="flex items-center gap-1.5">
-                      <div className="w-5 h-5 rounded bg-emerald-600 flex items-center justify-center text-white">
+                      <div className="w-5 h-5 rounded bg-primary flex items-center justify-center text-white">
                         <span className="material-symbols-outlined !text-[13px]">smart_toy</span>
                       </div>
-                      <span className="font-bold text-xs text-slate-800">
+                      <span className="font-bold text-xs text-foreground">
                         AI Policy Copilot
                       </span>
                     </div>
                     <div className="flex items-center gap-1 font-mono text-[9px]">
-                      <span className="px-1 py-0.2 rounded bg-white border border-slate-200 text-slate-600">
+                      <span className="px-1 py-0.2 rounded bg-white border border-gs-line-2 text-gs-mute-2">
                         {currentCase.code}
                       </span>
-                      <span className="px-1 py-0.2 rounded bg-emerald-100 text-emerald-800 font-bold">
+                      <span className="px-1 py-0.2 rounded bg-primary-fixed text-on-primary-fixed font-bold">
                         92% sure
                       </span>
                     </div>
                   </div>
 
                   {/* Forensic Summary Card */}
-                  <div className="rounded border border-emerald-200 bg-emerald-50/50 p-2 space-y-1">
+                  <div className="rounded border border-primary-fixed-dim bg-primary-fixed p-2 space-y-1">
                     <div className="flex items-center justify-between">
-                      <span className="font-bold text-[10px] text-emerald-950 flex items-center gap-1">
-                        <span className="material-symbols-outlined !text-[12px] text-emerald-700">analytics</span>
+                      <span className="font-bold text-[10px] text-on-primary-fixed flex items-center gap-1">
+                        <span className="material-symbols-outlined !text-[12px] text-on-primary-fixed">analytics</span>
                         AI Forensic Summary
                       </span>
-                      <span className="text-[9px] font-mono px-1 py-0.2 rounded bg-emerald-200/80 text-emerald-900 font-semibold">
+                      <span className="text-[9px] font-mono px-1 py-0.2 rounded bg-primary-fixed-dim text-on-primary-fixed font-semibold">
                         AI summary
                       </span>
                     </div>
-                    <p className="text-[10.5px] text-slate-700 leading-snug">
+                    <p className="text-[10.5px] text-gs-ink-2 leading-snug">
                       {currentCase.forensicBrief.summary_text}
                     </p>
                     <button
                       type="button"
                       onClick={() => handleAction("Approve")}
-                      className="mt-1 w-full text-center py-1 rounded bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-[10px] transition-colors cursor-pointer"
+                      className="mt-1 w-full text-center py-1 rounded bg-primary hover:bg-primary-container text-white font-semibold text-[10px] transition-colors cursor-pointer"
                     >
                       Apply Recommendation
                     </button>
@@ -534,7 +534,7 @@ export function ChapterAnalystDecides({
                   <div className="space-y-1">
                     <label
                       htmlFor="decision-rationale"
-                      className="text-[10px] font-bold text-slate-700 uppercase tracking-wide block"
+                      className="text-[10px] font-bold text-gs-ink-2 uppercase tracking-wide block"
                     >
                       Decision Rationale
                     </label>
@@ -544,7 +544,7 @@ export function ChapterAnalystDecides({
                       readOnly
                       rows={4}
                       value={displayedRationale}
-                      className="w-full text-xs p-2 bg-white border border-slate-300 rounded text-slate-900 leading-relaxed overflow-y-auto min-h-[80px] resize-none focus:outline-emerald-600 shadow-2xs"
+                      className="w-full text-xs p-2 bg-white border border-gs-line-2 rounded text-foreground leading-relaxed overflow-y-auto min-h-[80px] resize-none focus:outline-primary shadow-2xs"
                     />
                   </div>
 
@@ -556,8 +556,8 @@ export function ChapterAnalystDecides({
                         stampedDecision.toLowerCase().includes("cleared") ||
                         stampedDecision.toLowerCase().includes("approved") ||
                         stampedDecision.toLowerCase().includes("dismissed")
-                          ? "bg-emerald-50 border-emerald-300 text-emerald-800"
-                          : "bg-red-50 border-red-300 text-red-800"
+                          ? "bg-primary-fixed border-primary-fixed-dim text-on-primary-fixed"
+                          : "bg-gs-red-soft border-gs-red/40 text-gs-red"
                       }`}
                     >
                       {stampedDecision}
@@ -568,8 +568,8 @@ export function ChapterAnalystDecides({
             </div>
 
             {/* Bottom link & notes */}
-            <div className="flex items-center justify-between pt-1 border-t border-slate-200 text-xs">
-              <span className="text-slate-600 text-[11px]">
+            <div className="flex items-center justify-between pt-1 border-t border-gs-line-2 text-xs">
+              <span className="text-gs-mute-2 text-[11px]">
                 Review evidence, match past cases, and log decisions.
               </span>
               <Link

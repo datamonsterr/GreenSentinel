@@ -66,7 +66,7 @@ import { PresetDetail } from "@/components/test-console/presets/PresetDetail";
 // MapLibreView requires browser canvas — same component as production /workplace
 const MapLibreView = dynamic(
   () => import("@/components/map/maplibre-view").then((m) => m.MapLibreView),
-  { ssr: false, loading: () => <div className="w-full h-full bg-[#eef3f8] animate-pulse" /> }
+  { ssr: false, loading: () => <div className="w-full h-full bg-surface-container animate-pulse" /> }
 );
 
 type RunStatus =
@@ -180,7 +180,7 @@ function StopRow({
   }, []);
 
   const toneRing =
-    tone === "emerald" ? "text-emerald-700" : tone === "blue" ? "text-blue-700" : "text-rose-700";
+    tone === "emerald" ? "text-on-primary-fixed" : tone === "blue" ? "text-gs-blue" : "text-gs-red";
 
   return (
     <div className="w-full min-w-0 rounded-lg border border-outline-variant/60 bg-white p-2 flex items-center gap-2">
@@ -205,7 +205,7 @@ function StopRow({
         />
         {loading && <Loader2 className="w-3.5 h-3.5 text-primary animate-spin absolute right-1 top-2" />}
         {editing && suggestions.length > 0 && (
-          <div className="absolute z-30 left-0 right-0 top-9 max-h-52 overflow-y-auto bg-white border border-slate-200 rounded-md shadow-lg p-1 divide-y divide-slate-100">
+          <div className="absolute z-30 left-0 right-0 top-9 max-h-52 overflow-y-auto bg-white border border-gs-line-2 rounded-md shadow-lg p-1 divide-y divide-gs-line">
             {suggestions.map((s, idx) => (
               <button
                 key={`${s.formatted}-${idx}`}
@@ -217,12 +217,12 @@ function StopRow({
                   setSuggestions([]);
                   setEditing(false);
                 }}
-                className="w-full text-left p-1.5 rounded hover:bg-slate-50 text-xs"
+                className="w-full text-left p-1.5 rounded hover:bg-surface-container-low text-xs"
               >
                 <span className="font-semibold text-[11px] block truncate">
                   {s.address_line1 || s.formatted.split(",")[0]}
                 </span>
-                <span className="text-[10px] text-slate-500 block truncate">{s.formatted}</span>
+                <span className="text-[10px] text-gs-mute-2 block truncate">{s.formatted}</span>
               </button>
             ))}
           </div>
@@ -276,7 +276,7 @@ function ResultDock({
           >
             Overview
           </button>
-          <span className="ml-2 text-[10px] font-mono text-slate-500">
+          <span className="ml-2 text-[10px] font-mono text-gs-mute-2">
             {runTrace && runTrace.length > 0
               ? `${runTrace.filter((s) => s.state === "done").length}/${runTrace.length} giai đoạn`
               : `${logs.length} sự kiện`}
@@ -310,7 +310,7 @@ function ResultDock({
                           onClick={() => setExpanded((prev) => (prev === entry.id ? null : entry.id))}
                           className="w-full flex items-center gap-2 px-2 py-1 text-left hover:bg-surface-container/60"
                         >
-                          <span className="font-mono text-[10px] text-slate-500 w-16 shrink-0">{entry.time}</span>
+                          <span className="font-mono text-[10px] text-gs-mute-2 w-16 shrink-0">{entry.time}</span>
                           <span className="font-semibold text-[11px] w-40 shrink-0 truncate">{entry.event}</span>
                           <span className="text-[11px] text-secondary truncate flex-1">{entry.state}</span>
                           {entry.details && (
@@ -318,7 +318,7 @@ function ResultDock({
                           )}
                         </button>
                         {expanded === entry.id && entry.details && (
-                          <pre className="px-2 pb-1 text-[10px] whitespace-pre-wrap text-slate-600">{entry.details}</pre>
+                          <pre className="px-2 pb-1 text-[10px] whitespace-pre-wrap text-gs-mute-2">{entry.details}</pre>
                         )}
                       </li>
                     ))}
@@ -333,7 +333,7 @@ function ResultDock({
                   <div key={stage.key} className="border border-outline-variant/50 rounded px-3 py-1.5">
                     <div className="text-[10px] uppercase tracking-wide text-secondary">{stage.label}</div>
                     <div className="text-sm font-bold text-on-surface">{stage.count}</div>
-                    <div className="text-[10px] text-slate-500">{stage.state}</div>
+                    <div className="text-[10px] text-gs-mute-2">{stage.state}</div>
                   </div>
                 ))}
               </div>
@@ -342,7 +342,7 @@ function ResultDock({
                   Phân loại theo nhãn
                 </div>
                 {Object.keys(overview.classification_counts).length === 0 ? (
-                  <p className="text-slate-500 italic">Chưa có kết quả phân loại.</p>
+                  <p className="text-gs-mute-2 italic">Chưa có kết quả phân loại.</p>
                 ) : (
                   <div className="flex flex-wrap gap-2">
                     {Object.entries(overview.classification_counts).map(([label, count]) => (
@@ -355,7 +355,7 @@ function ResultDock({
               </div>
             </div>
           ) : (
-            <p className="text-slate-500 italic">
+            <p className="text-gs-mute-2 italic">
               {status === "IDLE" ? "Chưa có chuyến đi." : "Đang tải dữ liệu xử lý…"}
             </p>
           )}
@@ -1369,12 +1369,12 @@ export default function SimulationCockpitPage() {
 
   const statusColor: Record<RunStatus, string> = {
     IDLE: "bg-surface-container text-secondary border-outline-variant/60",
-    QUEUED: "bg-amber-50 text-amber-700 border-amber-200",
-    RUNNING: "bg-emerald-50 text-emerald-700 border-emerald-200",
-    PAUSED: "bg-blue-50 text-blue-700 border-blue-200",
-    STOP_MOVEMENT: "bg-slate-100 text-slate-600 border-slate-300",
-    COMPLETED: "bg-primary/10 text-primary border-primary/30",
-    CANCELLED: "bg-rose-50 text-rose-700 border-rose-200",
+    QUEUED: "bg-gs-amber-soft text-gs-amber border-gs-amber/40",
+    RUNNING: "bg-primary-fixed text-on-primary-fixed border-primary-fixed-dim",
+    PAUSED: "bg-gs-blue-soft text-gs-blue border-gs-blue/30",
+    STOP_MOVEMENT: "bg-surface-container text-gs-mute-2 border-gs-line-2",
+    COMPLETED: "bg-gs-green-soft text-gs-green border-gs-green/40",
+    CANCELLED: "bg-gs-red-soft text-gs-red border-gs-red/40",
     FAILED: "bg-error-container text-error border-error/30",
   };
   const statusLabel: Record<RunStatus, string> = {
@@ -1451,12 +1451,12 @@ export default function SimulationCockpitPage() {
             disabled={status === "COMPLETED" || status === "CANCELLED"}
             className="!p-0 !border-none !bg-transparent shrink-0"
           />
-          {streamState === "reconnecting" && <span role="status" className="text-[11px] text-amber-700">Đang kết nối lại…</span>}
+          {streamState === "reconnecting" && <span role="status" className="text-[11px] text-gs-amber">Đang kết nối lại…</span>}
           {streamState === "error" && runId && <button type="button" onClick={() => connectSSE(runId)} className="text-xs underline">Kết nối lại</button>}
           {status === "RUNNING" && (
             <button
               onClick={() => handleControl("PAUSE")}
-              className="flex items-center gap-1 px-2 py-1 text-xs font-medium rounded border bg-white hover:bg-slate-50 border-outline-variant/60"
+              className="flex items-center gap-1 px-2 py-1 text-xs font-medium rounded border bg-white hover:bg-surface-container-low border-outline-variant/60"
             >
               <Pause className="w-3.5 h-3.5" /> Tạm dừng
             </button>
@@ -1472,7 +1472,7 @@ export default function SimulationCockpitPage() {
           {status !== "IDLE" && (
             <button
               onClick={handleReset}
-              className="flex items-center gap-1 px-2 py-1 text-xs font-medium rounded border bg-white text-secondary hover:bg-slate-50 border-outline-variant/60"
+              className="flex items-center gap-1 px-2 py-1 text-xs font-medium rounded border bg-white text-secondary hover:bg-surface-container-low border-outline-variant/60"
             >
               <RotateCcw className="w-3.5 h-3.5" /> Làm lại
             </button>
@@ -1507,27 +1507,27 @@ export default function SimulationCockpitPage() {
           <div className="flex min-h-0 flex-1">
             {/* Left: conversations */}
             <div role="complementary" aria-label="Hội thoại chuyến đi" className="w-[270px] min-[1200px]:w-[330px] shrink-0 border-r border-outline-variant/60 bg-surface-container-lowest flex flex-col min-h-0">
-              <div className="flex-1 flex flex-col min-h-0 border-b-2 border-slate-300 bg-white">
-                <div className="p-2.5 border-b border-slate-200 bg-emerald-50/70 flex items-center gap-1.5 shrink-0">
-                  <span className="w-5 h-5 rounded-full bg-emerald-600 text-white flex items-center justify-center">
+              <div className="flex-1 flex flex-col min-h-0 border-b-2 border-gs-line-2 bg-white">
+                <div className="p-2.5 border-b border-gs-line-2 bg-primary-fixed flex items-center gap-1.5 shrink-0">
+                  <span className="w-5 h-5 rounded-full bg-primary text-white flex items-center justify-center">
                     <Car className="w-3 h-3" />
                   </span>
                   <div>
-                    <span className="font-bold text-xs text-emerald-950 block leading-none">Màn hình Tài xế</span>
-                    <span className="text-[9.5px] font-mono text-emerald-700">{form.driverId}</span>
+                    <span className="font-bold text-xs text-on-primary-fixed block leading-none">Màn hình Tài xế</span>
+                    <span className="text-[9.5px] font-mono text-on-primary-fixed">{form.driverId}</span>
                   </div>
                 </div>
-                <div ref={driverScrollRef} className="flex-1 overflow-y-auto p-2.5 space-y-2 bg-slate-50/50">
+                <div ref={driverScrollRef} className="flex-1 overflow-y-auto p-2.5 space-y-2 bg-surface-container-low/50">
                   {messages.map((m) => {
                     const isMe = m.sender === "DRIVER";
                     return (
                       <div key={m.id} className={`flex flex-col ${isMe ? "items-end" : "items-start"} text-xs`}>
-                        <span className="text-[9px] text-slate-400 mb-0.5 px-1 font-mono">
+                        <span className="text-[9px] text-gs-mute mb-0.5 px-1 font-mono">
                           {isMe ? m.time : `Khách · ${m.time}`}
                         </span>
                         <div
                           className={`max-w-[85%] px-3 py-1.5 rounded-2xl text-[11px] leading-relaxed ${
-                            isMe ? "bg-emerald-600 text-white rounded-tr-xs" : "bg-white text-slate-800 border border-slate-200 rounded-tl-xs"
+                            isMe ? "bg-primary text-white rounded-tr-xs" : "bg-white text-foreground border border-gs-line-2 rounded-tl-xs"
                           }`}
                         >
                           {m.text}
@@ -1536,20 +1536,20 @@ export default function SimulationCockpitPage() {
                     );
                   })}
                 </div>
-                <div className="p-2 border-t border-slate-200 bg-white shrink-0 flex items-center gap-1">
+                <div className="p-2 border-t border-gs-line-2 bg-white shrink-0 flex items-center gap-1">
                   <input
                     type="text"
                     value={driverChatInput}
                     onChange={(e) => setDriverChatInput(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleDriverSend()}
                     placeholder="Tài xế gửi tin nhắn…"
-                    className="flex-1 h-7 px-2 text-xs rounded border border-slate-300 bg-slate-50 focus:bg-white focus:outline-none focus:border-emerald-600"
+                    className="flex-1 h-7 px-2 text-xs rounded border border-gs-line-2 bg-surface-container-low focus:bg-white focus:outline-none focus:border-primary"
                   />
                   <button
                     type="button"
                     onClick={() => handleDriverSend()}
                     aria-label="Gửi tin nhắn tài xế"
-                    className="h-7 px-2 rounded bg-emerald-600 hover:bg-emerald-700 text-white"
+                    className="h-7 px-2 rounded bg-primary hover:bg-primary-container text-white"
                   >
                     <Send className="w-3 h-3" />
                   </button>
@@ -1557,26 +1557,26 @@ export default function SimulationCockpitPage() {
               </div>
 
               <div className="flex-1 flex flex-col min-h-0 bg-white">
-                <div className="p-2.5 border-b border-slate-200 bg-blue-50/70 flex items-center gap-1.5 shrink-0">
-                  <span className="w-5 h-5 rounded-full bg-blue-600 text-white flex items-center justify-center">
+                <div className="p-2.5 border-b border-gs-line-2 bg-gs-blue-soft flex items-center gap-1.5 shrink-0">
+                  <span className="w-5 h-5 rounded-full bg-gs-blue text-white flex items-center justify-center">
                     <User className="w-3 h-3" />
                   </span>
                   <div>
-                    <span className="font-bold text-xs text-blue-950 block leading-none">Màn hình Khách hàng</span>
-                    <span className="text-[9.5px] font-mono text-blue-700">{form.passengerId}</span>
+                    <span className="font-bold text-xs text-gs-blue block leading-none">Màn hình Khách hàng</span>
+                    <span className="text-[9.5px] font-mono text-gs-blue">{form.passengerId}</span>
                   </div>
                 </div>
-                <div ref={customerScrollRef} className="flex-1 overflow-y-auto p-2.5 space-y-2 bg-slate-50/50">
+                <div ref={customerScrollRef} className="flex-1 overflow-y-auto p-2.5 space-y-2 bg-surface-container-low/50">
                   {messages.map((m) => {
                     const isMe = m.sender === "CUSTOMER";
                     return (
                       <div key={m.id} className={`flex flex-col ${isMe ? "items-end" : "items-start"} text-xs`}>
-                        <span className="text-[9px] text-slate-400 mb-0.5 px-1 font-mono">
+                        <span className="text-[9px] text-gs-mute mb-0.5 px-1 font-mono">
                           {isMe ? m.time : `Tài xế · ${m.time}`}
                         </span>
                         <div
                           className={`max-w-[85%] px-3 py-1.5 rounded-2xl text-[11px] leading-relaxed ${
-                            isMe ? "bg-blue-600 text-white rounded-tr-xs" : "bg-white text-slate-800 border border-slate-200 rounded-tl-xs"
+                            isMe ? "bg-gs-blue text-white rounded-tr-xs" : "bg-white text-foreground border border-gs-line-2 rounded-tl-xs"
                           }`}
                         >
                           {m.text}
@@ -1585,20 +1585,20 @@ export default function SimulationCockpitPage() {
                     );
                   })}
                 </div>
-                <div className="p-2 border-t border-slate-200 bg-white shrink-0 flex items-center gap-1">
+                <div className="p-2 border-t border-gs-line-2 bg-white shrink-0 flex items-center gap-1">
                   <input
                     type="text"
                     value={customerChatInput}
                     onChange={(e) => setCustomerChatInput(e.target.value)}
                     onKeyDown={(e) => e.key === "Enter" && handleCustomerSend()}
                     placeholder="Khách hàng gửi tin nhắn…"
-                    className="flex-1 h-7 px-2 text-xs rounded border border-slate-300 bg-slate-50 focus:bg-white focus:outline-none focus:border-blue-600"
+                    className="flex-1 h-7 px-2 text-xs rounded border border-gs-line-2 bg-surface-container-low focus:bg-white focus:outline-none focus:border-gs-blue/30"
                   />
                   <button
                     type="button"
                     onClick={() => handleCustomerSend()}
                     aria-label="Gửi tin nhắn khách hàng"
-                    className="h-7 px-2 rounded bg-blue-600 hover:bg-blue-700 text-white"
+                    className="h-7 px-2 rounded bg-gs-blue hover:bg-gs-blue/90 text-white"
                   >
                     <Send className="w-3 h-3" />
                   </button>
@@ -1608,7 +1608,7 @@ export default function SimulationCockpitPage() {
 
             {/* Center: map */}
             <div
-              className={`flex-1 min-w-0 relative h-full flex flex-col overflow-hidden bg-[#eef3f8] ${
+              className={`flex-1 min-w-0 relative h-full flex flex-col overflow-hidden bg-surface-container ${
                 clickToAddWaypointMode || setPickupMode ? "cursor-crosshair" : ""
               }`}
             >
@@ -1655,7 +1655,7 @@ export default function SimulationCockpitPage() {
               {clickToAddWaypointMode && (
                 <div
                   data-testid="waypoint-click-banner"
-                  className="absolute top-3 left-1/2 -translate-x-1/2 z-30 bg-amber-500 text-white font-semibold text-xs px-3 py-1.5 rounded-full shadow-lg flex items-center gap-2 animate-bounce"
+                  className="absolute top-3 left-1/2 -translate-x-1/2 z-30 bg-gs-amber-soft0 text-white font-semibold text-xs px-3 py-1.5 rounded-full shadow-lg flex items-center gap-2 animate-bounce"
                 >
                   <span>Nhấp trên bản đồ để thêm điểm rẽ (Điểm #{waypoints.length + 1})</span>
                   <button
@@ -1673,7 +1673,7 @@ export default function SimulationCockpitPage() {
               {setPickupMode && (
                 <div
                   data-testid="set-pickup-banner"
-                  className="absolute top-3 left-1/2 -translate-x-1/2 z-30 bg-blue-600 text-white font-semibold text-xs px-3 py-1.5 rounded-full shadow-lg flex items-center gap-2 animate-bounce"
+                  className="absolute top-3 left-1/2 -translate-x-1/2 z-30 bg-gs-blue text-white font-semibold text-xs px-3 py-1.5 rounded-full shadow-lg flex items-center gap-2 animate-bounce"
                 >
                   <span>Nhấp trên bản đồ để đặt vị trí đón khách</span>
                   <button
@@ -1702,22 +1702,22 @@ export default function SimulationCockpitPage() {
 
               <div className="absolute top-3 left-3 z-20 bg-white/95 border border-outline-variant/60 shadow-sm rounded-lg p-2.5 max-w-[260px] text-xs">
                 <div className="flex items-center justify-between gap-2 border-b border-outline-variant/40 pb-1.5 mb-1.5">
-                  <span className="font-bold text-[11px] text-slate-800 flex items-center gap-1.5">
-                    <span className={`w-2 h-2 rounded-full ${status === "RUNNING" ? "bg-emerald-500 animate-pulse" : "bg-slate-400"}`} />
+                  <span className="font-bold text-[11px] text-foreground flex items-center gap-1.5">
+                    <span className={`w-2 h-2 rounded-full ${status === "RUNNING" ? "bg-gs-green animate-pulse" : "bg-gs-mute"}`} />
                     Vị trí xe
                   </span>
-                  <span className="text-[10px] font-mono px-1 rounded bg-slate-100 text-slate-600 font-semibold">
+                  <span className="text-[10px] font-mono px-1 rounded bg-surface-container text-gs-mute-2 font-semibold">
                     {statusLabel[status]}
                   </span>
                 </div>
-                <div className="space-y-1 font-mono text-[11px] text-slate-600">
+                <div className="space-y-1 font-mono text-[11px] text-gs-mute-2">
                   <div className="flex justify-between">
                     <span>Vận tốc</span>
-                    <span className="font-semibold text-slate-800">{(speedMpsLive * 3.6).toFixed(1)} km/h</span>
+                    <span className="font-semibold text-foreground">{(speedMpsLive * 3.6).toFixed(1)} km/h</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Tiến độ</span>
-                    <span className="text-slate-800">{currentStep} / {totalSteps || "—"}</span>
+                    <span className="text-foreground">{currentStep} / {totalSteps || "—"}</span>
                   </div>
                 </div>
               </div>
@@ -1760,8 +1760,8 @@ export default function SimulationCockpitPage() {
                         }}
                         className={`text-[10px] font-bold px-2 py-0.5 rounded border transition cursor-pointer ${
                           setPickupMode
-                            ? "bg-blue-600 text-white border-blue-600"
-                            : "bg-white text-blue-700 border-blue-300 hover:bg-blue-50"
+                            ? "bg-gs-blue text-white border-gs-blue/30"
+                            : "bg-white text-gs-blue border-gs-blue/30 hover:bg-gs-blue-soft"
                         }`}
                       >
                         {setPickupMode ? "Đang chọn trên bản đồ…" : "Đặt trên bản đồ"}
@@ -1873,20 +1873,20 @@ export default function SimulationCockpitPage() {
               </div>
 
               {resolvedRoute ? (
-                <div className="bg-emerald-50/80 border border-emerald-200 rounded-lg p-2 text-[11px] text-emerald-900 flex items-center justify-between">
+                <div className="bg-primary-fixed border border-primary-fixed-dim rounded-lg p-2 text-[11px] text-on-primary-fixed flex items-center justify-between">
                   <span className="flex items-center gap-1 font-semibold">
-                    <Navigation className="w-3.5 h-3.5 text-emerald-600" /> Lộ trình đường bộ
+                    <Navigation className="w-3.5 h-3.5 text-primary" /> Lộ trình đường bộ
                   </span>
                   <span>
                     {((resolvedRoute.pickup_route.distance_m + resolvedRoute.destination_route.distance_m) / 1000).toFixed(2)} km
                   </span>
                 </div>
               ) : routeResolving ? (
-                <div className="bg-blue-50/80 border border-blue-200 rounded-lg p-2 text-[11px] text-blue-800 flex items-center gap-2">
+                <div className="bg-gs-blue-soft border border-gs-blue/30 rounded-lg p-2 text-[11px] text-gs-blue flex items-center gap-2">
                   <Loader2 className="w-3.5 h-3.5 animate-spin" /> Đang tìm lộ trình…
                 </div>
               ) : routeError ? (
-                <div className="bg-amber-50/80 border border-amber-200 rounded-lg p-2 text-[11px] text-amber-800">
+                <div className="bg-gs-amber-soft border border-gs-amber/40 rounded-lg p-2 text-[11px] text-gs-amber">
                   Chưa có lộ trình đường bộ. Hệ thống không hiển thị đường thẳng giả định.
                 </div>
               ) : null}
@@ -1907,7 +1907,7 @@ export default function SimulationCockpitPage() {
                     onClick={handleCompleteTrips}
                     disabled={!canSubmit || submittingTrips}
                     title={canSubmit ? "Gửi chuyến đi đã ghi nhận để xử lý" : "Chỉ bật khi chuyến đi kết thúc"}
-                    className="w-full py-2 text-xs font-bold rounded bg-emerald-600 text-white hover:bg-emerald-700 disabled:opacity-50 flex items-center justify-center gap-1.5"
+                    className="w-full py-2 text-xs font-bold rounded bg-primary text-white hover:bg-primary-container disabled:opacity-50 flex items-center justify-center gap-1.5"
                   >
                     {submittingTrips ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Flag className="w-3.5 h-3.5" />}
                     {status === "CANCELLED" ? "Gửi chuyến đã huỷ" : "Hoàn tất & gửi chuyến"}
@@ -1921,7 +1921,7 @@ export default function SimulationCockpitPage() {
                           setCancelReason("");
                           setCancelError(null);
                         }}
-                        className="py-1.5 text-xs font-semibold rounded border border-rose-300 text-rose-700 hover:bg-rose-50"
+                        className="py-1.5 text-xs font-semibold rounded border border-gs-line-2 bg-white text-gs-ink-2 hover:bg-surface-container-low"
                       >
                         Khách huỷ chuyến
                       </button>
@@ -1931,7 +1931,7 @@ export default function SimulationCockpitPage() {
                           setCancelReason("");
                           setCancelError(null);
                         }}
-                        className="py-1.5 text-xs font-semibold rounded border border-rose-300 text-rose-700 hover:bg-rose-50"
+                        className="py-1.5 text-xs font-semibold rounded border border-gs-line-2 bg-white text-gs-ink-2 hover:bg-surface-container-low"
                       >
                         Tài xế huỷ chuyến
                       </button>
@@ -1941,7 +1941,7 @@ export default function SimulationCockpitPage() {
                   {publishResult && (
                     <Link
                       href={publishResult.destination}
-                      className="w-full py-1.5 text-xs text-center font-bold rounded border border-emerald-300 bg-white text-emerald-800 hover:bg-emerald-100 flex items-center justify-center gap-1"
+                      className="w-full py-1.5 text-xs text-center font-bold rounded border border-primary-fixed-dim bg-white text-on-primary-fixed hover:bg-primary-fixed flex items-center justify-center gap-1"
                     >
                       <ExternalLink className="w-3.5 h-3.5" /> Xem ở màn hình phân tích
                     </Link>
@@ -2016,17 +2016,17 @@ export default function SimulationCockpitPage() {
                 <div className="flex items-center justify-between gap-2">
                   <span className="text-xs font-bold">{preset.title}</span>
                   {!preset.available && (
-                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800">Tạm chưa mở</span>
+                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-gs-amber-soft text-gs-amber">Tạm chưa mở</span>
                   )}
                 </div>
                 <p className="text-[11px] text-secondary mt-0.5">{preset.description}</p>
-                <div className="flex flex-wrap gap-1 mt-1 text-[10px] text-slate-500">
+                <div className="flex flex-wrap gap-1 mt-1 text-[10px] text-gs-mute-2">
                   <span>{preset.available_trips ?? "?"} chuyến</span>
                   {preset.source_label && <span>· {preset.source_label}</span>}
                   <span>· mẫu: {preset.sample_trips.length}</span>
                 </div>
                 {!preset.available && preset.unavailable_reason && (
-                  <p className="text-[10px] text-amber-700 mt-1">{preset.unavailable_reason}</p>
+                  <p className="text-[10px] text-gs-amber mt-1">{preset.unavailable_reason}</p>
                 )}
               </button>
             ))}
@@ -2128,7 +2128,7 @@ export default function SimulationCockpitPage() {
                 type="button"
                 onClick={confirmCancel}
                 disabled={cancelling}
-                className="px-3 py-1.5 text-xs font-bold rounded bg-rose-600 text-white hover:bg-rose-700 disabled:opacity-60 flex items-center gap-1.5"
+                className="px-3 py-1.5 text-xs font-bold rounded bg-gs-red text-white hover:bg-gs-red/90 disabled:opacity-60 flex items-center gap-1.5"
               >
                 {cancelling ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Check className="w-3.5 h-3.5" />}
                 Xác nhận huỷ

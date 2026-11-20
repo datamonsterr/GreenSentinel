@@ -43,10 +43,10 @@ export function WaypointPanel({
         aria-label="Bật chế độ nhấp bản đồ để thêm điểm rẽ"
         className={`w-full py-1.5 px-2.5 rounded text-xs font-semibold border transition flex items-center justify-center gap-1.5 cursor-pointer shadow-xs ${
           isClickMode
-            ? "bg-amber-500 text-white border-amber-600 animate-pulse"
+            ? "bg-gs-amber-soft0 text-white border-gs-amber/40 animate-pulse"
             : disabled
-            ? "bg-slate-100 text-slate-400 border-slate-200 cursor-not-allowed"
-            : "bg-amber-50 hover:bg-amber-100 text-amber-900 border-amber-300"
+            ? "bg-surface-container text-gs-mute border-gs-line-2 cursor-not-allowed"
+            : "bg-gs-amber-soft hover:bg-gs-amber-soft text-gs-amber border-gs-amber/40"
         }`}
       >
         <MapPin className="w-3.5 h-3.5 shrink-0" />
@@ -58,7 +58,7 @@ export function WaypointPanel({
       </button>
 
       {waypoints.length === 0 ? (
-        <p className="text-[11px] text-slate-500 italic py-1">
+        <p className="text-[11px] text-gs-mute-2 italic py-1">
           Chưa có điểm rẽ nào. Bật chế độ thêm điểm và nhấp trên bản đồ để chỉ định lộ trình tùy ý.
         </p>
       ) : (
@@ -75,7 +75,7 @@ export function WaypointPanel({
                 <div className="flex items-center gap-1.5 min-w-0 flex-1">
                   <span
                     data-testid={`waypoint-badge-${idx + 1}`}
-                    className="w-4 h-4 rounded-full bg-amber-500 text-white font-bold text-[10px] flex items-center justify-center shrink-0"
+                    className="w-4 h-4 rounded-full bg-gs-amber-soft0 text-white font-bold text-[10px] flex items-center justify-center shrink-0"
                   >
                     {idx + 1}
                   </span>
@@ -83,7 +83,7 @@ export function WaypointPanel({
                     <div className="font-semibold text-[11px] truncate">
                       {wp.name || `Điểm rẽ #${idx + 1}`}
                     </div>
-                    <div className="text-[9px] font-mono text-slate-400">
+                    <div className="text-[9px] font-mono text-gs-mute">
                       [{wp.lat.toFixed(4)}, {wp.lon.toFixed(4)}]
                     </div>
                   </div>
@@ -97,7 +97,7 @@ export function WaypointPanel({
                     onChange={(e) =>
                       onUpdateWaypointLeg(wp.id, e.target.value as "pickup" | "destination")
                     }
-                    className="h-6 px-1.5 text-[10px] rounded border border-slate-300 bg-white text-slate-700 focus:outline-none focus:border-primary disabled:opacity-50"
+                    className="h-6 px-1.5 text-[10px] rounded border border-gs-line-2 bg-white text-gs-ink-2 focus:outline-none focus:border-primary disabled:opacity-50"
                   >
                     <option value="pickup">Chặng đón</option>
                     <option value="destination">Chặng trả</option>
@@ -110,7 +110,7 @@ export function WaypointPanel({
                       onClick={() => onMoveWaypoint(wp.id, "up")}
                       aria-label="Di chuyển điểm rẽ lên"
                       title="Di chuyển lên"
-                      className="p-1 text-slate-500 hover:text-primary disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                      className="p-1 text-gs-mute-2 hover:text-primary disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
                     >
                       <ArrowUp className="w-3 h-3" />
                     </button>
@@ -120,7 +120,7 @@ export function WaypointPanel({
                       onClick={() => onMoveWaypoint(wp.id, "down")}
                       aria-label="Di chuyển điểm rẽ xuống"
                       title="Di chuyển xuống"
-                      className="p-1 text-slate-500 hover:text-primary disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                      className="p-1 text-gs-mute-2 hover:text-primary disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
                     >
                       <ArrowDown className="w-3 h-3" />
                     </button>
@@ -132,7 +132,7 @@ export function WaypointPanel({
                     onClick={() => onRemoveWaypoint(wp.id)}
                     aria-label="Xóa điểm rẽ"
                     title="Xóa điểm rẽ"
-                    className="p-1 text-slate-400 hover:text-error hover:bg-rose-50 rounded transition disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+                    className="p-1 text-gs-mute hover:text-error hover:bg-gs-red-soft rounded transition disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>

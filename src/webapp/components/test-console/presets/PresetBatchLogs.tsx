@@ -194,24 +194,24 @@ export function PresetBatchLogs({
             <span
               className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase ${
                 batchDetail?.status === "RUNNING"
-                  ? "bg-emerald-100 text-emerald-800 animate-pulse"
+                  ? "bg-primary-fixed text-on-primary-fixed animate-pulse"
                   : batchDetail?.status === "COMPLETED"
-                  ? "bg-blue-100 text-blue-800"
+                  ? "bg-gs-blue-soft text-gs-blue"
                   : batchDetail?.status === "CANCELLED"
-                  ? "bg-slate-200 text-slate-700"
-                  : "bg-amber-100 text-amber-800"
+                  ? "bg-surface-container-high text-gs-ink-2"
+                  : "bg-gs-amber-soft text-gs-amber"
               }`}
             >
               {batchDetail?.status || "ĐANG TẢI…"}
             </span>
             {streamState === "connected" && (
-              <span className="flex items-center gap-1 text-[10px] text-emerald-600 font-medium">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-ping" />
+              <span className="flex items-center gap-1 text-[10px] text-primary font-medium">
+                <span className="w-1.5 h-1.5 rounded-full bg-gs-green animate-ping" />
                 SSE Trực tiếp
               </span>
             )}
             {streamState === "reconnecting" && (
-              <span className="text-[10px] text-amber-600 font-medium flex items-center gap-1">
+              <span className="text-[10px] text-gs-amber font-medium flex items-center gap-1">
                 <Loader2 className="w-3 h-3 animate-spin" /> Đang kết nối lại…
               </span>
             )}
@@ -243,7 +243,7 @@ export function PresetBatchLogs({
               type="button"
               onClick={handleCancelBatch}
               disabled={cancelling}
-              className="flex items-center gap-1 text-xs px-2.5 py-1 rounded bg-rose-600 text-white font-medium hover:bg-rose-700 disabled:opacity-50 transition"
+              className="flex items-center gap-1 text-xs px-2.5 py-1 rounded bg-gs-red text-white font-medium hover:bg-gs-red/90 disabled:opacity-50 transition"
             >
               {cancelling ? <Loader2 className="w-3 h-3 animate-spin" /> : <Ban className="w-3 h-3" />}
               <span>Hủy đợt chạy</span>
@@ -322,14 +322,14 @@ export function PresetBatchLogs({
                     <span
                       className={`text-[10px] font-bold px-2 py-0.5 rounded-full uppercase ${
                         trip.status === "COMPLETED"
-                          ? "bg-emerald-100 text-emerald-800"
+                          ? "bg-primary-fixed text-on-primary-fixed"
                           : trip.status === "RUNNING"
-                          ? "bg-blue-100 text-blue-800 animate-pulse"
+                          ? "bg-gs-blue-soft text-gs-blue animate-pulse"
                           : trip.status === "FAILED"
-                          ? "bg-rose-100 text-rose-800"
+                          ? "bg-gs-red-soft text-gs-red"
                           : trip.status === "SKIPPED"
-                          ? "bg-slate-100 text-slate-700"
-                          : "bg-amber-100 text-amber-800"
+                          ? "bg-surface-container text-gs-ink-2"
+                          : "bg-gs-amber-soft text-gs-amber"
                       }`}
                     >
                       {trip.status}
@@ -338,7 +338,7 @@ export function PresetBatchLogs({
                     {/* Classifier Badge */}
                     <span
                       className={`text-[10px] font-medium px-1.5 py-0.5 rounded ${
-                        reachedClassifier ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-slate-50 text-slate-500"
+                        reachedClassifier ? "bg-primary-fixed text-on-primary-fixed border border-primary-fixed-dim" : "bg-surface-container-low text-gs-mute-2"
                       }`}
                       title="Chuyến đã qua mô hình phân loại vi phạm"
                     >
@@ -385,14 +385,14 @@ export function PresetBatchLogs({
                             <div key={evt.event_id || idx} className="text-[11px] flex items-start justify-between gap-2">
                               <div>
                                 <span className="font-mono font-semibold text-primary">{evt.event_type}</span>
-                                {evt.reason && <span className="text-rose-600 ml-1">({evt.reason})</span>}
+                                {evt.reason && <span className="text-gs-red ml-1">({evt.reason})</span>}
                                 {evt.label && (
                                   <span className="ml-1 text-on-surface">
                                     · nhãn: {evt.label} ({(Number(evt.confidence || 0) * 100).toFixed(1)}%)
                                   </span>
                                 )}
                                 {evt.case_id && (
-                                  <span className="ml-1 text-emerald-700 font-mono">
+                                  <span className="ml-1 text-on-primary-fixed font-mono">
                                     · case #{evt.case_id.slice(0, 8)}
                                   </span>
                                 )}

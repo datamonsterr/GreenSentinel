@@ -104,7 +104,7 @@ export function OrganizationManagement() {
 
   if (!isLoaded) {
     return (
-      <div role="status" aria-label="Loading organization" className="flex-1 min-h-0 overflow-y-auto bg-[#f6f8f7]">
+      <div role="status" aria-label="Loading organization" className="flex-1 min-h-0 overflow-y-auto bg-background">
         <span className="sr-only">Loading organization...</span>
       </div>
     );
@@ -479,12 +479,12 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
   }
 
   return (
-    <div className="flex-1 min-h-0 overflow-y-auto bg-[#f6f8f7] text-[#17231d]">
+    <div className="flex-1 min-h-0 overflow-y-auto bg-background text-foreground">
       <div className="mx-auto flex w-full max-w-[1120px] flex-col gap-6 px-6 py-7 max-md:gap-4 max-md:px-3 max-md:py-4">
         <header className="flex flex-wrap items-start justify-between gap-4 max-md:flex-col">
           <div>
-            <h1 className="text-[22px] font-bold tracking-tight text-[#17231d]">Organization</h1>
-            <p className="mt-0.5 text-[13px] text-[#49564f]">Manage members, roles, and invitations.</p>
+            <h1 className="text-[22px] font-bold tracking-tight text-foreground">Organization</h1>
+            <p className="mt-0.5 text-[13px] text-gs-mute-2">Manage members, roles, and invitations.</p>
           </div>
           <div className="flex flex-wrap items-center gap-3 max-md:w-full max-md:justify-between">
             {!e2eAuthBypass ? (
@@ -495,7 +495,7 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
             ) : (
               <div
                 data-testid="e2e-auth-indicator"
-                className="rounded border border-[#e0e5e2] bg-white px-2 py-1 font-mono text-xs text-[#49564f]"
+                className="rounded border border-gs-line-2 bg-white px-2 py-1 font-mono text-xs text-gs-mute-2"
               >
                 E2E (no Clerk)
               </div>
@@ -504,21 +504,21 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
               <DialogTrigger asChild>
                 <Button
                   type="button"
-                  className="h-9 gap-2 rounded-md bg-[#006948] px-4 text-[13px] font-semibold text-white shadow-sm hover:bg-[#00553a]"
+                  className="h-9 gap-2 rounded-md bg-primary px-4 text-[13px] font-semibold text-white shadow-sm hover:bg-primary-container"
                 >
                   <UserRoundPlus className="h-4 w-4" aria-hidden="true" />
                   Invite user
                 </Button>
               </DialogTrigger>
               <DialogContent
-                className="max-w-[480px] gap-0 rounded-xl border-[#e0e5e2] p-0"
+                className="max-w-[480px] gap-0 rounded-xl border-gs-line-2 p-0"
                 onOpenAutoFocus={(event) => {
                   event.preventDefault();
                   emailRef.current?.focus();
                 }}
               >
                 <DialogHeader className="flex-row items-center gap-2.5 space-y-0 px-6 py-4 pr-12">
-                  <UserRoundPlus className="h-[18px] w-[18px] shrink-0 text-[#006948]" aria-hidden="true" />
+                  <UserRoundPlus className="h-[18px] w-[18px] shrink-0 text-primary" aria-hidden="true" />
                   <DialogTitle className="min-w-0 text-base font-bold">Invite user to organization</DialogTitle>
                 </DialogHeader>
                 <DialogDescription className="sr-only">
@@ -527,7 +527,7 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
                 <form onSubmit={submitInvite}>
                   <div className="flex flex-col gap-4 px-6 py-5">
                     <div className="flex flex-col gap-1.5">
-                      <label htmlFor="invite-email" className="text-xs font-semibold text-[#17231d]">
+                      <label htmlFor="invite-email" className="text-xs font-semibold text-foreground">
                         Email address
                       </label>
                       <Input
@@ -539,11 +539,11 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
                         placeholder="name@example.com"
                         value={email}
                         onChange={(event) => setEmail(event.target.value)}
-                        className="h-9 rounded-md border-[#e0e5e2] bg-white text-[13px] max-md:text-base"
+                        className="h-9 rounded-md border-gs-line-2 bg-white text-[13px] max-md:text-base"
                       />
                     </div>
                     <div className="flex flex-col gap-1.5">
-                      <label htmlFor="invite-role" className="text-xs font-semibold text-[#17231d]">
+                      <label htmlFor="invite-role" className="text-xs font-semibold text-foreground">
                         Role
                       </label>
                       <Select value={role} onValueChange={setRole} required>
@@ -551,7 +551,7 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
                           id="invite-role"
                           aria-required="true"
                           aria-describedby="invite-role-hint"
-                          className="h-9 rounded-md border-[#e0e5e2] bg-white text-[13px] max-md:text-base"
+                          className="h-9 rounded-md border-gs-line-2 bg-white text-[13px] max-md:text-base"
                         >
                           <SelectValue />
                         </SelectTrigger>
@@ -563,25 +563,25 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
                           ))}
                         </SelectContent>
                       </Select>
-                      <p id="invite-role-hint" className="text-[11px] text-[#617068]">
+                      <p id="invite-role-hint" className="text-[11px] text-gs-mute-2">
                         Choose the access this person needs.
                       </p>
                     </div>
                     {inviteError && (
                       <p
                         role="alert"
-                        className="flex items-start gap-2 rounded-md border border-[#fecaca] bg-[#fef2f2] px-3 py-2 text-[13px] text-[#991b1b]"
+                        className="flex items-start gap-2 rounded-md border border-gs-red/40 bg-gs-red-soft px-3 py-2 text-[13px] text-gs-red"
                       >
                         <CircleAlert className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
                         <span>{inviteError}</span>
                       </p>
                     )}
                   </div>
-                  <DialogFooter className="rounded-b-xl bg-[#fafbfa] px-6 py-3.5">
+                  <DialogFooter className="rounded-b-xl bg-surface-container-low px-6 py-3.5">
                     <Button
                       type="button"
                       variant="outline"
-                      className="h-9 rounded-md border-[#e0e5e2] bg-white text-[13px] font-medium text-[#49564f]"
+                      className="h-9 rounded-md border-gs-line-2 bg-white text-[13px] font-medium text-gs-mute-2"
                       onClick={() => handleDialogOpenChange(false)}
                     >
                       Cancel
@@ -589,7 +589,7 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
                     <Button
                       type="submit"
                       disabled={invitePending}
-                      className="h-9 gap-2 rounded-md bg-[#006948] px-4 text-[13px] font-semibold text-white shadow-sm hover:bg-[#00553a]"
+                      className="h-9 gap-2 rounded-md bg-primary px-4 text-[13px] font-semibold text-white shadow-sm hover:bg-primary-container"
                     >
                       {invitePending ? "Inviting..." : "Invite user"}
                     </Button>
@@ -603,7 +603,7 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
         {members.length > 0 && !membersHaveAnalyst && !membersLoading && (
           <div
             role="status"
-            className="flex items-start gap-3 rounded-lg border border-[#fcd34d] bg-[#fffbeb] px-4 py-3 text-[13px] text-[#92400e]"
+            className="flex items-start gap-3 rounded-lg border border-gs-amber/40 bg-gs-amber-soft px-4 py-3 text-[13px] text-gs-amber"
           >
             <TriangleAlert className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
             <p>
@@ -615,7 +615,7 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
         {pageError && (
           <div
             role="alert"
-            className="flex items-start gap-3 rounded-lg border border-[#fecaca] bg-[#fef2f2] px-4 py-3 text-[13px] text-[#991b1b]"
+            className="flex items-start gap-3 rounded-lg border border-gs-red/40 bg-gs-red-soft px-4 py-3 text-[13px] text-gs-red"
           >
             <CircleAlert className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
             <p>{pageError}</p>
@@ -625,7 +625,7 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
         {notice && (
           <div
             role="status"
-            className="flex items-start gap-3 rounded-lg border border-[#a7f3d0] bg-[#ecfdf5] px-4 py-3 text-[13px] text-[#065f46]"
+            className="flex items-start gap-3 rounded-lg border border-gs-green/40 bg-gs-green-soft px-4 py-3 text-[13px] text-gs-green"
           >
             <span>{notice}</span>
           </div>
@@ -633,27 +633,27 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
 
         <section
           aria-labelledby="members-heading"
-          className="flex flex-col overflow-hidden rounded-xl border border-[#e0e5e2] bg-white shadow-sm"
+          className="flex flex-col overflow-hidden rounded-xl border border-gs-line-2 bg-white shadow-sm"
         >
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#e0e5e2] px-5 py-4">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gs-line-2 px-5 py-4">
             <div className="flex items-center gap-2.5">
-              <Users className="h-4 w-4 text-[#49564f]" aria-hidden="true" />
-              <h2 id="members-heading" className="text-[15px] font-semibold text-[#17231d]">
+              <Users className="h-4 w-4 text-gs-mute-2" aria-hidden="true" />
+              <h2 id="members-heading" className="text-[15px] font-semibold text-foreground">
                 Members
               </h2>
               {!membersLoading && !membersError && (
-                <span className="rounded-full border border-[#e0e5e2] bg-[#f0f3f1] px-2 py-0.5 text-[11px] font-semibold text-[#49564f]">
+                <span className="rounded-full border border-gs-line-2 bg-surface-container px-2 py-0.5 text-[11px] font-semibold text-gs-mute-2">
                   {visibleMembers.length} {visibleMembers.length === 1 ? "member" : "members"}
                 </span>
               )}
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#e0e5e2] bg-[#fafbfa] px-5 py-3">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gs-line-2 bg-surface-container-low px-5 py-3">
             <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2 max-md:flex-col max-md:items-stretch">
               <div className="relative min-w-[180px] flex-1 sm:max-w-[320px]">
                 <Search
-                  className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#7b8880]"
+                  className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gs-mute"
                   aria-hidden="true"
                 />
                 <Input
@@ -661,13 +661,13 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
                   placeholder="Search members..."
                   value={memberQuery}
                   onChange={(event) => setMemberQuery(event.target.value)}
-                  className="h-8 rounded-md border-[#e0e5e2] bg-white pl-8 text-xs max-md:text-base"
+                  className="h-8 rounded-md border-gs-line-2 bg-white pl-8 text-xs max-md:text-base"
                 />
               </div>
               <Select value={memberRoleFilter} onValueChange={setMemberRoleFilter}>
                 <SelectTrigger
                   aria-label="Filter members by role"
-                  className="h-8 w-auto min-w-[130px] rounded-md border-[#e0e5e2] bg-white text-xs max-md:w-full"
+                  className="h-8 w-auto min-w-[130px] rounded-md border-gs-line-2 bg-white text-xs max-md:w-full"
                 >
                   <SelectValue />
                 </SelectTrigger>
@@ -683,7 +683,7 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
               <Select value={memberStatusFilter} onValueChange={setMemberStatusFilter}>
                 <SelectTrigger
                   aria-label="Filter members by status"
-                  className="h-8 w-auto min-w-[130px] rounded-md border-[#e0e5e2] bg-white text-xs max-md:w-full"
+                  className="h-8 w-auto min-w-[130px] rounded-md border-gs-line-2 bg-white text-xs max-md:w-full"
                 >
                   <SelectValue />
                 </SelectTrigger>
@@ -698,14 +698,14 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
               variant="outline"
               aria-label="Reset member filters"
               onClick={resetMemberFilters}
-              className="h-8 gap-1.5 rounded-md border-[#e0e5e2] bg-white text-xs font-medium text-[#49564f]"
+              className="h-8 gap-1.5 rounded-md border-gs-line-2 bg-white text-xs font-medium text-gs-mute-2"
             >
               <RotateCcw className="h-3 w-3" aria-hidden="true" />
               Reset
             </Button>
           </div>
 
-          <p className="border-b border-[#e0e5e2] bg-[#f0f3f1] px-5 py-1.5 text-[11px] text-[#49564f]">
+          <p className="border-b border-gs-line-2 bg-surface-container px-5 py-1.5 text-[11px] text-gs-mute-2">
             Search and filters apply to this page.
           </p>
 
@@ -713,14 +713,14 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
             role="region"
             tabIndex={0}
             aria-label="Members table; scroll horizontally for more columns"
-            className="min-h-[120px] overflow-x-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#006948]"
+            className="min-h-[120px] overflow-x-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
           >
             {membersLoading ? (
               <div role="status" aria-label="Loading members" className="flex flex-col gap-3 p-4">
                 <span className="sr-only">Loading members...</span>
-                <div className="h-9 w-full animate-pulse rounded bg-[#f0f3f1]" />
-                <div className="h-9 w-full animate-pulse rounded bg-[#f0f3f1]" />
-                <div className="h-9 w-full animate-pulse rounded bg-[#f0f3f1]" />
+                <div className="h-9 w-full animate-pulse rounded bg-surface-container" />
+                <div className="h-9 w-full animate-pulse rounded bg-surface-container" />
+                <div className="h-9 w-full animate-pulse rounded bg-surface-container" />
               </div>
             ) : (
               <>
@@ -751,14 +751,14 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
                   <TableBody>
                     {visibleMembers.map((member) => (
                       <TableRow key={member.id}>
-                        <TableCell className="font-semibold text-[#17231d]">{member.display_name}</TableCell>
+                        <TableCell className="font-semibold text-foreground">{member.display_name}</TableCell>
                         <TableCell>
                           <span className="flex flex-wrap gap-1.5">
                             {memberRoleLabels(member.roles).map((label) => (
                               <Badge
                                 key={label}
                                 variant="outline"
-                                className="rounded-md border-[#e0e5e2] bg-[#f0f3f1] px-2 py-0.5 text-[11px] font-semibold text-[#49564f]"
+                                className="rounded-md border-gs-line-2 bg-surface-container px-2 py-0.5 text-[11px] font-semibold text-gs-mute-2"
                               >
                                 {label}
                               </Badge>
@@ -776,7 +776,7 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
                           >
                             <SelectTrigger
                               aria-label={`Change role for ${member.display_name}`}
-                              className="ml-auto h-8 w-auto min-w-[120px] rounded-md border-[#e0e5e2] bg-white text-xs"
+                              className="ml-auto h-8 w-auto min-w-[120px] rounded-md border-gs-line-2 bg-white text-xs"
                             >
                               <SelectValue placeholder={member.roles?.length ? "Unknown role" : "Unassigned"} />
                             </SelectTrigger>
@@ -817,7 +817,7 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
             )}
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[#e0e5e2] bg-[#fafbfa] px-5 py-3 text-xs text-[#49564f]">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-gs-line-2 bg-surface-container-low px-5 py-3 text-xs text-gs-mute-2">
             <span>
               {membersLoading || membersError
                 ? null
@@ -832,7 +832,7 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
                 aria-label="Previous members page"
                 disabled={membersOffset === 0 || membersLoading}
                 onClick={() => setMembersOffset(Math.max(0, membersOffset - PAGE_SIZE))}
-                className="h-8 rounded-md border-[#e0e5e2] bg-white text-xs"
+                className="h-8 rounded-md border-gs-line-2 bg-white text-xs"
               >
                 Prev
               </Button>
@@ -842,7 +842,7 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
                 aria-label="Next members page"
                 disabled={!membersHasNext || membersLoading}
                 onClick={() => setMembersOffset(membersOffset + PAGE_SIZE)}
-                className="h-8 rounded-md border-[#e0e5e2] bg-white text-xs"
+                className="h-8 rounded-md border-gs-line-2 bg-white text-xs"
               >
                 Next
               </Button>
@@ -852,27 +852,27 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
 
         <section
           aria-labelledby="invitations-heading"
-          className="flex flex-col overflow-hidden rounded-xl border border-[#e0e5e2] bg-white shadow-sm"
+          className="flex flex-col overflow-hidden rounded-xl border border-gs-line-2 bg-white shadow-sm"
         >
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#e0e5e2] px-5 py-4">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gs-line-2 px-5 py-4">
             <div className="flex items-center gap-2.5">
-              <Mail className="h-4 w-4 text-[#49564f]" aria-hidden="true" />
-              <h2 id="invitations-heading" className="text-[15px] font-semibold text-[#17231d]">
+              <Mail className="h-4 w-4 text-gs-mute-2" aria-hidden="true" />
+              <h2 id="invitations-heading" className="text-[15px] font-semibold text-foreground">
                 Invitations
               </h2>
               {!invitationsLoading && !invitationsError && (
-                <span className="rounded-full border border-[#e0e5e2] bg-[#f0f3f1] px-2 py-0.5 text-[11px] font-semibold text-[#49564f]">
+                <span className="rounded-full border border-gs-line-2 bg-surface-container px-2 py-0.5 text-[11px] font-semibold text-gs-mute-2">
                   {visibleInvitations.length} {visibleInvitations.length === 1 ? "invite" : "invites"}
                 </span>
               )}
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#e0e5e2] bg-[#fafbfa] px-5 py-3">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gs-line-2 bg-surface-container-low px-5 py-3">
             <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2 max-md:flex-col max-md:items-stretch">
               <div className="relative min-w-[180px] flex-1 sm:max-w-[320px]">
                 <Search
-                  className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-[#7b8880]"
+                  className="pointer-events-none absolute left-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gs-mute"
                   aria-hidden="true"
                 />
                 <Input
@@ -880,13 +880,13 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
                   placeholder="Search invitations..."
                   value={inviteQuery}
                   onChange={(event) => setInviteQuery(event.target.value)}
-                  className="h-8 rounded-md border-[#e0e5e2] bg-white pl-8 text-xs max-md:text-base"
+                  className="h-8 rounded-md border-gs-line-2 bg-white pl-8 text-xs max-md:text-base"
                 />
               </div>
               <Select value={inviteRoleFilter} onValueChange={setInviteRoleFilter}>
                 <SelectTrigger
                   aria-label="Filter invitations by role"
-                  className="h-8 w-auto min-w-[130px] rounded-md border-[#e0e5e2] bg-white text-xs max-md:w-full"
+                  className="h-8 w-auto min-w-[130px] rounded-md border-gs-line-2 bg-white text-xs max-md:w-full"
                 >
                   <SelectValue />
                 </SelectTrigger>
@@ -902,7 +902,7 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
               <Select value={inviteStatusFilter} onValueChange={setInviteStatusFilter}>
                 <SelectTrigger
                   aria-label="Filter invitations by status"
-                  className="h-8 w-auto min-w-[130px] rounded-md border-[#e0e5e2] bg-white text-xs max-md:w-full"
+                  className="h-8 w-auto min-w-[130px] rounded-md border-gs-line-2 bg-white text-xs max-md:w-full"
                 >
                   <SelectValue />
                 </SelectTrigger>
@@ -918,14 +918,14 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
               variant="outline"
               aria-label="Reset invitation filters"
               onClick={resetInviteFilters}
-              className="h-8 gap-1.5 rounded-md border-[#e0e5e2] bg-white text-xs font-medium text-[#49564f]"
+              className="h-8 gap-1.5 rounded-md border-gs-line-2 bg-white text-xs font-medium text-gs-mute-2"
             >
               <RotateCcw className="h-3 w-3" aria-hidden="true" />
               Reset
             </Button>
           </div>
 
-          <p className="border-b border-[#e0e5e2] bg-[#f0f3f1] px-5 py-1.5 text-[11px] text-[#49564f]">
+          <p className="border-b border-gs-line-2 bg-surface-container px-5 py-1.5 text-[11px] text-gs-mute-2">
             Search and filters apply to this page.
           </p>
 
@@ -933,13 +933,13 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
             role="region"
             tabIndex={0}
             aria-label="Invitations table; scroll horizontally for more columns"
-            className="min-h-[120px] overflow-x-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#006948]"
+            className="min-h-[120px] overflow-x-auto focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
           >
             {invitationsLoading ? (
               <div role="status" aria-label="Loading invitations" className="flex flex-col gap-3 p-4">
                 <span className="sr-only">Loading invitations...</span>
-                <div className="h-9 w-full animate-pulse rounded bg-[#f0f3f1]" />
-                <div className="h-9 w-full animate-pulse rounded bg-[#f0f3f1]" />
+                <div className="h-9 w-full animate-pulse rounded bg-surface-container" />
+                <div className="h-9 w-full animate-pulse rounded bg-surface-container" />
               </div>
             ) : (
               <>
@@ -972,11 +972,11 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
                       const pending = pendingIds.has(invitation.id);
                       return (
                         <TableRow key={invitation.id}>
-                          <TableCell className="font-medium text-[#17231d]">{invitation.email}</TableCell>
+                          <TableCell className="font-medium text-foreground">{invitation.email}</TableCell>
                           <TableCell>
                             <Badge
                               variant="outline"
-                              className="rounded-md border-[#e0e5e2] bg-[#f0f3f1] px-2 py-0.5 text-[11px] font-semibold text-[#49564f]"
+                              className="rounded-md border-gs-line-2 bg-surface-container px-2 py-0.5 text-[11px] font-semibold text-gs-mute-2"
                             >
                               {roleLabel(invitation.role)}
                             </Badge>
@@ -991,7 +991,7 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
                                 variant="outline"
                                 disabled={!canResendInvitation(invitation) || pending}
                                 onClick={() => void runInvitationAction(invitation.id, "resend")}
-                                className="h-7 rounded-md border-[#e0e5e2] bg-white px-2.5 text-[11px] font-medium text-[#49564f]"
+                                className="h-7 rounded-md border-gs-line-2 bg-white px-2.5 text-[11px] font-medium text-gs-mute-2"
                               >
                                 Resend
                               </Button>
@@ -1000,7 +1000,7 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
                                 variant="outline"
                                 disabled={!canRevokeInvitation(invitation) || pending}
                                 onClick={() => void runInvitationAction(invitation.id, "revoke")}
-                                className="h-7 rounded-md border-[#e0e5e2] bg-white px-2.5 text-[11px] font-medium text-[#991b1b]"
+                                className="h-7 rounded-md border-gs-line-2 bg-white px-2.5 text-[11px] font-medium text-gs-red"
                               >
                                 Revoke
                               </Button>
@@ -1035,7 +1035,7 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
             )}
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[#e0e5e2] bg-[#fafbfa] px-5 py-3 text-xs text-[#49564f]">
+          <div className="flex flex-wrap items-center justify-between gap-3 border-t border-gs-line-2 bg-surface-container-low px-5 py-3 text-xs text-gs-mute-2">
             <span>
               {invitationsLoading || invitationsError
                 ? null
@@ -1050,7 +1050,7 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
                 aria-label="Previous invitations page"
                 disabled={invitationsOffset === 0 || invitationsLoading}
                 onClick={() => setInvitationsOffset(Math.max(0, invitationsOffset - PAGE_SIZE))}
-                className="h-8 rounded-md border-[#e0e5e2] bg-white text-xs"
+                className="h-8 rounded-md border-gs-line-2 bg-white text-xs"
               >
                 Prev
               </Button>
@@ -1060,7 +1060,7 @@ function OrganizationRoster({ getToken, e2eAuthBypass }: RosterProps) {
                 aria-label="Next invitations page"
                 disabled={!invitationsHaveNext || invitationsLoading}
                 onClick={() => setInvitationsOffset(invitationsOffset + PAGE_SIZE)}
-                className="h-8 rounded-md border-[#e0e5e2] bg-white text-xs"
+                className="h-8 rounded-md border-gs-line-2 bg-white text-xs"
               >
                 Next
               </Button>
@@ -1089,7 +1089,7 @@ function SortableHead({
         type="button"
         variant="ghost"
         onClick={onToggle}
-        className="h-auto gap-1.5 p-0 text-xs font-semibold text-[#49564f] hover:bg-transparent hover:text-[#17231d] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#006948]"
+        className="h-auto gap-1.5 p-0 text-xs font-semibold text-gs-mute-2 hover:bg-transparent hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
       >
         {label}
         <ArrowUpDown className="h-3 w-3" aria-hidden="true" />
@@ -1102,12 +1102,12 @@ function StatusBadge({ status }: { status: string }) {
   const normalized = status.toLowerCase();
   const styles =
     normalized === "active"
-      ? "border-[#a7f3d0] bg-[#ecfdf5] text-[#065f46]"
+      ? "border-gs-green/40 bg-gs-green-soft text-gs-green"
       : normalized === "pending"
-        ? "border-[#fcd34d] bg-[#fffbeb] text-[#92400e]"
-        : "border-[#e0e5e2] bg-[#f0f3f1] text-[#617068]";
+        ? "border-gs-amber/40 bg-gs-amber-soft text-gs-amber"
+        : "border-gs-line-2 bg-surface-container text-gs-mute-2";
   const dot =
-    normalized === "active" ? "bg-[#10b981]" : normalized === "pending" ? "bg-[#f59e0b]" : "bg-[#7b8880]";
+    normalized === "active" ? "bg-gs-green" : normalized === "pending" ? "bg-gs-amber" : "bg-gs-mute";
   return (
     <span
       className={`inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[11px] font-medium capitalize ${styles}`}
@@ -1121,9 +1121,9 @@ function StatusBadge({ status }: { status: string }) {
 function EmptyState({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
   return (
     <div className="flex flex-col items-center justify-center gap-1 px-6 py-12 text-center">
-      <span className="mb-2 text-[#7b8880]">{icon}</span>
-      <p className="text-sm font-semibold text-[#17231d]">{title}</p>
-      <p className="max-w-[380px] text-[13px] text-[#617068]">{description}</p>
+      <span className="mb-2 text-gs-mute">{icon}</span>
+      <p className="text-sm font-semibold text-foreground">{title}</p>
+      <p className="max-w-[380px] text-[13px] text-gs-mute-2">{description}</p>
     </div>
   );
 }

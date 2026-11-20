@@ -195,11 +195,11 @@ export function LandingPage() {
     // Self-scrollable root: App shell locks body overflow, so landing scrolls here
     <div
       ref={rootRef}
-      className="h-full min-h-screen overflow-y-auto bg-[#f8f9ff] text-[#0b1c30] selection:bg-primary selection:text-on-primary"
+      className="h-full min-h-screen overflow-y-auto bg-background text-foreground selection:bg-primary selection:text-on-primary"
     >
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:outline-[#0058be] focus:outline-3"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-white focus:px-4 focus:py-2 focus:outline-primary focus:outline-3"
       >
         Skip to content
       </a>

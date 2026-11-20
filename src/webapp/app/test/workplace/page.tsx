@@ -45,16 +45,16 @@ function TelemetryChart({ samples }: { samples: TestSample[] }) {
     <svg viewBox={`0 0 ${W} ${H}`} className="w-full h-full" preserveAspectRatio="none">
       {ticks.map((t) => (
         <g key={t.v}>
-          <line x1={PL} y1={t.y} x2={W - PR} y2={t.y} stroke="#e2e8f0" strokeWidth="1" />
-          <text x={PL - 4} y={t.y + 4} textAnchor="end" fontSize="9" fill="#94a3b8">{t.v.toFixed(1)}</text>
-          <text x={W - PR + 4} y={t.y + 4} textAnchor="start" fontSize="9" fill="#f97316">{(t.v / maxSpeed).toFixed(2)}</text>
+          <line x1={PL} y1={t.y} x2={W - PR} y2={t.y} stroke="#e2e7ec" strokeWidth="1" />
+          <text x={PL - 4} y={t.y + 4} textAnchor="end" fontSize="9" fill="#8794a2">{t.v.toFixed(1)}</text>
+          <text x={W - PR + 4} y={t.y + 4} textAnchor="start" fontSize="9" fill="#c8601e">{(t.v / maxSpeed).toFixed(2)}</text>
         </g>
       ))}
-      <polyline points={speedPts} fill="none" stroke="#0ea5e9" strokeWidth="1.5" />
-      <polyline points={daviPts} fill="none" stroke="#f97316" strokeWidth="1.5" />
-      <text x={PL} y={H - 8} fontSize="9" fill="#0ea5e9">● Speed (m/s)</text>
-      <text x={PL + 90} y={H - 8} fontSize="9" fill="#f97316">● DAVI (est.)</text>
-      <text x={PL} y={PT - 2} fontSize="9" fill="#94a3b8">step_index: 0 … {samples.length - 1}</text>
+      <polyline points={speedPts} fill="none" stroke="#0fb3c1" strokeWidth="1.5" />
+      <polyline points={daviPts} fill="none" stroke="#c8601e" strokeWidth="1.5" />
+      <text x={PL} y={H - 8} fontSize="9" fill="#0fb3c1">● Speed (m/s)</text>
+      <text x={PL + 90} y={H - 8} fontSize="9" fill="#c8601e">● DAVI (est.)</text>
+      <text x={PL} y={PT - 2} fontSize="9" fill="#8794a2">step_index: 0 … {samples.length - 1}</text>
     </svg>
   );
 }
@@ -304,7 +304,7 @@ export default function TestWorkplacePage() {
           <div className="relative">
             <button
               onClick={() => setAppSwitcherOpen(!appSwitcherOpen)}
-              className="w-7 h-7 rounded bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 flex items-center justify-center text-white shadow-xs transition-colors cursor-pointer"
+              className="w-7 h-7 rounded bg-primary hover:bg-primary-container active:bg-primary-container flex items-center justify-center text-white shadow-xs transition-colors cursor-pointer"
               aria-label="GreenSentinel app catalog"
               title="GreenSentinel app catalog"
               type="button"
@@ -312,29 +312,29 @@ export default function TestWorkplacePage() {
               <span className="material-symbols-outlined text-[16px]">security</span>
             </button>
             {appSwitcherOpen && (
-              <div className="absolute left-0 top-9 w-64 bg-white border border-slate-200 rounded shadow-lg z-50 p-2 space-y-1">
-                <div className="px-2 py-1 text-[10px] font-mono uppercase tracking-wider text-slate-400 font-semibold border-b border-slate-100 mb-1">
+              <div className="absolute left-0 top-9 w-64 bg-white border border-gs-line-2 rounded shadow-lg z-50 p-2 space-y-1">
+                <div className="px-2 py-1 text-[10px] font-mono uppercase tracking-wider text-gs-mute font-semibold border-b border-gs-line-2 mb-1">
                   GreenSentinel Apps
                 </div>
                 <Link
                   href="/workplace"
-                  className="w-full flex items-center gap-2 px-2 py-1.5 rounded text-xs transition-colors text-left text-slate-700 hover:bg-slate-50"
+                  className="w-full flex items-center gap-2 px-2 py-1.5 rounded text-xs transition-colors text-left text-gs-ink-2 hover:bg-surface-container-low"
                 >
-                  <span className="material-symbols-outlined text-[15px] text-emerald-600">gavel</span>
+                  <span className="material-symbols-outlined text-[15px] text-primary">gavel</span>
                   <span>Unified Adjudication (Production)</span>
                 </Link>
                 <Link
                   href="/test"
-                  className="w-full flex items-center gap-2 px-2 py-1.5 rounded text-xs transition-colors text-left text-slate-700 hover:bg-slate-50"
+                  className="w-full flex items-center gap-2 px-2 py-1.5 rounded text-xs transition-colors text-left text-gs-ink-2 hover:bg-surface-container-low"
                 >
-                  <span className="material-symbols-outlined text-[15px] text-emerald-600">play_circle</span>
+                  <span className="material-symbols-outlined text-[15px] text-primary">play_circle</span>
                   <span>Simulation Cockpit</span>
                 </Link>
                 <Link
                   href="/test/workplace"
-                  className="w-full flex items-center gap-2 px-2 py-1.5 rounded text-xs transition-colors text-left bg-emerald-50 text-emerald-800 font-semibold border border-emerald-200"
+                  className="w-full flex items-center gap-2 px-2 py-1.5 rounded text-xs transition-colors text-left bg-primary-fixed text-on-primary-fixed font-semibold border border-primary-fixed-dim"
                 >
-                  <span className="material-symbols-outlined text-[15px] text-emerald-600">science</span>
+                  <span className="material-symbols-outlined text-[15px] text-primary">science</span>
                   <span>Test Workplace (Sandbox)</span>
                 </Link>
               </div>
@@ -346,7 +346,7 @@ export default function TestWorkplacePage() {
               <span className="material-symbols-outlined text-[16px]">science</span>
               Test Workplace Sandbox
             </span>
-            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-50 text-amber-800 border border-amber-200 font-semibold">
+            <span className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-gs-amber-soft text-gs-amber border border-gs-amber/40 font-semibold">
               SPEC-0130 §6.6
             </span>
           </div>
@@ -355,7 +355,7 @@ export default function TestWorkplacePage() {
         <div className="flex items-center gap-2">
           <Link
             href="/test"
-            className="flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded border border-outline-variant/60 bg-white hover:bg-slate-50 transition shadow-2xs"
+            className="flex items-center gap-1 px-2.5 py-1 text-xs font-semibold rounded border border-outline-variant/60 bg-white hover:bg-surface-container-low transition shadow-2xs"
           >
             <span className="material-symbols-outlined text-[14px]">arrow_back</span>
             <span>Back to Simulation</span>
@@ -368,7 +368,7 @@ export default function TestWorkplacePage() {
         <div className="w-[300px] shrink-0 border-r border-outline-variant/60 flex flex-col bg-surface-container-lowest">
           <div className="p-2.5 border-b border-outline-variant/60 flex flex-col gap-2 bg-white">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-800 flex items-center gap-1">
+              <span className="text-xs font-bold text-foreground flex items-center gap-1">
                 <span className="material-symbols-outlined text-[15px] text-primary">folder_open</span>
                 Hồ sơ thử nghiệm ({cases.length})
               </span>
@@ -395,7 +395,7 @@ export default function TestWorkplacePage() {
                       setFilters({ ...filters, anomaly_types: next });
                     }}
                     className={`px-1.5 py-0.5 text-[9.5px] rounded border cursor-pointer font-medium transition ${
-                      isSelected ? "bg-primary text-white border-primary" : "bg-surface border-outline-variant/60 text-secondary hover:bg-slate-50"
+                      isSelected ? "bg-primary text-white border-primary" : "bg-surface border-outline-variant/60 text-secondary hover:bg-surface-container-low"
                     }`}
                   >
                     {type}
@@ -406,7 +406,7 @@ export default function TestWorkplacePage() {
             <div className="flex flex-col gap-0.5">
               <div className="flex justify-between text-[10px] text-secondary">
                 <span>Min Risk:</span>
-                <span className="font-mono font-bold text-slate-800">{(filters.risk_score_min || 0).toFixed(1)}</span>
+                <span className="font-mono font-bold text-foreground">{(filters.risk_score_min || 0).toFixed(1)}</span>
               </div>
               <input
                 type="range"
@@ -420,9 +420,9 @@ export default function TestWorkplacePage() {
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto p-2 space-y-1.5 bg-slate-50/50">
+          <div className="flex-1 overflow-y-auto p-2 space-y-1.5 bg-surface-container-low/50">
             {cases.length === 0 && (
-              <div className="p-4 text-center text-xs text-slate-400 italic">
+              <div className="p-4 text-center text-xs text-gs-mute italic">
                 Chưa có case mô phỏng nào. Hãy tạo và bấm &ldquo;Save Case&rdquo; trong Simulation Cockpit.
               </div>
             )}
@@ -433,32 +433,32 @@ export default function TestWorkplacePage() {
                 className={`w-full text-left p-2.5 rounded-lg border shadow-2xs transition-all cursor-pointer ${
                   selectedCase?.id === c.id
                     ? "border-primary bg-primary/5 ring-1 ring-primary/20"
-                    : "border-slate-200 bg-white hover:bg-slate-50"
+                    : "border-gs-line-2 bg-white hover:bg-surface-container-low"
                 }`}
               >
                 <div className="flex justify-between items-center mb-1">
-                  <span className="font-mono text-xs font-bold text-slate-800 truncate max-w-[170px]">
+                  <span className="font-mono text-xs font-bold text-foreground truncate max-w-[170px]">
                     {c.id}
                   </span>
                   <span
                     className={`text-[9px] px-1.5 py-0.2 rounded font-bold uppercase tracking-wider ${
                       c.status === "OPEN"
-                        ? "bg-rose-100 text-rose-700 border border-rose-200"
+                        ? "bg-gs-red-soft text-gs-red border border-gs-red/40"
                         : c.status === "UNDER_REVIEW"
-                        ? "bg-amber-100 text-amber-700 border border-amber-200"
-                        : "bg-emerald-100 text-emerald-700 border border-emerald-200"
+                        ? "bg-gs-amber-soft text-gs-amber border border-gs-amber/40"
+                        : "bg-primary-fixed text-on-primary-fixed border border-primary-fixed-dim"
                     }`}
                   >
                     {c.status}
                   </span>
                 </div>
-                <div className="flex items-center justify-between text-[10px] text-slate-500 mb-1">
+                <div className="flex items-center justify-between text-[10px] text-gs-mute-2 mb-1">
                   <span>Risk Score:</span>
-                  <span className="font-mono font-bold text-slate-700">{c.risk_score.toFixed(2)} ({(c.risk_score * 100).toFixed(0)}%)</span>
+                  <span className="font-mono font-bold text-gs-ink-2">{c.risk_score.toFixed(2)} ({(c.risk_score * 100).toFixed(0)}%)</span>
                 </div>
                 <div className="flex flex-wrap gap-1">
                   {c.anomaly_types.map((t) => (
-                    <span key={t} className="text-[9px] bg-amber-50 text-amber-800 border border-amber-200 px-1 py-0.2 rounded font-mono">
+                    <span key={t} className="text-[9px] bg-gs-amber-soft text-gs-amber border border-gs-amber/40 px-1 py-0.2 rounded font-mono">
                       {t}
                     </span>
                   ))}
@@ -476,7 +476,7 @@ export default function TestWorkplacePage() {
             ) : (
               <div className="flex-1 flex flex-col min-h-0 h-full overflow-hidden">
                 {/* 1. Trip Profile & Driver Header (Identical to production /workplace) */}
-                <div className="bg-white border-b border-slate-200 p-3 shadow-2xs space-y-2 shrink-0">
+                <div className="bg-white border-b border-gs-line-2 p-3 shadow-2xs space-y-2 shrink-0">
                   <div className="flex flex-col md:flex-row md:items-center justify-between gap-2.5">
                     {/* Driver Avatar + Identity */}
                     <div className="flex items-center gap-3 min-w-0">
@@ -489,11 +489,11 @@ export default function TestWorkplacePage() {
                             )}`
                           }
                           alt={caseDetail?.trip?.driver_name || "Tài xế"}
-                          className="w-10 h-10 rounded-full border border-slate-200 bg-slate-50 object-cover shadow-2xs"
+                          className="w-10 h-10 rounded-full border border-gs-line-2 bg-surface-container-low object-cover shadow-2xs"
                         />
                         <span
                           className={`absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full border-2 border-white ${
-                            caseDetail?.trip?.driver_status === "suspended" ? "bg-rose-500" : "bg-emerald-500"
+                            caseDetail?.trip?.driver_status === "suspended" ? "bg-gs-red-soft0" : "bg-gs-green"
                           }`}
                           title={caseDetail?.trip?.driver_status === "suspended" ? "Đình chỉ" : "Hoạt động"}
                         />
@@ -501,30 +501,30 @@ export default function TestWorkplacePage() {
 
                       <div className="min-w-0 space-y-0.5">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="font-bold text-slate-900 text-sm truncate">
+                          <span className="font-bold text-foreground text-sm truncate">
                             {caseDetail?.trip?.driver_name || "Nguyễn Văn Tài (Tài xế SM)"}
                           </span>
-                          <span className="font-mono font-semibold px-2 py-0.2 rounded bg-slate-100 border border-slate-300 text-slate-800 text-[11px] shrink-0 tracking-wider">
+                          <span className="font-mono font-semibold px-2 py-0.2 rounded bg-surface-container border border-gs-line-2 text-foreground text-[11px] shrink-0 tracking-wider">
                             {caseDetail?.trip?.vehicle_plate || "29A-888.88"}
                           </span>
                         </div>
 
                         {/* Driver Metrics */}
                         <div className="flex items-center gap-1.5 flex-wrap text-[10.5px]">
-                          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded bg-amber-50 border border-amber-200 text-amber-800 font-medium">
-                            <span className="text-amber-500 text-[11px]">★</span>
+                          <span className="inline-flex items-center gap-0.5 px-1.5 py-0.2 rounded bg-gs-amber-soft border border-gs-amber/40 text-gs-amber font-medium">
+                            <span className="text-gs-amber text-[11px]">★</span>
                             <span>{caseDetail?.trip?.rating != null ? Number(caseDetail.trip.rating).toFixed(2) : "4.85"}</span>
                           </span>
-                          <span className="px-1.5 py-0.2 rounded bg-emerald-50 border border-emerald-200 text-emerald-800 font-medium">
+                          <span className="px-1.5 py-0.2 rounded bg-primary-fixed border border-primary-fixed-dim text-on-primary-fixed font-medium">
                             {caseDetail?.trip?.acceptance_rate != null ? Number(caseDetail.trip.acceptance_rate).toFixed(1) : "92.5"}% Nhận
                           </span>
-                          <span className="px-1.5 py-0.2 rounded bg-slate-100 border border-slate-200 text-slate-700">
+                          <span className="px-1.5 py-0.2 rounded bg-surface-container border border-gs-line-2 text-gs-ink-2">
                             {caseDetail?.trip?.cancellation_rate != null ? Number(caseDetail.trip.cancellation_rate).toFixed(1) : "2.1"}% Hủy
                           </span>
-                          <span className="px-1.5 py-0.2 rounded bg-slate-50 border border-slate-200 text-slate-600 hidden sm:inline-block">
+                          <span className="px-1.5 py-0.2 rounded bg-surface-container-low border border-gs-line-2 text-gs-mute-2 hidden sm:inline-block">
                             {caseDetail?.trip?.total_trips != null ? Number(caseDetail.trip.total_trips).toLocaleString() : "1,240"} chuyến
                           </span>
-                          <span className="px-1.5 py-0.2 rounded bg-slate-50 border border-slate-200 text-slate-600 hidden md:inline-block">
+                          <span className="px-1.5 py-0.2 rounded bg-surface-container-low border border-gs-line-2 text-gs-mute-2 hidden md:inline-block">
                             {caseDetail?.trip?.vehicle_type || "VinFast VF8"}
                           </span>
                         </div>
@@ -533,16 +533,16 @@ export default function TestWorkplacePage() {
 
                     {/* Status Badges & Pricing */}
                     <div className="flex items-center gap-2 shrink-0 flex-wrap">
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10.5px] font-semibold border bg-emerald-50 text-emerald-700 border-emerald-200">
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10.5px] font-semibold border bg-primary-fixed text-on-primary-fixed border-primary-fixed-dim">
+                        <span className="w-1.5 h-1.5 rounded-full bg-gs-green" />
                         <span>{caseDetail?.trip?.status || "Completed"}</span>
                       </span>
 
-                      <span className="inline-flex items-center px-2 py-0.5 rounded text-[10.5px] font-semibold uppercase tracking-wider border bg-purple-50 text-purple-700 border-purple-200">
+                      <span className="inline-flex items-center px-2 py-0.5 rounded text-[10.5px] font-semibold uppercase tracking-wider border bg-gs-purple-soft text-gs-purple border-gs-purple/30">
                         Match: {caseDetail?.trip?.match_type || "auto"}
                       </span>
 
-                      <div className="font-bold text-slate-900 text-xs px-2 py-0.5 rounded bg-slate-50 border border-slate-200">
+                      <div className="font-bold text-foreground text-xs px-2 py-0.5 rounded bg-surface-container-low border border-gs-line-2">
                         {caseDetail?.trip?.fare_amount_vnd != null
                           ? `${Number(caseDetail.trip.fare_amount_vnd).toLocaleString("vi-VN")} ₫`
                           : "85.000 ₫"}
@@ -551,41 +551,41 @@ export default function TestWorkplacePage() {
                   </div>
 
                   {/* Pickup -> Destination row */}
-                  <div className="flex items-center gap-1.5 text-slate-700 text-xs pt-1 border-t border-slate-100 font-medium">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" title="Điểm đón" />
-                    <span className="truncate max-w-[260px] text-slate-900 font-semibold" title={caseDetail?.trip?.pickup_address}>
+                  <div className="flex items-center gap-1.5 text-gs-ink-2 text-xs pt-1 border-t border-gs-line-2 font-medium">
+                    <span className="w-2 h-2 rounded-full bg-gs-green shrink-0" title="Điểm đón" />
+                    <span className="truncate max-w-[260px] text-foreground font-semibold" title={caseDetail?.trip?.pickup_address}>
                       {caseDetail?.trip?.pickup_address || "Điểm đón khách"}
                     </span>
-                    <span className="text-slate-400 shrink-0 px-1">→</span>
-                    <span className="w-2 h-2 rounded-full bg-rose-500 shrink-0" title="Điểm đến" />
-                    <span className="truncate max-w-[260px] text-slate-900 font-semibold" title={caseDetail?.trip?.dropoff_address}>
+                    <span className="text-gs-mute shrink-0 px-1">→</span>
+                    <span className="w-2 h-2 rounded-full bg-gs-red-soft0 shrink-0" title="Điểm đến" />
+                    <span className="truncate max-w-[260px] text-foreground font-semibold" title={caseDetail?.trip?.dropoff_address}>
                       {caseDetail?.trip?.dropoff_address || "Điểm trả khách"}
                     </span>
                   </div>
 
                   {/* AI Advisory Anomaly Assessment Banner */}
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1.5 border-t border-slate-100 bg-slate-50/80 -mx-3 -mb-3 px-3 py-1.5 rounded-b">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1.5 border-t border-gs-line-2 bg-surface-container-low/80 -mx-3 -mb-3 px-3 py-1.5 rounded-b">
                     <div className="flex items-center gap-2 flex-wrap">
-                      <span className="font-semibold text-slate-800 text-[11px] inline-flex items-center gap-1.5">
-                        <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
+                      <span className="font-semibold text-foreground text-[11px] inline-flex items-center gap-1.5">
+                        <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
                         AI Assessment:
                       </span>
-                      <span className="inline-flex items-center px-2 py-0.2 rounded font-mono font-bold text-xs bg-emerald-50 text-emerald-800 border border-emerald-300">
+                      <span className="inline-flex items-center px-2 py-0.2 rounded font-mono font-bold text-xs bg-primary-fixed text-on-primary-fixed border border-primary-fixed-dim">
                         {caseDetail?.assessment?.category || selectedCase.anomaly_types?.[0] || "NORMAL_TRIP"} (
                         {caseDetail?.assessment?.confidence != null
                           ? Math.round(caseDetail.assessment.confidence * 100)
                           : Math.round(selectedCase.risk_score * 100)}
                         %)
                       </span>
-                      <span className="px-1.5 py-0.2 rounded text-[10px] font-semibold border bg-blue-50 text-blue-700 border-blue-200">
+                      <span className="px-1.5 py-0.2 rounded text-[10px] font-semibold border bg-gs-blue-soft text-gs-blue border-gs-blue/30">
                         Priority: {caseDetail?.case?.priority || "P1"}
                       </span>
                     </div>
                     {caseDetail?.assessment?.reason_codes && (
-                      <div className="flex items-center gap-1 overflow-x-auto text-[10px] text-slate-500">
-                        <span className="text-slate-400">Signals:</span>
+                      <div className="flex items-center gap-1 overflow-x-auto text-[10px] text-gs-mute-2">
+                        <span className="text-gs-mute">Signals:</span>
                         {caseDetail.assessment.reason_codes.slice(0, 3).map((code: string) => (
-                          <span key={code} className="px-1.5 py-0.2 rounded bg-white border border-slate-200 text-slate-600 font-mono">
+                          <span key={code} className="px-1.5 py-0.2 rounded bg-white border border-gs-line-2 text-gs-mute-2 font-mono">
                             {code}
                           </span>
                         ))}
@@ -595,15 +595,15 @@ export default function TestWorkplacePage() {
                 </div>
 
                 {/* 2. Center Tabs Bar */}
-                <div className="h-9 bg-slate-100 border-b border-slate-200 flex items-center justify-between px-3 shrink-0">
+                <div className="h-9 bg-surface-container border-b border-gs-line-2 flex items-center justify-between px-3 shrink-0">
                   <div className="flex items-center gap-1">
                     <button
                       onClick={() => setActiveTab("overview")}
                       aria-label="Map"
                       className={`px-3 py-1 text-xs font-medium rounded transition flex items-center gap-1.5 cursor-pointer ${
                         activeTab === "overview"
-                          ? "bg-white text-slate-900 shadow-2xs font-semibold"
-                          : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/50"
+                          ? "bg-white text-foreground shadow-2xs font-semibold"
+                          : "text-gs-mute-2 hover:text-foreground hover:bg-surface-container-high/50"
                       }`}
                     >
                       <span className="material-symbols-outlined text-[15px]">dashboard</span>
@@ -614,14 +614,14 @@ export default function TestWorkplacePage() {
                       onClick={() => setActiveTab("conversation")}
                       className={`px-3 py-1 text-xs font-medium rounded transition flex items-center gap-1.5 cursor-pointer ${
                         activeTab === "conversation"
-                          ? "bg-white text-slate-900 shadow-2xs font-semibold"
-                          : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/50"
+                          ? "bg-white text-foreground shadow-2xs font-semibold"
+                          : "text-gs-mute-2 hover:text-foreground hover:bg-surface-container-high/50"
                       }`}
                     >
                       <span className="material-symbols-outlined text-[15px]">forum</span>
                       <span>Conversation</span>
                       {(caseDetail?.conversation?.length || 0) > 0 && (
-                        <span className="px-1.5 py-0.2 text-[9px] bg-slate-200 text-slate-700 rounded-full font-bold">
+                        <span className="px-1.5 py-0.2 text-[9px] bg-surface-container-high text-gs-ink-2 rounded-full font-bold">
                           {caseDetail.conversation.length}
                         </span>
                       )}
@@ -631,8 +631,8 @@ export default function TestWorkplacePage() {
                       aria-label="Chart"
                       className={`px-3 py-1 text-xs font-medium rounded transition flex items-center gap-1.5 cursor-pointer ${
                         activeTab === "chart"
-                          ? "bg-white text-slate-900 shadow-2xs font-semibold"
-                          : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/50"
+                          ? "bg-white text-foreground shadow-2xs font-semibold"
+                          : "text-gs-mute-2 hover:text-foreground hover:bg-surface-container-high/50"
                       }`}
                     >
                       <span className="material-symbols-outlined text-[15px]">monitoring</span>
@@ -642,14 +642,14 @@ export default function TestWorkplacePage() {
                       onClick={() => setActiveTab("notifications")}
                       className={`px-3 py-1 text-xs font-medium rounded transition flex items-center gap-1.5 cursor-pointer ${
                         activeTab === "notifications"
-                          ? "bg-white text-slate-900 shadow-2xs font-semibold"
-                          : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/50"
+                          ? "bg-white text-foreground shadow-2xs font-semibold"
+                          : "text-gs-mute-2 hover:text-foreground hover:bg-surface-container-high/50"
                       }`}
                     >
                       <span className="material-symbols-outlined text-[15px]">notifications</span>
                       <span>Sandbox Alerts</span>
                       {notifications.length > 0 && (
-                        <span className="px-1.5 py-0.2 text-[9px] bg-amber-200 text-amber-900 rounded-full font-bold">
+                        <span className="px-1.5 py-0.2 text-[9px] bg-gs-amber-soft text-gs-amber rounded-full font-bold">
                           {notifications.length}
                         </span>
                       )}
@@ -658,7 +658,7 @@ export default function TestWorkplacePage() {
                 </div>
 
                 {/* 3. Main Center Tab Content */}
-                <div className="flex-1 overflow-y-auto min-h-0 bg-slate-50">
+                <div className="flex-1 overflow-y-auto min-h-0 bg-surface-container-low">
                   {caseDetail && (
                     <div className={activeTab === "overview" ? "block space-y-4" : "hidden"}>
                       <OverviewTab
@@ -673,27 +673,27 @@ export default function TestWorkplacePage() {
 
                       {/* Evidence Viewer / Sandbox Notifications in Overview */}
                       <div className="p-4 pt-0">
-                        <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-3">
+                        <div className="bg-white p-4 rounded-lg border border-gs-line-2 shadow-xs space-y-3">
                           <div className="flex items-center justify-between border-b pb-2">
-                            <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                              <BellRing className="w-4 h-4 text-amber-600" />
+                            <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                              <BellRing className="w-4 h-4 text-gs-amber" />
                               Intercepted Sandbox Notifications ({notifications.length})
                             </span>
                           </div>
                           <div className="space-y-2">
                             {notifications.map((notif: TestNotification, idx: number) => (
-                              <div key={idx} className="p-3 rounded-lg bg-slate-50 border border-slate-200 text-xs flex flex-col gap-1">
-                                <div className="flex items-center justify-between text-[11px] font-mono text-slate-500">
-                                  <span className="px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 font-bold">
+                              <div key={idx} className="p-3 rounded-lg bg-surface-container-low border border-gs-line-2 text-xs flex flex-col gap-1">
+                                <div className="flex items-center justify-between text-[11px] font-mono text-gs-mute-2">
+                                  <span className="px-1.5 py-0.2 rounded bg-primary-fixed text-on-primary-fixed font-bold">
                                     {notif.channel}
                                   </span>
                                   <span>To: {notif.recipient_id} ({notif.recipient_type})</span>
                                 </div>
-                                <p className="text-slate-800 text-xs mt-1">{notif.body}</p>
+                                <p className="text-foreground text-xs mt-1">{notif.body}</p>
                               </div>
                             ))}
                             {notifications.length === 0 && (
-                              <div className="text-xs text-slate-400 italic py-4 text-center">
+                              <div className="text-xs text-gs-mute italic py-4 text-center">
                                 Không có thông báo sandbox nào được chặn trong chuyến này.
                               </div>
                             )}
@@ -713,12 +713,12 @@ export default function TestWorkplacePage() {
                   )}
 
                   <div className={activeTab === "chart" ? "block p-4" : "hidden"}>
-                    <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-2">
+                    <div className="bg-white p-4 rounded-lg border border-gs-line-2 shadow-xs space-y-2">
                       <div className="flex items-center justify-between border-b pb-2">
-                        <span className="text-xs font-bold text-slate-800">
+                        <span className="text-xs font-bold text-foreground">
                           Dual-Axis Kinematics &amp; DAVI Drift Chart ({samples.length} mẫu)
                         </span>
-                        <span className="text-[10px] text-slate-500 font-mono">
+                        <span className="text-[10px] text-gs-mute-2 font-mono">
                           X: Step Index · Y: Vận tốc (m/s) &amp; DAVI Anomaly Score
                         </span>
                       </div>
@@ -730,27 +730,27 @@ export default function TestWorkplacePage() {
 
                   {activeTab === "notifications" && (
                     <div className="block p-4">
-                      <div className="bg-white p-4 rounded-lg border border-slate-200 shadow-xs space-y-3">
+                      <div className="bg-white p-4 rounded-lg border border-gs-line-2 shadow-xs space-y-3">
                         <div className="flex items-center justify-between border-b pb-2">
-                          <span className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
-                            <BellRing className="w-4 h-4 text-amber-600" />
+                          <span className="text-xs font-bold text-foreground flex items-center gap-1.5">
+                            <BellRing className="w-4 h-4 text-gs-amber" />
                             Sandbox Alerts Feed ({notifications.length})
                           </span>
                         </div>
                         <div className="space-y-2">
                           {notifications.map((notif: TestNotification, idx: number) => (
-                            <div key={idx} className="p-3 rounded-lg bg-slate-50 border border-slate-200 text-xs flex flex-col gap-1">
-                              <div className="flex items-center justify-between text-[11px] font-mono text-slate-500">
-                                <span className="px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 font-bold">
+                            <div key={idx} className="p-3 rounded-lg bg-surface-container-low border border-gs-line-2 text-xs flex flex-col gap-1">
+                              <div className="flex items-center justify-between text-[11px] font-mono text-gs-mute-2">
+                                <span className="px-1.5 py-0.2 rounded bg-primary-fixed text-on-primary-fixed font-bold">
                                   {notif.channel}
                                 </span>
                                 <span>To: {notif.recipient_id} ({notif.recipient_type})</span>
                               </div>
-                              <p className="text-slate-800 text-xs mt-1">{notif.body}</p>
+                              <p className="text-foreground text-xs mt-1">{notif.body}</p>
                             </div>
                           ))}
                           {notifications.length === 0 && (
-                            <div className="text-xs text-slate-400 italic py-4 text-center">
+                            <div className="text-xs text-gs-mute italic py-4 text-center">
                               Không có thông báo sandbox nào được chặn trong chuyến này.
                             </div>
                           )}
@@ -761,33 +761,33 @@ export default function TestWorkplacePage() {
                 </div>
 
                 {/* 4. Bottom Triage Action Bar */}
-                <div className="p-3 bg-white border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs shrink-0">
+                <div className="p-3 bg-white border-t border-gs-line-2 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-xs shrink-0">
                   <div className="flex-1 w-full max-w-lg flex items-center gap-2">
-                    <span className="text-xs font-bold text-slate-700 shrink-0">Ghi chú:</span>
+                    <span className="text-xs font-bold text-gs-ink-2 shrink-0">Ghi chú:</span>
                     <input
                       type="text"
                       value={rationale}
                       onChange={(e) => setRationale(e.target.value)}
                       placeholder="Enter rationale for audit log / Nhập lý do đối soát..."
-                      className="w-full h-8 px-2.5 text-xs bg-slate-50 rounded border border-slate-300 focus:border-primary focus:bg-white focus:outline-none"
+                      className="w-full h-8 px-2.5 text-xs bg-surface-container-low rounded border border-gs-line-2 focus:border-primary focus:bg-white focus:outline-none"
                     />
                   </div>
 
                   <div className="flex items-center gap-2 shrink-0">
                     {feedbackMessage && (
-                      <span className="text-xs font-semibold text-emerald-700 animate-fade-in mr-2">
+                      <span className="text-xs font-semibold text-on-primary-fixed animate-fade-in mr-2">
                         {feedbackMessage}
                       </span>
                     )}
                     <button
                       onClick={() => handleTriageAction("APPROVE_LEGITIMATE")}
-                      className="px-3.5 py-1.5 text-xs font-semibold rounded bg-emerald-600 text-white hover:bg-emerald-700 flex items-center gap-1.5 shadow-2xs cursor-pointer transition"
+                      className="px-3.5 py-1.5 text-xs font-semibold rounded bg-primary text-white hover:bg-primary-container flex items-center gap-1.5 shadow-2xs cursor-pointer transition"
                     >
                       <CheckCircle2 className="w-3.5 h-3.5" /> Approve
                     </button>
                     <button
                       onClick={() => handleTriageAction("INVESTIGATE")}
-                      className="px-3.5 py-1.5 text-xs font-semibold rounded bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 cursor-pointer transition"
+                      className="px-3.5 py-1.5 text-xs font-semibold rounded bg-surface-container hover:bg-surface-container-high text-gs-ink-2 border border-gs-line-2 cursor-pointer transition"
                     >
                       Investigate
                     </button>

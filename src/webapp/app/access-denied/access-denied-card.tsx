@@ -27,7 +27,7 @@ export function AccessDeniedCard({ role }: { role: string | null }) {
         <h1 className="text-lg font-semibold">
           This view is not available for your account
         </h1>
-        <p className="text-sm text-slate-600">
+        <p className="text-sm text-gs-mute-2">
           The account you are signed in with does not have the role needed to
           open this page. Switch to an account with the right role, or go
           back to the view your account can use.
@@ -35,7 +35,7 @@ export function AccessDeniedCard({ role }: { role: string | null }) {
         <div className="flex gap-2">
           <Link
             href={backHref}
-            className="text-sm border rounded px-3 py-1.5 hover:bg-slate-50"
+            className="text-sm border rounded px-3 py-1.5 hover:bg-surface-container-low"
           >
             {backLabel}
           </Link>
@@ -43,7 +43,7 @@ export function AccessDeniedCard({ role }: { role: string | null }) {
             <SignOutButton redirectUrl="/sign-in">
               <button
                 type="button"
-                className="text-sm border rounded px-3 py-1.5 hover:bg-slate-50"
+                className="text-sm border rounded px-3 py-1.5 hover:bg-surface-container-low"
               >
                 Switch account
               </button>
@@ -51,7 +51,7 @@ export function AccessDeniedCard({ role }: { role: string | null }) {
           ) : (
             <Link
               href="/sign-in"
-              className="text-sm border rounded px-3 py-1.5 hover:bg-slate-50"
+              className="text-sm border rounded px-3 py-1.5 hover:bg-surface-container-low"
             >
               Switch account
             </Link>
