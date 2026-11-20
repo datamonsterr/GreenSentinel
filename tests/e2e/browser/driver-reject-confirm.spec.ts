@@ -2,8 +2,8 @@ import { test, expect } from './support/playwright';
 
 /**
  * Issue #483: Confirmation-gated accept/reject flow in GSupport case chat.
- * Covers: reject tap -> agent asks reason -> user types reason ->
- * confirmation card visible -> Yes -> receipt visible & action bar hidden.
+ * Covers: reject tap -> explain flow (reason, detail, evidence, review) ->
+ * submit -> receipt visible & action bar hidden.
  */
 test.describe('Driver GSupport Accept/Reject Confirmation Flow (#483)', () => {
   test.beforeEach(async ({ page }) => {
@@ -148,7 +148,7 @@ test.describe('Driver GSupport Accept/Reject Confirmation Flow (#483)', () => {
     });
   });
 
-  test('reject tap -> agent asks reason -> user types reason -> confirmation card -> Yes -> receipt visible', async ({
+  test('reject tap -> explain flow -> submit -> receipt visible', async ({
     page,
   }) => {
     await page.goto('/driver/chat/case-483-e2e-1');
@@ -157,27 +157,32 @@ test.describe('Driver GSupport Accept/Reject Confirmation Flow (#483)', () => {
     await expect(actionBar).toBeVisible();
     await expect(page.getByText('Đã kiểm tra vụ việc.')).toBeVisible();
 
-    // 1. Tap Reject & explain
+    // 1. Tap Reject & explain: since 65179ca this opens the step-by-step explain flow
+    //    (DriverExplainFlow) instead of asking for a reason in the chat thread.
     await page.getByTestId('driver-action-reject').click();
+    const flow = page.getByTestId('driver-explain-flow');
+    await expect(flow).toBeVisible();
 
-    // 2. Agent asks for the reason
-    await expect(page.getByText('Vui lòng cho biết lý do bạn đi lệch tuyến?')).toBeVisible();
+    // 2. Step 1: pick a reason
+    await flow.getByTestId('explain-reason-RealTrip').click();
+    await flow.getByTestId('explain-next').click();
 
-    // 3. User types reason in composer and sends
-    const composer = page.getByTestId('chat-composer');
-    await composer.locator('textarea').fill('Đường Nguyễn Hữu Cảnh bị ngập sâu nên phải đi vòng');
-    await composer.locator('button[type="submit"]').click();
+    // 3. Step 2: detail (min 20 chars)
+    const reason = 'Đường Nguyễn Hữu Cảnh bị ngập sâu nên phải đi vòng';
+    await flow.getByTestId('explain-detail').fill(reason);
+    await flow.getByTestId('explain-next').click();
 
-    // 4. Confirmation card renders with checklist and summary
-    const confirmCard = page.getByTestId('driver-confirmation-card');
-    await expect(confirmCard).toBeVisible();
-    await expect(
-      confirmCard.getByText('Đường ngập sâu Nguyễn Hữu Cảnh, CSGT phân luồng qua Điện Biên Phủ')
-    ).toBeVisible();
+    // 4. Step 3 (evidence, optional) then step 4 review shows the typed detail
+    await flow.getByTestId('explain-next').click();
+    await expect(flow.getByTestId('explain-review')).toContainText(reason);
 
-    // 5. Tap Yes -> issues confirmation token, submits statement, shows receipt, hides action bar
-    await page.getByTestId('driver-confirm-yes').click();
+    // 5. Submit -> confirmation token + statement are sent, success screen shows
+    const statementRequest = page.waitForRequest((r) => r.url().endsWith('/statement') && r.method() === 'POST');
+    await flow.getByTestId('explain-submit').click();
+    expect((await statementRequest).postDataJSON().reason_summary).toContain(reason);
+    await page.getByTestId('driver-explain-done').click();
 
+    // 6. Back in the chat: receipt visible, action bar hidden
     await expect(page.getByTestId('driver-submit-receipt')).toBeVisible();
     await expect(actionBar).toBeHidden();
   });
