@@ -81,6 +81,7 @@ beforeEach(() => {
     if (path === `${casePath}/dispute-dossier`) return json(dossier);
     if (path === `${casePath}/motivation`) return json({ detail: "No motivation in this fixture" }, 404);
     if (path === `${casePath}/workflow-trace`) return json(null);
+    if (path === `${casePath}/explain`) return json({ detail: "Explanation session not found" }, 404);
     if (path === `${casePath}/workflow`) return json({ status: "ready", closed: false, steps: [], next: null });
     if (path === `${casePath}/driver-scorecard`) return json({ driver_id: "driver-236", past_incidents: [] });
     if (path === `${casePath}/stream`) return new Response("", { headers: { "Content-Type": "text/event-stream" } });

@@ -36,6 +36,7 @@ import { FinalizationTab } from "@/components/adjudication/finalization-tab";
 import { OverviewTab } from "@/components/adjudication/overview-tab";
 import { ConversationTab } from "@/components/adjudication/conversation-tab";
 import { DriverRelayTab } from "@/components/adjudication/driver-relay-tab";
+import { ExplainSection } from "@/components/adjudication/explain-section";
 import { DriverInfoTab } from "@/components/adjudication/driver-info-tab";
 import { WorkflowTab } from "@/components/adjudication/workflow-tab";
 import { MapLibreView } from "@/components/map/maplibre-view";
@@ -1074,6 +1075,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
               canWriteMotivation={isAnalystAuthorized && !isTerminalCase}
             />
           )}
+          {activeCenterTab === 'overview' && <ExplainSection key={caseDetail.case.id} caseId={caseDetail.case.id} locale={locale} roles={currentAnalyst?.roles ?? (currentAnalyst?.role ? [currentAnalyst.role] : [])} />}
           <div hidden={activeCenterTab !== 'maps'} inert={activeCenterTab !== 'maps'}>
             <MapsTab caseDetail={caseDetail} disputeDossier={disputeDossier} selectedCaseId={caseDetail.case.id} pickupLocation={pickupLocation} initialDriverLocation={initialDriverLocation} destinationLocation={destinationLocation} mapTelemetry={mapTelemetry} isActive={activeCenterTab === 'maps'} />
           </div>

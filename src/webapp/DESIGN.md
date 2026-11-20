@@ -124,3 +124,7 @@ Never use Tailwind palette classes (`emerald|green|red|rose|lime|teal|amber|oran
 - **Accents:** success `gs-green`/`gs-green-soft`/`gs-green-ink` (text), warning `gs-amber`/`gs-amber-ink`, error `gs-red`, info `gs-cyan`/`gs-blue`, AI `gs-purple`, escalated `gs-orange`. Opacity variants (`border-gs-green/30`) for borders.
 - **Map/chart hex** (maplibre paint cannot read CSS vars): use the theme hex values: cyan `#0fb3c1`, blue `#2f6fe0`, green `#22a45d`, amber `#c99616`, orange `#c8601e`, red `#e0484b`, purple `#7b3ed6`, ink `#1c2733`.
 - **Neutral greys:** `slate-*` utilities remain for neutral surfaces/text (documented exception; not part of the status palette). Driver app keeps its own `.driver-scope` theme.
+
+## AI explanation section and help queue
+
+`components/adjudication/explain-section.tsx` renders in the Overview tab only when `GET /cases/{id}/explain` returns a session. Round states use tone chips via `roundStateTone()` (eligible green, not_eligible red, needs_driver amber, missing_internal grey); flags use `flagTone()` (novel purple, changed amber, inconclusive orange, interrupted red, asked-for-help cyan, skipped grey). Diff lines: additions `bg-gs-green-soft text-gs-green-ink`, removals `bg-gs-red-soft text-gs-red line-through`. The help queue is a right drawer (`components/explain/help-queue-panel.tsx`) opened from a top-bar icon with a `bg-gs-red` count badge; see ADR-036.

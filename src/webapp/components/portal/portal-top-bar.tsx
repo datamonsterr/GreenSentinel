@@ -33,8 +33,10 @@ export function PortalTopBar(props: {
   e2eAuthBypass: boolean;
   /** Analyst/admin only: show the Knowledge entry (route /knowledge). */
   canOpenKnowledge?: boolean;
+  /** Analyst/admin only: AI explanation help queue entry with open+claimed badge (S-D2). */
+  helpQueue?: { count: number; open: boolean; onToggle: () => void; label: string };
 }) {
-  const { messages, locale, setLocale, activeTab, setActiveTab, searchQuery, setSearchQuery, analyst, e2eAuthBypass, canOpenKnowledge } = props;
+  const { messages, locale, setLocale, activeTab, setActiveTab, searchQuery, setSearchQuery, analyst, e2eAuthBypass, canOpenKnowledge, helpQueue } = props;
   const [open, setOpen] = useState(false);
   const clock = useClock(locale);
   const role = roleStyle(analyst?.role);
@@ -113,6 +115,22 @@ export function PortalTopBar(props: {
       </div>
 
       <div className="flex min-w-0 shrink-0 items-center justify-end gap-3 sm:gap-4">
+        {helpQueue && (
+          <button
+            type="button"
+            data-testid="help-queue-entry"
+            onClick={helpQueue.onToggle}
+            aria-expanded={helpQueue.open}
+            aria-label={`${helpQueue.label} (${helpQueue.count})`}
+            title={helpQueue.label}
+            className={`relative flex size-9 cursor-pointer items-center justify-center rounded-[10px] border transition-colors ${helpQueue.open ? "border-primary bg-primary-fixed text-primary" : "border-gs-line-2 bg-white text-gs-mute-2 hover:bg-surface"}`}
+          >
+            <span className="material-symbols-outlined text-[20px]">support_agent</span>
+            {helpQueue.count > 0 && (
+              <span data-testid="help-queue-badge" className="absolute -right-1.5 -top-1.5 min-w-[18px] rounded-full bg-gs-red px-1 text-center text-[10px] font-bold leading-[18px] text-white">{helpQueue.count}</span>
+            )}
+          </button>
+        )}
         <span className="hidden whitespace-nowrap text-[13px] text-[#3a4552] xl:inline" suppressHydrationWarning>{clock}</span>
         <div role="group" aria-label={messages.languages} className="flex shrink-0 items-center gap-0.5 rounded-lg border border-gs-line-2 p-0.5 text-xs">
           {(["en", "vi"] as const).map((language) => (

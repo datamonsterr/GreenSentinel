@@ -113,6 +113,8 @@ Prefix `/api/v1`. Driver routes need role `driver` and the driver's own case (ot
 | `GET /explain/help-requests/{id}`, `POST .../{id}/claim`, `POST .../{id}/reply` `{text, facts[]}` | Detail with transcript; exclusive claim (409); reply continues the agent and creates a pending knowledge proposal. |
 | `GET /explain/meta` | Error types, assessment states, flag names. |
 
+Webapp consumer of the staff routes above: `src/webapp/lib/explain-client.ts` (see [ADR-036](adr-036-analyst-explain-provenance-ui.md)); reviewer and ops_director get no feedback form or queue in the UI.
+
 ## Tester API design extension
 
 The proposed canonical Tester namespace is `/test/api/v1`; it is separate from the implemented `/api/v1` contracts above and has no unprefixed alias. See [Tester request/response and event contracts](TESTER_API_SPECIFICATION.md) and [runtime architecture](TESTER_SIMULATION_ARCHITECTURE.md). All operations require authenticated, run-scoped authorization and isolated test infrastructure. These documents specify future implementation, not available endpoints.
