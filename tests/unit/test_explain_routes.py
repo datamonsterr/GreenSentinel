@@ -20,14 +20,30 @@ P = {
     "analyst": SimpleNamespace(id="u-a", organization_id=ORG, roles=frozenset({"fraud_analyst"})),
     "admin": SimpleNamespace(id="u-b", organization_id=ORG, roles=frozenset({"admin"})),
 }
-ANSWERS = {"pickup_place": "Cổng chợ", "pickup_time": "14:00", "passenger_desc": "Nữ", "dropoff_place": "Khu Y",
-           "route": "Đường Z", "payment_amount": "85000", "payment_method": "cash"}
+ANSWERS = {
+    "pickup_place": "Cổng chợ",
+    "pickup_time": "14:00",
+    "passenger_desc": "Nữ",
+    "dropoff_place": "Khu Y",
+    "route": "Đường Z",
+    "payment_amount": "85000",
+    "payment_method": "cash",
+}
 
 
 @pytest.fixture()
 def api():
-    store = MemoryStore(cases=[{"case_id": CASE, "organization_id": ORG, "driver_id": "drv-1", "category": "ERR-02",
-                                "params": {"stationary_duration_s": 600, "trips_today": 9, "fare_vnd": 85000}}])
+    store = MemoryStore(
+        cases=[
+            {
+                "case_id": CASE,
+                "organization_id": ORG,
+                "driver_id": "drv-1",
+                "category": "ERR-02",
+                "params": {"stationary_duration_s": 600, "trips_today": 9, "fare_vnd": 85000},
+            }
+        ]
+    )
     kb = KbService(store)
     cfg = AgentConfigService(store)
     kb.seed_demo(P["admin"])
@@ -52,7 +68,9 @@ def test_driver_flow_end_to_end_over_http(api):
     c = api("driver")
     r = c.post(f"/api/v1/driver/cases/{CASE}/explain/start", json={"reason": "RealTrip"})
     assert r.status_code == 200 and r.json()["ui_status"] == "form"
-    assert c.put(f"/api/v1/driver/cases/{CASE}/explain/draft", json={"answers": {"pickup_place": "Cổng chợ"}}).json()["form"]["answers"]
+    assert c.put(f"/api/v1/driver/cases/{CASE}/explain/draft", json={"answers": {"pickup_place": "Cổng chợ"}}).json()[
+        "form"
+    ]["answers"]
     bad = c.post(f"/api/v1/driver/cases/{CASE}/explain/submit", json={"answers": {}})
     assert bad.status_code == 422 and bad.json()["detail"]["code"] == "form_invalid"
     r = c.post(f"/api/v1/driver/cases/{CASE}/explain/submit", json={"answers": ANSWERS})
@@ -69,9 +87,16 @@ def test_driver_flow_end_to_end_over_http(api):
 
     a = api("analyst").get(f"/api/v1/cases/{CASE}/explain").json()
     assert a["flags"]["asked_for_help"] is False and len(a["rounds"]) == 2 and a["provenance"]
-    assert api("analyst").post(f"/api/v1/cases/{CASE}/explain/feedback", json={"verdict": "disagree", "error_types": []}).status_code == 422
-    fb = api("analyst").post(f"/api/v1/cases/{CASE}/explain/feedback",
-                             json={"verdict": "disagree", "error_types": ["wrong_facts"], "comment": "x"})
+    assert (
+        api("analyst")
+        .post(f"/api/v1/cases/{CASE}/explain/feedback", json={"verdict": "disagree", "error_types": []})
+        .status_code
+        == 422
+    )
+    fb = api("analyst").post(
+        f"/api/v1/cases/{CASE}/explain/feedback",
+        json={"verdict": "disagree", "error_types": ["wrong_facts"], "comment": "x"},
+    )
     assert fb.status_code == 201
 
 

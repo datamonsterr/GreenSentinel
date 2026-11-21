@@ -23,7 +23,11 @@ def test_partial_overlap_is_jaccard():
 
 def test_rank_orders_by_score_and_limits():
     s = TokenOverlapScorer()
-    out = s.rank("milestone bonus trips", [("1", "milestone bonus"), ("2", "unrelated words"), ("3", "milestone bonus trips")], limit=2)
+    out = s.rank(
+        "milestone bonus trips",
+        [("1", "milestone bonus"), ("2", "unrelated words"), ("3", "milestone bonus trips")],
+        limit=2,
+    )
     assert [k for k, _ in out] == ["3", "1"]
 
 

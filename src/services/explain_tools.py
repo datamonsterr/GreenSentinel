@@ -66,14 +66,21 @@ class ExplainTools:
             try:
                 hit = bool(evaluate_formula(b["body"].get("condition", ""), params))
             except FormulaError as e:
-                skipped.append({"code": b["code"], "version": b["version"], "reason": e.as_dict().get("message", "formula error")})
+                skipped.append(
+                    {"code": b["code"], "version": b["version"], "reason": e.as_dict().get("message", "formula error")}
+                )
                 continue
             if hit:
                 sig = {s: params.get(s) for s in b["body"].get("signals") or [] if s in params}
                 matched.append({"code": b["code"], "version": b["version"], "name": b["name"], "signals": sig})
         refs = [{"type": "behavior", "code": m["code"], "version": m["version"]} for m in matched]
-        return {"tool": "identify_behavior", "ok": True, "data": {"behaviors": matched, "not_computable": skipped, "assumed_params": assumed},
-                "error": None, "refs": refs}
+        return {
+            "tool": "identify_behavior",
+            "ok": True,
+            "data": {"behaviors": matched, "not_computable": skipped, "assumed_params": assumed},
+            "error": None,
+            "refs": refs,
+        }
 
     def list_motives(self, org: str, scenario_code: str | None = None) -> dict[str, Any]:
         motives = self.kb.list_published(org, "motive")
@@ -84,8 +91,13 @@ class ExplainTools:
         if not motives:
             return _fail("list_motives", "chưa có động cơ nào được phát hành")
         items = [{"code": m["code"], "version": m["version"], "name": m["name"]} for m in motives[:MAX_MOTIVES]]
-        return {"tool": "list_motives", "ok": True, "data": {"motives": items}, "error": None,
-                "refs": [{"type": "motive", "code": i["code"], "version": i["version"]} for i in items]}
+        return {
+            "tool": "list_motives",
+            "ok": True,
+            "data": {"motives": items},
+            "error": None,
+            "refs": [{"type": "motive", "code": i["code"], "version": i["version"]} for i in items],
+        }
 
     def compute_motive(self, org: str, case_id: str, motive_code: str) -> dict[str, Any]:
         m = self.kb.get_published(org, "motive", motive_code)
@@ -95,47 +107,117 @@ class ExplainTools:
         try:
             value = evaluate_formula(m["body"].get("formula", ""), params)
         except FormulaError as e:
-            return {"tool": "compute_motive", "ok": False, "data": None, "refs": [_ref(m)],
-                    "error": f"{NOT_FOUND}: {e.as_dict().get('message', 'công thức lỗi')}"}
+            return {
+                "tool": "compute_motive",
+                "ok": False,
+                "data": None,
+                "refs": [_ref(m)],
+                "error": f"{NOT_FOUND}: {e.as_dict().get('message', 'công thức lỗi')}",
+            }
         threshold = float(m["body"].get("threshold_vnd") or 0)
         num = float(value) if isinstance(value, (int, float)) and not isinstance(value, bool) else None
-        return {"tool": "compute_motive", "ok": True, "refs": [_ref(m)], "error": None,
-                "data": {"code": m["code"], "version": m["version"], "value": num, "threshold": threshold,
-                         "over_threshold": bool(num is not None and num > threshold), "params_used": params, "assumed_params": assumed}}
+        return {
+            "tool": "compute_motive",
+            "ok": True,
+            "refs": [_ref(m)],
+            "error": None,
+            "data": {
+                "code": m["code"],
+                "version": m["version"],
+                "value": num,
+                "threshold": threshold,
+                "over_threshold": bool(num is not None and num > threshold),
+                "params_used": params,
+                "assumed_params": assumed,
+            },
+        }
 
     def match_scenario(self, org: str, case_id: str, reason: str, behaviors: list[dict[str, Any]]) -> dict[str, Any]:
         scenarios = self.kb.list_published(org, "scenario")
         if not scenarios:
-            return {"tool": "match_scenario", "ok": True, "refs": [], "error": None,
-                    "data": {"matched": False, "novel_scenario": True, "best_score": 0.0, "similar": []}}
+            return {
+                "tool": "match_scenario",
+                "ok": True,
+                "refs": [],
+                "error": None,
+                "data": {"matched": False, "novel_scenario": True, "best_score": 0.0, "similar": []},
+            }
         label = REASON_LABELS.get(reason, {}).get("vi", reason)
         have = {b["code"] for b in behaviors}
         scored = []
         for s in scenarios:
-            reason_sim = max(self.scorer.score(label, str(s["body"].get("reason", ""))), 1.0 if s["body"].get("reason_code") == reason else 0.0)
+            reason_sim = max(
+                self.scorer.score(label, str(s["body"].get("reason", ""))),
+                1.0 if s["body"].get("reason_code") == reason else 0.0,
+            )
             beh = 1.0 if s["body"].get("behavior_code") in have else 0.0
             scored.append((round(0.5 * reason_sim + 0.5 * beh, 4), s))
         scored.sort(key=lambda t: (-t[0], t[1]["code"]))
         similar = [{"code": s["code"], "version": s["version"], "name": s["name"], "score": sc} for sc, s in scored[:3]]
         best_score, best = scored[0]
         if best_score >= self.threshold:
-            return {"tool": "match_scenario", "ok": True, "refs": [_ref(best)], "error": None,
-                    "data": {"matched": True, "novel_scenario": False, "scenario": {"code": best["code"], "version": best["version"], "name": best["name"]},
-                             "workflow_code": best["body"].get("workflow_code"), "motive_code": best["body"].get("motive_code"),
-                             "behavior_code": best["body"].get("behavior_code"), "best_score": best_score, "similar": similar}}
-        return {"tool": "match_scenario", "ok": True, "refs": [], "error": None,
-                "data": {"matched": False, "novel_scenario": True, "best_score": best_score, "similar": similar}}
+            return {
+                "tool": "match_scenario",
+                "ok": True,
+                "refs": [_ref(best)],
+                "error": None,
+                "data": {
+                    "matched": True,
+                    "novel_scenario": False,
+                    "scenario": {"code": best["code"], "version": best["version"], "name": best["name"]},
+                    "workflow_code": best["body"].get("workflow_code"),
+                    "motive_code": best["body"].get("motive_code"),
+                    "behavior_code": best["body"].get("behavior_code"),
+                    "best_score": best_score,
+                    "similar": similar,
+                },
+            }
+        return {
+            "tool": "match_scenario",
+            "ok": True,
+            "refs": [],
+            "error": None,
+            "data": {"matched": False, "novel_scenario": True, "best_score": best_score, "similar": similar},
+        }
 
     def get_workflow(self, org: str, code: str | None) -> dict[str, Any]:
         wf = self.kb.get_published(org, "workflow", code) if code else None
         if not wf:
             return _fail("get_workflow", f"workflow '{code}' chưa được phát hành")
-        return {"tool": "get_workflow", "ok": True, "refs": [_ref(wf)], "error": None,
-                "data": {"code": wf["code"], "version": wf["version"], "body": wf["body"]}}
+        return {
+            "tool": "get_workflow",
+            "ok": True,
+            "refs": [_ref(wf)],
+            "error": None,
+            "data": {"code": wf["code"], "version": wf["version"], "body": wf["body"]},
+        }
 
-    def propose_knowledge(self, org: str, *, type_: str, title: str, payload: dict[str, Any], source: str, source_excerpt: str | None,
-                          source_ref: str | None) -> dict[str, Any]:
+    def propose_knowledge(
+        self,
+        org: str,
+        *,
+        type_: str,
+        title: str,
+        payload: dict[str, Any],
+        source: str,
+        source_excerpt: str | None,
+        source_ref: str | None,
+    ) -> dict[str, Any]:
         """Draft proposal for KSGL review; the agent can never publish."""
-        p = self.kb.create_proposal(org, source=source, type=type_, title=title, payload=payload, source_excerpt=source_excerpt,
-                                    source_ref=source_ref, created_by="driver_agent")
-        return {"tool": "propose_knowledge", "ok": True, "data": {"proposal_id": p["id"], "status": p["status"]}, "error": None, "refs": []}
+        p = self.kb.create_proposal(
+            org,
+            source=source,
+            type=type_,
+            title=title,
+            payload=payload,
+            source_excerpt=source_excerpt,
+            source_ref=source_ref,
+            created_by="driver_agent",
+        )
+        return {
+            "tool": "propose_knowledge",
+            "ok": True,
+            "data": {"proposal_id": p["id"], "status": p["status"]},
+            "error": None,
+            "refs": [],
+        }

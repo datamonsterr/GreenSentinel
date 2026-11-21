@@ -76,14 +76,22 @@ class ExplainLLM(Protocol):
 # ---- deterministic implementation -----------------------------------------------------------------
 
 DEFAULT_QUESTIONS: dict[str, list[str]] = {
-    "RealTrip": ["Bạn có thể kể lại diễn biến cuốc này từ lúc đón khách đến lúc kết thúc không?",
-                 "Có điều gì khác thường trong cuốc mà bạn muốn bổ sung không?"],
-    "NotDone": ["Bạn có thể kể rõ hơn điều gì đã xảy ra với cuốc này không?",
-                "Bạn có bằng chứng hoặc mã hỗ trợ nào liên quan không?"],
-    "Tech": ["Bạn gặp sự cố đó vào khoảng thời gian nào trong cuốc?",
-             "Bạn có báo sự cố cho ai hoặc có mã hỗ trợ nào không?"],
-    "Customer": ["Khách đã yêu cầu hoặc làm gì khiến cuốc diễn ra như vậy?",
-                 "Bạn có bằng chứng hoặc cách liên hệ nào với khách không?"],
+    "RealTrip": [
+        "Bạn có thể kể lại diễn biến cuốc này từ lúc đón khách đến lúc kết thúc không?",
+        "Có điều gì khác thường trong cuốc mà bạn muốn bổ sung không?",
+    ],
+    "NotDone": [
+        "Bạn có thể kể rõ hơn điều gì đã xảy ra với cuốc này không?",
+        "Bạn có bằng chứng hoặc mã hỗ trợ nào liên quan không?",
+    ],
+    "Tech": [
+        "Bạn gặp sự cố đó vào khoảng thời gian nào trong cuốc?",
+        "Bạn có báo sự cố cho ai hoặc có mã hỗ trợ nào không?",
+    ],
+    "Customer": [
+        "Khách đã yêu cầu hoặc làm gì khiến cuốc diễn ra như vậy?",
+        "Bạn có bằng chứng hoặc cách liên hệ nào với khách không?",
+    ],
     "Other": ["Bạn có thể giải thích rõ hơn lý do của mình không?"],
 }
 
@@ -94,9 +102,14 @@ def default_plan(reason: str, workflow_body: dict[str, Any] | None) -> list[Plan
     for i, st in enumerate((workflow_body or {}).get("steps") or []):
         q = str(st.get("question", "")).strip()
         if q:
-            points.append(PlanPoint(id=f"s{i + 1}", text=q, source="missing", tool=st.get("tool") or None, workflow_step=i + 1))
+            points.append(
+                PlanPoint(id=f"s{i + 1}", text=q, source="missing", tool=st.get("tool") or None, workflow_step=i + 1)
+            )
     if not points:
-        points = [PlanPoint(id=f"d{i + 1}", text=q) for i, q in enumerate(DEFAULT_QUESTIONS.get(reason, DEFAULT_QUESTIONS["Other"]))]
+        points = [
+            PlanPoint(id=f"d{i + 1}", text=q)
+            for i, q in enumerate(DEFAULT_QUESTIONS.get(reason, DEFAULT_QUESTIONS["Other"]))
+        ]
     return points
 
 
@@ -118,23 +131,53 @@ class DeterministicExplainLLM:
         qs = [p.text for p in plan[:3]]
         if round_no == 1:
             if behaviors:
-                return AssessmentOut(state="needs_driver", matched_evidence=[f"behavior:{c}" for c in behaviors],
-                                     open_points=[p.text for p in plan], confidence=0.4, suggested_reason_code=ctx.get("reason"),
-                                     suggested_questions=qs, plan=plan)
+                return AssessmentOut(
+                    state="needs_driver",
+                    matched_evidence=[f"behavior:{c}" for c in behaviors],
+                    open_points=[p.text for p in plan],
+                    confidence=0.4,
+                    suggested_reason_code=ctx.get("reason"),
+                    suggested_questions=qs,
+                    plan=plan,
+                )
             if scenario_matched:
-                return AssessmentOut(state="eligible", matched_evidence=evidence, confidence=0.4,
-                                     suggested_reason_code=ctx.get("reason"), suggested_questions=[])
-            return AssessmentOut(state="missing_internal", missing_internal=missing or ["Không tra được hành vi hoặc kịch bản đã phát hành"],
-                                 confidence=0.2, suggested_reason_code=ctx.get("reason"), suggested_questions=qs, plan=plan)
+                return AssessmentOut(
+                    state="eligible",
+                    matched_evidence=evidence,
+                    confidence=0.4,
+                    suggested_reason_code=ctx.get("reason"),
+                    suggested_questions=[],
+                )
+            return AssessmentOut(
+                state="missing_internal",
+                missing_internal=missing or ["Không tra được hành vi hoặc kịch bản đã phát hành"],
+                confidence=0.2,
+                suggested_reason_code=ctx.get("reason"),
+                suggested_questions=qs,
+                plan=plan,
+            )
         # round 2: conservative, never an unsupported verdict
         if contradictions:
-            return AssessmentOut(state="not_eligible", matched_evidence=evidence, contradictions=contradictions, open_points=open_points,
-                                 confidence=0.5, suggested_reason_code=ctx.get("reason"), suggested_questions=qs,
-                                 statement_change=ctx.get("statement_change"))
-        return AssessmentOut(state="missing_internal", matched_evidence=evidence, open_points=open_points,
-                             missing_internal=missing or ["Cần VH đối chiếu thủ công"], confidence=0.3,
-                             suggested_reason_code=ctx.get("reason"), suggested_questions=qs,
-                             statement_change=ctx.get("statement_change"))
+            return AssessmentOut(
+                state="not_eligible",
+                matched_evidence=evidence,
+                contradictions=contradictions,
+                open_points=open_points,
+                confidence=0.5,
+                suggested_reason_code=ctx.get("reason"),
+                suggested_questions=qs,
+                statement_change=ctx.get("statement_change"),
+            )
+        return AssessmentOut(
+            state="missing_internal",
+            matched_evidence=evidence,
+            open_points=open_points,
+            missing_internal=missing or ["Cần VH đối chiếu thủ công"],
+            confidence=0.3,
+            suggested_reason_code=ctx.get("reason"),
+            suggested_questions=qs,
+            statement_change=ctx.get("statement_change"),
+        )
 
     async def step(self, ctx: dict[str, Any]) -> StepOut:
         nxt = next((p for p in ctx.get("plan") or [] if not p.get("done")), None)
@@ -178,12 +221,17 @@ class OpenRouterExplainLLM:
 
     async def _call(self, schema: type[BaseModel], task: str, ctx: dict[str, Any]) -> Any:
         chain = self._client().with_structured_output(schema)
-        messages = [("system", _SYSTEM), ("human", f"Nhiệm vụ: {task}\nctx:\n{json.dumps(ctx, ensure_ascii=False, default=str)}")]
+        messages = [
+            ("system", _SYSTEM),
+            ("human", f"Nhiệm vụ: {task}\nctx:\n{json.dumps(ctx, ensure_ascii=False, default=str)}"),
+        ]
         out = await asyncio.wait_for(chain.ainvoke(messages), timeout=LLM_TIMEOUT_S)
         return out if isinstance(out, schema) else schema.model_validate(out)
 
     async def assess(self, ctx: dict[str, Any], round_no: int) -> AssessmentOut:
-        return await self._call(AssessmentOut, f"Đánh giá đợt {round_no} (4 trạng thái) và lập kế hoạch hỏi có thứ tự", ctx)
+        return await self._call(
+            AssessmentOut, f"Đánh giá đợt {round_no} (4 trạng thái) và lập kế hoạch hỏi có thứ tự", ctx
+        )
 
     async def step(self, ctx: dict[str, Any]) -> StepOut:
         return await self._call(StepOut, "Chọn bước tiếp theo: ask | tool | help | done", ctx)

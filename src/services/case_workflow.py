@@ -113,11 +113,7 @@ def build_stepper(
     cur = STEP_KEYS.index(current_key) if current_key else -1
     done_at = dict(timestamps or {})
     done_at.update({e["step"]: e["created_at"] for e in events})
-    explained = (
-        "NEED_TO_EXPLAIN" in done_at
-        or status in EXPLAIN_STATUSES
-        or dispute not in ("", "not_disputed")
-    )
+    explained = "NEED_TO_EXPLAIN" in done_at or status in EXPLAIN_STATUSES or dispute not in ("", "not_disputed")
     steps = []
     for i, (key, actor, label) in enumerate(STEPS):
         if cur >= 0 and i < cur:

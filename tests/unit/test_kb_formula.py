@@ -8,8 +8,16 @@ from src.services.kb_formula import (
     validate_formula,
 )
 
-P = {"trips_today": 9, "milestone_trips": 10, "milestone_bonus_vnd": 50000, "trip_cost_vnd": 12000,
-     "gps_km": 1.0, "billed_km": 10.0, "fare_vnd": 100000, "surge_multiplier": 1.5}
+P = {
+    "trips_today": 9,
+    "milestone_trips": 10,
+    "milestone_bonus_vnd": 50000,
+    "trip_cost_vnd": 12000,
+    "gps_km": 1.0,
+    "billed_km": 10.0,
+    "fare_vnd": 100000,
+    "surge_multiplier": 1.5,
+}
 
 
 def ev(src, params=None):

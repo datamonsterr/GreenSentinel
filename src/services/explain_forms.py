@@ -20,39 +20,80 @@ FORM_REVISION = "1"
 _TICKET = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_\-]{2,31}$")
 
 
-def _f(id_: str, vi: str, en: str, type_: str, required: bool, options: list[tuple[str, str, str]] | None = None) -> dict[str, Any]:
-    out: dict[str, Any] = {"id": id_, "label": {"vi": vi, "en": en}, "type": type_, "required": required, "origin": "fixed"}
+def _f(
+    id_: str, vi: str, en: str, type_: str, required: bool, options: list[tuple[str, str, str]] | None = None
+) -> dict[str, Any]:
+    out: dict[str, Any] = {
+        "id": id_,
+        "label": {"vi": vi, "en": en},
+        "type": type_,
+        "required": required,
+        "origin": "fixed",
+    }
     if options:
         out["options"] = [{"value": v, "label": {"vi": a, "en": b}} for v, a, b in options]
     return out
 
 
-_PAY = [("cash", "Tiền mặt", "Cash"), ("transfer", "Chuyển khoản", "Bank transfer"), ("wallet", "Ví điện tử", "E-wallet")]
+_PAY = [
+    ("cash", "Tiền mặt", "Cash"),
+    ("transfer", "Chuyển khoản", "Bank transfer"),
+    ("wallet", "Ví điện tử", "E-wallet"),
+]
 
 _FIXED: dict[str, list[dict[str, Any]]] = {
     "RealTrip": [
         _f("pickup_place", "Bạn đón khách ở đâu?", "Where did you pick up the passenger?", "location", True),
         _f("pickup_time", "Đón lúc mấy giờ?", "What time was the pickup?", "time", True),
-        _f("passenger_desc", "Mô tả khách (giới tính, độ tuổi, mang theo gì)", "Describe the passenger (gender, age, belongings)", "text", True),
+        _f(
+            "passenger_desc",
+            "Mô tả khách (giới tính, độ tuổi, mang theo gì)",
+            "Describe the passenger (gender, age, belongings)",
+            "text",
+            True,
+        ),
         _f("dropoff_place", "Khách xuống ở đâu?", "Where did the passenger get off?", "location", True),
         _f("route", "Đi đường nào, có dừng giữa chừng không?", "Which route, any stops on the way?", "text", True),
-        _f("payment_amount", "Khách trả tiền bao nhiêu (VND)?", "How much did the passenger pay (VND)?", "amount", True),
+        _f(
+            "payment_amount", "Khách trả tiền bao nhiêu (VND)?", "How much did the passenger pay (VND)?", "amount", True
+        ),
         _f("payment_method", "Khách trả tiền bằng cách nào?", "How did the passenger pay?", "choice", True, _PAY),
         _f("evidence_photo", "Ảnh / bằng chứng (nếu có)", "Photo / evidence (if any)", "photo", False),
     ],
     "NotDone": [
         _f("what_happened", "Điều gì đã xảy ra với cuốc này?", "What happened with this trip?", "text", True),
-        _f("trip_status", "Tình trạng cuốc theo bạn", "Trip status in your view", "choice", True,
-           [("not_started", "Chưa đón khách", "Never picked up"), ("cancelled", "Khách hủy", "Passenger cancelled"),
-            ("other", "Khác", "Other")]),
+        _f(
+            "trip_status",
+            "Tình trạng cuốc theo bạn",
+            "Trip status in your view",
+            "choice",
+            True,
+            [
+                ("not_started", "Chưa đón khách", "Never picked up"),
+                ("cancelled", "Khách hủy", "Passenger cancelled"),
+                ("other", "Khác", "Other"),
+            ],
+        ),
         _f("when_aware", "Bạn biết sự việc lúc mấy giờ?", "When did you become aware?", "time", False),
         _f("evidence_photo", "Ảnh / bằng chứng (nếu có)", "Photo / evidence (if any)", "photo", False),
     ],
     "Tech": [
-        _f("tech_issue", "Bạn gặp sự cố gì (GPS, app, mạng, thiết bị)?", "What went wrong (GPS, app, network, device)?", "text", True),
+        _f(
+            "tech_issue",
+            "Bạn gặp sự cố gì (GPS, app, mạng, thiết bị)?",
+            "What went wrong (GPS, app, network, device)?",
+            "text",
+            True,
+        ),
         _f("tech_time", "Sự cố xảy ra lúc mấy giờ?", "When did the issue occur?", "time", True),
-        _f("tech_other_trips", "Các cuốc khác trong ngày có bị như vậy không?", "Did other trips that day have the same issue?", "choice", True,
-           [("yes", "Có", "Yes"), ("no", "Không", "No"), ("unsure", "Không chắc", "Not sure")]),
+        _f(
+            "tech_other_trips",
+            "Các cuốc khác trong ngày có bị như vậy không?",
+            "Did other trips that day have the same issue?",
+            "choice",
+            True,
+            [("yes", "Có", "Yes"), ("no", "Không", "No"), ("unsure", "Không chắc", "Not sure")],
+        ),
         _f("tech_ticket", "Mã ticket báo lỗi (nếu có)", "Support ticket code (if any)", "ticket", False),
         _f("evidence_photo", "Ảnh chụp màn hình (nếu có)", "Screenshot (if any)", "photo", False),
     ],
@@ -60,8 +101,14 @@ _FIXED: dict[str, list[dict[str, Any]]] = {
         _f("customer_what", "Khách đã yêu cầu hoặc làm gì?", "What did the passenger ask or do?", "text", True),
         _f("customer_time", "Việc đó xảy ra lúc mấy giờ?", "When did it happen?", "time", True),
         _f("customer_place", "Xảy ra ở đâu?", "Where did it happen?", "location", True),
-        _f("customer_contact", "Khách liên hệ bạn bằng cách nào?", "How did the passenger contact you?", "choice", False,
-           [("app", "Qua app", "In app"), ("phone", "Điện thoại", "Phone"), ("in_person", "Trực tiếp", "In person")]),
+        _f(
+            "customer_contact",
+            "Khách liên hệ bạn bằng cách nào?",
+            "How did the passenger contact you?",
+            "choice",
+            False,
+            [("app", "Qua app", "In app"), ("phone", "Điện thoại", "Phone"), ("in_person", "Trực tiếp", "In person")],
+        ),
         _f("evidence_photo", "Ảnh / bằng chứng (nếu có)", "Photo / evidence (if any)", "photo", False),
     ],
     "Other": [
@@ -87,20 +134,36 @@ def build_form(reason: str, workflow: dict[str, Any] | None, k: int) -> dict[str
                 continue
             type_ = item.get("type") if isinstance(item, dict) and item.get("type") in FIELD_TYPES else "text"
             dyn += 1
-            field: dict[str, Any] = {"id": f"dyn_{dyn}", "label": {"vi": text.strip(), "en": text.strip()}, "type": type_,
-                                     "required": False, "origin": "workflow"}
+            field: dict[str, Any] = {
+                "id": f"dyn_{dyn}",
+                "label": {"vi": text.strip(), "en": text.strip()},
+                "type": type_,
+                "required": False,
+                "origin": "workflow",
+            }
             if type_ == "choice" and isinstance(item, dict):
-                field["options"] = [{"value": str(o), "label": {"vi": str(o), "en": str(o)}} for o in item.get("options", [])]
+                field["options"] = [
+                    {"value": str(o), "label": {"vi": str(o), "en": str(o)}} for o in item.get("options", [])
+                ]
             fields.append(field)
     version = f"{reason}.{FORM_REVISION}" + (f"+{wf_ref['code']}@{wf_ref['version']}" if wf_ref else "")
-    return {"reason": reason, "form_version": version, "fields": fields, "workflow": wf_ref,
-            "has_question_set": reason in _FIXED and reason != "Other"}
+    return {
+        "reason": reason,
+        "form_version": version,
+        "fields": fields,
+        "workflow": wf_ref,
+        "has_question_set": reason in _FIXED and reason != "Other",
+    }
 
 
 def driver_form_view(form: dict[str, Any]) -> dict[str, Any]:
     """Driver-facing form: no origin marks and no workflow reference (PRD-A US1)."""
-    return {"reason": form["reason"], "form_version": form["form_version"], "has_question_set": form.get("has_question_set", False),
-            "fields": [{k: v for k, v in f.items() if k != "origin"} for f in form["fields"]]}
+    return {
+        "reason": form["reason"],
+        "form_version": form["form_version"],
+        "has_question_set": form.get("has_question_set", False),
+        "fields": [{k: v for k, v in f.items() if k != "origin"} for f in form["fields"]],
+    }
 
 
 def _blank(v: Any) -> bool:
@@ -118,7 +181,9 @@ def _amount_ok(v: Any) -> bool:
     return False
 
 
-def validate_answers(form: dict[str, Any], answers: dict[str, Any], *, strict_required: bool = True) -> dict[str, list[Any]]:
+def validate_answers(
+    form: dict[str, Any], answers: dict[str, Any], *, strict_required: bool = True
+) -> dict[str, list[Any]]:
     missing: list[str] = []
     invalid: list[dict[str, str]] = []
     for f in form["fields"]:

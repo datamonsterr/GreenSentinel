@@ -39,7 +39,9 @@ MOTIVE = {
 
 
 def motive(svc, code="MOT_MILESTONE", body=None, actor=ANALYST):
-    return svc.create_object(actor, type="motive", code=code, name="Thưởng mốc", scope={"region": "HN"}, body=body or MOTIVE)
+    return svc.create_object(
+        actor, type="motive", code=code, name="Thưởng mốc", scope={"region": "HN"}, body=body or MOTIVE
+    )
 
 
 def to_trial(svc, obj, actor=ANALYST):
@@ -175,19 +177,43 @@ def test_low_computability_gate_requires_override(svc):
 
 
 def test_behavior_and_scenario_and_workflow_flow(svc):
-    b = svc.create_object(ANALYST, type="behavior", code="BHV_STILL", name="Đứng yên", scope={},
-                          body={"description": "still", "signals": ["stationary_duration_s"],
-                                "condition": "=stationary_duration_s>=300"})
+    b = svc.create_object(
+        ANALYST,
+        type="behavior",
+        code="BHV_STILL",
+        name="Đứng yên",
+        scope={},
+        body={"description": "still", "signals": ["stationary_duration_s"], "condition": "=stationary_duration_s>=300"},
+    )
     to_trial(svc, b)
     assert svc.get_object(ANALYST, b["id"])["replay"]["matched"] == 4  # 300..600 of 100..600
-    w = svc.create_object(ANALYST, type="workflow", code="WF_STILL", name="Cuốc ảo", scope={},
-                          body={"ask_first": ["Bạn có chở khách không?"],
-                                "steps": [{"question": "Mã ticket?", "tool": "identify_behavior", "branch": ""}],
-                                "stop_condition": "n_max", "help_condition": "no_tool"})
+    w = svc.create_object(
+        ANALYST,
+        type="workflow",
+        code="WF_STILL",
+        name="Cuốc ảo",
+        scope={},
+        body={
+            "ask_first": ["Bạn có chở khách không?"],
+            "steps": [{"question": "Mã ticket?", "tool": "identify_behavior", "branch": ""}],
+            "stop_condition": "n_max",
+            "help_condition": "no_tool",
+        },
+    )
     to_trial(svc, w)
-    s = svc.create_object(ANALYST, type="scenario", code="SCN_1", name="Kịch bản", scope={},
-                          body={"motive_code": "MOT_MILESTONE", "behavior_code": "BHV_STILL",
-                                "reason": "Có khách thật", "workflow_code": "WF_STILL"})
+    s = svc.create_object(
+        ANALYST,
+        type="scenario",
+        code="SCN_1",
+        name="Kịch bản",
+        scope={},
+        body={
+            "motive_code": "MOT_MILESTONE",
+            "behavior_code": "BHV_STILL",
+            "reason": "Có khách thật",
+            "workflow_code": "WF_STILL",
+        },
+    )
     svc.submit(ANALYST, s["id"])
     svc.start_trial(ANALYST, s["id"])
     with pytest.raises(HTTPException) as e:  # references are not published
@@ -202,8 +228,14 @@ def test_behavior_and_scenario_and_workflow_flow(svc):
 
 
 def test_workflow_validation(svc):
-    bad = svc.create_object(ANALYST, type="workflow", code="WF_BAD", name="x", scope={},
-                            body={"ask_first": [], "steps": [{"question": "Mức phạt là 500k", "tool": "launch_missiles"}]})
+    bad = svc.create_object(
+        ANALYST,
+        type="workflow",
+        code="WF_BAD",
+        name="x",
+        scope={},
+        body={"ask_first": [], "steps": [{"question": "Mức phạt là 500k", "tool": "launch_missiles"}]},
+    )
     with pytest.raises(HTTPException) as e:
         svc.submit(ANALYST, bad["id"])
     codes = {x["code"] for x in e.value.detail["errors"]}
@@ -223,17 +255,34 @@ def test_preview_on_cases(svc):
 
 
 def test_proposals_accept_edit_reject(svc):
-    p1 = svc.create_proposal(ORG, source="policy_analysis", type="motive", title="Thưởng mốc cuốc vẫy",
-                             payload={"code": "MOT_HAIL", "name": "Hail", "scope": {}, "body": MOTIVE},
-                             source_excerpt="Điều 3", mapping="reuse", similarity=0.8, matched_code="MOT_MILESTONE",
-                             created_by="analysis-agent")
+    p1 = svc.create_proposal(
+        ORG,
+        source="policy_analysis",
+        type="motive",
+        title="Thưởng mốc cuốc vẫy",
+        payload={"code": "MOT_HAIL", "name": "Hail", "scope": {}, "body": MOTIVE},
+        source_excerpt="Điều 3",
+        mapping="reuse",
+        similarity=0.8,
+        matched_code="MOT_MILESTONE",
+        created_by="analysis-agent",
+    )
     out = svc.accept_proposal(ANALYST, p1["id"])
     assert out["proposal"]["status"] == "accepted"
     assert out["object"]["status"] == "ready_for_test" and out["object"]["code"] == "MOT_HAIL"
-    p2 = svc.create_proposal(ORG, source="help_reply", type="workflow", title="Bước tra ticket",
-                             payload={"code": "WF_X", "name": "x", "scope": {}, "body": {"ask_first": [], "steps": []}},
-                             created_by="driver-agent")
-    out = svc.edit_proposal(ANALYST, p2["id"], payload={"code": "WF_X", "name": "x2", "scope": {}, "body": {"ask_first": ["a"], "steps": []}})
+    p2 = svc.create_proposal(
+        ORG,
+        source="help_reply",
+        type="workflow",
+        title="Bước tra ticket",
+        payload={"code": "WF_X", "name": "x", "scope": {}, "body": {"ask_first": [], "steps": []}},
+        created_by="driver-agent",
+    )
+    out = svc.edit_proposal(
+        ANALYST,
+        p2["id"],
+        payload={"code": "WF_X", "name": "x2", "scope": {}, "body": {"ask_first": ["a"], "steps": []}},
+    )
     assert out["proposal"]["status"] == "edited" and out["object"]["name"] == "x2"
     p3 = svc.create_proposal(ORG, source="monitoring", type="behavior", title="t", payload={}, created_by="monitor")
     with pytest.raises(HTTPException) as e:
@@ -250,8 +299,14 @@ def test_proposals_accept_edit_reject(svc):
 
 
 def test_proposal_cannot_publish(svc):
-    p = svc.create_proposal(ORG, source="manual", type="motive", title="t",
-                            payload={"code": "MOT_P", "name": "p", "scope": {}, "body": MOTIVE}, created_by="agent")
+    p = svc.create_proposal(
+        ORG,
+        source="manual",
+        type="motive",
+        title="t",
+        payload={"code": "MOT_P", "name": "p", "scope": {}, "body": MOTIVE},
+        created_by="agent",
+    )
     obj = svc.accept_proposal(ANALYST, p["id"])["object"]
     assert obj["status"] == "ready_for_test"
     assert svc.get_published(ORG, "motive", "MOT_P") is None
@@ -259,8 +314,17 @@ def test_proposal_cannot_publish(svc):
 
 def test_documents_indexing_status_and_similarity(svc, monkeypatch):
     monkeypatch.delenv("EMBEDDINGS_API_KEY", raising=False)
-    d = svc.create_document(ANALYST, name="Chính sách thưởng", code="POL-1", text="thưởng mốc chuyến 10 cuốc", filename="a.txt",
-                            content_type="text/plain", size_bytes=30, effective_from="2026-11-01", region="HN")
+    d = svc.create_document(
+        ANALYST,
+        name="Chính sách thưởng",
+        code="POL-1",
+        text="thưởng mốc chuyến 10 cuốc",
+        filename="a.txt",
+        content_type="text/plain",
+        size_bytes=30,
+        effective_from="2026-11-01",
+        region="HN",
+    )
     assert d["indexing_status"] == "embeddings_not_configured"
     assert svc.list_documents(ANALYST)[0]["code"] == "POL-1"
     with pytest.raises(HTTPException) as e:

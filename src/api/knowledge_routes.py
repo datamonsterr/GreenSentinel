@@ -80,7 +80,9 @@ class DocumentCreate(BaseModel):
     region: str | None = None
     service: str | None = None
     contract_type: str | None = None
-    content_base64: str | None = Field(default=None, max_length=14_000_000)  # docx/pdf bytes; text is extracted server-side
+    content_base64: str | None = Field(
+        default=None, max_length=14_000_000
+    )  # docx/pdf bytes; text is extracted server-side
 
 
 class ProposalCreate(BaseModel):
@@ -123,8 +125,12 @@ cfgsvc = get_agent_config_service
 @router.get("/knowledge/meta")
 def meta(principal: Principal | None = Depends(require_principal)) -> dict[str, Any]:
     _actor(principal)
-    return {"types": list(TYPES), "tools": list(TOOL_CATALOGUE), "reject_reasons": list(REJECT_REASONS),
-            "config_keys": list(DEFINITIONS)}
+    return {
+        "types": list(TYPES),
+        "tools": list(TOOL_CATALOGUE),
+        "reject_reasons": list(REJECT_REASONS),
+        "config_keys": list(DEFINITIONS),
+    }
 
 
 @router.get("/knowledge/parameters")
@@ -140,15 +146,29 @@ def formula_validate(body: FormulaValidate, principal: Principal | None = Depend
 
 
 @router.get("/knowledge/objects")
-def list_objects(type: str | None = None, status: str | None = None, q: str | None = None,
-                 principal: Principal | None = Depends(require_principal), svc: KbService = Depends(kb)) -> dict[str, Any]:
+def list_objects(
+    type: str | None = None,
+    status: str | None = None,
+    q: str | None = None,
+    principal: Principal | None = Depends(require_principal),
+    svc: KbService = Depends(kb),
+) -> dict[str, Any]:
     return {"items": svc.list_objects(_actor(principal), type=type, status=status, q=q)}
 
 
 @router.post("/knowledge/objects", status_code=201)
-def create_object(body: ObjectCreate, principal: Principal | None = Depends(require_principal), svc: KbService = Depends(kb)):
-    return svc.create_object(_actor(principal), type=body.type, code=body.code, name=body.name, scope=body.scope,
-                             body=body.body, reason=body.reason)
+def create_object(
+    body: ObjectCreate, principal: Principal | None = Depends(require_principal), svc: KbService = Depends(kb)
+):
+    return svc.create_object(
+        _actor(principal),
+        type=body.type,
+        code=body.code,
+        name=body.name,
+        scope=body.scope,
+        body=body.body,
+        reason=body.reason,
+    )
 
 
 @router.get("/knowledge/objects/{object_id}")
@@ -157,18 +177,28 @@ def get_object(object_id: str, principal: Principal | None = Depends(require_pri
 
 
 @router.get("/knowledge/objects/{type_}/{code}/versions")
-def versions(type_: str, code: str, principal: Principal | None = Depends(require_principal), svc: KbService = Depends(kb)):
+def versions(
+    type_: str, code: str, principal: Principal | None = Depends(require_principal), svc: KbService = Depends(kb)
+):
     return {"items": svc.versions(_actor(principal), type_, code)}
 
 
 @router.put("/knowledge/objects/{object_id}")
-def update_object(object_id: str, body: ObjectUpdate, principal: Principal | None = Depends(require_principal),
-                  svc: KbService = Depends(kb)):
-    return svc.update_object(_actor(principal), object_id, name=body.name, scope=body.scope, body=body.body, reason=body.reason)
+def update_object(
+    object_id: str,
+    body: ObjectUpdate,
+    principal: Principal | None = Depends(require_principal),
+    svc: KbService = Depends(kb),
+):
+    return svc.update_object(
+        _actor(principal), object_id, name=body.name, scope=body.scope, body=body.body, reason=body.reason
+    )
 
 
 @router.post("/knowledge/objects/{object_id}/clone", status_code=201)
-def clone_object(object_id: str, principal: Principal | None = Depends(require_principal), svc: KbService = Depends(kb)):
+def clone_object(
+    object_id: str, principal: Principal | None = Depends(require_principal), svc: KbService = Depends(kb)
+):
     return svc.clone_object(_actor(principal), object_id)
 
 
@@ -183,24 +213,42 @@ def trial(object_id: str, principal: Principal | None = Depends(require_principa
 
 
 @router.post("/knowledge/objects/{object_id}/publish")
-def publish(object_id: str, body: PublishBody | None = None, principal: Principal | None = Depends(require_principal),
-            svc: KbService = Depends(kb)):
+def publish(
+    object_id: str,
+    body: PublishBody | None = None,
+    principal: Principal | None = Depends(require_principal),
+    svc: KbService = Depends(kb),
+):
     return svc.publish(_actor(principal), object_id, override_reason=body.override_reason if body else None)
 
 
 @router.post("/knowledge/objects/{object_id}/retire")
-def retire(object_id: str, body: ReasonBody, principal: Principal | None = Depends(require_principal), svc: KbService = Depends(kb)):
+def retire(
+    object_id: str,
+    body: ReasonBody,
+    principal: Principal | None = Depends(require_principal),
+    svc: KbService = Depends(kb),
+):
     return svc.retire(_actor(principal), object_id, body.reason)
 
 
 @router.post("/knowledge/objects/{object_id}/rollback")
-def rollback(object_id: str, body: ReasonBody, principal: Principal | None = Depends(require_principal), svc: KbService = Depends(kb)):
+def rollback(
+    object_id: str,
+    body: ReasonBody,
+    principal: Principal | None = Depends(require_principal),
+    svc: KbService = Depends(kb),
+):
     return svc.rollback(_actor(principal), object_id, body.reason)
 
 
 @router.post("/knowledge/objects/{object_id}/preview")
-def preview(object_id: str, body: PreviewBody | None = None, principal: Principal | None = Depends(require_principal),
-            svc: KbService = Depends(kb)):
+def preview(
+    object_id: str,
+    body: PreviewBody | None = None,
+    principal: Principal | None = Depends(require_principal),
+    svc: KbService = Depends(kb),
+):
     b = body or PreviewBody()
     return svc.preview(_actor(principal), object_id, case_ids=b.case_ids, params=b.params)
 
@@ -227,7 +275,9 @@ def list_documents(principal: Principal | None = Depends(require_principal), svc
 
 
 @router.post("/knowledge/documents", status_code=201)
-def create_document(body: DocumentCreate, principal: Principal | None = Depends(require_principal), svc: KbService = Depends(kb)):
+def create_document(
+    body: DocumentCreate, principal: Principal | None = Depends(require_principal), svc: KbService = Depends(kb)
+):
     data = body.model_dump()
     raw = data.pop("content_base64", None)
     if raw and not (data.get("text") or "").strip():
@@ -239,68 +289,103 @@ def create_document(body: DocumentCreate, principal: Principal | None = Depends(
 
 
 @router.post("/knowledge/documents/{document_id}/analyze")
-def analyze_document(document_id: str, principal: Principal | None = Depends(require_principal),
-                     svc: KbService = Depends(kb)):
+def analyze_document(
+    document_id: str, principal: Principal | None = Depends(require_principal), svc: KbService = Depends(kb)
+):
     return PolicyAnalysisService(svc).analyze(_actor(principal), document_id)
 
 
 # ---- proposals queue ---------------------------------------------------------------------------
 @router.get("/knowledge/proposals")
-def list_proposals(status: str | None = None, source: str | None = None, type: str | None = None,
-                   principal: Principal | None = Depends(require_principal), svc: KbService = Depends(kb)):
+def list_proposals(
+    status: str | None = None,
+    source: str | None = None,
+    type: str | None = None,
+    principal: Principal | None = Depends(require_principal),
+    svc: KbService = Depends(kb),
+):
     return {"items": svc.list_proposals(_actor(principal), status=status, source=source, type=type)}
 
 
 @router.post("/knowledge/proposals", status_code=201)
-def create_proposal(body: ProposalCreate, principal: Principal | None = Depends(require_principal), svc: KbService = Depends(kb)):
+def create_proposal(
+    body: ProposalCreate, principal: Principal | None = Depends(require_principal), svc: KbService = Depends(kb)
+):
     actor = _actor(principal)
     svc._require(actor, frozenset({"analyst", "fraud_analyst", "senior_analyst", "admin"}))
     return svc.create_proposal(actor.organization_id, created_by=f"user:{actor.id}", **body.model_dump())
 
 
 @router.post("/knowledge/proposals/{proposal_id}/accept")
-def accept_proposal(proposal_id: str, principal: Principal | None = Depends(require_principal), svc: KbService = Depends(kb)):
+def accept_proposal(
+    proposal_id: str, principal: Principal | None = Depends(require_principal), svc: KbService = Depends(kb)
+):
     return svc.accept_proposal(_actor(principal), proposal_id)
 
 
 @router.post("/knowledge/proposals/{proposal_id}/edit")
-def edit_proposal(proposal_id: str, body: ProposalEdit, principal: Principal | None = Depends(require_principal),
-                  svc: KbService = Depends(kb)):
+def edit_proposal(
+    proposal_id: str,
+    body: ProposalEdit,
+    principal: Principal | None = Depends(require_principal),
+    svc: KbService = Depends(kb),
+):
     return svc.edit_proposal(_actor(principal), proposal_id, body.payload)
 
 
 @router.post("/knowledge/proposals/{proposal_id}/reject")
-def reject_proposal(proposal_id: str, body: ProposalReject, principal: Principal | None = Depends(require_principal),
-                    svc: KbService = Depends(kb)):
+def reject_proposal(
+    proposal_id: str,
+    body: ProposalReject,
+    principal: Principal | None = Depends(require_principal),
+    svc: KbService = Depends(kb),
+):
     return svc.reject_proposal(_actor(principal), proposal_id, body.reason_code, body.note)
 
 
 # ---- agent config ------------------------------------------------------------------------------
 @router.get("/agent-config")
-def get_config(scope: str = "global", principal: Principal | None = Depends(require_principal),
-               svc: AgentConfigService = Depends(cfgsvc)):
+def get_config(
+    scope: str = "global",
+    principal: Principal | None = Depends(require_principal),
+    svc: AgentConfigService = Depends(cfgsvc),
+):
     return svc.list_config(_actor(principal), scope=scope)
 
 
 @router.put("/agent-config/{key}")
-def set_config(key: str, body: ConfigSet, principal: Principal | None = Depends(require_principal),
-               svc: AgentConfigService = Depends(cfgsvc)):
+def set_config(
+    key: str,
+    body: ConfigSet,
+    principal: Principal | None = Depends(require_principal),
+    svc: AgentConfigService = Depends(cfgsvc),
+):
     return svc.set(_actor(principal), key, body.value, body.reason, scope=body.scope)
 
 
 @router.get("/agent-config/history/list")
-def config_history(key: str | None = None, principal: Principal | None = Depends(require_principal),
-                   svc: AgentConfigService = Depends(cfgsvc)):
+def config_history(
+    key: str | None = None,
+    principal: Principal | None = Depends(require_principal),
+    svc: AgentConfigService = Depends(cfgsvc),
+):
     return {"items": svc.history(_actor(principal), key=key)}
 
 
 @router.post("/agent-config/history/{history_id}/revert")
-def config_revert(history_id: str, body: ReasonBody, principal: Principal | None = Depends(require_principal),
-                  svc: AgentConfigService = Depends(cfgsvc)):
+def config_revert(
+    history_id: str,
+    body: ReasonBody,
+    principal: Principal | None = Depends(require_principal),
+    svc: AgentConfigService = Depends(cfgsvc),
+):
     return svc.revert(_actor(principal), history_id, body.reason)
 
 
 @router.post("/agent-config/kill-switch")
-def kill_switch(body: KillSwitch, principal: Principal | None = Depends(require_principal),
-                svc: AgentConfigService = Depends(cfgsvc)):
+def kill_switch(
+    body: KillSwitch,
+    principal: Principal | None = Depends(require_principal),
+    svc: AgentConfigService = Depends(cfgsvc),
+):
     return svc.set_kill_switch(_actor(principal), enabled=body.enabled, reason=body.reason)

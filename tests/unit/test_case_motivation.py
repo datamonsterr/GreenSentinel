@@ -26,7 +26,9 @@ def test_no_data_is_unclear_low_confidence():
 
 
 def test_platform_incident_without_mock_is_platform_fault():
-    d = _build(features={"fare_delta_vnd": 20000, "platform_incident_confirmed": True}, telemetry=[{"gps_state": "valid"}])
+    d = _build(
+        features={"fare_delta_vnd": 20000, "platform_incident_confirmed": True}, telemetry=[{"gps_state": "valid"}]
+    )
     assert d.motive_category == "platform_fault"
     assert d.amount_at_stake_vnd == 20000
     assert any(s.code == "platform_incident" for s in d.signals)
@@ -61,8 +63,15 @@ def test_fare_delta_with_mock_is_fare_inflation():
 async def test_llm_rationale_used_when_valid_and_fallback_on_failure():
     feats = {"fare_delta_vnd": 30000}
     ai_text = "Có thể tài xế đã cố tình tăng cước; cần đối chiếu thêm bằng chứng định vị trước khi kết luận."
-    with patch.object(svc, "generate_motivation_assessment", AsyncMock(
-        return_value=DriverMotivationAssessment(economic_incentive_reward=30000, natural_vietnamese_narrative=ai_text))):
+    with patch.object(
+        svc,
+        "generate_motivation_assessment",
+        AsyncMock(
+            return_value=DriverMotivationAssessment(
+                economic_incentive_reward=30000, natural_vietnamese_narrative=ai_text
+            )
+        ),
+    ):
         d = await svc.generate_assessment(trip={}, features=feats, telemetry=GPS)
     assert d.source == "ai" and d.rationale == ai_text and d.motive_category == "fare_inflation"
     with patch.object(svc, "generate_motivation_assessment", AsyncMock(side_effect=TimeoutError())):
@@ -79,7 +88,14 @@ def test_edit_schema_rejects_bad_category_and_confidence():
 
 # ---- API ------------------------------------------------------------------------------------------
 
-SAVED = {"id": "a1", "case_id": "c1", "version": 2, "motive_category": "unclear", "status": "draft", "source": "analyst"}
+SAVED = {
+    "id": "a1",
+    "case_id": "c1",
+    "version": 2,
+    "motive_category": "unclear",
+    "status": "draft",
+    "source": "analyst",
+}
 
 
 @pytest.fixture
@@ -87,8 +103,13 @@ def client_for():
     case_service = MagicMock()
     case_service._resolve_case_id = lambda cid: cid
     case_service._get_case_detail_data = AsyncMock(
-        return_value=SimpleNamespace(trip={}, features={"fare_delta_vnd": 30000}, telemetry_samples=GPS,
-                                     case=SimpleNamespace(trip_id="t1", id="c1"), active_lease={"analyst_id": "p1"})
+        return_value=SimpleNamespace(
+            trip={},
+            features={"fare_delta_vnd": 30000},
+            telemetry_samples=GPS,
+            case=SimpleNamespace(trip_id="t1", id="c1"),
+            active_lease={"analyst_id": "p1"},
+        )
     )
 
     def make(role):
@@ -135,14 +156,18 @@ def test_read_only_roles_cannot_write(client_for, role, method, path, body):
 
 def test_analyst_generate_edit_confirm(client_for):
     c = client_for("analyst")
-    with patch("src.api.routes.require_case_scope"), \
-            patch.object(svc, "save_generated", return_value={**SAVED, "version": 1, "source": "rule"}) as gen, \
-            patch.object(svc, "save_edit", return_value=SAVED) as edit, \
-            patch.object(svc, "confirm", return_value={**SAVED, "status": "confirmed"}) as conf:
+    with (
+        patch("src.api.routes.require_case_scope"),
+        patch.object(svc, "save_generated", return_value={**SAVED, "version": 1, "source": "rule"}) as gen,
+        patch.object(svc, "save_edit", return_value=SAVED) as edit,
+        patch.object(svc, "confirm", return_value={**SAVED, "status": "confirmed"}) as conf,
+    ):
         with patch.object(svc, "generate_motivation_assessment", AsyncMock(side_effect=TimeoutError())):
             g = c.post("/cases/c1/motivation/generate")
-        e = c.put("/cases/c1/motivation", json={"motive_category": "unclear", "confidence": 0.4, "rationale": "Chưa rõ",
-                                                "expected_version": 1})
+        e = c.put(
+            "/cases/c1/motivation",
+            json={"motive_category": "unclear", "confidence": 0.4, "rationale": "Chưa rõ", "expected_version": 1},
+        )
         k = c.post("/cases/c1/motivation/confirm", json={"expected_version": 2})
     assert g.status_code == e.status_code == k.status_code == 200
     assert gen.call_args.args[4].motive_category == "fare_inflation"
@@ -151,17 +176,22 @@ def test_analyst_generate_edit_confirm(client_for):
 
 
 def test_edit_rejects_unknown_category(client_for):
-    r = client_for("analyst").put("/cases/c1/motivation", json={"motive_category": "greed", "confidence": 0.4, "rationale": "x"})
+    r = client_for("analyst").put(
+        "/cases/c1/motivation", json={"motive_category": "greed", "confidence": 0.4, "rationale": "x"}
+    )
     assert r.status_code == 422
 
 
 @pytest.mark.parametrize("lease", [None, {"analyst_id": "someone-else"}])
 @pytest.mark.parametrize("role", ["analyst", "senior_analyst", "admin"])
-@pytest.mark.parametrize("method,path,body", [
-    ("POST", "/cases/c1/motivation/generate", None),
-    ("PUT", "/cases/c1/motivation", {"motive_category": "unclear", "confidence": 0.4, "rationale": "x"}),
-    ("POST", "/cases/c1/motivation/confirm", {}),
-])
+@pytest.mark.parametrize(
+    "method,path,body",
+    [
+        ("POST", "/cases/c1/motivation/generate", None),
+        ("PUT", "/cases/c1/motivation", {"motive_category": "unclear", "confidence": 0.4, "rationale": "x"}),
+        ("POST", "/cases/c1/motivation/confirm", {}),
+    ],
+)
 def test_motivation_writes_require_own_claim(client_for, role, method, path, body, lease):
     c = client_for(role)
     detail = client_for.detail.return_value

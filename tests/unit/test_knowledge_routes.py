@@ -55,7 +55,12 @@ def test_object_flow_two_users(api):
     assert c.post(f"/api/v1/knowledge/objects/{oid}/publish").status_code == 403  # analyst is not an approver
     adm = api("admin")
     assert adm.post(f"/api/v1/knowledge/objects/{oid}/publish").json()["status"] == "published"
-    assert adm.get("/api/v1/knowledge/objects", params={"type": "motive", "status": "published"}).json()["items"][0]["code"] == "MOT_X"
+    assert (
+        adm.get("/api/v1/knowledge/objects", params={"type": "motive", "status": "published"}).json()["items"][0][
+            "code"
+        ]
+        == "MOT_X"
+    )
     assert adm.get("/api/v1/knowledge/objects/motive/MOT_X/versions").json()["items"][0]["version"] == 1
 
 
@@ -70,10 +75,16 @@ def test_config_and_kill_switch_endpoints(api):
     r = adm.put("/api/v1/agent-config/n_max", json={"value": 4, "reason": "tighten"})
     assert r.status_code == 200 and r.json()["value"] == 4
     assert adm.put("/api/v1/agent-config/n_max", json={"value": 0, "reason": "bad"}).status_code == 422
-    assert adm.post("/api/v1/agent-config/kill-switch", json={"enabled": True, "reason": "go live"}).json()["value"] is True
+    assert (
+        adm.post("/api/v1/agent-config/kill-switch", json={"enabled": True, "reason": "go live"}).json()["value"]
+        is True
+    )
     hist = adm.get("/api/v1/agent-config/history/list", params={"key": "n_max"}).json()["items"]
     assert hist[0]["new_value"] == 4
-    assert adm.post(f"/api/v1/agent-config/history/{hist[0]['id']}/revert", json={"reason": "undo it"}).json()["value"] == 6
+    assert (
+        adm.post(f"/api/v1/agent-config/history/{hist[0]['id']}/revert", json={"reason": "undo it"}).json()["value"]
+        == 6
+    )
     cfg = adm.get("/api/v1/agent-config").json()
     assert {i["key"] for i in cfg["items"]} >= {"n_max", "k_dynamic", "explain_agent_enabled"}
 
@@ -83,7 +94,10 @@ def test_documents_and_proposals_endpoints(api):
     r = c.post("/api/v1/knowledge/documents", json={"name": "P", "code": "P-1", "text": "bonus policy"})
     assert r.status_code == 201 and r.json()["indexing_status"] == "embeddings_not_configured"
     assert c.post("/api/v1/knowledge/documents", json={"name": "", "code": ""}).status_code == 422
-    p = c.post("/api/v1/knowledge/proposals", json={"type": "motive", "title": "t", "payload": {"code": "MOT_P", "name": "p", "body": MOTIVE}})
+    p = c.post(
+        "/api/v1/knowledge/proposals",
+        json={"type": "motive", "title": "t", "payload": {"code": "MOT_P", "name": "p", "body": MOTIVE}},
+    )
     assert p.status_code == 201
     pid = p.json()["id"]
     assert c.post(f"/api/v1/knowledge/proposals/{pid}/reject", json={"reason_code": "bogus"}).status_code == 422
@@ -99,7 +113,12 @@ def test_analyze_document_route_fails_gracefully_and_gates(api, monkeypatch):
 
     monkeypatch.setattr("src.services.policy_analysis_service.get_llm", boom)
     c = api("analyst")
-    body = {"name": "P", "code": "P-1", "filename": "p.md", "content_base64": base64.b64encode("Điều 1. Thưởng mốc".encode()).decode()}
+    body = {
+        "name": "P",
+        "code": "P-1",
+        "filename": "p.md",
+        "content_base64": base64.b64encode("Điều 1. Thưởng mốc".encode()).decode(),
+    }
     doc = c.post("/api/v1/knowledge/documents", json=body).json()
     out = c.post(f"/api/v1/knowledge/documents/{doc['id']}/analyze")
     assert out.status_code == 200 and out.json()["analysis_status"] == "failed"

@@ -15,10 +15,21 @@ MAX_DRIVER_CHARS = 2000
 SAFE_QUESTION = "Bạn có thể kể rõ hơn về diễn biến của cuốc này không?"
 
 _FORBIDDEN: tuple[tuple[str, re.Pattern[str]], ...] = (
-    ("fine", re.compile(r"mức phạt|\bphạt\b|truy thu|hướng xử lý|\bfines?\b|\bpenalt(?:y|ies)\b|\bclawback\b|\bsuspen(?:d|sion)\b|đình chỉ", re.I)),
-    ("conclusion", re.compile(
-        r"(?:bạn|anh|chị)\s+(?:đã|đang|có)?\s*(?:vi phạm|gian lận|lừa đảo|làm giả)|vi phạm quy định|"
-        r"\byou(?:'ve| have)?\s+(?:violated|cheated|committed fraud)|kết luận (?:là|rằng)|\bfraudulent\b", re.I)),
+    (
+        "fine",
+        re.compile(
+            r"mức phạt|\bphạt\b|truy thu|hướng xử lý|\bfines?\b|\bpenalt(?:y|ies)\b|\bclawback\b|\bsuspen(?:d|sion)\b|đình chỉ",
+            re.I,
+        ),
+    ),
+    (
+        "conclusion",
+        re.compile(
+            r"(?:bạn|anh|chị)\s+(?:đã|đang|có)?\s*(?:vi phạm|gian lận|lừa đảo|làm giả)|vi phạm quy định|"
+            r"\byou(?:'ve| have)?\s+(?:violated|cheated|committed fraud)|kết luận (?:là|rằng)|\bfraudulent\b",
+            re.I,
+        ),
+    ),
     ("accusation", re.compile(r"nói dối|dối trá|bịa|\bliar\b|\blying\b|\blied\b", re.I)),
     ("threshold", re.compile(r"ngưỡng|\bthreshold\b|\bstationary_duration_s\b|\bdavi\b", re.I)),
     ("motive", re.compile(r"động cơ|\bmotive\b|công thức|\bformula\b|lợi ích kinh tế|thưởng mốc", re.I)),
@@ -39,8 +50,17 @@ _SAFETY = re.compile(
     re.I,
 )
 _REASON_KEYWORDS: tuple[tuple[str, re.Pattern[str]], ...] = (
-    ("Tech", re.compile(r"\bgps\b|định vị|điện thoại (?:bị )?(?:lag|lỗi|treo)|app (?:bị )?lỗi|ứng dụng (?:bị )?lỗi|mất sóng|mất mạng", re.I)),
-    ("Customer", re.compile(r"khách (?:hủy|huỷ|không (?:đến|ra|có mặt)|bắt tôi|yêu cầu)|passenger (?:cancel|no[- ]show)", re.I)),
+    (
+        "Tech",
+        re.compile(
+            r"\bgps\b|định vị|điện thoại (?:bị )?(?:lag|lỗi|treo)|app (?:bị )?lỗi|ứng dụng (?:bị )?lỗi|mất sóng|mất mạng",
+            re.I,
+        ),
+    ),
+    (
+        "Customer",
+        re.compile(r"khách (?:hủy|huỷ|không (?:đến|ra|có mặt)|bắt tôi|yêu cầu)|passenger (?:cancel|no[- ]show)", re.I),
+    ),
 )
 
 

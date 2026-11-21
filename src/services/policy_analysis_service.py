@@ -32,13 +32,13 @@ _W = "{http://schemas.openxmlformats.org/wordprocessingml/2006/main}"
 
 SYSTEM_PROMPT = (
     "You extract candidate knowledge objects from a ride-hailing fraud policy document.\n"
-    "Return ONLY JSON: {\"items\": [{\"type\": \"parameter|motive|behavior\", \"code\": \"UPPER_SNAKE\", "
-    "\"name\": \"short Vietnamese name\", \"citation\": \"EXACT verbatim quote copied from the text\", "
-    "\"body\": {...}}]}.\n"
-    "body for parameter: {\"unit\", \"source\"}; motive: {\"beneficiary\": \"driver\", \"policy\", \"formula\": \"=...\"}; "
-    "behavior: {\"description\", \"signals\": [], \"condition\": \"=...\"}.\n"
+    'Return ONLY JSON: {"items": [{"type": "parameter|motive|behavior", "code": "UPPER_SNAKE", '
+    '"name": "short Vietnamese name", "citation": "EXACT verbatim quote copied from the text", '
+    '"body": {...}}]}.\n'
+    'body for parameter: {"unit", "source"}; motive: {"beneficiary": "driver", "policy", "formula": "=..."}; '
+    'behavior: {"description", "signals": [], "condition": "=..."}.\n'
     "The citation MUST be copied character for character from the text. Never invent penalties, fines or "
-    "enforcement actions. If nothing applies return {\"items\": []}."
+    'enforcement actions. If nothing applies return {"items": []}.'
 )
 
 
@@ -118,7 +118,7 @@ def _parse(raw: str) -> list[dict[str, Any]]:
         i, j = s.find("{"), s.rfind("}")
         if i < 0 or j <= i:
             raise ValueError("LLM reply is not valid JSON") from None
-        data = json.loads(s[i:j + 1])
+        data = json.loads(s[i : j + 1])
     try:
         return Extraction.model_validate(data).items
     except ValidationError as e:
@@ -127,7 +127,9 @@ def _parse(raw: str) -> list[dict[str, Any]]:
 
 def _llm_extractor(chunk: str, doc: dict[str, Any]) -> str:
     llm = get_llm(provider="openrouter", model=ANALYSIS_MODEL, temperature=0)
-    msg = llm.invoke([("system", SYSTEM_PROMPT), ("human", f"Document: {doc.get('name')} ({doc.get('code')})\n\nTEXT:\n{chunk}")])
+    msg = llm.invoke(
+        [("system", SYSTEM_PROMPT), ("human", f"Document: {doc.get('name')} ({doc.get('code')})\n\nTEXT:\n{chunk}")]
+    )
     content = msg.content
     return content if isinstance(content, str) else json.dumps(content)
 
@@ -141,24 +143,44 @@ class PolicyAnalysisService:
     def _threshold(self, org: str) -> float:
         if self.config is None:
             from src.services.agent_config_service import AgentConfigService
+
             self.config = AgentConfigService(self.kb.store)
         return float(self.config.similarity_threshold(org))
 
-    def _map(self, org: str, c: Candidate, threshold: float, cache: dict[str, list[tuple[str, str]]]) -> tuple[str, float | None, str | None]:
+    def _map(
+        self, org: str, c: Candidate, threshold: float, cache: dict[str, list[tuple[str, str]]]
+    ) -> tuple[str, float | None, str | None]:
         if c.type not in cache:
-            cache[c.type] = [(o["code"], f"{o['name']} {' '.join(_strings(o['body']))}") for o in self.kb.list_published(org, c.type)]
+            cache[c.type] = [
+                (o["code"], f"{o['name']} {' '.join(_strings(o['body']))}") for o in self.kb.list_published(org, c.type)
+            ]
         ranked = self.kb.scorer.rank(f"{c.name} {' '.join(_strings(c.body))}", cache[c.type], limit=1)
         if not ranked or ranked[0][1] < threshold:
             return "new", (ranked[0][1] if ranked else None), None
         code, score = ranked[0]
         return ("reuse" if score >= max(threshold, REUSE_AT) else "extend"), score, code
 
-    def _finish(self, doc_id: str, status: str, counts: dict[str, Any], error: str | None, actor_id: str) -> dict[str, Any]:
-        row = self.kb.store.update("kb_policy_document", doc_id, {
-            "analysis_status": status, "analysis_error": error, "analysis_counts": counts,
-            "analyzed_at": _now(), "analyzed_by": actor_id})
-        self.kb.store.audit(row["organization_id"], actor_id, "kb.document.analyze",
-                            {"document_id": doc_id, "status": status, "counts": counts}, "accepted" if status == "done" else "failed")
+    def _finish(
+        self, doc_id: str, status: str, counts: dict[str, Any], error: str | None, actor_id: str
+    ) -> dict[str, Any]:
+        row = self.kb.store.update(
+            "kb_policy_document",
+            doc_id,
+            {
+                "analysis_status": status,
+                "analysis_error": error,
+                "analysis_counts": counts,
+                "analyzed_at": _now(),
+                "analyzed_by": actor_id,
+            },
+        )
+        self.kb.store.audit(
+            row["organization_id"],
+            actor_id,
+            "kb.document.analyze",
+            {"document_id": doc_id, "status": status, "counts": counts},
+            "accepted" if status == "done" else "failed",
+        )
         return row
 
     def analyze(self, actor: Any, document_id: str) -> dict[str, Any]:
@@ -170,12 +192,27 @@ class PolicyAnalysisService:
         if doc.get("analysis_status") == "running":
             raise HTTPException(409, "Analysis already running")
         store.update("kb_policy_document", doc["id"], {"analysis_status": "running", "analysis_error": None})
-        counts: dict[str, Any] = {"chunks": 0, "candidates": 0, "rejected_citation": 0, "rejected_schema": 0,
-                                  "duplicates": 0, "proposals": 0, "reuse": 0, "extend": 0, "new": 0}
+        counts: dict[str, Any] = {
+            "chunks": 0,
+            "candidates": 0,
+            "rejected_citation": 0,
+            "rejected_schema": 0,
+            "duplicates": 0,
+            "proposals": 0,
+            "reuse": 0,
+            "extend": 0,
+            "new": 0,
+        }
         try:
             text = doc.get("text_excerpt") or ""
             if not text.strip():
-                return self._finish(doc["id"], "failed", counts, "Document has no extractable text; paste the text or upload txt/md/docx.", actor.id)
+                return self._finish(
+                    doc["id"],
+                    "failed",
+                    counts,
+                    "Document has no extractable text; paste the text or upload txt/md/docx.",
+                    actor.id,
+                )
             all_chunks = chunk_text(text)
             chunks = all_chunks[:MAX_CHUNKS]
             counts["chunks"] = len(chunks)
@@ -197,7 +234,10 @@ class PolicyAnalysisService:
             threshold = self._threshold(org)
             cache: dict[str, list[tuple[str, str]]] = {}
             ref = f"doc:{doc['code']}"
-            existing = {(p["type"], p["title"]) for p in store.find("kb_proposal", {"organization_id": org, "source_ref": ref, "status": "pending"})}
+            existing = {
+                (p["type"], p["title"])
+                for p in store.find("kb_proposal", {"organization_id": org, "source_ref": ref, "status": "pending"})
+            }
             seen: set[tuple[str, str]] = set()
             for item in raw_items:
                 try:
@@ -216,11 +256,23 @@ class PolicyAnalysisService:
                 seen.add(key)
                 mapping, score, matched = self._map(org, c, threshold, cache)
                 self.kb.create_proposal(
-                    org, source="policy_analysis", type=c.type, title=c.name,
-                    payload={"code": c.code, "name": c.name, "scope": {k: doc[k] for k in ("region", "service", "contract_type") if doc.get(k)},
-                             "body": c.body},
-                    source_excerpt=c.citation, source_ref=ref, mapping=mapping, similarity=score, matched_code=matched,
-                    created_by=f"agent:{INSTRUCTION_VERSION}")
+                    org,
+                    source="policy_analysis",
+                    type=c.type,
+                    title=c.name,
+                    payload={
+                        "code": c.code,
+                        "name": c.name,
+                        "scope": {k: doc[k] for k in ("region", "service", "contract_type") if doc.get(k)},
+                        "body": c.body,
+                    },
+                    source_excerpt=c.citation,
+                    source_ref=ref,
+                    mapping=mapping,
+                    similarity=score,
+                    matched_code=matched,
+                    created_by=f"agent:{INSTRUCTION_VERSION}",
+                )
                 counts["proposals"] += 1
                 counts[mapping] += 1
             return self._finish(doc["id"], "done", counts, None, actor.id)

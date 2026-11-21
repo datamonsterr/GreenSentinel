@@ -17,32 +17,123 @@ MAX_DEPTH = 40
 
 # code -> metadata. `sample` feeds the editor preview; units drive the mismatch check.
 PARAMETER_CATALOGUE: dict[str, dict[str, Any]] = {
-    "billed_km": {"name": "Billed distance", "description": "Kilometres charged to the passenger", "unit": "km",
-                  "source": "trips", "owner": "Data", "latency": "real-time", "sample": 10.0},
-    "gps_km": {"name": "GPS distance", "description": "Kilometres actually driven according to GPS", "unit": "km",
-               "source": "telemetry", "owner": "Data", "latency": "real-time", "sample": 8.5},
-    "fare_vnd": {"name": "Fare", "description": "Fare amount of the trip", "unit": "vnd",
-                 "source": "trips", "owner": "Data", "latency": "real-time", "sample": 120000},
-    "surge_multiplier": {"name": "Surge multiplier", "description": "Dynamic pricing multiplier on the trip",
-                         "unit": "ratio", "source": "pricing", "owner": "Marketplace", "latency": "real-time", "sample": 1.2},
-    "subsidy_vnd": {"name": "Subsidy", "description": "Subsidy paid out on the trip", "unit": "vnd",
-                    "source": "incentives", "owner": "Marketplace", "latency": "daily", "sample": 15000},
-    "trips_today": {"name": "Trips today", "description": "Completed trips of the driver today before this trip",
-                    "unit": "count", "source": "trips", "owner": "Data", "latency": "real-time", "sample": 7},
-    "milestone_trips": {"name": "Milestone trips", "description": "Trip count that unlocks the milestone bonus",
-                        "unit": "count", "source": "incentives", "owner": "Marketplace", "latency": "daily", "sample": 10},
-    "milestone_bonus_vnd": {"name": "Milestone bonus", "description": "Bonus paid when the milestone is reached",
-                            "unit": "vnd", "source": "incentives", "owner": "Marketplace", "latency": "daily", "sample": 50000},
-    "trip_cost_vnd": {"name": "Cost to create a trip", "description": "Estimated driver cost of producing one trip",
-                      "unit": "vnd", "source": "estimate", "owner": "Fraud platform", "latency": "daily", "sample": 12000},
-    "trip_duration_min": {"name": "Trip duration", "description": "Minutes between pickup start and trip end",
-                          "unit": "minutes", "source": "trips", "owner": "Data", "latency": "real-time", "sample": 18},
-    "stationary_duration_s": {"name": "Stationary time", "description": "Seconds the vehicle stayed almost still during the trip",
-                              "unit": "seconds", "source": "feature_sets", "owner": "Fraud platform", "latency": "real-time", "sample": 240},
-    "davi": {"name": "DAVI", "description": "Distance-adjusted velocity index of the trip", "unit": "ratio",
-             "source": "feature_sets", "owner": "Fraud platform", "latency": "real-time", "sample": -0.4},
-    "distance_to_pickup_m": {"name": "Distance to pickup", "description": "Metres between the vehicle and the pickup point at trip start",
-                             "unit": "metres", "source": "feature_sets", "owner": "Fraud platform", "latency": "real-time", "sample": 900},
+    "billed_km": {
+        "name": "Billed distance",
+        "description": "Kilometres charged to the passenger",
+        "unit": "km",
+        "source": "trips",
+        "owner": "Data",
+        "latency": "real-time",
+        "sample": 10.0,
+    },
+    "gps_km": {
+        "name": "GPS distance",
+        "description": "Kilometres actually driven according to GPS",
+        "unit": "km",
+        "source": "telemetry",
+        "owner": "Data",
+        "latency": "real-time",
+        "sample": 8.5,
+    },
+    "fare_vnd": {
+        "name": "Fare",
+        "description": "Fare amount of the trip",
+        "unit": "vnd",
+        "source": "trips",
+        "owner": "Data",
+        "latency": "real-time",
+        "sample": 120000,
+    },
+    "surge_multiplier": {
+        "name": "Surge multiplier",
+        "description": "Dynamic pricing multiplier on the trip",
+        "unit": "ratio",
+        "source": "pricing",
+        "owner": "Marketplace",
+        "latency": "real-time",
+        "sample": 1.2,
+    },
+    "subsidy_vnd": {
+        "name": "Subsidy",
+        "description": "Subsidy paid out on the trip",
+        "unit": "vnd",
+        "source": "incentives",
+        "owner": "Marketplace",
+        "latency": "daily",
+        "sample": 15000,
+    },
+    "trips_today": {
+        "name": "Trips today",
+        "description": "Completed trips of the driver today before this trip",
+        "unit": "count",
+        "source": "trips",
+        "owner": "Data",
+        "latency": "real-time",
+        "sample": 7,
+    },
+    "milestone_trips": {
+        "name": "Milestone trips",
+        "description": "Trip count that unlocks the milestone bonus",
+        "unit": "count",
+        "source": "incentives",
+        "owner": "Marketplace",
+        "latency": "daily",
+        "sample": 10,
+    },
+    "milestone_bonus_vnd": {
+        "name": "Milestone bonus",
+        "description": "Bonus paid when the milestone is reached",
+        "unit": "vnd",
+        "source": "incentives",
+        "owner": "Marketplace",
+        "latency": "daily",
+        "sample": 50000,
+    },
+    "trip_cost_vnd": {
+        "name": "Cost to create a trip",
+        "description": "Estimated driver cost of producing one trip",
+        "unit": "vnd",
+        "source": "estimate",
+        "owner": "Fraud platform",
+        "latency": "daily",
+        "sample": 12000,
+    },
+    "trip_duration_min": {
+        "name": "Trip duration",
+        "description": "Minutes between pickup start and trip end",
+        "unit": "minutes",
+        "source": "trips",
+        "owner": "Data",
+        "latency": "real-time",
+        "sample": 18,
+    },
+    "stationary_duration_s": {
+        "name": "Stationary time",
+        "description": "Seconds the vehicle stayed almost still during the trip",
+        "unit": "seconds",
+        "source": "feature_sets",
+        "owner": "Fraud platform",
+        "latency": "real-time",
+        "sample": 240,
+    },
+    "davi": {
+        "name": "DAVI",
+        "description": "Distance-adjusted velocity index of the trip",
+        "unit": "ratio",
+        "source": "feature_sets",
+        "owner": "Fraud platform",
+        "latency": "real-time",
+        "sample": -0.4,
+    },
+    "distance_to_pickup_m": {
+        "name": "Distance to pickup",
+        "description": "Metres between the vehicle and the pickup point at trip start",
+        "unit": "metres",
+        "source": "feature_sets",
+        "owner": "Fraud platform",
+        "latency": "real-time",
+        "sample": 900,
+    },
 }
 
 # "policy" parameters are policy constants (not read from a case); trials assume their sample value.
@@ -230,8 +321,17 @@ class _Parser:
 
 
 def _check_arity(fn: str, n: int, pos: int) -> None:
-    ok = {"IF": n == 3, "NOT": n == 1, "ABS": n == 1, "ROUND": n in (1, 2), "AND": n >= 1, "OR": n >= 1,
-          "MIN": n >= 1, "MAX": n >= 1, "SUM": n >= 1}[fn]
+    ok = {
+        "IF": n == 3,
+        "NOT": n == 1,
+        "ABS": n == 1,
+        "ROUND": n in (1, 2),
+        "AND": n >= 1,
+        "OR": n >= 1,
+        "MIN": n >= 1,
+        "MAX": n >= 1,
+        "SUM": n >= 1,
+    }[fn]
     if not ok:
         raise FormulaError("syntax", f"Wrong number of arguments for {fn}", pos)
 
@@ -280,8 +380,14 @@ def evaluate(node: Any, params: dict[str, Any]) -> Any:
         op = node.op
         if op in ("<", ">", "<=", ">=", "=", "<>"):
             a, b = _num(a, node.pos), _num(b, node.pos)
-            return {"<": a < b, ">": a > b, "<=": a <= b, ">=": a >= b,
-                    "=": math.isclose(a, b), "<>": not math.isclose(a, b)}[op]
+            return {
+                "<": a < b,
+                ">": a > b,
+                "<=": a <= b,
+                ">=": a >= b,
+                "=": math.isclose(a, b),
+                "<>": not math.isclose(a, b),
+            }[op]
         a, b = _num(a, node.pos), _num(b, node.pos)
         if op == "+":
             return a + b
@@ -297,7 +403,9 @@ def evaluate(node: Any, params: dict[str, Any]) -> Any:
             try:
                 r = float(a) ** float(b)  # float pow: big ints would hang the worker
             except (OverflowError, ZeroDivisionError) as exc:
-                raise FormulaError("div_zero" if isinstance(exc, ZeroDivisionError) else "overflow", str(exc), node.pos) from exc
+                raise FormulaError(
+                    "div_zero" if isinstance(exc, ZeroDivisionError) else "overflow", str(exc), node.pos
+                ) from exc
             if isinstance(r, complex) or abs(r) > 1e18:
                 raise FormulaError("overflow", "Result out of range", node.pos)
             return r
@@ -364,7 +472,9 @@ def _unit(node: Any, errors: list[FormulaError]) -> str | None:
             return None
         known = {u for u in units if u}
         if len(known) > 1 and node.fn in ("IF", "MIN", "MAX", "SUM"):
-            errors.append(FormulaError("unit_mismatch", f"Mixed units in {node.fn}: {', '.join(sorted(known))}", node.pos))
+            errors.append(
+                FormulaError("unit_mismatch", f"Mixed units in {node.fn}: {', '.join(sorted(known))}", node.pos)
+            )
         return next(iter(known)) if known else None
     if isinstance(node, Bin):
         lu, ru = _unit(node.left, errors), _unit(node.right, errors)

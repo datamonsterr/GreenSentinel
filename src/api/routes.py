@@ -1320,7 +1320,9 @@ async def get_dispute_dossier_route(
 # ---------------------------------------------------------------------------
 # Structured motivation assessment (S-M)
 # ---------------------------------------------------------------------------
-def _motivation_principal(principal: Principal | None, case_service: CaseService, case_id: str, *roles: str) -> Principal:
+def _motivation_principal(
+    principal: Principal | None, case_service: CaseService, case_id: str, *roles: str
+) -> Principal:
     require_role(principal, *roles)
     if principal is None:
         raise HTTPException(status_code=401, detail="Authentication required")
@@ -1328,9 +1330,7 @@ def _motivation_principal(principal: Principal | None, case_service: CaseService
     return principal
 
 
-async def _motivation_writer(
-    principal: Principal | None, case_service: CaseService, case_id: str
-) -> Principal:
+async def _motivation_writer(principal: Principal | None, case_service: CaseService, case_id: str) -> Principal:
     """Write roles + case scope + the caller must hold the active review claim (all roles, incl. admin)."""
     p = _motivation_principal(principal, case_service, case_id, *case_motivation_service.WRITE_ROLES)
     detail = await case_service._get_case_detail_data(case_id, organization_id=p.organization_id)
@@ -1372,7 +1372,11 @@ async def edit_case_motivation(
     p = await _motivation_writer(principal, case_service, case_id)
     saved = await asyncio.to_thread(
         case_motivation_service.save_edit,
-        case_service._get_db_connection, case_service._resolve_case_id(case_id), p.organization_id, p.id, request,
+        case_service._get_db_connection,
+        case_service._resolve_case_id(case_id),
+        p.organization_id,
+        p.id,
+        request,
     )
     return {"assessment": saved, "persisted": True}
 
@@ -1387,7 +1391,10 @@ async def confirm_case_motivation(
     p = await _motivation_writer(principal, case_service, case_id)
     saved = await asyncio.to_thread(
         case_motivation_service.confirm,
-        case_service._get_db_connection, case_service._resolve_case_id(case_id), p.organization_id, p.id,
+        case_service._get_db_connection,
+        case_service._resolve_case_id(case_id),
+        p.organization_id,
+        p.id,
         request.expected_version if request else None,
     )
     return {"assessment": saved, "persisted": True}

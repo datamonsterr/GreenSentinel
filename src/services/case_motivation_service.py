@@ -131,7 +131,10 @@ def build_structured_assessment(
         # Same facts the overview shows as "fare at stake" / "bonus at stake".
         stake = (_num((trip or {}).get("fare_amount_vnd")) or 0.0) + bonus
         amount = stake if stake > 0 else None
-    strong = sum(s.code in ("mock_location", "fare_delta", "surge_capture", "subsidy", "bonus", "platform_incident") for s in signals)
+    strong = sum(
+        s.code in ("mock_location", "fare_delta", "surge_capture", "subsidy", "bonus", "platform_incident")
+        for s in signals
+    )
     confidence = 0.2 if category == "unclear" else min(0.85, round(0.35 + 0.1 * strong + (0.1 if mock else 0), 3))
     return MotivationDraft(
         motive_category=category,
@@ -144,8 +147,12 @@ def build_structured_assessment(
 
 
 async def generate_assessment(
-    *, trip: dict[str, Any] | None, features: dict[str, Any] | None, telemetry: list[dict[str, Any]] | None,
-    evidence_scope: str = "", organization_id: str | None = None,
+    *,
+    trip: dict[str, Any] | None,
+    features: dict[str, Any] | None,
+    telemetry: list[dict[str, Any]] | None,
+    evidence_scope: str = "",
+    organization_id: str | None = None,
 ) -> MotivationDraft:
     """Rule draft; rationale swapped for the validated LLM narrative when it differs from the fallback."""
     draft = build_structured_assessment(trip, features, telemetry)
@@ -154,7 +161,11 @@ async def generate_assessment(
     try:
         fallback = assess_driver_motivation(trip=trip, features=features, telemetry=telemetry)
         ai = await generate_motivation_assessment(
-            trip=trip, features=features, telemetry=telemetry, evidence_scope=evidence_scope, organization_id=organization_id
+            trip=trip,
+            features=features,
+            telemetry=telemetry,
+            evidence_scope=evidence_scope,
+            organization_id=organization_id,
         )
         text = ai.natural_vietnamese_narrative.strip()
         if text and text != fallback.natural_vietnamese_narrative and len(text) <= 2000:
@@ -223,21 +234,18 @@ def load(conn_factory: Callable[[], Any], case_id: str, org: str) -> tuple[dict[
                 "WHERE case_id::text = %s AND organization_id::text = %s ORDER BY version DESC LIMIT 50",
                 (case_id, org),
             )
-            history = [
-                {**dict(r), "created_at": r["created_at"].isoformat()} for r in cur.fetchall()
-            ]
+            history = [{**dict(r), "created_at": r["created_at"].isoformat()} for r in cur.fetchall()]
         return latest, history
     finally:
         conn.close()
 
 
-def _append(conn: Any, case_id: str, org: str, actor: str, draft: MotivationDraft, action: str,
-            expected_version: int | None) -> dict[str, Any]:
+def _append(
+    conn: Any, case_id: str, org: str, actor: str, draft: MotivationDraft, action: str, expected_version: int | None
+) -> dict[str, Any]:
     with conn.cursor() as cur:
         cur.execute("SET search_path = app, extensions, public;")
-        cur.execute(
-            "SELECT id FROM app.fraud_cases WHERE id::text = %s AND organization_id::text = %s", (case_id, org)
-        )
+        cur.execute("SELECT id FROM app.fraud_cases WHERE id::text = %s AND organization_id::text = %s", (case_id, org))
         if cur.fetchone() is None:
             raise HTTPException(404, "Case not found")
         current = _latest(cur, case_id, org)
@@ -251,14 +259,27 @@ def _append(conn: Any, case_id: str, org: str, actor: str, draft: MotivationDraf
                 VALUES (%s::uuid, %s::uuid, %s, %s, %s::jsonb, %s, %s, %s, %s, 'draft', %s::uuid)
                 RETURNING {_COLS}""",
             (
-                case_id, org, current_version + 1, draft.motive_category,
-                json.dumps([s.model_dump() for s in draft.signals]), draft.amount_at_stake_vnd,
-                draft.confidence, draft.rationale, draft.source, actor,
+                case_id,
+                org,
+                current_version + 1,
+                draft.motive_category,
+                json.dumps([s.model_dump() for s in draft.signals]),
+                draft.amount_at_stake_vnd,
+                draft.confidence,
+                draft.rationale,
+                draft.source,
+                actor,
             ),
         )
         saved = _row(cur.fetchone())
-        _audit(cur, org, actor, case_id, action,
-               {"version": saved["version"], "motive_category": draft.motive_category, "source": draft.source})
+        _audit(
+            cur,
+            org,
+            actor,
+            case_id,
+            action,
+            {"version": saved["version"], "motive_category": draft.motive_category, "source": draft.source},
+        )
     return saved
 
 
@@ -277,18 +298,25 @@ def _run(conn_factory: Callable[[], Any], fn: Callable[[Any], dict[str, Any]]) -
         conn.close()
 
 
-def save_generated(conn_factory: Callable[[], Any], case_id: str, org: str, actor: str, draft: MotivationDraft) -> dict[str, Any]:
+def save_generated(
+    conn_factory: Callable[[], Any], case_id: str, org: str, actor: str, draft: MotivationDraft
+) -> dict[str, Any]:
     return _run(conn_factory, lambda c: _append(c, case_id, org, actor, draft, "motivation_generated", None))
 
 
-def save_edit(conn_factory: Callable[[], Any], case_id: str, org: str, actor: str, edit: MotivationEdit) -> dict[str, Any]:
+def save_edit(
+    conn_factory: Callable[[], Any], case_id: str, org: str, actor: str, edit: MotivationEdit
+) -> dict[str, Any]:
     def op(conn: Any) -> dict[str, Any]:
         with conn.cursor() as cur:
             cur.execute("SET search_path = app, extensions, public;")
             previous = _latest(cur, case_id, org)
         draft = MotivationDraft(
-            motive_category=edit.motive_category, signals=edit.signals, confidence=edit.confidence,
-            rationale=edit.rationale, source="analyst",
+            motive_category=edit.motive_category,
+            signals=edit.signals,
+            confidence=edit.confidence,
+            rationale=edit.rationale,
+            source="analyst",
             amount_at_stake_vnd=previous["amount_at_stake_vnd"] if previous else None,
         )
         return _append(conn, case_id, org, actor, draft, "motivation_edited", edit.expected_version)
@@ -296,7 +324,9 @@ def save_edit(conn_factory: Callable[[], Any], case_id: str, org: str, actor: st
     return _run(conn_factory, op)
 
 
-def confirm(conn_factory: Callable[[], Any], case_id: str, org: str, actor: str, expected_version: int | None) -> dict[str, Any]:
+def confirm(
+    conn_factory: Callable[[], Any], case_id: str, org: str, actor: str, expected_version: int | None
+) -> dict[str, Any]:
     def op(conn: Any) -> dict[str, Any]:
         with conn.cursor() as cur:
             cur.execute("SET search_path = app, extensions, public;")
@@ -330,15 +360,21 @@ async def get_view(case_service: Any, case_id: str, org: str) -> dict[str, Any]:
         return {"assessment": latest, "persisted": True, "versions": history}
     detail = await case_service._get_case_detail_data(case_id, organization_id=org)
     draft = build_structured_assessment(detail.trip, detail.features, detail.telemetry_samples)
-    return {"assessment": {**draft.model_dump(), "id": None, "case_id": resolved, "version": 0, "status": "draft"},
-            "persisted": False, "versions": history}
+    return {
+        "assessment": {**draft.model_dump(), "id": None, "case_id": resolved, "version": 0, "status": "draft"},
+        "persisted": False,
+        "versions": history,
+    }
 
 
 async def generate_and_save(case_service: Any, case_id: str, org: str, actor: str) -> dict[str, Any]:
     detail = await case_service._get_case_detail_data(case_id, organization_id=org)
     draft = await generate_assessment(
-        trip=detail.trip, features=detail.features, telemetry=detail.telemetry_samples,
-        evidence_scope=str(detail.case.trip_id or detail.case.id), organization_id=org,
+        trip=detail.trip,
+        features=detail.features,
+        telemetry=detail.telemetry_samples,
+        evidence_scope=str(detail.case.trip_id or detail.case.id),
+        organization_id=org,
     )
     resolved = case_service._resolve_case_id(case_id)
     return await asyncio.to_thread(save_generated, case_service._get_db_connection, resolved, org, actor, draft)

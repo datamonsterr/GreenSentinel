@@ -52,10 +52,12 @@ def publish(kb, store, type_, code, name, body):
 
 def test_happy_path_creates_proposals_never_publishes(setup):
     store, kb, doc = setup
-    reply = {"items": [
-        cand("motive", "MOT_MILESTONE", "Thưởng mốc chuyến", C1, {"formula": "=1"}),
-        cand("behavior", "BHV_STILL", "Xe đứng yên lâu", C2, {"condition": "=stationary_duration_s>=300"}),
-    ]}
+    reply = {
+        "items": [
+            cand("motive", "MOT_MILESTONE", "Thưởng mốc chuyến", C1, {"formula": "=1"}),
+            cand("behavior", "BHV_STILL", "Xe đứng yên lâu", C2, {"condition": "=stationary_duration_s>=300"}),
+        ]
+    }
     out = svc(kb, reply).analyze(ANALYST, doc["id"])
     assert out["analysis_status"] == "done"
     assert out["analysis_counts"]["proposals"] == 2
@@ -68,8 +70,12 @@ def test_happy_path_creates_proposals_never_publishes(setup):
 
 def test_citation_not_verbatim_rejected(setup):
     store, kb, doc = setup
-    reply = {"items": [cand("motive", "M1", "x", "câu trích dẫn bịa đặt không có trong văn bản"),
-                       cand("motive", "M2", "y", C1)]}
+    reply = {
+        "items": [
+            cand("motive", "M1", "x", "câu trích dẫn bịa đặt không có trong văn bản"),
+            cand("motive", "M2", "y", C1),
+        ]
+    }
     out = svc(kb, reply).analyze(ANALYST, doc["id"])
     assert out["analysis_counts"]["rejected_citation"] == 1
     assert out["analysis_counts"]["proposals"] == 1
@@ -77,13 +83,41 @@ def test_citation_not_verbatim_rejected(setup):
 
 def test_mapping_reuse_extend_new(setup):
     store, kb, doc = setup
-    publish(kb, store, "motive", "MOT_MILESTONE", "Thưởng mốc chuyến", {"formula": "=1", "policy": "thưởng mốc chuyến trong ngày"})
-    publish(kb, store, "behavior", "BHV_X", "Xe đứng yên lâu trong cuốc", {"condition": "=stationary_duration_s>=1", "signals": []})
-    reply = {"items": [
-        cand("motive", "MOT_NEW1", "Thưởng mốc chuyến", C1, {"formula": "=1", "policy": "thưởng mốc chuyến trong ngày"}),
-        cand("behavior", "BHV_NEW", "Xe đứng yên lâu trong cuốc kéo dài bất thường", C2, {"condition": "=stationary_duration_s>=1", "signals": []}),
-        cand("parameter", "P_UNIQ", "Zzz qqq", C1, {"unit": "vnd", "source": "doc"}),
-    ]}
+    publish(
+        kb,
+        store,
+        "motive",
+        "MOT_MILESTONE",
+        "Thưởng mốc chuyến",
+        {"formula": "=1", "policy": "thưởng mốc chuyến trong ngày"},
+    )
+    publish(
+        kb,
+        store,
+        "behavior",
+        "BHV_X",
+        "Xe đứng yên lâu trong cuốc",
+        {"condition": "=stationary_duration_s>=1", "signals": []},
+    )
+    reply = {
+        "items": [
+            cand(
+                "motive",
+                "MOT_NEW1",
+                "Thưởng mốc chuyến",
+                C1,
+                {"formula": "=1", "policy": "thưởng mốc chuyến trong ngày"},
+            ),
+            cand(
+                "behavior",
+                "BHV_NEW",
+                "Xe đứng yên lâu trong cuốc kéo dài bất thường",
+                C2,
+                {"condition": "=stationary_duration_s>=1", "signals": []},
+            ),
+            cand("parameter", "P_UNIQ", "Zzz qqq", C1, {"unit": "vnd", "source": "doc"}),
+        ]
+    }
     svc(kb, reply).analyze(ANALYST, doc["id"])
     by = {p["type"]: p for p in kb.list_proposals(ANALYST)}
     assert by["parameter"]["mapping"] == "new" and by["parameter"]["matched_code"] is None
@@ -94,8 +128,25 @@ def test_mapping_reuse_extend_new(setup):
 
 def test_threshold_from_config(setup):
     store, kb, doc = setup
-    publish(kb, store, "behavior", "BHV_X", "Xe đứng yên lâu trong cuốc", {"condition": "=stationary_duration_s>=1", "signals": []})
-    reply = {"items": [cand("behavior", "BHV_NEW", "Xe đứng yên lâu trong cuốc kéo dài bất thường", C2, {"condition": "=stationary_duration_s>=1", "signals": []})]}
+    publish(
+        kb,
+        store,
+        "behavior",
+        "BHV_X",
+        "Xe đứng yên lâu trong cuốc",
+        {"condition": "=stationary_duration_s>=1", "signals": []},
+    )
+    reply = {
+        "items": [
+            cand(
+                "behavior",
+                "BHV_NEW",
+                "Xe đứng yên lâu trong cuốc kéo dài bất thường",
+                C2,
+                {"condition": "=stationary_duration_s>=1", "signals": []},
+            )
+        ]
+    }
     cfg = AgentConfigService(store)
     cfg.similarity_threshold = lambda org, scope="global": 0.99  # type: ignore[method-assign]
     svc(kb, reply, config=cfg).analyze(ANALYST, doc["id"])
@@ -119,7 +170,11 @@ def test_invalid_json_failed(setup):
 
 def test_json_in_code_fence_ok_and_bad_items_dropped(setup):
     store, kb, doc = setup
-    raw = "```json\n" + json.dumps({"items": [cand("motive", "M1", "ok", C1), {"type": "bogus", "citation": C2}]}) + "\n```"
+    raw = (
+        "```json\n"
+        + json.dumps({"items": [cand("motive", "M1", "ok", C1), {"type": "bogus", "citation": C2}]})
+        + "\n```"
+    )
     out = svc(kb, raw).analyze(ANALYST, doc["id"])
     assert out["analysis_status"] == "done" and out["analysis_counts"]["proposals"] == 1
 
@@ -176,9 +231,11 @@ def test_extract_text_txt_and_docx():
     assert extract_text("a.md", "Xin chào".encode()) == "Xin chào"
     buf = io.BytesIO()
     with zipfile.ZipFile(buf, "w") as z:
-        z.writestr("word/document.xml",
-                   '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'
-                   "<w:p><w:r><w:t>Điều 1</w:t></w:r></w:p><w:p><w:r><w:t>Nội dung</w:t></w:r></w:p></w:body></w:document>")
+        z.writestr(
+            "word/document.xml",
+            '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"><w:body>'
+            "<w:p><w:r><w:t>Điều 1</w:t></w:r></w:p><w:p><w:r><w:t>Nội dung</w:t></w:r></w:p></w:body></w:document>",
+        )
     assert extract_text("a.docx", buf.getvalue()) == "Điều 1\n\nNội dung"
     with pytest.raises(ValueError):
         extract_text("a.xlsx", b"x")

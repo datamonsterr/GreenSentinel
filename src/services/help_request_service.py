@@ -16,7 +16,14 @@ from src.services.kb_store import Store
 
 VH_QUEUE_ROLES = frozenset({"analyst", "senior_analyst", "fraud_analyst", "admin", "reviewer", "manager"})
 OPEN_STATES = ("open", "claimed")
-TRIGGERS = ("novel_scenario", "low_confidence", "unverifiable_evidence", "conflicting_sources", "safety", "workflow_step")
+TRIGGERS = (
+    "novel_scenario",
+    "low_confidence",
+    "unverifiable_evidence",
+    "conflicting_sources",
+    "safety",
+    "workflow_step",
+)
 REPLY_MIN = 3
 
 
@@ -31,7 +38,9 @@ def as_dt(v: Any) -> datetime | None:
 
 
 class HelpRequestService:
-    def __init__(self, store: Store, config: AgentConfigService, kb: KbService, now: Callable[[], datetime] | None = None):
+    def __init__(
+        self, store: Store, config: AgentConfigService, kb: KbService, now: Callable[[], datetime] | None = None
+    ):
         self.store = store
         self.config = config
         self.kb = kb
@@ -43,8 +52,16 @@ class HelpRequestService:
             _fail(403, "Insufficient role permissions")
 
     # ---- lifecycle ----------------------------------------------------------------------------
-    def create(self, session: dict[str, Any], *, trigger: str, summary: str, stuck_point: str, facts: list[str],
-               options: list[str]) -> dict[str, Any] | None:
+    def create(
+        self,
+        session: dict[str, Any],
+        *,
+        trigger: str,
+        summary: str,
+        stuck_point: str,
+        facts: list[str],
+        options: list[str],
+    ) -> dict[str, Any] | None:
         """Returns the request, or None when skipped (ceiling or per-session maximum reached)."""
         org = session["organization_id"]
         self.expire_lazy(org)
@@ -56,12 +73,31 @@ class HelpRequestService:
             return None
         sla = int(self.config.get(org, "help_sla_minutes", default=15))
         now = self.now()
-        row = self.store.insert("help_request", {
-            "organization_id": org, "session_id": session["id"], "case_id": session["case_id"], "status": "open",
-            "trigger": trigger if trigger in TRIGGERS else "unverifiable_evidence", "summary": summary,
-            "stuck_point": stuck_point, "facts": facts[:10], "options": options[:3], "reply_facts": [], "consumed": False,
-            "created_at": now, "updated_at": now, "expires_at": now + timedelta(minutes=sla)})
-        self.store.audit(org, None, "explain.help.create", {"help_id": row["id"], "case_id": session["case_id"], "trigger": row["trigger"]})
+        row = self.store.insert(
+            "help_request",
+            {
+                "organization_id": org,
+                "session_id": session["id"],
+                "case_id": session["case_id"],
+                "status": "open",
+                "trigger": trigger if trigger in TRIGGERS else "unverifiable_evidence",
+                "summary": summary,
+                "stuck_point": stuck_point,
+                "facts": facts[:10],
+                "options": options[:3],
+                "reply_facts": [],
+                "consumed": False,
+                "created_at": now,
+                "updated_at": now,
+                "expires_at": now + timedelta(minutes=sla),
+            },
+        )
+        self.store.audit(
+            org,
+            None,
+            "explain.help.create",
+            {"help_id": row["id"], "case_id": session["case_id"], "trigger": row["trigger"]},
+        )
         return row
 
     def expire_lazy(self, org: str) -> list[dict[str, Any]]:
@@ -71,9 +107,16 @@ class HelpRequestService:
         for r in self.store.find("help_request", {"organization_id": org, "status": list(OPEN_STATES)}):
             exp = as_dt(r["expires_at"])
             if exp is not None and exp <= now:
-                upd = self.store.update("help_request", r["id"], {"status": "expired", "updated_at": now,
-                                                                    "wait_seconds": int((now - as_dt(r["created_at"])).total_seconds())},
-                                        where={"status": list(OPEN_STATES)})
+                upd = self.store.update(
+                    "help_request",
+                    r["id"],
+                    {
+                        "status": "expired",
+                        "updated_at": now,
+                        "wait_seconds": int((now - as_dt(r["created_at"])).total_seconds()),
+                    },
+                    where={"status": list(OPEN_STATES)},
+                )
                 if upd:
                     self.store.audit(org, None, "explain.help.expire", {"help_id": r["id"]})
                     out.append(upd)
@@ -94,9 +137,18 @@ class HelpRequestService:
         if r["status"] != "open":
             _fail(409, f"Help request is {r['status']}")
         now = self.now()
-        upd = self.store.update("help_request", r["id"], {"status": "claimed", "claimed_by": actor.id, "claimed_at": now,
-                                                          "claimed_by_name": self.store.principal_name(actor.id), "updated_at": now},
-                                where={"status": "open"})
+        upd = self.store.update(
+            "help_request",
+            r["id"],
+            {
+                "status": "claimed",
+                "claimed_by": actor.id,
+                "claimed_at": now,
+                "claimed_by_name": self.store.principal_name(actor.id),
+                "updated_at": now,
+            },
+            where={"status": "open"},
+        )
         if upd is None:
             _fail(409, "Help request was claimed by someone else")
         self.store.audit(actor.organization_id, actor.id, "explain.help.claim", {"help_id": r["id"]})
@@ -115,11 +167,23 @@ class HelpRequestService:
         if r["status"] == "claimed" and r["claimed_by"] != actor.id and "admin" not in actor.roles:
             _fail(409, "Help request is claimed by someone else")
         now = self.now()
-        upd = self.store.update("help_request", r["id"], {
-            "status": "answered", "reply": text.strip(), "reply_facts": [f for f in (facts or []) if str(f).strip()][:10],
-            "replied_by": actor.id, "replied_by_name": self.store.principal_name(actor.id), "replied_at": now,
-            "claimed_by": r["claimed_by"] or actor.id, "claimed_at": r["claimed_at"] or now, "updated_at": now,
-            "wait_seconds": int((now - as_dt(r["created_at"])).total_seconds())}, where={"status": list(OPEN_STATES)})
+        upd = self.store.update(
+            "help_request",
+            r["id"],
+            {
+                "status": "answered",
+                "reply": text.strip(),
+                "reply_facts": [f for f in (facts or []) if str(f).strip()][:10],
+                "replied_by": actor.id,
+                "replied_by_name": self.store.principal_name(actor.id),
+                "replied_at": now,
+                "claimed_by": r["claimed_by"] or actor.id,
+                "claimed_at": r["claimed_at"] or now,
+                "updated_at": now,
+                "wait_seconds": int((now - as_dt(r["created_at"])).total_seconds()),
+            },
+            where={"status": list(OPEN_STATES)},
+        )
         if upd is None:
             _fail(409, "Help request changed concurrently")
         self.store.audit(actor.organization_id, actor.id, "explain.help.reply", {"help_id": r["id"]})
@@ -131,18 +195,32 @@ class HelpRequestService:
         """Draft workflow step proposal from the VH answer (never published by the agent)."""
         code = f"WF_HELP_{str(h['id'])[:8].upper()}"
         return self.kb.create_proposal(
-            h["organization_id"], source="help_reply", type="workflow", mapping="new",
+            h["organization_id"],
+            source="help_reply",
+            type="workflow",
+            mapping="new",
             title=f"Bước workflow từ kêu cứu: {h['stuck_point'][:80]}",
-            payload={"code": code, "name": f"Từ kêu cứu · {h['stuck_point'][:40]}",
-                     "body": {"ask_first": [], "steps": [{"question": h["stuck_point"], "tool": "request_help",
-                                                          "branch": h["reply"]}]}},
-            source_excerpt=h["reply"], source_ref=f"help_request:{h['id']}", created_by="driver_agent")
+            payload={
+                "code": code,
+                "name": f"Từ kêu cứu · {h['stuck_point'][:40]}",
+                "body": {
+                    "ask_first": [],
+                    "steps": [{"question": h["stuck_point"], "tool": "request_help", "branch": h["reply"]}],
+                },
+            },
+            source_excerpt=h["reply"],
+            source_ref=f"help_request:{h['id']}",
+            created_by="driver_agent",
+        )
 
     # ---- reads --------------------------------------------------------------------------------
     def take_resolved(self, session_id: str) -> list[dict[str, Any]]:
         """Answered/expired requests of a session whose result the agent has not consumed yet."""
-        rows = self.store.find("help_request", {"session_id": session_id, "consumed": False, "status": ["answered", "expired"]},
-                               order="created_at asc")
+        rows = self.store.find(
+            "help_request",
+            {"session_id": session_id, "consumed": False, "status": ["answered", "expired"]},
+            order="created_at asc",
+        )
         for r in rows:
             self.store.update("help_request", r["id"], {"consumed": True})
         return rows
@@ -154,7 +232,9 @@ class HelpRequestService:
         self.require_vh(actor)
         org = actor.organization_id
         self.expire_lazy(org)
-        wanted = [s for s in (status or "open,claimed").split(",") if s in ("open", "claimed", "answered", "expired")] or list(OPEN_STATES)
+        wanted = [
+            s for s in (status or "open,claimed").split(",") if s in ("open", "claimed", "answered", "expired")
+        ] or list(OPEN_STATES)
         rows = self.store.find("help_request", {"organization_id": org, "status": wanted}, order="created_at asc")
         return {"items": rows, "counts": self.counts(org, expire=False)}
 

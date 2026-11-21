@@ -2,9 +2,18 @@ from src.services.explain_forms import REASONS, build_form, driver_form_view, st
 
 
 def _required(form):
-    return {x["id"]: (x["options"][0]["value"] if x["type"] == "choice" else "x") for x in form["fields"] if x["required"]}
+    return {
+        x["id"]: (x["options"][0]["value"] if x["type"] == "choice" else "x") for x in form["fields"] if x["required"]
+    }
 
-WF = {"code": "WF_X", "version": 3, "body": {"ask_first": ["Điện thoại có lỗi gì không?", {"text": "Có ticket không?", "type": "ticket"}, "Câu 3", "Câu 4"]}}
+
+WF = {
+    "code": "WF_X",
+    "version": 3,
+    "body": {
+        "ask_first": ["Điện thoại có lỗi gì không?", {"text": "Có ticket không?", "type": "ticket"}, "Câu 3", "Câu 4"]
+    },
+}
 
 
 def test_fixed_form_per_reason_has_typed_required_fields():
@@ -59,7 +68,9 @@ def test_validate_missing_required_and_types():
 def test_validate_choice_and_ticket():
     f = build_form("NotDone", None, k=0)
     choice = next(x for x in f["fields"] if x["type"] == "choice")
-    r = validate_answers(f, {choice["id"]: "zzz", **{x["id"]: "ok" for x in f["fields"] if x["required"] and x["type"] != "choice"}})
+    r = validate_answers(
+        f, {choice["id"]: "zzz", **{x["id"]: "ok" for x in f["fields"] if x["required"] and x["type"] != "choice"}}
+    )
     assert {"field": choice["id"], "code": "invalid_choice"} in r["invalid"]
     t = build_form("RealTrip", WF, k=2)
     tid = next(x["id"] for x in t["fields"] if x["type"] == "ticket")

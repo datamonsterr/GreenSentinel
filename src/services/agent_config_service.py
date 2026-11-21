@@ -18,28 +18,101 @@ LEAD_ROLES = frozenset({"senior_analyst", "admin", "manager"})  # may flip the k
 
 # key -> definition. owner VH|KSGL decides who may edit; bounds are inclusive.
 DEFINITIONS: dict[str, dict[str, Any]] = {
-    "explain_agent_enabled": {"type": "bool", "default": False, "owner": "LEAD", "group": "kill_switch",
-                              "label": {"vi": "Agent giải trình v2 (kill switch)", "en": "Explanation agent v2 (kill switch)"}},
-    "n_max": {"type": "int", "default": 6, "min": 1, "max": 15, "owner": "VH", "group": "limits",
-              "label": {"vi": "N_max: số lượt hỏi tối đa / phiên", "en": "N_max: max questions per session"}},
-    "k_dynamic": {"type": "int", "default": 3, "min": 0, "max": 5, "owner": "KSGL", "group": "limits",
-                  "label": {"vi": "K: số câu động thêm vào form", "en": "K: dynamic form questions"}},
-    "t_draft_minutes": {"type": "int", "default": 30, "min": 5, "max": 1440, "owner": "VH", "group": "limits",
-                        "label": {"vi": "T: phút giữ nháp phiên", "en": "T: session draft retention (min)"}},
-    "edit_limit": {"type": "int", "default": 2, "min": 0, "max": 5, "owner": "KSGL", "group": "limits",
-                   "label": {"vi": "Số lần sửa tóm tắt tối đa", "en": "Max summary edits"}},
-    "help_sla_minutes": {"type": "int", "default": 15, "min": 1, "max": 240, "owner": "VH", "group": "help",
-                         "label": {"vi": "SLA kêu cứu (phút)", "en": "Help request SLA (min)"}},
-    "help_ceiling": {"type": "int", "default": 20, "min": 1, "max": 200, "owner": "VH", "group": "help",
-                     "label": {"vi": "Trần kêu cứu / ca", "en": "Help ceiling per shift"}},
-    "help_max_per_session": {"type": "int", "default": 2, "min": 0, "max": 5, "owner": "VH", "group": "help",
-                             "label": {"vi": "Số kêu cứu tối đa / phiên", "en": "Max help requests per session"}},
-    "similarity_threshold": {"type": "float", "default": 0.6, "min": 0.1, "max": 0.99, "owner": "KSGL", "group": "thresholds",
-                             "label": {"vi": "Ngưỡng tương đồng (novel_scenario)", "en": "Similarity threshold (novel_scenario)"}},
-    "confidence_threshold": {"type": "float", "default": 0.7, "min": 0.1, "max": 0.99, "owner": "KSGL", "group": "thresholds",
-                             "label": {"vi": "Ngưỡng tin cậy (kêu cứu)", "en": "Confidence threshold (ask for help)"}},
-    "scenario_card_memory_enabled": {"type": "bool", "default": False, "owner": "KSGL", "group": "thresholds",
-                                     "label": {"vi": "Bộ nhớ thẻ kịch bản", "en": "Scenario card memory"}},
+    "explain_agent_enabled": {
+        "type": "bool",
+        "default": False,
+        "owner": "LEAD",
+        "group": "kill_switch",
+        "label": {"vi": "Agent giải trình v2 (kill switch)", "en": "Explanation agent v2 (kill switch)"},
+    },
+    "n_max": {
+        "type": "int",
+        "default": 6,
+        "min": 1,
+        "max": 15,
+        "owner": "VH",
+        "group": "limits",
+        "label": {"vi": "N_max: số lượt hỏi tối đa / phiên", "en": "N_max: max questions per session"},
+    },
+    "k_dynamic": {
+        "type": "int",
+        "default": 3,
+        "min": 0,
+        "max": 5,
+        "owner": "KSGL",
+        "group": "limits",
+        "label": {"vi": "K: số câu động thêm vào form", "en": "K: dynamic form questions"},
+    },
+    "t_draft_minutes": {
+        "type": "int",
+        "default": 30,
+        "min": 5,
+        "max": 1440,
+        "owner": "VH",
+        "group": "limits",
+        "label": {"vi": "T: phút giữ nháp phiên", "en": "T: session draft retention (min)"},
+    },
+    "edit_limit": {
+        "type": "int",
+        "default": 2,
+        "min": 0,
+        "max": 5,
+        "owner": "KSGL",
+        "group": "limits",
+        "label": {"vi": "Số lần sửa tóm tắt tối đa", "en": "Max summary edits"},
+    },
+    "help_sla_minutes": {
+        "type": "int",
+        "default": 15,
+        "min": 1,
+        "max": 240,
+        "owner": "VH",
+        "group": "help",
+        "label": {"vi": "SLA kêu cứu (phút)", "en": "Help request SLA (min)"},
+    },
+    "help_ceiling": {
+        "type": "int",
+        "default": 20,
+        "min": 1,
+        "max": 200,
+        "owner": "VH",
+        "group": "help",
+        "label": {"vi": "Trần kêu cứu / ca", "en": "Help ceiling per shift"},
+    },
+    "help_max_per_session": {
+        "type": "int",
+        "default": 2,
+        "min": 0,
+        "max": 5,
+        "owner": "VH",
+        "group": "help",
+        "label": {"vi": "Số kêu cứu tối đa / phiên", "en": "Max help requests per session"},
+    },
+    "similarity_threshold": {
+        "type": "float",
+        "default": 0.6,
+        "min": 0.1,
+        "max": 0.99,
+        "owner": "KSGL",
+        "group": "thresholds",
+        "label": {"vi": "Ngưỡng tương đồng (novel_scenario)", "en": "Similarity threshold (novel_scenario)"},
+    },
+    "confidence_threshold": {
+        "type": "float",
+        "default": 0.7,
+        "min": 0.1,
+        "max": 0.99,
+        "owner": "KSGL",
+        "group": "thresholds",
+        "label": {"vi": "Ngưỡng tin cậy (kêu cứu)", "en": "Confidence threshold (ask for help)"},
+    },
+    "scenario_card_memory_enabled": {
+        "type": "bool",
+        "default": False,
+        "owner": "KSGL",
+        "group": "thresholds",
+        "label": {"vi": "Bộ nhớ thẻ kịch bản", "en": "Scenario card memory"},
+    },
 }
 
 REASON_MIN = 3
@@ -98,8 +171,10 @@ class AgentConfigService:
         d = DEFINITIONS.get(key)
         if d is None:
             return default
-        for sc in ([scope, "global"] if scope != "global" else ["global"]):
-            rows = self.store.find("agent_config", {"organization_id": organization_id, "key": key, "scope": sc}, limit=1)
+        for sc in [scope, "global"] if scope != "global" else ["global"]:
+            rows = self.store.find(
+                "agent_config", {"organization_id": organization_id, "key": key, "scope": sc}, limit=1
+            )
             if rows:
                 return rows[0]["value"]
         return d["default"]
@@ -139,25 +214,51 @@ class AgentConfigService:
         items = []
         for key, d in DEFINITIONS.items():
             rows = self.store.find("agent_config", {"organization_id": org, "key": key, "scope": scope}, limit=1)
-            items.append({
-                "key": key, "type": d["type"], "default": d["default"], "min": d.get("min"), "max": d.get("max"),
-                "owner": d["owner"], "group": d["group"], "label": d["label"], "scope": scope,
-                "value": rows[0]["value"] if rows else self.get(org, key, scope),
-                "is_default": not rows, "updated_at": rows[0]["updated_at"] if rows else None,
-                "can_edit": _can_edit(actor.roles, key, kill_switch=key == "explain_agent_enabled"),
-            })
+            items.append(
+                {
+                    "key": key,
+                    "type": d["type"],
+                    "default": d["default"],
+                    "min": d.get("min"),
+                    "max": d.get("max"),
+                    "owner": d["owner"],
+                    "group": d["group"],
+                    "label": d["label"],
+                    "scope": scope,
+                    "value": rows[0]["value"] if rows else self.get(org, key, scope),
+                    "is_default": not rows,
+                    "updated_at": rows[0]["updated_at"] if rows else None,
+                    "can_edit": _can_edit(actor.roles, key, kill_switch=key == "explain_agent_enabled"),
+                }
+            )
         return {"items": items, "metrics": self._metrics(org)}
 
     def _metrics(self, org: str) -> dict[str, Any]:
         """30-day explanation session metrics (S-D1): average answered turns, share ending at N_max, share that asked VH for help."""
-        out: dict[str, Any] = {"window_days": 30, "avg_turns": None, "pct_exhausted": None, "pct_help": None, "available": False}
-        rows = [r for r in self.store.find("explain_session", {"organization_id": org, "mode": "agent"}) if r["state"] == "submitted"]
+        out: dict[str, Any] = {
+            "window_days": 30,
+            "avg_turns": None,
+            "pct_exhausted": None,
+            "pct_help": None,
+            "available": False,
+        }
+        rows = [
+            r
+            for r in self.store.find("explain_session", {"organization_id": org, "mode": "agent"})
+            if r["state"] == "submitted"
+        ]
         if not rows:
             return out
         n = len(rows)
-        out.update({"avg_turns": round(sum(r["turns_used"] for r in rows) / n, 2),
-                    "pct_exhausted": round(100 * sum(1 for r in rows if r["ai_inconclusive"]) / n, 1),
-                    "pct_help": round(100 * sum(1 for r in rows if r["asked_for_help"]) / n, 1), "available": True, "sessions": n})
+        out.update(
+            {
+                "avg_turns": round(sum(r["turns_used"] for r in rows) / n, 2),
+                "pct_exhausted": round(100 * sum(1 for r in rows if r["ai_inconclusive"]) / n, 1),
+                "pct_help": round(100 * sum(1 for r in rows if r["asked_for_help"]) / n, 1),
+                "available": True,
+                "sessions": n,
+            }
+        )
         return out
 
     def history(self, actor: Any, key: str | None = None, limit: int = 100) -> list[dict[str, Any]]:
@@ -174,13 +275,30 @@ class AgentConfigService:
         if rows:
             self.store.update("agent_config", rows[0]["id"], {"value": value, "updated_by": actor.id})
         else:
-            self.store.insert("agent_config", {"organization_id": org, "key": key, "scope": scope, "value": value,
-                                               "updated_by": actor.id})
-        self.store.insert("agent_config_history", {
-            "organization_id": org, "key": key, "scope": scope, "old_value": old, "new_value": value,
-            "reason": reason, "kind": kind, "changed_by": actor.id,
-            "changed_by_name": self.store.principal_name(actor.id)})
-        self.store.audit(org, actor.id, f"agent_config.{kind}", {"key": key, "scope": scope, "old": old, "new": value, "reason": reason})
+            self.store.insert(
+                "agent_config",
+                {"organization_id": org, "key": key, "scope": scope, "value": value, "updated_by": actor.id},
+            )
+        self.store.insert(
+            "agent_config_history",
+            {
+                "organization_id": org,
+                "key": key,
+                "scope": scope,
+                "old_value": old,
+                "new_value": value,
+                "reason": reason,
+                "kind": kind,
+                "changed_by": actor.id,
+                "changed_by_name": self.store.principal_name(actor.id),
+            },
+        )
+        self.store.audit(
+            org,
+            actor.id,
+            f"agent_config.{kind}",
+            {"key": key, "scope": scope, "old": old, "new": value, "reason": reason},
+        )
         return {"key": key, "scope": scope, "old_value": old, "value": value}
 
     def set(self, actor: Any, key: str, value: Any, reason: str, scope: str = "global") -> dict[str, Any]:

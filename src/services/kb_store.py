@@ -15,7 +15,14 @@ from collections.abc import Callable
 from datetime import UTC, datetime
 from typing import Any, Protocol
 
-EXPLAIN_TABLES = {"explain_session", "statement_version", "assessment_round", "explain_turn", "help_request", "vh_feedback"}
+EXPLAIN_TABLES = {
+    "explain_session",
+    "statement_version",
+    "assessment_round",
+    "explain_turn",
+    "help_request",
+    "vh_feedback",
+}
 TABLES = {"kb_object", "agent_config", "agent_config_history", "kb_policy_document", "kb_proposal"} | EXPLAIN_TABLES
 UPDATED_AT_TABLES = ("kb_object", "agent_config", "explain_session", "help_request")
 JSON_COLUMNS: dict[str, set[str]] = {
@@ -26,8 +33,15 @@ JSON_COLUMNS: dict[str, set[str]] = {
     "kb_proposal": {"payload"},
     "explain_session": {"form_schema", "answers", "plan", "memory", "provenance", "open_points"},
     "statement_version": {"content"},
-    "assessment_round": {"matched_evidence", "contradictions", "open_points", "missing_internal", "suggested_questions",
-                         "motive", "provenance"},
+    "assessment_round": {
+        "matched_evidence",
+        "contradictions",
+        "open_points",
+        "missing_internal",
+        "suggested_questions",
+        "motive",
+        "provenance",
+    },
     "explain_turn": {"payload"},
     "help_request": {"facts", "options", "reply_facts"},
     "vh_feedback": {"error_types"},
@@ -43,14 +57,19 @@ def _now() -> datetime:
 class Store(Protocol):
     def insert(self, table: str, row: dict[str, Any]) -> dict[str, Any]: ...
     def get(self, table: str, row_id: str) -> dict[str, Any] | None: ...
-    def find(self, table: str, where: dict[str, Any] | None = None, order: str | None = None,
-             limit: int | None = None) -> list[dict[str, Any]]: ...
-    def update(self, table: str, row_id: str, patch: dict[str, Any],
-               where: dict[str, Any] | None = None) -> dict[str, Any] | None: ...
-    def audit(self, organization_id: str, actor_id: str | None, action: str, payload: dict[str, Any],
-              result: str = "accepted") -> None: ...
+    def find(
+        self, table: str, where: dict[str, Any] | None = None, order: str | None = None, limit: int | None = None
+    ) -> list[dict[str, Any]]: ...
+    def update(
+        self, table: str, row_id: str, patch: dict[str, Any], where: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None: ...
+    def audit(
+        self, organization_id: str, actor_id: str | None, action: str, payload: dict[str, Any], result: str = "accepted"
+    ) -> None: ...
     def principal_name(self, principal_id: str) -> str | None: ...
-    def case_params(self, organization_id: str, case_ids: list[str] | None = None, limit: int = 30) -> list[dict[str, Any]]: ...
+    def case_params(
+        self, organization_id: str, case_ids: list[str] | None = None, limit: int = 30
+    ) -> list[dict[str, Any]]: ...
     def case_info(self, organization_id: str, case_id: str) -> dict[str, Any] | None: ...
     def mark_driver_answered(self, organization_id: str, case_id: str) -> bool: ...
 
@@ -74,7 +93,12 @@ class MemoryStore:
             r.setdefault("updated_at", r["created_at"])
         if table == "kb_object":
             for t in self.tables["kb_object"].values():
-                if (t["organization_id"], t["type"], t["code"], t["version"]) == (r["organization_id"], r["type"], r["code"], r["version"]):
+                if (t["organization_id"], t["type"], t["code"], t["version"]) == (
+                    r["organization_id"],
+                    r["type"],
+                    r["code"],
+                    r["version"],
+                ):
                     raise ValueError("duplicate kb_object version")
         self.tables[table][r["id"]] = r
         return copy.deepcopy(r)
@@ -93,15 +117,18 @@ class MemoryStore:
                 return False
         return True
 
-    def find(self, table: str, where: dict[str, Any] | None = None, order: str | None = None,
-             limit: int | None = None) -> list[dict[str, Any]]:
+    def find(
+        self, table: str, where: dict[str, Any] | None = None, order: str | None = None, limit: int | None = None
+    ) -> list[dict[str, Any]]:
         rows = [r for r in self.tables[table].values() if self._match(r, where or {})]
         for spec in reversed([s.strip() for s in (order or "").split(",") if s.strip()]):
             col, _, direction = spec.partition(" ")
             rows.sort(key=lambda r, c=col: (r.get(c) is None, r.get(c)), reverse=direction.lower() == "desc")
         return copy.deepcopy(rows[:limit] if limit else rows)
 
-    def update(self, table: str, row_id: str, patch: dict[str, Any], where: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    def update(
+        self, table: str, row_id: str, patch: dict[str, Any], where: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         r = self.tables[table].get(str(row_id))
         if r is None or not self._match(r, where or {}):
             return None
@@ -110,31 +137,49 @@ class MemoryStore:
             r["updated_at"] = self._stamp()
         return copy.deepcopy(r)
 
-    def audit(self, organization_id: str, actor_id: str | None, action: str, payload: dict[str, Any],
-              result: str = "accepted") -> None:
-        self.audit_log.append({"organization_id": organization_id, "actor_id": actor_id, "action": action,
-                               "payload": payload, "result": result})
+    def audit(
+        self, organization_id: str, actor_id: str | None, action: str, payload: dict[str, Any], result: str = "accepted"
+    ) -> None:
+        self.audit_log.append(
+            {
+                "organization_id": organization_id,
+                "actor_id": actor_id,
+                "action": action,
+                "payload": payload,
+                "result": result,
+            }
+        )
 
     def principal_name(self, principal_id: str) -> str | None:
         return None
 
-    def case_params(self, organization_id: str, case_ids: list[str] | None = None, limit: int = 30) -> list[dict[str, Any]]:
+    def case_params(
+        self, organization_id: str, case_ids: list[str] | None = None, limit: int = 30
+    ) -> list[dict[str, Any]]:
         rows = [c for c in self.cases if not case_ids or c["case_id"] in case_ids]
         return copy.deepcopy(rows[:limit])
 
     def case_info(self, organization_id: str, case_id: str) -> dict[str, Any] | None:
         for c in self.cases:
             if c["case_id"] == case_id and c.get("organization_id", organization_id) == organization_id:
-                return {"case_id": case_id, "organization_id": organization_id, "driver_id": c.get("driver_id"),
-                        "status": c.get("status", "evidence_requested"), "category": c.get("category"),
-                        "dispute_status": c.get("dispute_status")}
+                return {
+                    "case_id": case_id,
+                    "organization_id": organization_id,
+                    "driver_id": c.get("driver_id"),
+                    "status": c.get("status", "evidence_requested"),
+                    "category": c.get("category"),
+                    "dispute_status": c.get("dispute_status"),
+                }
         return None
 
     def mark_driver_answered(self, organization_id: str, case_id: str) -> bool:
         """evidence_requested + no dispute yet -> dispute_status pending_review. Idempotent, never downgrades."""
         for c in self.cases:
             if c["case_id"] == case_id and c.get("organization_id", organization_id) == organization_id:
-                if c.get("status", "evidence_requested") == "evidence_requested" and c.get("dispute_status") in (None, "not_disputed"):
+                if c.get("status", "evidence_requested") == "evidence_requested" and c.get("dispute_status") in (
+                    None,
+                    "not_disputed",
+                ):
                     c["dispute_status"] = "pending_review"
                     return True
         return False
@@ -200,8 +245,9 @@ class PgStore:
             cur.execute(f"SELECT * FROM app.{table} WHERE id = %s::uuid", (str(row_id),))
             return self._row(cur.fetchone())
 
-    def find(self, table: str, where: dict[str, Any] | None = None, order: str | None = None,
-             limit: int | None = None) -> list[dict[str, Any]]:
+    def find(
+        self, table: str, where: dict[str, Any] | None = None, order: str | None = None, limit: int | None = None
+    ) -> list[dict[str, Any]]:
         self._check(table)
         w, params = self._where(table, where)
         sql = f"SELECT * FROM app.{table}{w}"
@@ -218,22 +264,29 @@ class PgStore:
             cur.execute(sql, params)
             return [self._row(r) for r in cur.fetchall()]  # type: ignore[misc]
 
-    def update(self, table: str, row_id: str, patch: dict[str, Any], where: dict[str, Any] | None = None) -> dict[str, Any] | None:
+    def update(
+        self, table: str, row_id: str, patch: dict[str, Any], where: dict[str, Any] | None = None
+    ) -> dict[str, Any] | None:
         self._check(table, *patch)
         sets = [f"{c} = %s" for c in patch]
         vals = [self._adapt(table, c, v) for c, v in patch.items()]
         if table in UPDATED_AT_TABLES and "updated_at" not in patch:
             sets.append("updated_at = now()")
         w, wparams = self._where(table, where)
-        sql = f"UPDATE app.{table} SET {', '.join(sets)} WHERE id = %s::uuid" + (w.replace(" WHERE ", " AND ") if w else "") + " RETURNING *"
+        sql = (
+            f"UPDATE app.{table} SET {', '.join(sets)} WHERE id = %s::uuid"
+            + (w.replace(" WHERE ", " AND ") if w else "")
+            + " RETURNING *"
+        )
         with self._connect() as conn, conn.cursor() as cur:
             cur.execute(sql, [*vals, str(row_id), *wparams])
             out = cur.fetchone()
             conn.commit()
         return self._row(out)
 
-    def audit(self, organization_id: str, actor_id: str | None, action: str, payload: dict[str, Any],
-              result: str = "accepted") -> None:
+    def audit(
+        self, organization_id: str, actor_id: str | None, action: str, payload: dict[str, Any], result: str = "accepted"
+    ) -> None:
         text = json.dumps(payload, default=str)
         digest = hashlib.sha256(text.encode("utf-8")).digest()
         with self._connect() as conn, conn.cursor() as cur:
@@ -262,7 +315,8 @@ class PgStore:
                           fc.suspected_category AS category, ta.driver_id::text AS driver_id
                      FROM app.fraud_cases fc LEFT JOIN app.trip_assignments ta ON ta.id = fc.assignment_id
                     WHERE fc.id = %s::uuid AND fc.organization_id = %s::uuid""",
-                (str(case_id), str(organization_id)))
+                (str(case_id), str(organization_id)),
+            )
             return self._row(cur.fetchone())
 
     def mark_driver_answered(self, organization_id: str, case_id: str) -> bool:
@@ -273,12 +327,15 @@ class PgStore:
                 """UPDATE app.fraud_cases SET dispute_status = 'pending_review', updated_at = now()
                     WHERE id = %s::uuid AND organization_id = %s::uuid AND status = 'evidence_requested'
                       AND (dispute_status IS NULL OR dispute_status = 'not_disputed')""",
-                (str(case_id), str(organization_id)))
+                (str(case_id), str(organization_id)),
+            )
             changed = cur.rowcount > 0
             conn.commit()
         return changed
 
-    def case_params(self, organization_id: str, case_ids: list[str] | None = None, limit: int = 30) -> list[dict[str, Any]]:
+    def case_params(
+        self, organization_id: str, case_ids: list[str] | None = None, limit: int = 30
+    ) -> list[dict[str, Any]]:
         """Best-effort parameter values for real cases (fare, duration, trips today, feature-set signals)."""
         sql = """
         SELECT fc.id::text AS case_id, t.fare_amount_vnd AS fare_vnd,
