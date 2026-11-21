@@ -33,7 +33,7 @@ MOTIVE_CATALOGUE: dict[str, dict[str, str]] = {
     "unclear": {"vi": "Chưa rõ", "en": "Unclear"},
 }
 
-WRITE_ROLES = ("analyst", "senior_analyst", "admin")
+WRITE_ROLES = ("analyst", "fraud_analyst", "senior_analyst", "admin")
 
 _RATIONALE_VI: dict[str, str] = {
     "reward_threshold": "Hành trình có khoản thưởng và dấu hiệu bất thường; cần đối chiếu có phải nhằm chạm ngưỡng thưởng không.",

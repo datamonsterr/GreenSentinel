@@ -199,3 +199,7 @@ def test_motivation_writes_require_own_claim(client_for, role, method, path, bod
     with patch("src.api.routes.require_case_scope"):
         r = c.request(method, path, json=body)
     assert r.status_code == 409, r.text
+
+
+def test_write_roles_include_analyst_family():
+    assert {"analyst", "fraud_analyst", "senior_analyst", "admin"} <= set(svc.WRITE_ROLES)
