@@ -258,3 +258,28 @@ def test_short_document_is_not_truncated(setup):
     _, kb, doc = setup
     counts = svc(kb, {"items": []}).analyze(ANALYST, doc["id"])["analysis_counts"]
     assert counts["truncated"] is False and counts["chunks_total"] == counts["chunks"]
+
+
+def _tiny_pdf(text: str) -> bytes:
+    objs = [
+        "<< /Type /Catalog /Pages 2 0 R >>",
+        "<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+        "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 200 100] /Contents 4 0 R "
+        "/Resources << /Font << /F1 5 0 R >> >> >>",
+        None,
+        "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>",
+    ]
+    stream = f"BT /F1 12 Tf 10 50 Td ({text}) Tj ET"
+    objs[3] = f"<< /Length {len(stream)} >>\nstream\n{stream}\nendstream"
+    out, offsets = b"%PDF-1.4\n", []
+    for i, o in enumerate(objs, 1):
+        offsets.append(len(out))
+        out += f"{i} 0 obj\n{o}\nendobj\n".encode()
+    xref = len(out)
+    out += f"xref\n0 {len(objs) + 1}\n0000000000 65535 f \n".encode()
+    out += b"".join(f"{o:010d} 00000 n \n".encode() for o in offsets)
+    return out + f"trailer\n<< /Size {len(objs) + 1} /Root 1 0 R >>\nstartxref\n{xref}\n%%EOF\n".encode()
+
+
+def test_extract_text_reads_pdf():
+    assert "Reward threshold 200000" in extract_text("policy.pdf", _tiny_pdf("Reward threshold 200000"))

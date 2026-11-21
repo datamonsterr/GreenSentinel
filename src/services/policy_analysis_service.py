@@ -78,7 +78,7 @@ def extract_text(filename: str, content: bytes) -> str:
         return "\n\n".join(p for p in paras if p.strip())
     if name.endswith(".pdf"):
         try:
-            from pypdf import PdfReader  # optional dependency, not installed by default
+            from pypdf import PdfReader  # lazy: only needed for PDF uploads
         except ImportError as e:
             raise ValueError("PDF text extraction is unavailable (pypdf not installed); paste the text instead") from e
         return "\n\n".join((pg.extract_text() or "") for pg in PdfReader(io.BytesIO(content)).pages)
