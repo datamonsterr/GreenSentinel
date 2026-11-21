@@ -78,7 +78,7 @@ describe("AnalystProfileView", () => {
     vi.spyOn(api, "fetchCurrentAnalyst").mockResolvedValue({
       id: "analyst-001",
       name: "Nguyễn Hoàng Nam",
-      role: "fraud_analyst",
+      role: "fraud_analyst", roles: ["fraud_analyst"],
     });
     vi.spyOn(api, "fetchCases").mockResolvedValue({ items: [], total: 0, limit: 50, offset: 0 });
 
@@ -99,7 +99,7 @@ describe("AnalystProfileView", () => {
     vi.spyOn(api, "fetchCurrentAnalyst").mockResolvedValue({
       id: "analyst-001",
       name: "Nguyễn Hoàng Nam",
-      role: "fraud_analyst",
+      role: "fraud_analyst", roles: ["fraud_analyst"],
     });
     vi.spyOn(api, "fetchCases").mockResolvedValue({ items: [], total: 0, limit: 50, offset: 0 });
 
@@ -121,7 +121,7 @@ describe("AnalystProfileView", () => {
     vi.spyOn(api, "fetchCurrentAnalyst").mockResolvedValue({
       id: "analyst-001",
       name: "Nguyễn Hoàng Nam",
-      role: "fraud_analyst",
+      role: "fraud_analyst", roles: ["fraud_analyst"],
     });
     vi.spyOn(api, "fetchCases").mockResolvedValue({ items: [], total: 0, limit: 50, offset: 0 });
 
@@ -140,7 +140,7 @@ describe("AnalystProfileView", () => {
     vi.spyOn(api, "fetchCurrentAnalyst").mockResolvedValue({
       id: "analyst-001",
       name: "Nguyễn Hoàng Nam",
-      role: "fraud_analyst",
+      role: "fraud_analyst", roles: ["fraud_analyst"],
     });
     vi.spyOn(api, "fetchCases").mockResolvedValue({ items: [], total: 0, limit: 50, offset: 0 });
 

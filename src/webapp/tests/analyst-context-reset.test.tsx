@@ -73,7 +73,7 @@ describe("Issue #443 & #153: Context Ring and Clear Agent Context", () => {
     vi.clearAllMocks();
     vi.mocked(api.fetchCases).mockResolvedValue({ items: [mockItem], total: 1, limit: 50, offset: 0 });
     vi.mocked(api.fetchCaseDetail).mockResolvedValue(mockDetail);
-    vi.mocked(api.fetchCurrentAnalyst).mockResolvedValue({ id: "analyst-1", name: "Analyst One", role: "analyst" });
+    vi.mocked(api.fetchCurrentAnalyst).mockResolvedValue({ id: "analyst-1", name: "Analyst One", role: "analyst", roles: ["analyst"] });
     vi.mocked(api.fetchAgentSession).mockResolvedValue({
       session_id: "session-153",
       messages: [

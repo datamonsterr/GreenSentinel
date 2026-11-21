@@ -193,9 +193,10 @@ test.describe('road telemetry fixture in the real browser map', () => {
         endpointsVisible: coordinates.length > 1 && inViewport(coordinates[0]) && inViewport(coordinates.at(-1)),
       };
     })).toEqual({ sourceLoaded: true, rendered: expect.any(Number), endpointsVisible: true });
+    // debb2ee: with classified trip segments the legs render as trip-seg-* layers; pickup/destination-route-line are hidden.
     await expect.poll(async () => page.evaluate(() => {
       const map = (window as any).__maplibreInstance;
-      return map.queryRenderedFeatures(undefined, { layers: ['pickup-route-line', 'destination-route-line'] }).length;
+      return map.queryRenderedFeatures(undefined, { layers: ['trip-seg-solid', 'trip-seg-dashed'] }).length;
     })).toBeGreaterThan(0);
     const beforeScrub = await page.evaluate(() => {
       const map = (window as any).__maplibreInstance;

@@ -90,7 +90,7 @@ it('derives queue priorities from persisted cases', async () => {
 });
 
 it('shows authenticated profile and owned case instead of fabricated audit', async () => {
-  vi.spyOn(api, 'fetchCurrentAnalyst').mockResolvedValue({ id: 'analyst-real', name: 'Real analyst', role: 'analyst' });
+  vi.spyOn(api, 'fetchCurrentAnalyst').mockResolvedValue({ id: 'analyst-real', name: 'Real analyst', role: 'analyst', roles: ["analyst"] });
   vi.spyOn(api, 'fetchCases').mockResolvedValue({
     items: [
       {

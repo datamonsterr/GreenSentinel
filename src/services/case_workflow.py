@@ -82,7 +82,11 @@ TRANSITIONS: dict[str, Transition] = {
         "need_ops_dir_approved", "need_mkp_dir_approved", "NEED_OPS_DIR_APPROVED", "OPS_DIR", ("ops_director",)
     ),
     "approve-marketplace": Transition(
-        "need_mkp_dir_approved", "completed", "NEED_MKP_DIR_APPROVED", "MKP_DIR", ("marketplace_director",)  # admin acts as MKP director
+        "need_mkp_dir_approved",
+        "completed",
+        "NEED_MKP_DIR_APPROVED",
+        "MKP_DIR",
+        ("marketplace_director",),  # admin acts as MKP director
     ),
 }
 
@@ -154,10 +158,12 @@ AWAITING_STATUS = {
     "marketplace_director": "need_mkp_dir_approved",
 }
 
+
 def is_workflow_only(roles: frozenset[str] | set[str]) -> bool:
     """True for principals holding a workflow role but no analyst/admin role (read-only case access)."""
     r = set(roles)
     return bool(r & WORKFLOW_ROLES) and not r & {"admin", "analyst", "fraud_analyst", "senior_analyst"}
+
 
 def awaiting_status(roles: frozenset[str] | set[str]) -> str | None:
     """Step queue for the caller. Admin is the MKP director (last step); analysts have none."""
@@ -169,6 +175,7 @@ def awaiting_status(roles: frozenset[str] | set[str]) -> str | None:
         if r in roles:
             return st
     return None
+
 
 def allowed_actions(status: str | None, roles: frozenset[str] | set[str]) -> list[str]:
     """Workflow actions the caller may take on a case in `status` (drives UI buttons)."""

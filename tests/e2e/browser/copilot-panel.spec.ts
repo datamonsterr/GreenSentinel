@@ -83,7 +83,7 @@ test.describe('Analyst Copilot Panel (Issue #443 DoD)', () => {
 
     const userBubble = panel.getByText('Kiểm tra màu tin nhắn', { exact: true }).locator('..');
     await expect(userBubble).toBeVisible();
-    await expect(userBubble).toHaveCSS('background-color', 'rgb(86, 94, 116)');
+    await expect(userBubble).toHaveCSS('background-color', 'rgb(22, 39, 59)'); // group-[.is-user]:bg-[#16273b] in components/ai-elements/message.tsx (36537e5)
     await expect(userBubble).toHaveCSS('color', 'rgb(255, 255, 255)');
 
     await page.setViewportSize({ width: 375, height: 800 });

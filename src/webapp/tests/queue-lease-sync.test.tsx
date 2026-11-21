@@ -54,7 +54,7 @@ describe('Queue Lease Sync & Concurrency UI (Issue #144)', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.mocked(api.fetchCases).mockResolvedValue({ items: [item], total: 1, limit: 50, offset: 0 });
-    vi.mocked(api.fetchCurrentAnalyst).mockResolvedValue({ id: 'analyst-me', name: 'Analyst Me', role: 'analyst' });
+    vi.mocked(api.fetchCurrentAnalyst).mockResolvedValue({ id: 'analyst-me', name: 'Analyst Me', role: 'analyst', roles: ["analyst"] });
     vi.mocked(api.fetchAgentSession).mockResolvedValue({ session_id: 'sess-1', messages: [] });
     vi.mocked(api.getDisputeDossier).mockResolvedValue(null as any);
     vi.mocked(api.getCaseWorkflowTrace).mockResolvedValue(null as any);

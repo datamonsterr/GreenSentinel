@@ -159,7 +159,7 @@ beforeEach(() => {
   vi.mocked(api.fetchCases).mockResolvedValue({ items: [caseItem], total: 1, limit: 50, offset: 0 });
   vi.mocked(api.fetchCaseHistory).mockResolvedValue({ items: [], total: 0, limit: 50, offset: 0 });
   vi.mocked(api.fetchCaseDetail).mockResolvedValue(caseDetail);
-  vi.mocked(api.fetchCurrentAnalyst).mockResolvedValue({ id: "analyst-193", name: "Analyst 193", role: "analyst" });
+  vi.mocked(api.fetchCurrentAnalyst).mockResolvedValue({ id: "analyst-193", name: "Analyst 193", role: "analyst", roles: ["analyst"] });
   vi.mocked(api.fetchAgentSession).mockResolvedValue(agentSession);
   vi.mocked(api.fetchForensicBrief).mockResolvedValue({ case_id: "case-193", generated_at: "2026-10-14T01:02:00Z", abnormalities: [], abnormality_count: 0, evidence_sources: [], summary_text: "" });
   vi.mocked(api.getDisputeDossier).mockResolvedValue(dossier);

@@ -311,7 +311,13 @@ async def require_principal(
                 raise HTTPException(status_code=403, detail="Clerk organization membership required") from exc
     row = await asyncio.to_thread(load_principal, service._get_db_connection, user_id, claimed_uuid_org)
     known_roles = {
-        "analyst", "fraud_analyst", "driver", "admin", "demo_operator", "senior_analyst", "member",
+        "analyst",
+        "fraud_analyst",
+        "driver",
+        "admin",
+        "demo_operator",
+        "senior_analyst",
+        "member",
         *WORKFLOW_ORG_ROLES,
     }
 

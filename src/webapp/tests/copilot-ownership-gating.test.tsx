@@ -60,7 +60,7 @@ describe("Issue #380: Copilot chat ownership gating", () => {
     vi.mocked(api.fetchCurrentAnalyst).mockResolvedValue({
       id: "analyst-me-380",
       name: "Analyst Me",
-      role: "analyst",
+      role: "analyst", roles: ["analyst"],
     });
     vi.mocked(api.fetchAgentSession).mockResolvedValue({ session_id: "session-380", messages: [] });
     vi.mocked(api.fetchForensicBrief).mockResolvedValue({

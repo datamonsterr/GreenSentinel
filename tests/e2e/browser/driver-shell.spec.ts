@@ -284,23 +284,27 @@ test.describe('Driver App Shell Navigation & Settings', () => {
     await expect(page).toHaveURL(/\/sign-in/);
   });
 
-  test('chat composer on /driver/chat/[caseId] clears fixed bottom nav', async ({ page }) => {
-    await page.goto('/driver/chat/case-alpha-1234');
+  test('chat composer clears fixed bottom nav on /driver/chat; case chat is full-screen without nav', async ({ page }) => {
+    const navName = /Thanh điều hướng tài xế|Driver bottom navigation/i;
 
-    const nav = page.getByRole('navigation', { name: /Thanh điều hướng tài xế|Driver bottom navigation/i });
+    // Case-less chat keeps the fixed bottom nav; the composer must sit above it.
+    await page.goto('/driver/chat');
+    const nav = page.getByRole('navigation', { name: navName });
     await expect(nav).toBeVisible();
-
     const composer = page.locator('[data-testid="chat-composer"]');
     await expect(composer).toBeVisible();
-
     const navBox = await nav.boundingBox();
     const composerBox = await composer.boundingBox();
-
     expect(navBox).not.toBeNull();
     expect(composerBox).not.toBeNull();
-
-    // The composer bottom edge must be above the navigation bar's lower content or properly offset
     expect(composerBox!.y).toBeLessThan(navBox!.y + navBox!.height);
+
+    // 3fc57e2: /driver/chat/<caseId> is full-screen, so there is no bottom nav and no pb-20 reservation.
+    await page.goto('/driver/chat/case-alpha-1234');
+    await expect(page.getByRole('navigation', { name: navName })).toHaveCount(0);
+    await expect(page.getByTestId('case-back-button')).toBeVisible();
+    await expect(page.locator('[data-testid="chat-composer"]')).toBeVisible();
+    await expect(page.getByTestId('driver-tabs-shell')).not.toHaveClass(/pb-20/);
   });
 
   test('chat composer textarea width is greater than 200px at viewport 412x900 on /driver/chat and /driver/chat/[caseId]', async ({ page }) => {

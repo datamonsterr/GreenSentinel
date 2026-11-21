@@ -174,7 +174,9 @@ def assert_disposable_db_guard(db_url: str) -> None:
             "Remote databases strictly forbidden."
         )
     dbname = (parsed.path or "").lstrip("/")
-    if not (dbname.startswith("test_greensentinel_finalize_394_") or dbname.startswith("test_greensentinel_disposable_")):
+    if not (
+        dbname.startswith("test_greensentinel_finalize_394_") or dbname.startswith("test_greensentinel_disposable_")
+    ):
         raise SafetyGuardError(
             f"Safety guard violation: database {dbname!r} does not have disposable prefix. "
             "Must start with 'test_greensentinel_finalize_394_' or 'test_greensentinel_disposable_'."

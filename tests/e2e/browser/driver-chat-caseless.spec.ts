@@ -73,13 +73,14 @@ test.describe('Driver GSupport Chat (case-less and case-detail)', () => {
   test('auto-sends the case-check prompt once on an empty case thread', async ({ page }) => {
     await page.goto('/driver/chat/case-chat-e2e-1');
 
-    await expect(page.getByTestId('case-chip')).toBeVisible();
+    // 3fc57e2 replaced the case chip with a back button in the chat header.
+    await expect(page.getByTestId('case-back-button')).toBeVisible();
     // The assistant reply to the auto-sent prompt should appear without any
     // manual composer interaction.
     await expect(page.getByText('Đã kiểm tra vụ việc.')).toBeVisible();
   });
 
-  test('user chat bubble has white text and dark green background in light and dark themes', async ({ page }) => {
+  test('user chat bubble has white text and teal background in light and dark themes', async ({ page }) => {
     await page.goto('/driver/chat');
 
     await expect(page.getByTestId('driver-chat-greeting')).toBeVisible();
@@ -89,11 +90,11 @@ test.describe('Driver GSupport Chat (case-less and case-detail)', () => {
     const userBubble = page.getByTestId('driver-user-bubble').first();
     await expect(userBubble).toBeVisible();
 
-    // Light theme check: text is white, background is dark green (bg-emerald-800: rgb(6, 95, 70) / oklch(0.432 0.095 166.913))
+    // Light theme check: text is white, background is bg-emerald-600, which .driver-scope remaps to --color-emerald-600: #168a8a (driver-theme.css, 65179ca)
     const lightColor = await userBubble.evaluate((el) => window.getComputedStyle(el).color);
     const lightBg = await userBubble.evaluate((el) => window.getComputedStyle(el).backgroundColor);
     expect(lightColor).toBe('rgb(255, 255, 255)');
-    expect(['rgb(6, 95, 70)', 'oklch(0.432 0.095 166.913)']).toContain(lightBg);
+    expect(lightBg).toBe('rgb(22, 138, 138)');
 
     // Switch to dark theme
     await page.evaluate(() => {
@@ -104,11 +105,11 @@ test.describe('Driver GSupport Chat (case-less and case-detail)', () => {
       }
     });
 
-    // Dark theme check: text is white, background is dark green (dark:bg-emerald-700: rgb(4, 120, 87) / oklch(0.508 0.118 165.612))
+    // Dark theme check: text is white, background is dark:bg-emerald-700 -> --color-emerald-700: #107373 (driver-theme.css)
     const darkColor = await userBubble.evaluate((el) => window.getComputedStyle(el).color);
     const darkBg = await userBubble.evaluate((el) => window.getComputedStyle(el).backgroundColor);
     expect(darkColor).toBe('rgb(255, 255, 255)');
-    expect(['rgb(4, 120, 87)', 'oklch(0.508 0.118 165.612)']).toContain(darkBg);
+    expect(darkBg).toBe('rgb(16, 115, 115)');
   });
 });
 

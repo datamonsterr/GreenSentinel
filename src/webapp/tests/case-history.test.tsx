@@ -89,7 +89,7 @@ describe('Processed Case History in Cockpit Workspace', () => {
     vi.mocked(api.fetchCurrentAnalyst).mockResolvedValue({
       id: 'analyst-real',
       name: 'Analyst',
-      role: 'analyst',
+      role: 'analyst', roles: ["analyst"],
     });
     vi.mocked(api.fetchAgentSession).mockResolvedValue({
       session_id: 'session-hist',

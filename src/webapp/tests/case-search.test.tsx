@@ -53,7 +53,7 @@ describe('Case Search in Cockpit Triage Queue', () => {
     vi.mocked(api.fetchCurrentAnalyst).mockResolvedValue({
       id: 'analyst-real',
       name: 'Analyst',
-      role: 'analyst',
+      role: 'analyst', roles: ["analyst"],
     });
     vi.mocked(api.fetchAgentSession).mockResolvedValue({
       session_id: 'session-empty',
