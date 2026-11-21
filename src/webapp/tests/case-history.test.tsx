@@ -181,7 +181,7 @@ describe('Processed Case History in Cockpit Workspace', () => {
     const resolvedCard = historyItems[0].closest('article')!;
     const badge = within(resolvedCard).getByTestId('terminal-status-badge');
     expect(badge).toBeInTheDocument();
-    expect(badge).toHaveTextContent(/archived · resolved/i);
+    expect(badge).toHaveTextContent(/archived · (reviewed|đã thẩm định)/i);
 
     // Claim button is not rendered
     expect(screen.queryByRole('button', { name: /claim case/i })).not.toBeInTheDocument();

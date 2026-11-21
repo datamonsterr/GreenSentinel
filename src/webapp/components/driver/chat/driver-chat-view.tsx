@@ -559,7 +559,7 @@ export function DriverChatView({ caseId }: DriverChatViewProps) {
                     data-testid={message.role === "user" ? "driver-user-bubble" : undefined}
                     className={
                       message.role === "user"
-                        ? "bg-emerald-600 dark:bg-emerald-700 text-white [&_*]:text-white group-[.is-user]:bg-emerald-600 dark:group-[.is-user]:bg-emerald-700 group-[.is-user]:text-white group-[.is-user]:rounded-2xl group-[.is-user]:rounded-br-md prose-invert text-sm"
+                        ? "group-[.is-user]:border-0 bg-emerald-600 dark:bg-emerald-700 text-white [&_*]:text-white group-[.is-user]:bg-emerald-600 dark:group-[.is-user]:bg-emerald-700 group-[.is-user]:text-white group-[.is-user]:rounded-2xl group-[.is-user]:rounded-br-md prose-invert text-sm"
                         : "bg-white dark:bg-slate-800 rounded-2xl rounded-bl-md px-4 py-3 shadow-xs text-sm"
                     }
                   >
@@ -683,6 +683,7 @@ export function DriverChatView({ caseId }: DriverChatViewProps) {
 
       {explainOpen && (
         <DriverExplainFlow
+          caseId={caseId}
           caseTitle={caseTitle}
           deadline={caseDeadline}
           onClose={() => setExplainOpen(false)}

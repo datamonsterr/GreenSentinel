@@ -137,4 +137,11 @@ describe('Case Search in Cockpit Triage Queue', () => {
 
     expect(await screen.findByText('No cases match search')).toBeInTheDocument();
   });
+
+  it('shows a status chip on the compact queue card', async () => {
+    render(<CockpitWorkspaceView />);
+    const chip = await screen.findByTestId('queue-card-status');
+    expect(chip).toHaveClass('gs-tone');
+    expect(chip.textContent).not.toBe('—');
+  });
 });

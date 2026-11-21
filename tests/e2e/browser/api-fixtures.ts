@@ -56,6 +56,7 @@ export async function installApiFixtures(page: Page, options: ApiFixtureOptions 
       { key: 'review', label: 'Analyst review', actor_role: 'ANALYST', state: 'current', completed_at: null },
       { key: 'approve-ops', label: 'Ops director approval', actor_role: 'OPS_DIR', state: 'pending', completed_at: null },
     ], next: null, actions: [] } });
+    if (path === `/api/v1/cases/${CASE_ID}/motivation` && request.method() === 'GET') return route.fulfill({ json: { persisted: false, assessment: { id: null, version: 0, motive_category: 'subsidy_surge', amount_at_stake_vnd: 25000, confidence: 0.65, rationale: 'Có lợi ích tăng thêm; cần đối chiếu.', source: 'rule', status: 'draft', signals: [{ code: 'surge_capture', value: 25000, unit: 'VND' }] } } });
     if (path.endsWith('/forensic-brief')) return route.fulfill({ json: forensicBrief });
     if (path.endsWith('/policy')) return route.fulfill({ json: { case_id: CASE_ID, suspected_category: 'route_integrity', policy_version: '2026.1', action_matrix: {}, applicable_action_rule: {}, clauses: [], related_policies: [], source: 'in_memory_fallback' } });
     if (path.endsWith('/agent-session')) return route.fulfill({ json: { session_id: 'session-e2e', messages: [] } });

@@ -71,7 +71,7 @@ from src.models.schemas import (
     WorkflowDraftResponse,
     WorkflowTrace,
 )
-from src.services import case_workflow
+from src.services import case_motivation_service, case_workflow
 from src.services.access_control import require_case_scope
 from src.services.case_service import CaseService, get_case_service
 from src.services.driver_dispute_service import DriverDisputeService, get_driver_dispute_service
@@ -1315,6 +1315,89 @@ async def get_dispute_dossier_route(
     if principal:
         require_case_scope(case_service, case_id, principal.organization_id)
     return await dispute_service.get_dispute_dossier(case_id)
+
+
+# ---------------------------------------------------------------------------
+# Structured motivation assessment (S-M)
+# ---------------------------------------------------------------------------
+def _motivation_principal(
+    principal: Principal | None, case_service: CaseService, case_id: str, *roles: str
+) -> Principal:
+    require_role(principal, *roles)
+    if principal is None:
+        raise HTTPException(status_code=401, detail="Authentication required")
+    require_case_scope(case_service, case_id, principal.organization_id)
+    return principal
+
+
+async def _motivation_writer(principal: Principal | None, case_service: CaseService, case_id: str) -> Principal:
+    """Write roles + case scope + the caller must hold the active review claim (all roles, incl. admin)."""
+    p = _motivation_principal(principal, case_service, case_id, *case_motivation_service.WRITE_ROLES)
+    detail = await case_service._get_case_detail_data(case_id, organization_id=p.organization_id)
+    lease = getattr(detail, "active_lease", None)
+    holder = lease.get("analyst_id") if isinstance(lease, dict) else getattr(lease, "analyst_id", None)
+    if not holder or str(holder) != str(p.id):
+        raise HTTPException(status_code=409, detail="An active claim by this analyst is required")
+    return p
+
+
+@router.get("/cases/{case_id}/motivation")
+async def get_case_motivation(
+    case_id: str,
+    case_service: CaseService = Depends(get_case_service),
+    principal: Principal | None = Depends(require_principal),
+) -> dict[str, Any]:
+    p = _motivation_principal(principal, case_service, case_id, *CASE_READ_ROLES)
+    return await case_motivation_service.get_view(case_service, case_id, p.organization_id)
+
+
+@router.post("/cases/{case_id}/motivation/generate")
+async def generate_case_motivation(
+    case_id: str,
+    case_service: CaseService = Depends(get_case_service),
+    principal: Principal | None = Depends(require_principal),
+) -> dict[str, Any]:
+    p = await _motivation_writer(principal, case_service, case_id)
+    saved = await case_motivation_service.generate_and_save(case_service, case_id, p.organization_id, p.id)
+    return {"assessment": saved, "persisted": True}
+
+
+@router.put("/cases/{case_id}/motivation")
+async def edit_case_motivation(
+    case_id: str,
+    request: case_motivation_service.MotivationEdit,
+    case_service: CaseService = Depends(get_case_service),
+    principal: Principal | None = Depends(require_principal),
+) -> dict[str, Any]:
+    p = await _motivation_writer(principal, case_service, case_id)
+    saved = await asyncio.to_thread(
+        case_motivation_service.save_edit,
+        case_service._get_db_connection,
+        case_service._resolve_case_id(case_id),
+        p.organization_id,
+        p.id,
+        request,
+    )
+    return {"assessment": saved, "persisted": True}
+
+
+@router.post("/cases/{case_id}/motivation/confirm")
+async def confirm_case_motivation(
+    case_id: str,
+    request: case_motivation_service.ConfirmRequest | None = None,
+    case_service: CaseService = Depends(get_case_service),
+    principal: Principal | None = Depends(require_principal),
+) -> dict[str, Any]:
+    p = await _motivation_writer(principal, case_service, case_id)
+    saved = await asyncio.to_thread(
+        case_motivation_service.confirm,
+        case_service._get_db_connection,
+        case_service._resolve_case_id(case_id),
+        p.organization_id,
+        p.id,
+        request.expected_version if request else None,
+    )
+    return {"assessment": saved, "persisted": True}
 
 
 # ---------------------------------------------------------------------------

@@ -16,6 +16,8 @@ from src.api.classifier_routes import (
 from src.api.classifier_routes import (
     router as classifier_router,
 )
+from src.api.explain_routes import router as explain_router
+from src.api.knowledge_routes import router as knowledge_router
 from src.api.routes import router
 from src.api.test_routes import router as test_router
 from src.config import get_settings
@@ -87,6 +89,8 @@ app.include_router(classifier_router, prefix="/api/v1")
 app.include_router(classifier_router)
 app.include_router(agent_runtime_router, prefix="/api/v1")
 app.include_router(workflow_router, prefix="/api/v1")
+app.include_router(knowledge_router, prefix="/api/v1")
+app.include_router(explain_router, prefix="/api/v1")
 app.include_router(test_router, prefix="/test/api/v1")
 
 

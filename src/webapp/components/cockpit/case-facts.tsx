@@ -1,5 +1,6 @@
 "use client";
 
+import { CaseStatusChip } from "@/components/cockpit/case-status-chip";
 import React from "react";
 import type { CaseDetailResponse } from "@/types/schemas";
 import { useLocale, type Locale } from "@/lib/locale";
@@ -54,7 +55,7 @@ export function CaseLevelFacts({ caseDetail }: { caseDetail: CaseDetailResponse 
   const sla = c.sla_countdown_s;
   return (
     <FactChips testId="case-level-facts" facts={[
-      { label: m.status, value: c.status ? workspaceState(c.status, locale) : null },
+      { label: m.status, value: c.status ? <CaseStatusChip status={c.status} locale={locale} testId="case-facts-status" /> : null },
       { label: m.priority, value: c.priority ? `${c.priority}${typeof c.priority_score === "number" ? ` · ${c.priority_score}` : ""}` : null },
       { label: m.assignee, value: c.assigned_analyst_name ?? m.unassigned },
       { label: m.sla, value: sla == null ? null : sla === 0 ? <span className="text-gs-red">{m.overdue}</span> : formatDuration(sla) },

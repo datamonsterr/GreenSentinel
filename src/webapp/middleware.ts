@@ -74,6 +74,6 @@ export const config = {
   // Public routes need no session: the handler returns next() when there is
   // no protected area. Keyless envs (no Clerk keys) bypass Clerk above so the
   // public landing still renders instead of 503.
-  matcher: ['/', '/onboarding', '/test/:path*', '/workplace/:path*', '/workspace/:path*', '/organization/:path*', '/driver/:path*', '/dashboard/:path*', '/analytics/:path*',
+  matcher: ['/', '/onboarding', '/test/:path*', '/workplace/:path*', '/workspace/:path*', '/organization/:path*', '/knowledge/:path*', '/driver/:path*', '/dashboard/:path*', '/analytics/:path*',
     '/profile/:path*', '/sign-in/:path*', '/sign-up/:path*', '/__clerk/:path*'],
 };

@@ -1,8 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { CheckCircle2, ChevronLeft, Circle, CircleDot, Lightbulb } from "lucide-react";
+import { CheckCircle2, ChevronLeft, Circle, CircleDot, Lightbulb, Loader2 } from "lucide-react";
+import { driverExplainClient, type ExplainView } from "@/lib/driver-explain-client";
+import { ExplainSessionFlow } from "@/components/driver/chat/explain-session-flow";
 
 export const EXPLAIN_MIN_CHARS = 20;
 export const EXPLAIN_MAX_CHARS = 500;
@@ -11,6 +13,8 @@ const REASONS = ["NotDone", "RealTrip", "Tech", "Customer", "Other"] as const;
 type Reason = (typeof REASONS)[number];
 
 export interface DriverExplainFlowProps {
+  /** When set, try the v2 explanation session API first; legacy wizard stays the fallback. */
+  caseId?: string;
   caseTitle?: string | null;
   deadline?: string | null;
   onClose: () => void;
@@ -18,7 +22,7 @@ export interface DriverExplainFlowProps {
   onSubmit: (summary: string) => Promise<void>;
 }
 
-export function DriverExplainFlow({ caseTitle, deadline, onClose, onSubmit }: DriverExplainFlowProps) {
+export function DriverExplainFlow({ caseId, caseTitle, deadline, onClose, onSubmit }: DriverExplainFlowProps) {
   const t = useTranslations("driver.explain");
   const [step, setStep] = useState(1);
   const [reason, setReason] = useState<Reason | null>(null);
@@ -28,6 +32,20 @@ export function DriverExplainFlow({ caseTitle, deadline, onClose, onSubmit }: Dr
   const [sending, setSending] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
+  const [probing, setProbing] = useState(Boolean(caseId));
+  const [session, setSession] = useState<ExplainView | null>(null);
+
+  // Resume an existing v2 agent session; any error or fallback mode keeps the legacy wizard.
+  useEffect(() => {
+    if (!caseId) return;
+    let cancelled = false;
+    driverExplainClient
+      .get(caseId)
+      .then((v) => { if (!cancelled && v.mode === "agent") setSession(v); })
+      .catch(() => undefined)
+      .finally(() => { if (!cancelled) setProbing(false); });
+    return () => { cancelled = true; };
+  }, [caseId]);
 
   const trimmed = detail.trim();
   const missing = Math.max(0, EXPLAIN_MIN_CHARS - trimmed.length);
@@ -40,10 +58,24 @@ export function DriverExplainFlow({ caseTitle, deadline, onClose, onSubmit }: Dr
         ? t("detailTooShort", { min: EXPLAIN_MIN_CHARS, missing })
         : null;
 
-  const next = () => {
+  const next = async () => {
     setTouched(true);
     if (step === 1 && !reason) return;
     if (step === 2 && missing > 0) return;
+    if (step === 1 && caseId && reason) {
+      setProbing(true);
+      try {
+        const v = await driverExplainClient.start(caseId, reason);
+        if (v.mode === "agent") {
+          setSession(v);
+          return;
+        }
+      } catch {
+        // API unavailable: continue with the legacy wizard.
+      } finally {
+        setProbing(false);
+      }
+    }
     setTouched(false);
     setStep((s) => Math.min(STEPS, s + 1));
   };
@@ -72,6 +104,18 @@ export function DriverExplainFlow({ caseTitle, deadline, onClose, onSubmit }: Dr
 
   const primary =
     "w-full min-h-[52px] rounded-full bg-emerald-600 text-white text-base font-bold disabled:opacity-40 active:scale-[0.99] transition cursor-pointer";
+
+  if (session && caseId) {
+    return <ExplainSessionFlow caseId={caseId} initial={session} caseTitle={caseTitle} deadline={deadline} onClose={onClose} />;
+  }
+
+  if (probing && !reason) {
+    return (
+      <div data-testid="driver-explain-flow" role="dialog" aria-label={t("title")} className="absolute inset-0 z-50 flex items-center justify-center bg-[var(--driver-canvas)]">
+        <Loader2 className="h-8 w-8 animate-spin text-emerald-600" aria-label={t("v2.loading")} />
+      </div>
+    );
+  }
 
   if (done) {
     return (
@@ -235,7 +279,7 @@ export function DriverExplainFlow({ caseTitle, deadline, onClose, onSubmit }: Dr
 
       <div className="border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 pb-[max(1rem,env(safe-area-inset-bottom))]">
         {step < STEPS ? (
-          <button type="button" data-testid="explain-next" onClick={next} className={primary}>
+          <button type="button" data-testid="explain-next" disabled={probing} onClick={() => void next()} className={primary}>
             {t("next")}
           </button>
         ) : (

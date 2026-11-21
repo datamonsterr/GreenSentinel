@@ -120,7 +120,11 @@ Never use Tailwind palette classes (`emerald|green|red|rose|lime|teal|amber|oran
 - **Primary actions** (Claim, Save, Submit, Send, active tab/toggle): `bg-primary text-white hover:bg-primary-container`. Secondary: white + `border-gs-line-2`. Icon buttons: ghost.
 - **Release / unclaim / cancel:** neutral outline, never red. Red (`gs-red`, `gs-red-soft`) only for destructive or error states.
 - **Status/tags/priority:** tone chips via `statusTone()` / `caseStatusTone()` (`.gs-tone .t-*`). amber = pending/needs action, cyan = in review/info, green = resolved/confirmed only, red = violation/error, orange = escalated/awaiting approval, purple = report/AI, grey = closed.
-- **Chat bubbles:** own side cyan-soft or navy `#16273b` + white text; other side white card with line border.
+- **Chat bubbles:** own side `bg-gs-cyan-soft border-gs-cyan/30 text-gs-ink-2` (copilot user, relay analyst); other side white card, `border-gs-line`; timestamps `text-gs-mute`; send button `bg-primary text-white`. No navy `#16273b`. Driver app keeps its own `.driver-scope` emerald bubble.
 - **Accents:** success `gs-green`/`gs-green-soft`/`gs-green-ink` (text), warning `gs-amber`/`gs-amber-ink`, error `gs-red`, info `gs-cyan`/`gs-blue`, AI `gs-purple`, escalated `gs-orange`. Opacity variants (`border-gs-green/30`) for borders.
 - **Map/chart hex** (maplibre paint cannot read CSS vars): use the theme hex values: cyan `#0fb3c1`, blue `#2f6fe0`, green `#22a45d`, amber `#c99616`, orange `#c8601e`, red `#e0484b`, purple `#7b3ed6`, ink `#1c2733`.
 - **Neutral greys:** `slate-*` utilities remain for neutral surfaces/text (documented exception; not part of the status palette). Driver app keeps its own `.driver-scope` theme.
+
+## AI explanation section and help queue
+
+`components/adjudication/explain-section.tsx` renders in the Overview tab only when `GET /cases/{id}/explain` returns a session. Round states use tone chips via `roundStateTone()` (eligible green, not_eligible red, needs_driver amber, missing_internal grey); flags use `flagTone()` (novel purple, changed amber, inconclusive orange, interrupted red, asked-for-help cyan, skipped grey). Diff lines: additions `bg-gs-green-soft text-gs-green-ink`, removals `bg-gs-red-soft text-gs-red line-through`. The help queue is a right drawer (`components/explain/help-queue-panel.tsx`) opened from a top-bar icon with a `bg-gs-red` count badge; see ADR-036.

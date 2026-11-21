@@ -27,7 +27,8 @@ import { workspaceMessages } from "@/lib/workspace-messages";
 import { savedWorkspaceJudgment } from "@/lib/workspace-data";
 import { CopyId } from "@/components/adjudication/overview-tab";
 import { QueueFilterBar } from "@/components/cockpit/case-queue-filters";
-import { caseStatusTone } from "@/lib/status-tone";
+import { CaseStatusChip } from "@/components/cockpit/case-status-chip";
+import { caseStatusLabel } from "@/lib/status-tone";
 import { EMPTY_FILTERS, applyFilters, isQueueExpanded, queueText, toFetchParams, withQueueExpanded, type Availability, type QueueFilters } from "@/lib/case-queue";
 
 import { MapsTab } from "@/components/adjudication/maps-tab";
@@ -35,6 +36,7 @@ import { FinalizationTab } from "@/components/adjudication/finalization-tab";
 import { OverviewTab } from "@/components/adjudication/overview-tab";
 import { ConversationTab } from "@/components/adjudication/conversation-tab";
 import { DriverRelayTab } from "@/components/adjudication/driver-relay-tab";
+import { ExplainSection } from "@/components/adjudication/explain-section";
 import { DriverInfoTab } from "@/components/adjudication/driver-info-tab";
 import { WorkflowTab } from "@/components/adjudication/workflow-tab";
 import { MapLibreView } from "@/components/map/maplibre-view";
@@ -933,7 +935,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
                       </td>
                       <td className="px-3 py-2 text-slate-600">{item.plate}</td>
                       <td className="px-3 py-2 text-slate-600">{item.category || '—'}</td>
-                      <td className="px-3 py-2">{item.status ? <span className={`gs-tone pill ${caseStatusTone(item.status)}`}>{qt[item.status] ?? item.status}</span> : '—'}</td>
+                      <td className="px-3 py-2"><CaseStatusChip status={item.status} locale={locale} /></td>
                       <td className="px-3 py-2"><span className={`gs-tone pill ${item.severity === 'P0' ? 't-red' : item.severity === 'P1' ? 't-amber' : 't-blue'}`}>{item.severity}</span></td>
                       <td className="px-3 py-2 text-slate-600">{item.assignedAnalystName || qt.unassigned}</td>
                       <td className="px-3 py-2 tabular-nums text-slate-600">{item.openedAt ? new Date(item.openedAt).toLocaleString(locale === 'vi' ? 'vi-VN' : 'en-GB', { dateStyle: 'short', timeStyle: 'short' }) : '—'}</td>
@@ -988,7 +990,10 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
                     <span className="font-semibold shrink-0">{item.severity} ·</span>
                     <CopyId id={item.id} label={m.caseId} displayId={item.code} />
                   </div>
-                  {item.sla !== '—' && <span className="text-slate-500 tabular-nums shrink-0">{item.sla}</span>}
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <CaseStatusChip status={detail?.case.status || item.status} locale={locale} testId="queue-card-status" />
+                    {item.sla !== '—' && <span className="text-slate-500 tabular-nums">{item.sla}</span>}
+                  </div>
                 </div>
                 <button
                   type="button"
@@ -1004,7 +1009,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
                 </button>
                 <div className="flex min-w-0 items-center justify-between gap-2">
                   <span className="min-w-0 flex-1 truncate text-slate-500" title={item.district}>{item.district}</span>
-                  {archived ? <span data-testid="terminal-status-badge">{m.archived} · {item.status}</span> : <>
+                  {archived ? <span data-testid="terminal-status-badge">{m.archived} · {caseStatusLabel(item.status, locale)}</span> : <>
                     {!workflowOnly && <button title={mine ? m.releaseCase : m.claimCase} aria-label={busy === 'claim' ? m.claiming : busy === 'release' ? m.releasing : other ? m.ownedOther : mine ? m.release : m.claim} disabled={Boolean(busy) || other || !isAnalystAuthorized} onClick={() => void updateLock(item.id, mine)} className={`inline-flex h-7 min-w-[4.5rem] items-center justify-center rounded-md px-2 text-[11px] font-semibold disabled:bg-slate-300 disabled:text-slate-700 disabled:opacity-100 ${mine ? 'border border-gs-line-2 bg-white text-gs-ink-2 hover:bg-gs-line' : 'bg-primary text-white hover:bg-primary-container'}`}>{busy === 'claim' ? m.claiming : busy === 'release' ? m.releasing : other ? m.ownedOther : mine ? m.release : m.claim}</button>}
                   </>}
                 </div>
@@ -1070,8 +1075,10 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
               onClaim={() => void updateLock(selectedCaseId, false)}
               canClaim={canClaim}
               claimBusy={claimBusy}
+              canWriteMotivation={isAnalystAuthorized && !isTerminalCase && isLockedByMe}
             />
           )}
+          {activeCenterTab === 'overview' && <ExplainSection key={caseDetail.case.id} caseId={caseDetail.case.id} locale={locale} roles={currentAnalyst?.roles ?? (currentAnalyst?.role ? [currentAnalyst.role] : [])} />}
           <div hidden={activeCenterTab !== 'maps'} inert={activeCenterTab !== 'maps'}>
             <MapsTab caseDetail={caseDetail} disputeDossier={disputeDossier} selectedCaseId={caseDetail.case.id} pickupLocation={pickupLocation} initialDriverLocation={initialDriverLocation} destinationLocation={destinationLocation} mapTelemetry={mapTelemetry} isActive={activeCenterTab === 'maps'} />
           </div>
@@ -1101,7 +1108,7 @@ export function CockpitWorkspaceView({ initialCaseId }: { initialCaseId?: string
             canClaim={canClaim}
             claimBusy={claimBusy}
           />
-          {isTerminalCase && <div data-testid="terminal-decision-banner" className="rounded border bg-slate-50 p-3 text-xs"><strong>{m.finalized} · {m.version} {caseDetail.case.version}</strong><p>{m.status}: {caseDetail.case.status}</p>{caseDetail.adjudication && <div className="mt-2 space-y-1"><p>{m.outcome}: {caseDetail.adjudication.outcome || m.unavailable}</p><p>{m.rationaleLabel}: {caseDetail.adjudication.rationale || m.unavailable}</p><p className="flex items-center gap-1">{m.actor}: {caseDetail.adjudication.analyst_id ? <CopyId id={String(caseDetail.adjudication.analyst_id)} label={m.actor} /> : m.unavailable}</p><p>{m.recorded}: {caseDetail.adjudication.approved_at || caseDetail.adjudication.adjudicated_at || m.unavailable}</p></div>}<p>{m.archiveReadOnly}</p></div>}
+          {isTerminalCase && <div data-testid="terminal-decision-banner" className="rounded border bg-slate-50 p-3 text-xs"><strong>{m.finalized} · {m.version} {caseDetail.case.version}</strong><p>{m.status}: <CaseStatusChip status={caseDetail.case.status} locale={locale} /></p>{caseDetail.adjudication && <div className="mt-2 space-y-1"><p>{m.outcome}: {caseDetail.adjudication.outcome || m.unavailable}</p><p>{m.rationaleLabel}: {caseDetail.adjudication.rationale || m.unavailable}</p><p className="flex items-center gap-1">{m.actor}: {caseDetail.adjudication.analyst_id ? <CopyId id={String(caseDetail.adjudication.analyst_id)} label={m.actor} /> : m.unavailable}</p><p>{m.recorded}: {caseDetail.adjudication.approved_at || caseDetail.adjudication.adjudicated_at || m.unavailable}</p></div>}<p>{m.archiveReadOnly}</p></div>}
         </div>
         </div>}
       </section>

@@ -52,7 +52,7 @@ test.describe('Analyst Copilot Panel (Issue #443 DoD)', () => {
     await expect(page.locator('#panel-ai-copilot')).toBeVisible();
   });
 
-  test('1a. Analyst panel fills the sidebar and user bubbles render dark with white text', async ({ page }) => {
+  test('1a. Analyst panel fills the sidebar and user bubbles render cyan-soft with ink text', async ({ page }) => {
     const panel = page.getByTestId('analyst-copilot-panel');
     const panelBox = await panel.boundingBox();
     expect(panelBox).not.toBeNull();
@@ -83,8 +83,8 @@ test.describe('Analyst Copilot Panel (Issue #443 DoD)', () => {
 
     const userBubble = panel.getByText('Kiểm tra màu tin nhắn', { exact: true }).locator('..');
     await expect(userBubble).toBeVisible();
-    await expect(userBubble).toHaveCSS('background-color', 'rgb(22, 39, 59)'); // group-[.is-user]:bg-[#16273b] in components/ai-elements/message.tsx (36537e5)
-    await expect(userBubble).toHaveCSS('color', 'rgb(255, 255, 255)');
+    await expect(userBubble).toHaveCSS('background-color', 'rgb(233, 248, 249)'); // group-[.is-user]:bg-gs-cyan-soft in components/ai-elements/message.tsx (copilot cyan theme)
+    await expect(userBubble).toHaveCSS('color', 'rgb(58, 69, 82)'); // text-gs-ink-2
 
     await page.setViewportSize({ width: 375, height: 800 });
     await page.reload();

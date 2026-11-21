@@ -4,6 +4,9 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { setApiTokenProvider, fetchCurrentAnalyst } from "@/lib/api-client";
 import { PortalTopBar } from "@/components/portal/portal-top-bar";
+import { canAuthor } from "@/lib/knowledge-ui";
+import { canUseHelpQueue } from "@/lib/explain-client";
+import { HelpQueuePanel, useHelpCount } from "@/components/explain/help-queue-panel";
 import { CockpitWorkspaceView } from "@/components/views/cockpit-view";
 import { AnalyticsDashboardView } from "@/components/views/analytics-view";
 import { AnalystProfileView } from "@/components/views/profile-view";
@@ -26,12 +29,17 @@ export default function WorkplacePage() {
   const [apiReady, setApiReady] = useState(false);
   const [activeTab, setActiveTab] = useState<TabKey>("cockpit");
   const [searchQuery, setSearchQuery] = useState("");
-  const [analyst, setAnalyst] = useState<{ name: string; role: string } | null>(null);
+  const [analyst, setAnalyst] = useState<{ name: string; role: string; roles: string[] } | null>(null);
   const [urlCaseId, setUrlCaseId] = useState<string | undefined>(undefined);
+  const [helpOpen, setHelpOpen] = useState(false);
+  const helpAllowed = canUseHelpQueue(analyst?.roles ?? []);
+  const { counts: helpCounts, refresh: refreshHelp } = useHelpCount(apiReady && !e2eAuthBypass && helpAllowed);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
+      const tab = params.get("tab");
+      if (tab === "cockpit" || tab === "analytics" || tab === "profile") setActiveTab(tab);
       const cid = params.get("caseId") || params.get("case_id");
       if (cid) setUrlCaseId(cid);
     }
@@ -76,12 +84,17 @@ export default function WorkplacePage() {
         locale={locale}
         setLocale={setLocale}
         activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        setActiveTab={(tab) => (tab === "knowledge" ? window.location.assign("/knowledge") : setActiveTab(tab))}
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
         analyst={analyst}
         e2eAuthBypass={e2eAuthBypass}
+        canOpenKnowledge={canAuthor(analyst?.roles ?? [])}
+        helpQueue={helpAllowed ? { count: helpCounts?.total ?? 0, open: helpOpen, onToggle: () => setHelpOpen((v) => !v), label: messages.helpQueue } : undefined}
       />
+
+      {helpAllowed && <HelpQueuePanel locale={locale} open={helpOpen} onClose={() => setHelpOpen(false)} onChanged={refreshHelp}
+        onOpenCase={(id) => { setUrlCaseId(id); setActiveTab("cockpit"); setHelpOpen(false); }} />}
 
       {/* Tab Contents */}
       <div className="flex-1 flex flex-col min-h-0 overflow-hidden">

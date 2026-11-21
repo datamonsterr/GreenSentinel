@@ -162,3 +162,26 @@ Migration indexes cover driver assignment time, telemetry assignment/time, inges
 | Three simulations | `simulation_runs`, `ingest_events`, `simulation_labels` with intentional DIC, gridlock, and dropout scenarios. |
 
 The architecture decision is [`adr-002-relational-spatial-event-schema.md`](adr-002-relational-spatial-event-schema.md). Runtime design is in [`POC_DESIGN.md`](POC_DESIGN.md).
+
+## Knowledge base and agent config (ADR-032, migration `20261120110000_kb_objects_and_agent_config.sql`)
+
+| Table | Notes |
+|---|---|
+| `kb_object` | One row per version of a `parameter|motive|behavior|scenario|workflow`. `status` draft, ready_for_test, trial, published, retired; `body`/`scope`/`replay`/`history` jsonb; author and approver; partial unique index keeps one `published` row per `(organization_id, type, code)`. |
+| `agent_config`, `agent_config_history` | Per-org values by `key` and `scope` (`global` or `rule:<code>`); history keeps old/new value, reason, kind (`change|revert|kill_switch`) and actor. Bounds are code constants. |
+| `kb_policy_document` | Upload metadata, text excerpt, `indexing_status` (`not_indexed|indexed|embeddings_not_configured`). |
+| `kb_proposal` | Review queue rows from analysis/help/closed case/monitoring/manual with mapping `reuse|extend|new`, similarity, decision and reason. |
+
+Audit rows go to `audit_events` (`kb.*`, `agent_config.*`). The `kb_` prefix avoids the existing `workflow_*` analyst tables.
+
+## Driver explanation sessions (ADR-034, migration `20261120120000_explain_sessions.sql`)
+
+| Table | Notes |
+|---|---|
+| `explain_session` | One per `(organization_id, case_id)`; `state`, `mode`, `reason`, form snapshot (`form_schema`, `form_version`), `answers`, `plan`, `memory`, `provenance`, `open_points`, workflow/scenario code+version, counters (`turns_used`, `n_max`, `edits_used`, `help_count`) and flags `novel_scenario, statement_changed, ai_inconclusive, session_interrupted, asked_for_help, asked_for_help_skipped`. |
+| `statement_version` | Immutable (trigger blocks update/delete); `version` 1 = form, later `chat|edit|summary|auto`. |
+| `assessment_round` | Round 1 `form`, round 2 `chat`; `state` `eligible|not_eligible|needs_driver|missing_internal`, evidence, contradictions, open points, internal gaps, confidence, suggested questions, VH-only motive, provenance snapshot. |
+| `explain_turn` | Ordered transcript and agent log (`agent_question|agent_message|driver_answer|tool_call|plan_update|help|guard|flag|system`), `visible_to_driver`, `tool`, `kb_code`, `kb_version`. |
+| `help_request` | `open|claimed|answered|expired`, trigger, stuck point, facts, options, claim/reply fields, `wait_seconds`, `expires_at`, `proposal_id`. |
+| `vh_feedback` | `agree|disagree`, `error_types` jsonb, comment, author. |
+

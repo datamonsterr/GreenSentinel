@@ -5,7 +5,8 @@ import { OrganizationSwitcher, UserButton } from "@clerk/nextjs";
 import type { Locale } from "@/lib/locale";
 import { roleStyle } from "@/lib/role-style";
 
-type TabKey = "cockpit" | "analytics" | "profile";
+export type PortalTabKey = "cockpit" | "analytics" | "profile" | "knowledge";
+type TabKey = PortalTabKey;
 type NavMessages = Record<string, string>;
 
 function useClock(locale: Locale) {
@@ -30,8 +31,12 @@ export function PortalTopBar(props: {
   setSearchQuery: (v: string) => void;
   analyst: { name: string; role: string } | null;
   e2eAuthBypass: boolean;
+  /** Analyst/admin only: show the Knowledge entry (route /knowledge). */
+  canOpenKnowledge?: boolean;
+  /** Analyst/admin only: AI explanation help queue entry with open+claimed badge (S-D2). */
+  helpQueue?: { count: number; open: boolean; onToggle: () => void; label: string };
 }) {
-  const { messages, locale, setLocale, activeTab, setActiveTab, searchQuery, setSearchQuery, analyst, e2eAuthBypass } = props;
+  const { messages, locale, setLocale, activeTab, setActiveTab, searchQuery, setSearchQuery, analyst, e2eAuthBypass, canOpenKnowledge, helpQueue } = props;
   const [open, setOpen] = useState(false);
   const clock = useClock(locale);
   const role = roleStyle(analyst?.role);
@@ -39,6 +44,7 @@ export function PortalTopBar(props: {
     { key: "cockpit", icon: "gavel", label: messages.cockpit },
     { key: "analytics", icon: "monitoring", label: messages.analytics },
     { key: "profile", icon: "badge", label: messages.profile },
+    ...(canOpenKnowledge ? [{ key: "knowledge" as TabKey, icon: "menu_book", label: messages.knowledge }] : []),
   ];
 
   return (
@@ -78,6 +84,18 @@ export function PortalTopBar(props: {
           <span className="text-xs text-gs-mute">{locale === "vi" ? "Vai trò" : "Role"}</span>
           <span className="rounded-full px-2.5 py-0.5 text-xs font-bold" style={{ background: role.bg, color: role.fg }} data-testid="role-badge">{role.label}</span>
         </div>
+        {canOpenKnowledge && (
+          <button
+            type="button"
+            data-testid="knowledge-entry"
+            onClick={() => setActiveTab("knowledge")}
+            aria-current={activeTab === "knowledge" ? "page" : undefined}
+            className={`hidden cursor-pointer items-center gap-1.5 rounded-[10px] border px-3 py-1.5 text-[13px] font-semibold transition-colors lg:flex ${activeTab === "knowledge" ? "border-primary bg-primary-fixed text-primary" : "border-gs-line-2 bg-white text-gs-ink-2 hover:bg-surface"}`}
+          >
+            <span className="material-symbols-outlined text-[18px]">menu_book</span>
+            {messages.knowledge}
+          </button>
+        )}
       </div>
 
       <div className="hidden min-w-0 max-w-xl flex-1 md:block">
@@ -97,6 +115,22 @@ export function PortalTopBar(props: {
       </div>
 
       <div className="flex min-w-0 shrink-0 items-center justify-end gap-3 sm:gap-4">
+        {helpQueue && (
+          <button
+            type="button"
+            data-testid="help-queue-entry"
+            onClick={helpQueue.onToggle}
+            aria-expanded={helpQueue.open}
+            aria-label={`${helpQueue.label} (${helpQueue.count})`}
+            title={helpQueue.label}
+            className={`relative flex size-9 cursor-pointer items-center justify-center rounded-[10px] border transition-colors ${helpQueue.open ? "border-primary bg-primary-fixed text-primary" : "border-gs-line-2 bg-white text-gs-mute-2 hover:bg-surface"}`}
+          >
+            <span className="material-symbols-outlined text-[20px]">support_agent</span>
+            {helpQueue.count > 0 && (
+              <span data-testid="help-queue-badge" className="absolute -right-1.5 -top-1.5 min-w-[18px] rounded-full bg-gs-red px-1 text-center text-[10px] font-bold leading-[18px] text-white">{helpQueue.count}</span>
+            )}
+          </button>
+        )}
         <span className="hidden whitespace-nowrap text-[13px] text-[#3a4552] xl:inline" suppressHydrationWarning>{clock}</span>
         <div role="group" aria-label={messages.languages} className="flex shrink-0 items-center gap-0.5 rounded-lg border border-gs-line-2 p-0.5 text-xs">
           {(["en", "vi"] as const).map((language) => (

@@ -1,7 +1,7 @@
 import { getApiBaseUrl, requestJson } from "@/lib/api-client";
 
 export type WorkflowStep = {
-  key: string; label: string; actor_role: string; state: "done" | "current" | "pending";
+  key: string; label: string; actor_role: string; state: "done" | "current" | "pending" | "skipped";
   completed_at: string | null; actor_name?: string | null;
 };
 export type CaseWorkflow = {

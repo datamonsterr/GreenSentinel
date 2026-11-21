@@ -76,7 +76,8 @@ for (const width of [1440, 375]) {
         expect(f!.x + f!.width).toBeLessThanOrEqual(width);
         expect(s!.x + s!.width).toBeLessThanOrEqual(f!.x + f!.width);
         expect(await input.evaluate(node => node.scrollWidth <= node.clientWidth)).toBe(true);
-        await expect(send).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+        await page.mouse.move(0, 0); // leave any hover state from earlier steps
+        await expect(send).toHaveCSS('background-color', 'rgb(15, 179, 193)'); // bg-primary (cyan theme)
         await expect.poll(async () => send.evaluate((node) => {
           const shadow = getComputedStyle(node).boxShadow;
           const colors = shadow.match(/rgba?\([^)]*\)/g) ?? [];
@@ -85,7 +86,7 @@ for (const width of [1440, 375]) {
           );
         })).toBe(true);
         await send.hover();
-        await expect(send).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+        await expect(send).toHaveCSS('background-color', 'rgb(11, 151, 164)'); // hover:bg-primary-container
         await expect(send.locator('svg')).toBeVisible();
       }
       await form.screenshot({ path: testInfo.outputPath('populated-composer.png') });
@@ -93,7 +94,7 @@ for (const width of [1440, 375]) {
   }
 }
 
-test('composer preserves Shift+Enter newline, Enter submission and white user text', async ({ page }) => {
+test('composer preserves Shift+Enter newline, Enter submission and ink user text', async ({ page }) => {
   const panel = await openAnalyst(page);
   const input = panel.getByPlaceholder('Ask Agents about this case…');
   await input.fill('Review this case');
@@ -108,7 +109,7 @@ test('composer preserves Shift+Enter newline, Enter submission and white user te
   await expect(input).toHaveValue('');
   const userText = panel.locator('.is-user').getByText('Review this case X', { exact: true });
   await expect(userText).toBeVisible();
-  await expect(userText).toHaveCSS('color', 'rgb(255, 255, 255)');
+  await expect(userText).toHaveCSS('color', 'rgb(58, 69, 82)'); // text-gs-ink-2 on cyan-soft bubble
 });
 
 test('composer remains disabled when another analyst owns the case', async ({ page }) => {
