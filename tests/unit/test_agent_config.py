@@ -1,3 +1,4 @@
+from datetime import UTC, datetime, timedelta
 from types import SimpleNamespace
 
 import pytest
@@ -111,3 +112,29 @@ def test_bounds_table_sane():
     for d in acs.DEFINITIONS.values():
         if d["type"] in ("int", "float"):
             assert d["min"] <= d["default"] <= d["max"]
+
+
+def test_metrics_only_count_sessions_from_last_30_days(cfg):
+    now = datetime.now(UTC)
+
+    def session(age_days, turns):
+        cfg.store.insert(
+            "explain_session",
+            {
+                "organization_id": ORG,
+                "case_id": f"c{age_days}",
+                "mode": "agent",
+                "state": "submitted",
+                "turns_used": turns,
+                "ai_inconclusive": False,
+                "asked_for_help": False,
+                "created_at": now - timedelta(days=age_days),
+            },
+        )
+
+    session(100, 6)
+    m = cfg.list_config(ANALYST)["metrics"]
+    assert m["available"] is False
+    session(5, 2)
+    m = cfg.list_config(ANALYST)["metrics"]
+    assert m["available"] is True and m["sessions"] == 1 and m["avg_turns"] == 2

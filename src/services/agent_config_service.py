@@ -6,6 +6,7 @@ Bounds are code constants (PO owned). Values are DB-backed per organisation, opt
 
 from __future__ import annotations
 
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
 from fastapi import HTTPException
@@ -242,10 +243,11 @@ class AgentConfigService:
             "pct_help": None,
             "available": False,
         }
+        since = datetime.now(UTC) - timedelta(days=out["window_days"])
         rows = [
             r
             for r in self.store.find("explain_session", {"organization_id": org, "mode": "agent"})
-            if r["state"] == "submitted"
+            if r["state"] == "submitted" and r["created_at"] >= since
         ]
         if not rows:
             return out
