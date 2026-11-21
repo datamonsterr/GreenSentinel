@@ -30,7 +30,10 @@ test.describe("Sprint 3 multi-persona workflow", () => {
       const motivation = overview.locator("section").filter({
         has: page.getByRole("heading", { name: "Motivation", exact: true }),
       });
-      await expect(motivation.getByText(/Not assessed/i)).toBeVisible();
+      // Structured, versioned motivation assessment (unsaved rule draft) replaces the "Not assessed" placeholder.
+      await expect(motivation.getByTestId("motivation-card").getByText("Subsidy / surge")).toBeVisible();
+      await expect(motivation.getByText("Not saved")).toBeVisible();
+      await expect(motivation.getByText(/Not assessed/i)).toHaveCount(0);
       await expect(overview.getByText(/tài xế có thể kéo dài hành trình/i)).toHaveCount(0);
 
       await page.getByRole("button", { name: "Claim", exact: true }).click();
