@@ -1,0 +1,44 @@
+name: Set up webapp dependencies
+description: Install Node.js and pnpm, then restore the pnpm store before installing webapp dependencies.
+inputs:
+  save-cache:
+    description: Save a new pnpm store cache from the main CI writer job.
+    default: 'false'
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v7
+      with:
+        node-version: 22
+
+    - uses: pnpm/action-setup@v6
+      with:
+        version: 11
+
+    - name: Resolve the pnpm store
+      id: store
+      shell: bash
+      working-directory: src/webapp
+      run: |
+        store_path=$(pnpm store path --silent)
+        echo "path=$store_path" >> "$GITHUB_OUTPUT"
+
+    - name: Restore pnpm store
+      id: pnpm-cache
+      uses: actions/cache/restore@v6
+      with:
+        path: ${{ steps.store.outputs.path }}
+        key: pnpm-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('src/webapp/pnpm-lock.yaml') }}
+        restore-keys: pnpm-${{ runner.os }}-${{ runner.arch }}-
+
+    - name: Install webapp dependencies
+      shell: bash
+      working-directory: src/webapp
+      run: pnpm install --frozen-lockfile
+
+    - name: Save pnpm store on main cache miss
+      if: inputs.save-cache == 'true' && steps.pnpm-cache.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v6
+      with:
+        path: ${{ steps.store.outputs.path }}
+        key: ${{ steps.pnpm-cache.outputs.cache-primary-key }}

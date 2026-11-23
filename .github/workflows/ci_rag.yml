@@ -35,10 +35,15 @@ on:
         required: false
         default: "3.0"
 
+concurrency:
+  group: ci-rag-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   sprint4-grounding-benchmark:
     name: Sprint 4 Grounding Benchmark
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     env:
       LLM_MODEL: openrouter
     steps:
@@ -51,6 +56,7 @@ jobs:
   rag-lint-and-unit-tests:
     name: RAG Unit Tests & Lint
     runs-on: ubuntu-latest
+    timeout-minutes: 25
     env:
       LLM_MODEL: openrouter
       RAG_EMBEDDING_PROVIDER: openai
@@ -143,6 +149,7 @@ jobs:
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     needs: rag-lint-and-unit-tests
     runs-on: ubuntu-latest
+    timeout-minutes: 60
     env:
       APP_ENV: test
       LLM_MODEL: openrouter

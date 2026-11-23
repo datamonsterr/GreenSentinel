@@ -13,10 +13,10 @@ on:
 permissions:
   contents: read
 
-# Let active verification finish, including reruns of expensive GIS checks.
+# Superseded PR revisions stop while main and manual verification can finish.
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   format-and-lint:
@@ -69,7 +69,6 @@ jobs:
     name: Unit Tests
     # Ready-tier only: drafts use ci-draft.yml Draft Unit Tests.
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
-    needs: [format-and-lint]
     runs-on: ubuntu-latest
     env:
       LLM_MODEL: openrouter
@@ -173,29 +172,14 @@ jobs:
     name: Frontend Vitest & Typecheck
     # Ready-tier only: drafts use ci-draft.yml Draft Frontend Vitest.
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
-    needs: [format-and-lint]
     runs-on: ubuntu-latest
     timeout-minutes: 45
     steps:
       - uses: actions/checkout@v7
 
-      - name: Setup Node.js and pnpm
-        uses: actions/setup-node@v7
+      - uses: ./.github/actions/setup-webapp
         with:
-          node-version: 22
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v6
-        with:
-          version: 11
-          dest: ${{ runner.temp }}/pnpm-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}
-          cache: true
-          cache_dependency_path: src/webapp/pnpm-lock.yaml
-
-      - name: Install webapp dependencies
-        run: |
-          cd src/webapp
-          pnpm install --frozen-lockfile
+          save-cache: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
 
       - name: Run full frontend Vitest suite
         # NOTE: no /usr/bin/time wrapper; the `time` package is not
@@ -217,24 +201,12 @@ jobs:
     name: Webapp Build (E2E bundle)
     # Ready-tier only: drafts use ci-draft.yml.
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
-    needs: [frontend-vitest]
     runs-on: ubuntu-latest
     timeout-minutes: 35
     steps:
       - uses: actions/checkout@v7
 
-      - name: Setup Node.js and pnpm
-        uses: actions/setup-node@v7
-        with:
-          node-version: 22
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v6
-        with:
-          version: 11
-          dest: ${{ runner.temp }}/pnpm-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}
-          cache: true
-          cache_dependency_path: src/webapp/pnpm-lock.yaml
+      - uses: ./.github/actions/setup-webapp
 
       - name: Cache Next.js build cache
         uses: actions/cache@v6
@@ -244,11 +216,6 @@ jobs:
           restore-keys: |
             nextjs-build-${{ runner.os }}-${{ hashFiles('src/webapp/pnpm-lock.yaml') }}-
             nextjs-build-${{ runner.os }}-
-
-      - name: Install webapp dependencies
-        run: |
-          cd src/webapp
-          pnpm install --frozen-lockfile
 
       - name: Build webapp (E2E bundle)
         run: |
@@ -277,7 +244,6 @@ jobs:
     # On draft PRs this job skips without touching Docker or runner RAM.
     # Push-to-main and workflow_dispatch always run (no PR object).
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
-    needs: [unit-tests]
     runs-on: ubuntu-latest
     timeout-minutes: 25
     env:
@@ -344,18 +310,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Setup Node.js and pnpm
-        uses: actions/setup-node@v7
-        with:
-          node-version: 22
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v6
-        with:
-          version: 11
-          dest: ${{ runner.temp }}/pnpm-${{ github.run_id }}-${{ github.run_attempt }}-${{ github.job }}
-          cache: true
-          cache_dependency_path: src/webapp/pnpm-lock.yaml
+      - uses: ./.github/actions/setup-webapp
 
       - name: Cache Playwright browsers
         uses: actions/cache@v6
@@ -364,11 +319,9 @@ jobs:
           key: playwright-${{ runner.os }}-${{ hashFiles('src/webapp/pnpm-lock.yaml') }}
           restore-keys: playwright-${{ runner.os }}-
 
-      - name: Install webapp dependencies & browsers
-        run: |
-          cd src/webapp
-          pnpm install --frozen-lockfile
-          npx playwright install chromium
+      - name: Install Playwright Chromium
+        working-directory: src/webapp
+        run: npx playwright install chromium
 
       - name: Download webapp build artifact
         id: webapp-artifact
@@ -409,9 +362,8 @@ jobs:
 
   build-and-cache:
     name: Build & Cache Verification
-    # Ready-tier only, verifies build artifacts after all test jobs pass.
+    # Ready-tier only. The backend image build uses no test or webapp artifacts.
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
-    needs: [frontend-vitest, integration-tests, browser-e2e, webapp-build]
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
