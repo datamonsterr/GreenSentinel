@@ -47,8 +47,8 @@ The main continuous integration workflow ([`.github/workflows/ci.yml`](../../.gi
 - `webapp-build`: Webapp production build (`pnpm build` with Next.js build cache `nextjs-build-` and 3GB Node memory limit), uploading the prebuilt Next.js bundle for browser E2E.
 - `integration-tests`: Docker backing services (Postgres, Redis, Qdrant) with container memory limits (`GREENSENTINEL_PG_MEMORY: 768m`, `GREENSENTINEL_REDIS_MEMORY: 256m`, `GREENSENTINEL_QDRANT_MEMORY: 768m`), serialized under concurrency group `greensentinel-docker-services`, running migrations, seeds, and the integration suite via [`scripts/test_integration.sh`](../../scripts/test_integration.sh). Integration tests are dynamically discovered via the `docker` pytest marker (`-m docker`). To add a new integration test requiring Docker services, add `pytestmark = pytest.mark.docker` to the test file.
 - `browser-e2e`: Playwright E2E browser tests (runs `next start` on isolated test bundle) with downloaded build bundle and retries capped at 1, configurable via `PLAYWRIGHT_SERVER_MODE`, bounded by concurrency group `greensentinel-browser-e2e`.
-- `build-and-cache`: Docker Compose configuration validation and backend image build verification after test and build jobs pass.
+- `build-and-cache`: Docker Compose configuration validation and backend image build verification run alongside the tests.
 
 The isolated persisted GIS gate has been removed from automated CI and is run manually when needed via [`scripts/test_gis_persisted.sh`](../../scripts/test_gis_persisted.sh).
 
-All concrete workflow jobs use self-hosted runners. CI report/build transfers use private OCI storage; see [artifact operations and validation](manual/OCI_ARTIFACTS.md). GitHub artifact retention is not inherited by OCI.
+CI jobs run on GitHub-hosted Linux runners. Frontend jobs restore the shared pnpm store keyed by the webapp lockfile. The frontend test job saves new entries on pushes to `main`.

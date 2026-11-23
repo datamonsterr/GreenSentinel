@@ -7,12 +7,11 @@ def _read(p):
     return pathlib.Path(p).read_text()
 
 
-def test_ci_preserves_active_verification_runs():
+def test_ci_cancels_only_superseded_pr_verification():
     wf = _read(".github/workflows/ci.yml")
     workflow_concurrency = wf.split("concurrency:", 1)[1].split("jobs:", 1)[0]
-    assert "cancel-in-progress: false" in workflow_concurrency, (
-        "active verification and expensive GIS reruns must finish"
-    )
+    assert "group: ci-${{ github.ref }}" in workflow_concurrency
+    assert "cancel-in-progress: ${{ github.event_name == 'pull_request' }}" in workflow_concurrency
 
 
 def test_persisted_gis_gate_removed_from_ci():
@@ -73,7 +72,18 @@ def test_agent_suites_run_in_unit_tests():
 
 def test_ci_caches_pnpm_store():
     wf = _read(".github/workflows/ci.yml")
-    assert "pnpm-lock.yaml" in wf and "cache" in wf, "pnpm installs must hit a lockfile-keyed cache"
+    draft = _read(".github/workflows/ci-draft.yml")
+    setup = _read(".github/actions/setup-webapp/action.yml")
+    assert wf.count("uses: ./.github/actions/setup-webapp") == 3
+    assert draft.count("uses: ./.github/actions/setup-webapp") == 1
+    assert "pnpm store path" in setup and "dest:" not in setup
+    assert "key: pnpm-${{ runner.os }}-${{ runner.arch }}-${{ hashFiles('src/webapp/pnpm-lock.yaml') }}" in setup
+    assert "actions/cache/restore@v6" in setup
+    assert "actions/cache/save@v6" in setup
+    assert "if: inputs.save-cache == 'true' && steps.pnpm-cache.outputs.cache-hit != 'true'" in setup
+    assert wf.count("save-cache:") == 1
+    assert "save-cache: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}" in wf
+    assert "save-cache:" not in draft
 
 
 def test_ci_caches_playwright_browsers():
